@@ -1,13 +1,15 @@
 ---
 title: "Lab 01: BIC illustration"
-output: html_document
+output:
+  html_document:
+    mathjax: "default" # to display LaTeX equations correctly in external browsers
 ---
 
 
 ```{r}
 suppressMessages({
-library(foreach)
-library(stargazer)
+library(foreach) #flexible looping construct
+library(stargazer) # for tables
 })
 ```
 
@@ -15,7 +17,7 @@ We illustrate the use of the BIC model selection procedures using simulated data
 
 # DGP
 
-Consider a polynomial regression model:
+Consider a polynomial regression model with a polynomial of order $p_0$:
 
 \begin{align}
 Y_i & = \beta_0+\beta_1 X_{i}+\beta_2 X_i^2+\ldots+\beta_{p_0} X_i^{p_0}+U_i,\\
@@ -23,7 +25,7 @@ U_i &\sim N(0,1),\\
 X_i &\sim N(0,1).
 \end{align}
 
-Let's define a custom R function to generate the data:
+Let's define a custom R function to generate the data. Here, all $\beta$'s are set to one:
 ```{r}
 DGP<-function(n,p0){
   #p0 = the number of polynomial terms
@@ -58,13 +60,14 @@ We can obtain the OLS estimator for the polynomial regression using the function
 - `raw=TRUE` instructs R to **not** use orthogonal polynomial terms.
 
 Below, we estimate the model with the true number of the polynomial terms `p=p0`:
+
 ```{r, results="asis"}
 model4<-lm(MyData$y ~ poly(MyData$x,p=p0,raw=TRUE))
 stargazer(model4,
-          covariate.labels=c(as.character(seq(from=1,to=4,by=1)),"Intercept"),
+          covariate.labels=c(as.character(seq(from=1,to=4,by=1))),
           omit.stat=c("ll","f","ser","n","adj.rsq")
-          #,type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
-          ,type="text"
+          ,type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
+          #,type="text"
           )
 ```
 <br>
@@ -81,8 +84,8 @@ model10<-lm(MyData$y ~ poly(MyData$x,p=10,raw=TRUE))
 stargazer(model10,
           covariate.labels=c(as.character(seq(from=1,to=10,by=1)),"Intercept"),
           omit.stat=c("ll","f","ser","n","adj.rsq")
-          #,type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
-          ,type="text"
+          ,type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
+          #,type="text"
           )
 ```
 <br>
@@ -98,8 +101,8 @@ model3<-lm(MyData$y ~ poly(MyData$x,p=3,raw=TRUE))
 stargazer(model3,
           covariate.labels=c(as.character(seq(from=1,to=3,by=1)),"Intercept"),
           omit.stat=c("ll","f","ser","n","adj.rsq")
-          #,type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
-          ,type="text"
+          ,type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
+          #,type="text"
           )
 ```
 <br>
@@ -108,8 +111,7 @@ stargazer(model3,
 
 # BIC
 
-- The  R `BIC()` function is slightly differently defined than the one we used in the notes.
-- It works similarly to our version of BIC.
+- R `BIC()` function computes BIC
 
 
 ```{r}
@@ -145,12 +147,12 @@ Let's check how likely BIC to select the right model using MC simulations.
 - `p0` is the true degree.
 - `max_p` is the largest degree to try.
 - `R` is the number of MC repetitions.
-- `stateRNG` is to set the seed for reproducibility.
-- `.export=c("DGP","MySelect","MyBIC")` is to make sure that the user-defined objects are passed to the multiple cores. Note that while under some installations the code also runs without that option, in other cases excluding the option may result in errors "could not find function".
+- `set.seed(seed)` for reproducability
 
 ```{r}
 MC_BIC<-function(n,p0,max_p,R,seed){
-    Success<-foreach(r=1:R, .combine='rbind',.export=c("DGP","MySelect","MyBIC"))  %do% {
+    set.seed(seed)
+    Success<-foreach(r=1:R, .combine='rbind')  %do% {
       MyData<-DGP(n,p0=p0)
       p_hat<-MySelect(MyData,max_p=max_p)
       (p_hat==p0)
@@ -196,6 +198,58 @@ MC_BIC(n=100,p0=4,max_p=10,R=10^2,seed=42)
 - Now, the probability of selecting the true order $p_0$ is much smaller.
 - BIC thinks the $p_0$ term is irrelevant.
 
+# Parallel loops
 
+Without parallel loops
+```{r}
+execution_time <- system.time({
+  # Code to measure
+  result <- MC_BIC(n=100,p0=4,max_p=10,R=10^3,seed=42)
+})
+cat("\n Execution time:\n")
+print(execution_time)
+```
+* Over 3 secs sequential execution of the loop
+
+
+# Set up parallel loops
+```{r}
+library(doParallel) 
+library(doRNG)
+
+cl <- makeCluster(8) #Use 8 workers/cores
+registerDoParallel(cl)
+invisible(clusterEvalQ(cl, {
+  suppressPackageStartupMessages(library(foreach, quietly = TRUE))
+})) #load library foreach for all workers
+```
+
+
+Parallel version of the MC function: 
+- use `%dopar%` instead.
+- `export=c("DGP","MySelect"))` to ensure that workers see custom functions 
+```{r}
+MC_BIC_par<-function(n,p0,max_p,R){
+    Success<-foreach(r=1:R, .combine='rbind',.export=c("DGP","MySelect"))  %dopar% {
+      MyData<-DGP(n,p0=p0)
+      p_hat<-MySelect(MyData,max_p=max_p)
+      (p_hat==p0)
+  }
+  cat("With n=",n, "the probability of BIC selecting the true model is",mean(Success))
+}
+```
+
+Run parallel loop:
+```{r}
+registerDoRNG(42)
+execution_time <- system.time({
+  # Code to measure
+  result <- MC_BIC_par(n=100,p0=4,max_p=10,R=10^2)
+})
+cat("\n Execution time:\n")
+print(execution_time)
+```
+
+* Execution time: 0.025 sec
 
 ---
