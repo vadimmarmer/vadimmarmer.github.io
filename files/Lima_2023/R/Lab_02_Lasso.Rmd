@@ -1,8 +1,9 @@
 ---
 title: 'Lab 02: Lasso Illustration'
-output: html_document
+output:
+  html_document:
+    mathjax: "default" # to display LaTeX equations correctly in external browsers
 ---
-
 
 ```{r}
 suppressMessages({
@@ -34,7 +35,7 @@ DGP<-function(n,p0){
   #n = the number of observations
   X<-rnorm(n)
   U<-rnorm(n)
-  Y<-U
+  Y<-1+U
   for (j in 1:p0){
     Y<-Y+X^j
   }
@@ -80,11 +81,17 @@ names(Lasso)
 
 For example:
 ```{r}
-Lasso$beta[,10]
+Lasso$lambda[7]
 ```
+
+```{r}
+Lasso$beta[,7]
+```
+
 
 Let's compare the coefficients for different values of the penalty parameter `lambda`. We use the `kable()` function from the package `kableExtra` to construct a table:
 ```{r}
+#indexes of lambda's to pick
 lambda_ind_1=1
 lambda_ind_2=10
 lambda_ind_3=25

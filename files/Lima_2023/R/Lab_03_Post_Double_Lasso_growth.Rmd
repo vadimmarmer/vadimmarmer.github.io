@@ -1,7 +1,8 @@
 ---
 title: "Lab 03: Post-Lasso and double Lasso with growth data"
 output:
-  html_document: default
+  html_document:
+    mathjax: "default" # to display LaTeX equations correctly in external browsers
 ---
 
 ```{r}
@@ -91,8 +92,8 @@ suppressWarnings(
             title="Testing the conditional catching up hypothesis",
             omit.stat = "all",
             omit="Controls",
-            type="text"
-            #type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
+            #type="text"
+            type="html",notes.append = FALSE,notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01")
   )
 )
 

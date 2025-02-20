@@ -376,7 +376,7 @@ X_i &amp;\sim N(0,1).
   #n = the number of observations
   X&lt;-rnorm(n)
   U&lt;-rnorm(n)
-  Y&lt;-U
+  Y&lt;-1+U
   for (j in 1:p0){
     Y&lt;-Y+X^j
   }
@@ -528,7 +528,7 @@ y
 Constant
 </td>
 <td>
--0.119
+0.881<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -570,6 +570,29 @@ R<sup>2</sup>
 </tr>
 </table>
 <p><br></p>
+<pre class="r"><code>model4&lt;-lm(MyData$y ~ poly(MyData$x,p=p0,raw=TRUE))
+summary(model4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = MyData$y ~ poly(MyData$x, p = p0, raw = TRUE))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.9250 -0.6420  0.4428  0.7135  1.7134 
+## 
+## Coefficients:
+##                                     Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                          0.88129    0.28818   3.058  0.00525 ** 
+## poly(MyData$x, p = p0, raw = TRUE)1  1.11676    0.38835   2.876  0.00812 ** 
+## poly(MyData$x, p = p0, raw = TRUE)2  1.02338    0.34713   2.948  0.00684 ** 
+## poly(MyData$x, p = p0, raw = TRUE)3  0.92229    0.09614   9.593 7.37e-10 ***
+## poly(MyData$x, p = p0, raw = TRUE)4  0.98906    0.06266  15.784 1.65e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.093 on 25 degrees of freedom
+## Multiple R-squared:  0.9933, Adjusted R-squared:  0.9922 
+## F-statistic: 928.1 on 4 and 25 DF,  p-value: &lt; 2.2e-16</code></pre>
 <ul>
 <li>All estimates are significant.</li>
 <li>All estimates are reasonably close to one (the true value)</li>
@@ -827,7 +850,7 @@ y
 Intercept
 </td>
 <td>
--0.510
+0.490
 </td>
 </tr>
 <tr>
@@ -981,7 +1004,7 @@ y
 Intercept
 </td>
 <td>
--2.156<sup>**</sup>
+-1.156
 </td>
 </tr>
 <tr>
@@ -1094,8 +1117,8 @@ simulations.</p>
   }
   return(list(y=Y,x=X))
 }</code></pre>
-<pre class="r"><code>MC_BIC(n=100,p0=4,max_p=10,R=10^2,seed=42)</code></pre>
-<pre><code>## With n= 100 the probability of BIC selecting the true model is 0.02</code></pre>
+<pre class="r"><code>MC_BIC(n=1000,p0=4,max_p=10,R=10^2,seed=42)</code></pre>
+<pre><code>## With n= 1000 the probability of BIC selecting the true model is 0.12</code></pre>
 <ul>
 <li>Now, the probability of selecting the true order <span class="math inline">\(p_0\)</span> is much smaller.</li>
 <li>BIC thinks the <span class="math inline">\(p_0\)</span> term is
@@ -1104,7 +1127,9 @@ irrelevant.</li>
 </div>
 <div id="parallel-loops" class="section level1">
 <h1>Parallel loops</h1>
-<p>Without parallel loops</p>
+<div id="without-parallel-loops" class="section level4">
+<h4>Without parallel loops</h4>
+<p>Execution time:</p>
 <pre class="r"><code>execution_time &lt;- system.time({
   # Code to measure
   result &lt;- MC_BIC(n=100,p0=4,max_p=10,R=10^3,seed=42)
@@ -1115,13 +1140,13 @@ irrelevant.</li>
 ##  Execution time:</code></pre>
 <pre class="r"><code>print(execution_time)</code></pre>
 <pre><code>##    user  system elapsed 
-##   3.299   0.017   3.319</code></pre>
+##   3.182   0.019   3.202</code></pre>
 <ul>
 <li>Over 3 secs sequential execution of the loop</li>
 </ul>
 </div>
-<div id="set-up-parallel-loops" class="section level1">
-<h1>Set up parallel loops</h1>
+<div id="set-up-parallel-loops" class="section level4">
+<h4>Set up parallel loops</h4>
 <pre class="r"><code>library(doParallel) </code></pre>
 <pre><code>## Loading required package: iterators</code></pre>
 <pre><code>## Loading required package: parallel</code></pre>
@@ -1155,11 +1180,12 @@ execution_time &lt;- system.time({
 ##  Execution time:</code></pre>
 <pre class="r"><code>print(execution_time)</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.024   0.006   0.145</code></pre>
+##   0.021   0.004   0.152</code></pre>
 <ul>
-<li>Execution time: 0.025 sec</li>
+<li>Execution time: 0.025 sec!</li>
 </ul>
 <hr />
+</div>
 </div>
 
 

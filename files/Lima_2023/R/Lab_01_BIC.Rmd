@@ -32,7 +32,7 @@ DGP<-function(n,p0){
   #n = the number of observations
   X<-rnorm(n)
   U<-rnorm(n)
-  Y<-U
+  Y<-1+U
   for (j in 1:p0){
     Y<-Y+X^j
   }
@@ -48,7 +48,6 @@ p0=4
 set.seed(42)
 MyData<-DGP(n=n,p0=p0)
 ```
-
 
 
 # Polynomial regression
@@ -71,6 +70,11 @@ stargazer(model4,
           )
 ```
 <br>
+
+```{r}
+model4<-lm(MyData$y ~ poly(MyData$x,p=p0,raw=TRUE))
+summary(model4)
+```
 
 
 * All estimates are significant.
@@ -191,7 +195,7 @@ DGP<-function(n,p0){
 
 
 ```{r}
-MC_BIC(n=100,p0=4,max_p=10,R=10^2,seed=42)
+MC_BIC(n=1000,p0=4,max_p=10,R=10^2,seed=42)
 ```
 
 
@@ -200,7 +204,9 @@ MC_BIC(n=100,p0=4,max_p=10,R=10^2,seed=42)
 
 # Parallel loops
 
-Without parallel loops
+#### Without parallel loops
+
+Execution time:
 ```{r}
 execution_time <- system.time({
   # Code to measure
@@ -212,7 +218,7 @@ print(execution_time)
 * Over 3 secs sequential execution of the loop
 
 
-# Set up parallel loops
+#### Set up parallel loops
 ```{r}
 library(doParallel) 
 library(doRNG)
@@ -250,6 +256,6 @@ cat("\n Execution time:\n")
 print(execution_time)
 ```
 
-* Execution time: 0.025 sec
+* Execution time: 0.025 sec!
 
 ---
