@@ -8,9 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca) at the [University of British Columbia](https://www.ubc.ca). 
-
-My main area of research is econometrics with a focus on estimation and inference for auctions, weak identification, misspecification, non-stationary time series, and inference with network-dependent data.
+I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca) at the [University of British Columbia](https://www.ubc.ca). My main area of research is econometrics with a focus on estimation and inference for auctions, weak identification, misspecification, non-stationary time series, and inference with network-dependent data.
 
 ## Recent publications
 
