@@ -13,9 +13,9 @@ I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca
 ## Recent publications
 
 - [Modeling Long Cycles](/publication/2024-long) (with Natasha Kang)<br> *Journal of Econometrics*, 2024 
-- [Inference on Individual Treatment Effects in Nonseparable Triangular Models](https://doi.org/10.1016/j.jeconom.2023.02.011) (with Jun Ma and Zhengfei Yu)<br> *Journal of Econometrics*, 2023 <br>[Working Paper](https://arxiv.org/pdf/2107.05559.pdf)
-- [Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions](https://doi.org/10.1080/07474938.2021.1889198) (with Jun Ma, Artyom Shneyerov, and Pai Xu)<br> *Econometric Reviews*, 2021 <br>[Working Paper](https://arxiv.org/pdf/1909.12974.pdf)
-- [Limit Theorems for Network Dependent Random Variables](https://doi.org/10.1016/j.jeconom.2020.05.019) (with Denis Kojevnikov and Kevin Song)<br> *Journal of Econometrics*, 2021 <br>[Working Paper](https://arxiv.org/pdf/1903.01059.pdf) 
+- [Inference on Individual Treatment Effects in Nonseparable Triangular Models](/publication/2023-inference) (with Jun Ma and Zhengfei Yu)<br> *Journal of Econometrics*, 2023
+- [Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions](/publication/2021-monotonicity) (with Jun Ma, Artyom Shneyerov, and Pai Xu)<br> *Econometric Reviews*, 2021
+- [Limit Theorems for Network Dependent Random Variables](/publication/2021-limit)<br> *Journal of Econometrics*, 2021
 
 ## Working papers
 
