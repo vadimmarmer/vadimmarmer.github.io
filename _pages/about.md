@@ -8,7 +8,6 @@ redirect_from:
   - /about.html
 ---
 
-I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca), UBC
 
 ## Recent publications
 
