@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca) at the [University of British Columbia](https://www.ubc.ca).
+I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca), UBC
 
 ## Recent publications
 
@@ -19,6 +19,7 @@ I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca
 
 ## Working papers
 
+- [Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://www.arxiv.org/pdf/2509.15401) (with Jun Ma and Zhengfei Yu)
 - [Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf) (with Jun Ma and Pai Xu)
 - [Identifying Collusion in English Auctions](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2738789) (with Uma Kaplan and Artyom Shneyerov)
 - [Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction](https://economics.ubc.ca/wp-content/uploads/sites/38/2013/05/pdf_paper_vadim_marmer-instrumental-variables-estimation-weak-indentification-robust.pdf) (with Shinichi Sakata)
