@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "About"
+title: " "
 excerpt: "About me"
 author_profile: true
 redirect_from: 
@@ -8,17 +8,17 @@ redirect_from:
   - /about.html
 ---
 
-I am a professor at the [Vancouver School of Economics](https://economics.ubc.ca) at the [University of British Columbia](https://www.ubc.ca).
 
 ## Recent publications
 
 - [Modeling Long Cycles](/publication/2024-long) (with Natasha Kang)<br> *Journal of Econometrics*, 2024 
 - [Inference on Individual Treatment Effects in Nonseparable Triangular Models](/publication/2023-inference) (with Jun Ma and Zhengfei Yu)<br> *Journal of Econometrics*, 2023
 - [Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions](/publication/2021-monotonicity) (with Jun Ma, Artyom Shneyerov, and Pai Xu)<br> *Econometric Reviews*, 2021
-- [Limit Theorems for Network Dependent Random Variables](/publication/2021-limit)<br> *Journal of Econometrics*, 2021
+- [Limit Theorems for Network Dependent Random Variables](/publication/2021-limit) (with Denis Kojevnikov and Kyungchul Song)<br> *Journal of Econometrics*, 2021
 
 ## Working papers
 
+- [Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://www.arxiv.org/pdf/2509.15401) (with Jun Ma and Zhengfei Yu)
 - [Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf) (with Jun Ma and Pai Xu)
 - [Identifying Collusion in English Auctions](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2738789) (with Uma Kaplan and Artyom Shneyerov)
 - [Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction](https://economics.ubc.ca/wp-content/uploads/sites/38/2013/05/pdf_paper_vadim_marmer-instrumental-variables-estimation-weak-indentification-robust.pdf) (with Shinichi Sakata)
