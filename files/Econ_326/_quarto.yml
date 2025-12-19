@@ -1,0 +1,41 @@
+project:
+  type: website
+  output-dir: _output
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    code-fold: false
+    code-tools: true
+    fig-width: 8
+    fig-height: 6
+
+  pdf:
+    documentclass: article
+    geometry:
+      - margin=1in
+    toc: true
+    number-sections: false
+    colorlinks: true
+    fig-width: 6
+    fig-height: 4
+
+  revealjs:
+    theme: simple
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    transition: slide
+    background-transition: fade
+    fig-width: 9
+    fig-height: 5
+    scrollable: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false
