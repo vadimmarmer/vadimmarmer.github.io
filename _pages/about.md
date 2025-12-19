@@ -18,6 +18,7 @@ redirect_from:
 
 ## Working papers
 
+- [Policy Learning with Compliance Guarantee](/files/Policy_Learning_With_Compliance_Guarantee.pdf) (with Thomas Chan and Kyungchul Song)
 - [Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://www.arxiv.org/pdf/2509.15401) (with Jun Ma and Zhengfei Yu)
 - [Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf) (with Jun Ma and Pai Xu)
 - [Identifying Collusion in English Auctions](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2738789) (with Uma Kaplan and Artyom Shneyerov)
