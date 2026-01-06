@@ -1206,6 +1206,7 @@ p_i = P(X = x_i) \text{ (Probability Mass Function (PMF)).}
 <li class="fragment"><p><strong>Cumulative Distribution Function (CDF)</strong>: <span class="math display">
 F(x) = P(X \leq x) = \sum_i p_i \mathbf{1}(x_i \leq x).
 </span></p></li>
+<li class="fragment"><p><span class="math inline">F(x)</span> is non-decreasing.</p></li>
 <li class="fragment"><p>For discrete random variables, the CDF is a step function.</p></li>
 </ul>
 </section>
@@ -1220,6 +1221,7 @@ f(x) = \frac{dF(x)}{dx} \text{ and } F(x) = \int_{-\infty}^{x} f(u) du;
 </span> <span class="math display">
 \int_{-\infty}^{\infty} f(x) dx = 1.
 </span></p></li>
+<li class="fragment"><p>Since <span class="math inline">F(x)</span> is non-decreasing, <span class="math inline">f(x) \geq 0</span> for all <span class="math inline">x</span>.</p></li>
 </ul>
 </section>
 <section id="joint-distribution-discrete" class="slide level2">

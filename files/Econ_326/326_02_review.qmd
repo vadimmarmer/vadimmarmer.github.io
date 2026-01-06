@@ -128,7 +128,7 @@ $$
 $$
 F(x) = P(X \leq x) = \sum_i p_i \mathbf{1}(x_i \leq x).
 $$
-
+- $F(x)$ is non-decreasing.
 - For discrete random variables, the CDF is a step function.
 
 ## Continuous random variable
@@ -146,6 +146,7 @@ $$
 $$
 \int_{-\infty}^{\infty} f(x) dx = 1.
 $$
+- Since $F(x)$ is non-decreasing, $f(x) \geq 0$ for all $x$.
 
 ## Joint distribution (discrete)
 
