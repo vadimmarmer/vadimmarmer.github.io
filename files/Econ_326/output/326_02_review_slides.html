@@ -442,7 +442,7 @@
   <meta name="generator" content="quarto-1.7.32">
 
   <meta name="author" content="Vadim Marmer, UBC">
-  <title>Lecture 1: Introduction</title>
+  <title>Lecture 2: Review of Probability</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -1040,7 +1040,7 @@ margin-right: 0; }
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Lecture 1: Introduction</h1>
+  <h1 class="title">Lecture 2: Review of Probability</h1>
   <p class="subtitle">Economics 326 — Methods of Empirical Research in Economics</p>
 
 <div class="quarto-title-authors">
@@ -1052,324 +1052,486 @@ Vadim Marmer, UBC
 </div>
 
 </section>
-<section id="what-is-econometrics" class="slide level2">
-<h2>What is econometrics?</h2>
-<p>Econometrics develops <strong>statistical methods</strong> for:</p>
+<section id="randomness" class="slide level2">
+<h2>Randomness</h2>
 <ul>
-<li class="fragment"><strong>Estimating</strong> economic relationships</li>
-<li class="fragment"><strong>Causal</strong> or <strong>counterfactual</strong> analysis: what happens to an outcome when we force a change in a factor.</li>
-<li class="fragment"><strong>Testing</strong> economic theories</li>
-<li class="fragment"><strong>Forecasting</strong> important economic variables</li>
-<li class="fragment"><strong>Evaluating</strong> government and business policy</li>
-</ul>
-</section>
-<section id="why-statistics" class="slide level2">
-<h2>Why statistics?</h2>
+<li class="fragment"><p><strong>Random experiment</strong>: an experiment the outcome of which cannot be predicted with certainty, even if the experiment is repeated under the same conditions.</p></li>
+<li class="fragment"><p><strong>Event</strong>: a collection of outcomes of a random experiment.</p></li>
+<li class="fragment"><p><strong>Probability</strong>: a function from events to <span class="math inline">[0,1]</span> interval.</p>
 <ul>
-<li class="fragment">Economic theory motivates models of relationships between variables of interest.</li>
-<li class="fragment">Economic <strong>models are approximations</strong>, not exact descriptions of reality.</li>
-<li class="fragment">Even good models omit important factors that affect outcomes.</li>
-<li class="fragment">We replace a <strong>deterministic</strong> model with a <strong>probabilistic</strong> model.</li>
-</ul>
-</section>
-<section id="examples" class="slide level2">
-<h2>Examples</h2>
-<ul>
-<li class="fragment"><p>Estimation of demand and supply functions<br>
-Elasticities help evaluate the effects of taxation.</p></li>
-<li class="fragment"><p>Mincer (1974), <em>Schooling, Experience, and Earnings</em><br>
-Uses individual data to estimate returns to schooling and experience.</p>
-<ul>
-<li class="fragment">Determine an “optimal” amount of schooling</li>
-<li class="fragment">Study education in developing countries</li>
-<li class="fragment">Study gender and race discrimination</li>
-<li class="fragment">Study the impact of immigration on labour markets</li>
+<li class="fragment">If <span class="math inline">\Omega</span> is a collection of all possible outcomes, <span class="math inline">P(\Omega) = 1</span>.</li>
+<li class="fragment">If <span class="math inline">A</span> is an event, <span class="math inline">P(A) \geq 0</span>.</li>
+<li class="fragment">If <span class="math inline">A_1, A_2, \ldots</span> is a sequence of <em>disjoint</em> events, <span class="math inline">P(A_1 \text{ or } A_2 \text{ or } \ldots) = P(A_1) + P(A_2) + \ldots</span>.</li>
 </ul></li>
-<li class="fragment"><p>Paarsch (1997), <em>Journal of Econometrics</em><br>
-Estimates optimal reserve prices for BC timber auctions.</p></li>
-<li class="fragment"><p>Chandra et al. (2008), <em>Pediatrics</em><br>
-Studies how exposure to sexual content on TV relates to teen pregnancy.</p></li>
 </ul>
 </section>
-<section id="types-of-data-cross-section" class="slide level2">
-<h2>Types of data: cross-section</h2>
-<div title="Definition">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Definition</strong></p>
-</div>
-<div class="callout-content">
-<p>A <strong>cross-sectional</strong> dataset contains observations on individuals (e.g., workers or firms) collected in a single time period.</p>
-</div>
-</div>
-</div>
-</div>
-<p>Example (wages and individual characteristics):</p>
+<section id="random-variable" class="slide level2">
+<h2>Random variable</h2>
+<ul>
+<li class="fragment"><p><strong>Random variable</strong>: a numerical representation of a random experiment.</p></li>
+<li class="fragment"><p><strong>Coin-flipping</strong> example:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: right;">obs</th>
-<th style="text-align: right;">wage</th>
-<th style="text-align: right;">education</th>
-<th style="text-align: right;">experience</th>
-<th style="text-align: right;">female</th>
-<th style="text-align: right;">married</th>
+<th>Outcome</th>
+<th><span class="math inline">X</span></th>
+<th><span class="math inline">Y</span></th>
+<th><span class="math inline">Z</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3.10</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
+<td>Heads</td>
+<td>0</td>
+<td>1</td>
+<td>-1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3.24</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3.00</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
+<td>Tails</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
 </tr>
 </tbody>
-</table>
-<ul>
-<li class="fragment">The order of observations is not important.</li>
-<li class="fragment">It is often reasonable to assume observations are <strong>statistically independent</strong>.</li>
-</ul>
-</section>
-<section id="types-of-data-time-series" class="slide level2">
-<h2>Types of data: time series</h2>
-<div title="Definition">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Definition</strong></p>
-</div>
-<div class="callout-content">
-<p>A <strong>time series</strong> dataset contains observations on one or more variables over time.</p>
-</div>
-</div>
-</div>
-</div>
-<p>Example (Puerto Rico minimum wage, unemployment, and GNP):</p>
+</table></li>
+<li class="fragment"><p><strong>Rolling a dice</strong></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: right;">obs</th>
-<th style="text-align: right;">year</th>
-<th style="text-align: right;">minimum wage</th>
-<th style="text-align: right;">unemployment</th>
-<th style="text-align: right;">gnp</th>
+<th>Outcome</th>
+<th><span class="math inline">X</span></th>
+<th><span class="math inline">Y</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1950</td>
-<td style="text-align: right;">0.20</td>
-<td style="text-align: right;">15.4</td>
-<td style="text-align: right;">878.7</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1951</td>
-<td style="text-align: right;">0.21</td>
-<td style="text-align: right;">16.0</td>
-<td style="text-align: right;">925.0</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1952</td>
-<td style="text-align: right;">0.23</td>
-<td style="text-align: right;">14.8</td>
-<td style="text-align: right;">1015.9</td>
+<td>3</td>
+<td>3</td>
+<td>0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>6</td>
+<td>1</td>
 </tr>
 </tbody>
-</table>
-<ul>
-<li class="fragment">Data frequency can be daily/weekly/monthly/quarterly/annual; in finance, trade data can be very high frequency.</li>
-<li class="fragment">The order of observations is important.</li>
-<li class="fragment">Observations are often correlated (e.g., trends).</li>
+</table></li>
 </ul>
 </section>
-<section id="types-of-data-panel" class="slide level2">
-<h2>Types of data: panel</h2>
-<div title="Definition">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Definition</strong></p>
-</div>
-<div class="callout-content">
-<p>A <strong>panel</strong> dataset combines cross-section and time series: a time series for each cross-sectional unit.</p>
-</div>
-</div>
-</div>
-</div>
-<p>Example (two-year panel on city crime):</p>
+<section id="summation-operator" class="slide level2">
+<h2>Summation operator</h2>
+<ul>
+<li class="fragment"><p>Let <span class="math inline">\{x_i: i = 1, \ldots, n\}</span> be a sequence of numbers. <span class="math display">
+\sum_{i=1}^{n} x_i = x_1 + x_2 + \ldots + x_n.
+</span></p></li>
+<li class="fragment"><p>For a constant <span class="math inline">c</span>: <span class="math display">
+\sum_{i=1}^{n} c = nc.
+</span> <span class="math display">
+\sum_{i=1}^{n} cx_i = c(x_1 + x_2 + \ldots + x_n) = c\sum_{i=1}^{n} x_i.
+</span></p></li>
+</ul>
+</section>
+<section id="summation-operator-continued" class="slide level2">
+<h2>Summation operator (continued)</h2>
+<ul>
+<li class="fragment"><p>Let <span class="math inline">\{y_i: i = 1, \ldots, n\}</span> be another sequence of numbers, and <span class="math inline">a, b</span> be two constants: <span class="math display">
+\sum_{i=1}^{n}(ax_i + by_i) = a\sum_{i=1}^{n} x_i + b\sum_{i=1}^{n} y_i.
+</span></p></li>
+<li class="fragment"><p>But: <span class="math display">
+\sum_{i=1}^{n} x_i y_i \neq \sum_{i=1}^{n} x_i \sum_{i=1}^{n} y_i.
+</span> <span class="math display">
+\sum_{i=1}^{n} \frac{x_i}{y_i} \neq \frac{\sum_{i=1}^{n} x_i}{\sum_{i=1}^{n} y_i}.
+</span> <span class="math display">
+\sum_{i=1}^{n} x_i^2 \neq \left(\sum_{i=1}^{n} x_i\right)^2.
+</span></p></li>
+</ul>
+</section>
+<section id="discrete-random-variables" class="slide level2">
+<h2>Discrete random variables</h2>
+<p>We often distinguish between <strong>discrete</strong> and <strong>continuous</strong> random variables.</p>
+<ul>
+<li class="fragment"><p>A <strong>discrete</strong> random variable takes on only a <strong>finite or countably infinite</strong> number of values.</p></li>
+<li class="fragment"><p>The <strong>distribution</strong> of a discrete random variable is a list of all possible values and the probability that each value would occur:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: right;">obs</th>
-<th style="text-align: right;">city</th>
-<th style="text-align: right;">year</th>
-<th style="text-align: right;">murders</th>
-<th style="text-align: right;">population</th>
-<th style="text-align: right;">unempl</th>
-<th style="text-align: right;">police</th>
+<th><strong>Value</strong></th>
+<th><span class="math inline">x_1</span></th>
+<th><span class="math inline">x_2</span></th>
+<th><span class="math inline">\ldots</span></th>
+<th><span class="math inline">x_n</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1986</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">350000</td>
-<td style="text-align: right;">8.7</td>
-<td style="text-align: right;">440</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1990</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">359200</td>
-<td style="text-align: right;">7.2</td>
-<td style="text-align: right;">471</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1986</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">64300</td>
-<td style="text-align: right;">5.4</td>
-<td style="text-align: right;">75</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1990</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">65100</td>
-<td style="text-align: right;">5.5</td>
-<td style="text-align: right;">75</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
+<td><strong>Probability</strong></td>
+<td><span class="math inline">p_1</span></td>
+<td><span class="math inline">p_2</span></td>
+<td><span class="math inline">\ldots</span></td>
+<td><span class="math inline">p_n</span></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="causality" class="slide level2">
-<h2>Causality</h2>
-<ul>
-<li class="fragment">We care about <strong>causal</strong> relationships, but data often only reveal <strong>correlations</strong> (associations).</li>
-<li class="fragment">To claim a causal effect, <strong>other factors</strong> affecting the outcome must be held fixed (controlled for).</li>
-<li class="fragment">Controlled experiments help with causality in the natural sciences.</li>
-<li class="fragment">Experiments are often impossible in economics (cost and ethics).</li>
-<li class="fragment">We typically work with <strong>observational data</strong>.</li>
+<p>Here <span class="math inline">p_i</span> denotes the probability of a random variable <span class="math inline">X</span> taking on value <span class="math inline">x_i</span>: <span class="math display">
+p_i = P(X = x_i) \text{ (Probability Mass Function (PMF)).}
+</span> Each <span class="math inline">p_i</span> is between 0 and 1, and <span class="math inline">\sum_{i=1}^{n} p_i = 1</span>.</p></li>
 </ul>
 </section>
-<section id="examples-causality" class="slide level2">
-<h2>Examples (causality)</h2>
-<p><strong>Education</strong></p>
+<section id="discrete-random-variables-continued" class="slide level2">
+<h2>Discrete random variables (continued)</h2>
+<ul>
+<li class="fragment"><p>Indicator function: <span class="math display">
+\mathbf{1}(x_i \leq x) = \begin{cases} 1 &amp; \text{if } x_i \leq x \\ 0 &amp; \text{if } x_i &gt; x \end{cases}
+</span></p></li>
+<li class="fragment"><p><strong>Cumulative Distribution Function (CDF)</strong>: <span class="math display">
+F(x) = P(X \leq x) = \sum_i p_i \mathbf{1}(x_i \leq x).
+</span></p></li>
+<li class="fragment"><p>For discrete random variables, the CDF is a step function.</p></li>
+</ul>
+</section>
+<section id="continuous-random-variable" class="slide level2">
+<h2>Continuous random variable</h2>
+<ul>
+<li class="fragment"><p>A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).</p></li>
+<li class="fragment"><p>A continuous random variable takes on any real value with <strong>zero</strong> probability.</p></li>
+<li class="fragment"><p>For continuous random variables, the CDF is continuous and differentiable.</p></li>
+<li class="fragment"><p>The derivative of the CDF is called the <strong>Probability Density Function (PDF)</strong>: <span class="math display">
+f(x) = \frac{dF(x)}{dx} \text{ and } F(x) = \int_{-\infty}^{x} f(u) du;
+</span> <span class="math display">
+\int_{-\infty}^{\infty} f(x) dx = 1.
+</span></p></li>
+</ul>
+</section>
+<section id="joint-distribution-discrete" class="slide level2">
+<h2>Joint distribution (discrete)</h2>
+<ul>
+<li class="fragment"><p>Two random variables <span class="math inline">X, Y</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">y_1</span></th>
+<th><span class="math inline">y_2</span></th>
+<th><span class="math inline">\cdots</span></th>
+<th><span class="math inline">y_m</span></th>
+<th>Marginal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">x_1</span></td>
+<td><span class="math inline">p_{11}</span></td>
+<td><span class="math inline">p_{12}</span></td>
+<td><span class="math inline">\cdots</span></td>
+<td><span class="math inline">p_{1m}</span></td>
+<td><span class="math inline">p_1^X=\sum_{j=1}^mp_{1j}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">x_2</span></td>
+<td><span class="math inline">p_{21}</span></td>
+<td><span class="math inline">p_{22}</span></td>
+<td><span class="math inline">\cdots</span></td>
+<td><span class="math inline">p_{2m}</span></td>
+<td><span class="math inline">p_2^X=\sum_{j=1}^mp_{2j}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">x_n</span></td>
+<td><span class="math inline">p_{n1}</span></td>
+<td><span class="math inline">p_{n2}</span></td>
+<td><span class="math inline">\cdots</span></td>
+<td><span class="math inline">p_{nm}</span></td>
+<td><span class="math inline">p_n^X=\sum_{j=1}^mp_{nj}</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Joint PMF</strong>: <span class="math inline">p_{ij} = P(X = x_i, Y = y_j)</span>.</p>
+<p><strong>Marginal PMF</strong>: <span class="math inline">p_i^X = P(X = x_i) = \sum_{j=1}^{m} p_{ij}</span>.</p></li>
+<li class="fragment"><p><strong>Conditional Distribution</strong>: If <span class="math inline">P(X = x_1) \neq 0</span>, <span class="math display">
+p_j^{Y|X=x_1} = P(Y = y_j | X = x_1) = \frac{P(Y = y_j, X = x_1)}{P(X = x_1)} = \frac{p_{1,j}}{p_1^X}
+</span></p></li>
+</ul>
+</section>
+<section id="joint-distribution-continuous" class="slide level2">
+<h2>Joint distribution (continuous)</h2>
+<ul>
+<li class="fragment"><p>Joint PDF: <span class="math inline">f_{X,Y}(x, y)</span> and <span class="math inline">\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{X,Y}(x, y) dx dy = 1</span>.</p></li>
+<li class="fragment"><p>Marginal PDF: <span class="math inline">f_X(x) = \int_{-\infty}^{\infty} f_{X,Y}(x, y) dy</span>.</p></li>
+<li class="fragment"><p>Conditional PDF: <span class="math inline">f_{Y|X=x}(y|x) = f_{X,Y}(x, y) / f_X(x)</span>.</p></li>
+</ul>
+</section>
+<section id="independence" class="slide level2">
+<h2>Independence</h2>
+<ul>
+<li class="fragment"><p>Two (discrete) random variables are independent if <strong>for all</strong> <span class="math inline">x, y</span>: <span class="math display">
+P(X = x, Y = y) = P(X = x) P(Y = y).
+</span></p></li>
+<li class="fragment"><p>If independent: <span class="math display">
+P(Y = y | X = x) = \frac{P(X = x, Y = y)}{P(X = x)} = P(Y = y).
+</span></p></li>
+<li class="fragment"><p>Two continuous random variables are independent if <strong>for all</strong> <span class="math inline">x, y</span>: <span class="math display">
+f_{X,Y}(x, y) = f_X(x) f_Y(y).
+</span></p></li>
+<li class="fragment"><p>If independent, <span class="math inline">f_{Y|X}(y|x) = f_Y(y)</span> for all <span class="math inline">x</span>.</p></li>
+</ul>
+</section>
+<section id="expected-value" class="slide level2">
+<h2>Expected value</h2>
+<ul>
+<li class="fragment"><p>Let <span class="math inline">g</span> be some function: <span class="math display">
+Eg(X) = \sum_i g(x_i) p_i \text{ (discrete).}
+</span> <span class="math display">
+Eg(X) = \int g(x) f(x) dx \text{ (continuous).}
+</span> Expectation is a transformation of a distribution (PMF or PDF) and is a <strong>constant</strong>!</p></li>
+<li class="fragment"><p><strong>Mean</strong> (center of a distribution): <span class="math display">
+EX = \sum_i x_i p_i \text{ or } EX = \int x f(x) dx.
+</span></p></li>
+<li class="fragment"><p><strong>Variance</strong> (spread of a distribution): <span class="math inline">Var(X) = E(X - EX)^2</span> <span class="math display">
+Var(X) = \sum_i (x_i - EX)^2 p_i \text{ or } Var(X) = \int (x - EX)^2 f(x) dx.
+</span></p></li>
+<li class="fragment"><p><strong>Standard deviation</strong>: <span class="math inline">\sqrt{Var(X)}</span>.</p></li>
+</ul>
+</section>
+<section id="properties" class="slide level2">
+<h2>Properties</h2>
+<ul>
+<li class="fragment"><p>If <span class="math inline">c</span> is a constant, <span class="math inline">Ec = c</span>, and <span class="math display">
+Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.
+</span></p></li>
+<li class="fragment"><p>Linearity: <span class="math display">
+E(a + bX) = \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i = a + bEX.
+</span></p></li>
+<li class="fragment"><p>Re-centering: a random variable <span class="math inline">X - EX</span> has mean zero: <span class="math display">
+E(X - EX) = EX - E(EX) = EX - EX = 0.
+</span></p></li>
+</ul>
+</section>
+<section id="properties-continued" class="slide level2">
+<h2>Properties (continued)</h2>
+<ul>
+<li class="fragment"><p>Variance formula: <span class="math inline">Var(X) = EX^2 - (EX)^2</span> <span class="math display">
+Var(X) = E(X - EX)^2 = E[(X - EX)(X - EX)]
+</span> <span class="math display">
+= E[(X - EX)X - (X - EX) \cdot EX]
+</span> <span class="math display">
+= E[(X - EX)X] - E[(X - EX) \cdot EX]
+</span> <span class="math display">
+= E[X^2 - X \cdot EX] - EX \cdot E(X - EX)
+</span> <span class="math display">
+= EX^2 - EX \cdot EX - EX \cdot 0 = EX^2 - (EX)^2
+</span></p></li>
+<li class="fragment"><p>If <span class="math inline">EX = 0</span> then <span class="math inline">Var(X) = EX^2</span>.</p></li>
+</ul>
+</section>
+<section id="properties-continued-1" class="slide level2">
+<h2>Properties (continued)</h2>
+<ul>
+<li class="fragment"><p><span class="math inline">Var(a + bX) = b^2 Var(X)</span> <span class="math display">
+Var(a + bX) = E[(a + bX) - E(a + bX)]^2 = E[a + bX - a - bEX]^2
+</span> <span class="math display">
+= E[bX - bEX]^2 = E[b^2(X - EX)^2] = b^2 E(X - EX)^2 = b^2 Var(X).
+</span></p></li>
+<li class="fragment"><p>Re-scaling: Let <span class="math inline">Var(X) = \sigma^2</span>, so the standard deviation is <span class="math inline">\sigma</span>: <span class="math display">
+Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.
+</span></p></li>
+</ul>
+</section>
+<section id="covariance" class="slide level2">
+<h2>Covariance</h2>
+<ul>
+<li class="fragment"><p><strong>Covariance</strong>: Let <span class="math inline">X, Y</span> be two random variables. <span class="math display">
+Cov(X, Y) = E[(X - EX)(Y - EY)].
+</span> <span class="math display">
+Cov(X, Y) = \sum_i \sum_j (x_i - EX)(y_j - EY) \cdot P(X = x_i, Y = y_j).
+</span> <span class="math display">
+Cov(X, Y) = \int \int (x - EX)(y - EY) f_{X,Y}(x, y) dx dy.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">Cov(X, Y) = E(XY) - E(X) E(Y)</span>. <span class="math display">
+Cov(X, Y) = E[(X - EX)(Y - EY)] = E(XY) - EX \cdot EY.
+</span></p></li>
+</ul>
+</section>
+<section id="properties-of-covariance" class="slide level2">
+<h2>Properties of covariance</h2>
+<ul>
+<li class="fragment"><p><span class="math inline">Cov(X, c) = 0</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Cov(X, X) = Var(X)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Cov(X, Y) = Cov(Y, X)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Cov(X, Y + Z) = Cov(X, Y) + Cov(X, Z)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Cov(a_1 + b_1 X, a_2 + b_2 Y) = b_1 b_2 Cov(X, Y)</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent then <span class="math inline">Cov(X, Y) = 0</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Var(X \pm Y) = Var(X) + Var(Y) \pm 2Cov(X, Y)</span>.</p></li>
+</ul>
+</section>
+<section id="correlation" class="slide level2">
+<h2>Correlation</h2>
+<ul>
+<li class="fragment"><p>Correlation coefficient: <span class="math display">
+Corr(X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X) Var(Y)}}.
+</span></p></li>
+<li class="fragment"><p>Cauchy-Schwartz inequality: <span class="math inline">|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}</span> and therefore <span class="math display">
+-1 \leq Corr(X, Y) \leq 1.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">Corr(X, Y) = \pm 1</span> <span class="math inline">\Leftrightarrow</span> <span class="math inline">Y = a + bX</span>.</p></li>
+</ul>
+</section>
+<section id="conditional-expectation" class="slide level2">
+<h2>Conditional expectation</h2>
+<ul>
+<li class="fragment"><p>Suppose you know that <span class="math inline">X = x</span>. You can update your expectation of <span class="math inline">Y</span> by <strong>conditional expectation</strong>: <span class="math display">
+E(Y | X = x) = \sum_i y_i P(Y = y_i | X = x) \text{ (discrete)}
+</span> <span class="math display">
+E(Y | X = x) = \int y f_{Y|X}(y|x) dy \text{ (continuous).}
+</span></p></li>
+<li class="fragment"><p><span class="math inline">E(Y | X = x)</span> is a constant.</p></li>
+<li class="fragment"><p><span class="math inline">E(Y | X)</span> is a function of <span class="math inline">X</span> and is a <strong>random variable</strong> and a function of <span class="math inline">X</span> (Uncertainty about <span class="math inline">X</span> has not been realized yet): <span class="math display">
+E(Y | X) = \sum_i y_i P(Y = y_i | X) = g(X)
+</span> <span class="math display">
+E(Y | X) = \int y f_{Y|X}(y|X) dy = g(X),
+</span> for some function <span class="math inline">g</span> that depends on PMF (PDF).</p></li>
+</ul>
+</section>
+<section id="properties-of-conditional-expectation" class="slide level2">
+<h2>Properties of conditional expectation</h2>
+<ul>
+<li class="fragment"><p>Conditional expectations satisfies all properties of unconditional expectation.</p></li>
+<li class="fragment"><p>Once you condition on <span class="math inline">X</span>, you can treat any function of <span class="math inline">X</span> as a constant: <span class="math display">
+E(h_1(X) + h_2(X) Y | X) = h_1(X) + h_2(X) E(Y | X),
+</span> for any functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span>.</p></li>
+<li class="fragment"><p><strong>Law of Iterated Expectation (LIE)</strong>: <span class="math display">
+E[E(Y | X)] = E(Y),
+</span> <span class="math display">
+E(E(Y | X, Z) | X) = E(Y | X).
+</span></p></li>
+<li class="fragment"><p>Conditional variance: <span class="math display">
+Var(Y | X) = E[(Y - E(Y | X))^2 | X].
+</span></p></li>
+<li class="fragment"><p><strong>Mean independence</strong>: <span class="math display">
+E(Y | X) = E(Y) = \text{constant.}
+</span></p></li>
+</ul>
+</section>
+<section id="relationship-between-different-concepts-of-independence" class="slide level2">
+<h2>Relationship between different concepts of independence</h2>
 <p><span class="math display">
-\log(\text{Wage}) = \alpha + \beta \times \text{Years of Schooling} + U
+\begin{array}{c}
+X \text{ and } Y \text{ are independent} \\
+\Downarrow \\
+E(Y | X) = \text{constant (mean independence)} \\
+\Downarrow \\
+Cov(X, Y) = 0 \text{ (uncorrelatedness)}
+\end{array}
 </span></p>
-<p><span class="math inline">U</span> includes other factors (e.g., <strong>ability</strong>). If ability is hard to control for, simple correlations can <strong>overestimate</strong> returns to education.</p>
-<p><strong>Police and crime</strong></p>
-<p><span class="math display">
-\text{Number of Crimes} = \alpha + \beta \times \text{Size of the Police Force} + U
-</span></p>
-<p>Cities with more crime often hire more police, so simple correlations can <strong>spuriously</strong> suggest police increase crime.</p>
 </section>
-<section>
-<section id="forecasting-vs-estimation" class="title-slide slide level1 center">
-<h1>Forecasting vs estimation</h1>
+<section id="normal-distribution" class="slide level2">
+<h2>Normal distribution</h2>
+<ul>
+<li class="fragment"><p>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv <span class="math inline">X</span> is <span class="math display">
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}
+</span> <span class="math display">
+\mu = EX \text{ and } \sigma^2 = Var(X).
+</span> We usually write <span class="math inline">X \sim N(\mu, \sigma^2)</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">a + bX \sim N(a + b\mu, b^2\sigma^2)</span>.</p></li>
+</ul>
+</section>
+<section id="standard-normal-distribution" class="slide level2">
+<h2>Standard Normal distribution</h2>
+<ul>
+<li class="fragment"><p>Standard Normal rv has <span class="math inline">\mu = 0</span> and <span class="math inline">\sigma^2 = 1</span>. Its PDF is <span class="math inline">\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)</span>.</p></li>
+<li class="fragment"><p>Symmetric around zero (mean): if <span class="math inline">Z \sim N(0, 1)</span>, <span class="math inline">P(Z &gt; z) = P(Z &lt; -z)</span>.</p></li>
+<li class="fragment"><p>Thin tails: <span class="math inline">P(-1.96 \leq Z \leq 1.96) = 0.95</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">(X - \mu)/\sigma \sim N(0, 1)</span>.</p></li>
+</ul>
+</section>
+<section id="bivariate-normal-distribution" class="slide level2">
+<h2>Bivariate Normal distribution</h2>
+<ul>
+<li class="fragment"><p><span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">
+f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho)^2}\right],
+</span> where <span class="math inline">Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}</span>,</p>
+<p><span class="math inline">\mu_X = E(X), \mu_Y = E(Y), \sigma_X^2 = Var(X), \sigma_Y^2 = Var(Y)</span>, and <span class="math inline">\rho = Corr(X, Y)</span>.</p></li>
+</ul>
+</section>
+<section id="properties-of-bivariate-normal-distribution" class="slide level2">
+<h2>Properties of Bivariate Normal distribution</h2>
+<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution:</p>
+<ul>
+<li class="fragment"><p><span class="math inline">a + bX + cY \sim N(\mu^*, (\sigma^*)^2)</span>, where <span class="math display">
+\mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">Cov(X, Y) = 0 \Longrightarrow X</span> and <span class="math inline">Y</span> are independent.</p></li>
+<li class="fragment"><p><span class="math inline">E(Y | X) = \mu_Y + \frac{Cov(X, Y)}{\sigma_X^2}(X - \mu_X)</span>.</p></li>
+<li class="fragment"><p>Can be generalized to more than 2 variables (multivariate normal).</p></li>
+</ul>
+</section>
+<section id="appendix-the-cauchy-schwartz-inequality" class="slide level2">
+<h2>Appendix: The Cauchy-Schwartz Inequality</h2>
+<ul>
+<li class="fragment"><p>Claim: <span class="math inline">|E(XY)| \leq \sqrt{EX^2 EY^2}</span>.</p></li>
+<li class="fragment"><p><strong>Proof</strong>: Consider the following two random variables: <span class="math inline">\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}</span> and <span class="math inline">\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}</span>. <span class="math display">
+E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
+</span> or <span class="math inline">-\sqrt{EX^2 EY^2} \leq E(XY)</span>.</p></li>
+</ul>
+</section>
+<section id="appendix-the-cauchy-schwartz-inequality-continued" class="slide level2">
+<h2>Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
+<p>Similarly, <span class="math display">
+E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
+</span> or <span class="math display">
+E(XY) \leq \sqrt{EX^2 EY^2}.
+</span></p>
+</section>
+<section id="appendix-the-cauchy-schwartz-inequality-continued-1" class="slide level2">
+<h2>Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
+<p>Together: <span class="math display">
+-\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},
+</span> or <span class="math display">
+|E(XY)| \leq \sqrt{EX^2 EY^2}.
+</span></p>
+<p>Let <span class="math inline">U = X - EX</span> and <span class="math inline">V = Y - EY</span>. Then, <span class="math display">
+|E(UV)| \leq \sqrt{EU^2 EV^2},
+</span> or <span class="math display">
+|E\{(X - EX)(Y - EY)\}| \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},
+</span> or <span class="math display">
+|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.
+</span></p>
 
 </section>
-<section id="forecasting" class="slide level2">
-<h2>Forecasting</h2>
-<ul>
-<li class="fragment"><strong>Forecasting</strong>: predicting <strong>out-of-sample</strong> values of a variable: E.g.,
-<ul>
-<li class="fragment">Predict next quarter’s GDP</li>
-<li class="fragment">Assess the probability of default on a loan given borrower characteristics (income, education, past history of defaults, etc.)</li>
-<li class="fragment">Predictive text: given previous words, predict the next word.</li>
-<li class="fragment">ChatGPT: given a prompt, generate the desired response.</li>
-<li class="fragment">Predict the number of crimes in a city next year given current police force size.</li>
-<li class="fragment">Forecasting equation: <span class="math display">
-\widehat{\text{Number of Crimes}}= f(\text{Size of the Police Force})
-</span> where <span class="math inline">\widehat{\text{Number of Crimes}}</span> is the forecasted number of crimes in a city with <span class="math inline">\text{Size of the Police Force}</span>.</li>
-<li class="fragment">Use data to estimate or “learn” the best forecasting function <span class="math inline">f(\cdot)</span>.</li>
-<li class="fragment">Focus on <strong>prediction accuracy</strong>: minimizing some measure of forecast errors.</li>
-</ul></li>
-</ul>
-</section>
-<section id="estimation" class="slide level2">
-<h2>Estimation</h2>
-<ul>
-<li class="fragment"><strong>Estimation</strong>: estimating <strong>structural parameters</strong> of an economic model: E.g.,
-<ul>
-<li class="fragment">Effect of education on wages</li>
-<li class="fragment">Effect of police force size on crime</li>
-<li class="fragment">Policy evaluation: effect of a job training program on participants’ earnings.</li>
-<li class="fragment">Structural equation: <span class="math display">
-\text{Number of Crimes} = \alpha + \beta \times \text{Size of the Police Force} + U
-</span> where <span class="math inline">\beta</span> is the structural parameter measuring the effect of police force size on crime, and <span class="math inline">U</span> includes other factors affecting crime.</li>
-<li class="fragment">Focus on <strong>causal or counterfactual interpretation</strong>: what happens to the outcome when we change a variable.</li>
-<li class="fragment">Best forecasting model may produce misleading counterfactual effects.</li>
-<li class="fragment">Good structural model may have poor forecasting performance.</li>
-<li class="fragment">Choose the right tool for the job!</li>
-<li class="fragment">Causal/counterfactual analysis always requires some <strong>assumptions</strong> about the data generating process.</li>
-</ul></li>
-</ul>
-
-</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

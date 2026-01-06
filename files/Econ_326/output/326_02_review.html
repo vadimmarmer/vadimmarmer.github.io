@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vadim Marmer, UBC">
+
+<title>Lecture 2: Review of Probability</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="326_02_review_files/libs/clipboard/clipboard.min.js"></script>
+<script src="326_02_review_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="326_02_review_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="326_02_review_files/libs/quarto-html/popper.min.js"></script>
+<script src="326_02_review_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="326_02_review_files/libs/quarto-html/anchor.min.js"></script>
+<link href="326_02_review_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="326_02_review_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="326_02_review_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="326_02_review_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="326_02_review_files/libs/bootstrap/bootstrap-8a894fcc3cb5e37eb5bf30def131be2f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#randomness" id="toc-randomness" class="nav-link active" data-scroll-target="#randomness">Randomness</a></li>
+  <li><a href="#random-variable" id="toc-random-variable" class="nav-link" data-scroll-target="#random-variable">Random variable</a></li>
+  <li><a href="#summation-operator" id="toc-summation-operator" class="nav-link" data-scroll-target="#summation-operator">Summation operator</a></li>
+  <li><a href="#summation-operator-continued" id="toc-summation-operator-continued" class="nav-link" data-scroll-target="#summation-operator-continued">Summation operator (continued)</a></li>
+  <li><a href="#discrete-random-variables" id="toc-discrete-random-variables" class="nav-link" data-scroll-target="#discrete-random-variables">Discrete random variables</a></li>
+  <li><a href="#discrete-random-variables-continued" id="toc-discrete-random-variables-continued" class="nav-link" data-scroll-target="#discrete-random-variables-continued">Discrete random variables (continued)</a></li>
+  <li><a href="#continuous-random-variable" id="toc-continuous-random-variable" class="nav-link" data-scroll-target="#continuous-random-variable">Continuous random variable</a></li>
+  <li><a href="#joint-distribution-discrete" id="toc-joint-distribution-discrete" class="nav-link" data-scroll-target="#joint-distribution-discrete">Joint distribution (discrete)</a></li>
+  <li><a href="#joint-distribution-continuous" id="toc-joint-distribution-continuous" class="nav-link" data-scroll-target="#joint-distribution-continuous">Joint distribution (continuous)</a></li>
+  <li><a href="#independence" id="toc-independence" class="nav-link" data-scroll-target="#independence">Independence</a></li>
+  <li><a href="#expected-value" id="toc-expected-value" class="nav-link" data-scroll-target="#expected-value">Expected value</a></li>
+  <li><a href="#properties" id="toc-properties" class="nav-link" data-scroll-target="#properties">Properties</a></li>
+  <li><a href="#properties-continued" id="toc-properties-continued" class="nav-link" data-scroll-target="#properties-continued">Properties (continued)</a></li>
+  <li><a href="#properties-continued-1" id="toc-properties-continued-1" class="nav-link" data-scroll-target="#properties-continued-1">Properties (continued)</a></li>
+  <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance">Covariance</a></li>
+  <li><a href="#properties-of-covariance" id="toc-properties-of-covariance" class="nav-link" data-scroll-target="#properties-of-covariance">Properties of covariance</a></li>
+  <li><a href="#correlation" id="toc-correlation" class="nav-link" data-scroll-target="#correlation">Correlation</a></li>
+  <li><a href="#conditional-expectation" id="toc-conditional-expectation" class="nav-link" data-scroll-target="#conditional-expectation">Conditional expectation</a></li>
+  <li><a href="#properties-of-conditional-expectation" id="toc-properties-of-conditional-expectation" class="nav-link" data-scroll-target="#properties-of-conditional-expectation">Properties of conditional expectation</a></li>
+  <li><a href="#relationship-between-different-concepts-of-independence" id="toc-relationship-between-different-concepts-of-independence" class="nav-link" data-scroll-target="#relationship-between-different-concepts-of-independence">Relationship between different concepts of independence</a></li>
+  <li><a href="#normal-distribution" id="toc-normal-distribution" class="nav-link" data-scroll-target="#normal-distribution">Normal distribution</a></li>
+  <li><a href="#standard-normal-distribution" id="toc-standard-normal-distribution" class="nav-link" data-scroll-target="#standard-normal-distribution">Standard Normal distribution</a></li>
+  <li><a href="#bivariate-normal-distribution" id="toc-bivariate-normal-distribution" class="nav-link" data-scroll-target="#bivariate-normal-distribution">Bivariate Normal distribution</a></li>
+  <li><a href="#properties-of-bivariate-normal-distribution" id="toc-properties-of-bivariate-normal-distribution" class="nav-link" data-scroll-target="#properties-of-bivariate-normal-distribution">Properties of Bivariate Normal distribution</a></li>
+  <li><a href="#appendix-the-cauchy-schwartz-inequality" id="toc-appendix-the-cauchy-schwartz-inequality" class="nav-link" data-scroll-target="#appendix-the-cauchy-schwartz-inequality">Appendix: The Cauchy-Schwartz Inequality</a></li>
+  <li><a href="#appendix-the-cauchy-schwartz-inequality-continued" id="toc-appendix-the-cauchy-schwartz-inequality-continued" class="nav-link" data-scroll-target="#appendix-the-cauchy-schwartz-inequality-continued">Appendix: The Cauchy-Schwartz Inequality (continued)</a></li>
+  <li><a href="#appendix-the-cauchy-schwartz-inequality-continued-1" id="toc-appendix-the-cauchy-schwartz-inequality-continued-1" class="nav-link" data-scroll-target="#appendix-the-cauchy-schwartz-inequality-continued-1">Appendix: The Cauchy-Schwartz Inequality (continued)</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_02_review.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_02_review_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Lecture 2: Review of Probability</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Economics 326 — Methods of Empirical Research in Economics</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vadim Marmer, UBC </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="randomness" class="level2">
+<h2 class="anchored" data-anchor-id="randomness">Randomness</h2>
+<ul>
+<li><p><strong>Random experiment</strong>: an experiment the outcome of which cannot be predicted with certainty, even if the experiment is repeated under the same conditions.</p></li>
+<li><p><strong>Event</strong>: a collection of outcomes of a random experiment.</p></li>
+<li><p><strong>Probability</strong>: a function from events to <span class="math inline">[0,1]</span> interval.</p>
+<ul>
+<li>If <span class="math inline">\Omega</span> is a collection of all possible outcomes, <span class="math inline">P(\Omega) = 1</span>.</li>
+<li>If <span class="math inline">A</span> is an event, <span class="math inline">P(A) \geq 0</span>.</li>
+<li>If <span class="math inline">A_1, A_2, \ldots</span> is a sequence of <em>disjoint</em> events, <span class="math inline">P(A_1 \text{ or } A_2 \text{ or } \ldots) = P(A_1) + P(A_2) + \ldots</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="random-variable" class="level2">
+<h2 class="anchored" data-anchor-id="random-variable">Random variable</h2>
+<ul>
+<li><p><strong>Random variable</strong>: a numerical representation of a random experiment.</p></li>
+<li><p><strong>Coin-flipping</strong> example:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Outcome</th>
+<th><span class="math inline">X</span></th>
+<th><span class="math inline">Y</span></th>
+<th><span class="math inline">Z</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Heads</td>
+<td>0</td>
+<td>1</td>
+<td>-1</td>
+</tr>
+<tr class="even">
+<td>Tails</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></li>
+<li><p><strong>Rolling a dice</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Outcome</th>
+<th><span class="math inline">X</span></th>
+<th><span class="math inline">Y</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>6</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</section>
+<section id="summation-operator" class="level2">
+<h2 class="anchored" data-anchor-id="summation-operator">Summation operator</h2>
+<ul>
+<li><p>Let <span class="math inline">\{x_i: i = 1, \ldots, n\}</span> be a sequence of numbers. <span class="math display">
+\sum_{i=1}^{n} x_i = x_1 + x_2 + \ldots + x_n.
+</span></p></li>
+<li><p>For a constant <span class="math inline">c</span>: <span class="math display">
+\sum_{i=1}^{n} c = nc.
+</span> <span class="math display">
+\sum_{i=1}^{n} cx_i = c(x_1 + x_2 + \ldots + x_n) = c\sum_{i=1}^{n} x_i.
+</span></p></li>
+</ul>
+</section>
+<section id="summation-operator-continued" class="level2">
+<h2 class="anchored" data-anchor-id="summation-operator-continued">Summation operator (continued)</h2>
+<ul>
+<li><p>Let <span class="math inline">\{y_i: i = 1, \ldots, n\}</span> be another sequence of numbers, and <span class="math inline">a, b</span> be two constants: <span class="math display">
+\sum_{i=1}^{n}(ax_i + by_i) = a\sum_{i=1}^{n} x_i + b\sum_{i=1}^{n} y_i.
+</span></p></li>
+<li><p>But: <span class="math display">
+\sum_{i=1}^{n} x_i y_i \neq \sum_{i=1}^{n} x_i \sum_{i=1}^{n} y_i.
+</span> <span class="math display">
+\sum_{i=1}^{n} \frac{x_i}{y_i} \neq \frac{\sum_{i=1}^{n} x_i}{\sum_{i=1}^{n} y_i}.
+</span> <span class="math display">
+\sum_{i=1}^{n} x_i^2 \neq \left(\sum_{i=1}^{n} x_i\right)^2.
+</span></p></li>
+</ul>
+</section>
+<section id="discrete-random-variables" class="level2">
+<h2 class="anchored" data-anchor-id="discrete-random-variables">Discrete random variables</h2>
+<p>We often distinguish between <strong>discrete</strong> and <strong>continuous</strong> random variables.</p>
+<ul>
+<li><p>A <strong>discrete</strong> random variable takes on only a <strong>finite or countably infinite</strong> number of values.</p></li>
+<li><p>The <strong>distribution</strong> of a discrete random variable is a list of all possible values and the probability that each value would occur:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Value</strong></th>
+<th><span class="math inline">x_1</span></th>
+<th><span class="math inline">x_2</span></th>
+<th><span class="math inline">\ldots</span></th>
+<th><span class="math inline">x_n</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Probability</strong></td>
+<td><span class="math inline">p_1</span></td>
+<td><span class="math inline">p_2</span></td>
+<td><span class="math inline">\ldots</span></td>
+<td><span class="math inline">p_n</span></td>
+</tr>
+</tbody>
+</table>
+<p>Here <span class="math inline">p_i</span> denotes the probability of a random variable <span class="math inline">X</span> taking on value <span class="math inline">x_i</span>: <span class="math display">
+p_i = P(X = x_i) \text{ (Probability Mass Function (PMF)).}
+</span> Each <span class="math inline">p_i</span> is between 0 and 1, and <span class="math inline">\sum_{i=1}^{n} p_i = 1</span>.</p></li>
+</ul>
+</section>
+<section id="discrete-random-variables-continued" class="level2">
+<h2 class="anchored" data-anchor-id="discrete-random-variables-continued">Discrete random variables (continued)</h2>
+<ul>
+<li><p>Indicator function: <span class="math display">
+\mathbf{1}(x_i \leq x) = \begin{cases} 1 &amp; \text{if } x_i \leq x \\ 0 &amp; \text{if } x_i &gt; x \end{cases}
+</span></p></li>
+<li><p><strong>Cumulative Distribution Function (CDF)</strong>: <span class="math display">
+F(x) = P(X \leq x) = \sum_i p_i \mathbf{1}(x_i \leq x).
+</span></p></li>
+<li><p>For discrete random variables, the CDF is a step function.</p></li>
+</ul>
+</section>
+<section id="continuous-random-variable" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-random-variable">Continuous random variable</h2>
+<ul>
+<li><p>A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).</p></li>
+<li><p>A continuous random variable takes on any real value with <strong>zero</strong> probability.</p></li>
+<li><p>For continuous random variables, the CDF is continuous and differentiable.</p></li>
+<li><p>The derivative of the CDF is called the <strong>Probability Density Function (PDF)</strong>: <span class="math display">
+f(x) = \frac{dF(x)}{dx} \text{ and } F(x) = \int_{-\infty}^{x} f(u) du;
+</span> <span class="math display">
+\int_{-\infty}^{\infty} f(x) dx = 1.
+</span></p></li>
+</ul>
+</section>
+<section id="joint-distribution-discrete" class="level2">
+<h2 class="anchored" data-anchor-id="joint-distribution-discrete">Joint distribution (discrete)</h2>
+<ul>
+<li><p>Two random variables <span class="math inline">X, Y</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">y_1</span></th>
+<th><span class="math inline">y_2</span></th>
+<th><span class="math inline">\cdots</span></th>
+<th><span class="math inline">y_m</span></th>
+<th>Marginal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">x_1</span></td>
+<td><span class="math inline">p_{11}</span></td>
+<td><span class="math inline">p_{12}</span></td>
+<td><span class="math inline">\cdots</span></td>
+<td><span class="math inline">p_{1m}</span></td>
+<td><span class="math inline">p_1^X=\sum_{j=1}^mp_{1j}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">x_2</span></td>
+<td><span class="math inline">p_{21}</span></td>
+<td><span class="math inline">p_{22}</span></td>
+<td><span class="math inline">\cdots</span></td>
+<td><span class="math inline">p_{2m}</span></td>
+<td><span class="math inline">p_2^X=\sum_{j=1}^mp_{2j}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+<td><span class="math inline">\vdots</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">x_n</span></td>
+<td><span class="math inline">p_{n1}</span></td>
+<td><span class="math inline">p_{n2}</span></td>
+<td><span class="math inline">\cdots</span></td>
+<td><span class="math inline">p_{nm}</span></td>
+<td><span class="math inline">p_n^X=\sum_{j=1}^mp_{nj}</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Joint PMF</strong>: <span class="math inline">p_{ij} = P(X = x_i, Y = y_j)</span>.</p>
+<p><strong>Marginal PMF</strong>: <span class="math inline">p_i^X = P(X = x_i) = \sum_{j=1}^{m} p_{ij}</span>.</p></li>
+<li><p><strong>Conditional Distribution</strong>: If <span class="math inline">P(X = x_1) \neq 0</span>, <span class="math display">
+p_j^{Y|X=x_1} = P(Y = y_j | X = x_1) = \frac{P(Y = y_j, X = x_1)}{P(X = x_1)} = \frac{p_{1,j}}{p_1^X}
+</span></p></li>
+</ul>
+</section>
+<section id="joint-distribution-continuous" class="level2">
+<h2 class="anchored" data-anchor-id="joint-distribution-continuous">Joint distribution (continuous)</h2>
+<ul>
+<li><p>Joint PDF: <span class="math inline">f_{X,Y}(x, y)</span> and <span class="math inline">\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{X,Y}(x, y) dx dy = 1</span>.</p></li>
+<li><p>Marginal PDF: <span class="math inline">f_X(x) = \int_{-\infty}^{\infty} f_{X,Y}(x, y) dy</span>.</p></li>
+<li><p>Conditional PDF: <span class="math inline">f_{Y|X=x}(y|x) = f_{X,Y}(x, y) / f_X(x)</span>.</p></li>
+</ul>
+</section>
+<section id="independence" class="level2">
+<h2 class="anchored" data-anchor-id="independence">Independence</h2>
+<ul>
+<li><p>Two (discrete) random variables are independent if <strong>for all</strong> <span class="math inline">x, y</span>: <span class="math display">
+P(X = x, Y = y) = P(X = x) P(Y = y).
+</span></p></li>
+<li><p>If independent: <span class="math display">
+P(Y = y | X = x) = \frac{P(X = x, Y = y)}{P(X = x)} = P(Y = y).
+</span></p></li>
+<li><p>Two continuous random variables are independent if <strong>for all</strong> <span class="math inline">x, y</span>: <span class="math display">
+f_{X,Y}(x, y) = f_X(x) f_Y(y).
+</span></p></li>
+<li><p>If independent, <span class="math inline">f_{Y|X}(y|x) = f_Y(y)</span> for all <span class="math inline">x</span>.</p></li>
+</ul>
+</section>
+<section id="expected-value" class="level2">
+<h2 class="anchored" data-anchor-id="expected-value">Expected value</h2>
+<ul>
+<li><p>Let <span class="math inline">g</span> be some function: <span class="math display">
+Eg(X) = \sum_i g(x_i) p_i \text{ (discrete).}
+</span> <span class="math display">
+Eg(X) = \int g(x) f(x) dx \text{ (continuous).}
+</span> Expectation is a transformation of a distribution (PMF or PDF) and is a <strong>constant</strong>!</p></li>
+<li><p><strong>Mean</strong> (center of a distribution): <span class="math display">
+EX = \sum_i x_i p_i \text{ or } EX = \int x f(x) dx.
+</span></p></li>
+<li><p><strong>Variance</strong> (spread of a distribution): <span class="math inline">Var(X) = E(X - EX)^2</span> <span class="math display">
+Var(X) = \sum_i (x_i - EX)^2 p_i \text{ or } Var(X) = \int (x - EX)^2 f(x) dx.
+</span></p></li>
+<li><p><strong>Standard deviation</strong>: <span class="math inline">\sqrt{Var(X)}</span>.</p></li>
+</ul>
+</section>
+<section id="properties" class="level2">
+<h2 class="anchored" data-anchor-id="properties">Properties</h2>
+<ul>
+<li><p>If <span class="math inline">c</span> is a constant, <span class="math inline">Ec = c</span>, and <span class="math display">
+Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.
+</span></p></li>
+<li><p>Linearity: <span class="math display">
+E(a + bX) = \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i = a + bEX.
+</span></p></li>
+<li><p>Re-centering: a random variable <span class="math inline">X - EX</span> has mean zero: <span class="math display">
+E(X - EX) = EX - E(EX) = EX - EX = 0.
+</span></p></li>
+</ul>
+</section>
+<section id="properties-continued" class="level2">
+<h2 class="anchored" data-anchor-id="properties-continued">Properties (continued)</h2>
+<ul>
+<li><p>Variance formula: <span class="math inline">Var(X) = EX^2 - (EX)^2</span> <span class="math display">
+Var(X) = E(X - EX)^2 = E[(X - EX)(X - EX)]
+</span> <span class="math display">
+= E[(X - EX)X - (X - EX) \cdot EX]
+</span> <span class="math display">
+= E[(X - EX)X] - E[(X - EX) \cdot EX]
+</span> <span class="math display">
+= E[X^2 - X \cdot EX] - EX \cdot E(X - EX)
+</span> <span class="math display">
+= EX^2 - EX \cdot EX - EX \cdot 0 = EX^2 - (EX)^2
+</span></p></li>
+<li><p>If <span class="math inline">EX = 0</span> then <span class="math inline">Var(X) = EX^2</span>.</p></li>
+</ul>
+</section>
+<section id="properties-continued-1" class="level2">
+<h2 class="anchored" data-anchor-id="properties-continued-1">Properties (continued)</h2>
+<ul>
+<li><p><span class="math inline">Var(a + bX) = b^2 Var(X)</span> <span class="math display">
+Var(a + bX) = E[(a + bX) - E(a + bX)]^2 = E[a + bX - a - bEX]^2
+</span> <span class="math display">
+= E[bX - bEX]^2 = E[b^2(X - EX)^2] = b^2 E(X - EX)^2 = b^2 Var(X).
+</span></p></li>
+<li><p>Re-scaling: Let <span class="math inline">Var(X) = \sigma^2</span>, so the standard deviation is <span class="math inline">\sigma</span>: <span class="math display">
+Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.
+</span></p></li>
+</ul>
+</section>
+<section id="covariance" class="level2">
+<h2 class="anchored" data-anchor-id="covariance">Covariance</h2>
+<ul>
+<li><p><strong>Covariance</strong>: Let <span class="math inline">X, Y</span> be two random variables. <span class="math display">
+Cov(X, Y) = E[(X - EX)(Y - EY)].
+</span> <span class="math display">
+Cov(X, Y) = \sum_i \sum_j (x_i - EX)(y_j - EY) \cdot P(X = x_i, Y = y_j).
+</span> <span class="math display">
+Cov(X, Y) = \int \int (x - EX)(y - EY) f_{X,Y}(x, y) dx dy.
+</span></p></li>
+<li><p><span class="math inline">Cov(X, Y) = E(XY) - E(X) E(Y)</span>. <span class="math display">
+Cov(X, Y) = E[(X - EX)(Y - EY)] = E(XY) - EX \cdot EY.
+</span></p></li>
+</ul>
+</section>
+<section id="properties-of-covariance" class="level2">
+<h2 class="anchored" data-anchor-id="properties-of-covariance">Properties of covariance</h2>
+<ul>
+<li><p><span class="math inline">Cov(X, c) = 0</span>.</p></li>
+<li><p><span class="math inline">Cov(X, X) = Var(X)</span>.</p></li>
+<li><p><span class="math inline">Cov(X, Y) = Cov(Y, X)</span>.</p></li>
+<li><p><span class="math inline">Cov(X, Y + Z) = Cov(X, Y) + Cov(X, Z)</span>.</p></li>
+<li><p><span class="math inline">Cov(a_1 + b_1 X, a_2 + b_2 Y) = b_1 b_2 Cov(X, Y)</span>.</p></li>
+<li><p>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent then <span class="math inline">Cov(X, Y) = 0</span>.</p></li>
+<li><p><span class="math inline">Var(X \pm Y) = Var(X) + Var(Y) \pm 2Cov(X, Y)</span>.</p></li>
+</ul>
+</section>
+<section id="correlation" class="level2">
+<h2 class="anchored" data-anchor-id="correlation">Correlation</h2>
+<ul>
+<li><p>Correlation coefficient: <span class="math display">
+Corr(X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X) Var(Y)}}.
+</span></p></li>
+<li><p>Cauchy-Schwartz inequality: <span class="math inline">|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}</span> and therefore <span class="math display">
+-1 \leq Corr(X, Y) \leq 1.
+</span></p></li>
+<li><p><span class="math inline">Corr(X, Y) = \pm 1</span> <span class="math inline">\Leftrightarrow</span> <span class="math inline">Y = a + bX</span>.</p></li>
+</ul>
+</section>
+<section id="conditional-expectation" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-expectation">Conditional expectation</h2>
+<ul>
+<li><p>Suppose you know that <span class="math inline">X = x</span>. You can update your expectation of <span class="math inline">Y</span> by <strong>conditional expectation</strong>: <span class="math display">
+E(Y | X = x) = \sum_i y_i P(Y = y_i | X = x) \text{ (discrete)}
+</span> <span class="math display">
+E(Y | X = x) = \int y f_{Y|X}(y|x) dy \text{ (continuous).}
+</span></p></li>
+<li><p><span class="math inline">E(Y | X = x)</span> is a constant.</p></li>
+<li><p><span class="math inline">E(Y | X)</span> is a function of <span class="math inline">X</span> and is a <strong>random variable</strong> and a function of <span class="math inline">X</span> (Uncertainty about <span class="math inline">X</span> has not been realized yet): <span class="math display">
+E(Y | X) = \sum_i y_i P(Y = y_i | X) = g(X)
+</span> <span class="math display">
+E(Y | X) = \int y f_{Y|X}(y|X) dy = g(X),
+</span> for some function <span class="math inline">g</span> that depends on PMF (PDF).</p></li>
+</ul>
+</section>
+<section id="properties-of-conditional-expectation" class="level2">
+<h2 class="anchored" data-anchor-id="properties-of-conditional-expectation">Properties of conditional expectation</h2>
+<ul>
+<li><p>Conditional expectations satisfies all properties of unconditional expectation.</p></li>
+<li><p>Once you condition on <span class="math inline">X</span>, you can treat any function of <span class="math inline">X</span> as a constant: <span class="math display">
+E(h_1(X) + h_2(X) Y | X) = h_1(X) + h_2(X) E(Y | X),
+</span> for any functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span>.</p></li>
+<li><p><strong>Law of Iterated Expectation (LIE)</strong>: <span class="math display">
+E[E(Y | X)] = E(Y),
+</span> <span class="math display">
+E(E(Y | X, Z) | X) = E(Y | X).
+</span></p></li>
+<li><p>Conditional variance: <span class="math display">
+Var(Y | X) = E[(Y - E(Y | X))^2 | X].
+</span></p></li>
+<li><p><strong>Mean independence</strong>: <span class="math display">
+E(Y | X) = E(Y) = \text{constant.}
+</span></p></li>
+</ul>
+</section>
+<section id="relationship-between-different-concepts-of-independence" class="level2">
+<h2 class="anchored" data-anchor-id="relationship-between-different-concepts-of-independence">Relationship between different concepts of independence</h2>
+<p><span class="math display">
+\begin{array}{c}
+X \text{ and } Y \text{ are independent} \\
+\Downarrow \\
+E(Y | X) = \text{constant (mean independence)} \\
+\Downarrow \\
+Cov(X, Y) = 0 \text{ (uncorrelatedness)}
+\end{array}
+</span></p>
+</section>
+<section id="normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="normal-distribution">Normal distribution</h2>
+<ul>
+<li><p>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv <span class="math inline">X</span> is <span class="math display">
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}
+</span> <span class="math display">
+\mu = EX \text{ and } \sigma^2 = Var(X).
+</span> We usually write <span class="math inline">X \sim N(\mu, \sigma^2)</span>.</p></li>
+<li><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">a + bX \sim N(a + b\mu, b^2\sigma^2)</span>.</p></li>
+</ul>
+</section>
+<section id="standard-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="standard-normal-distribution">Standard Normal distribution</h2>
+<ul>
+<li><p>Standard Normal rv has <span class="math inline">\mu = 0</span> and <span class="math inline">\sigma^2 = 1</span>. Its PDF is <span class="math inline">\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)</span>.</p></li>
+<li><p>Symmetric around zero (mean): if <span class="math inline">Z \sim N(0, 1)</span>, <span class="math inline">P(Z &gt; z) = P(Z &lt; -z)</span>.</p></li>
+<li><p>Thin tails: <span class="math inline">P(-1.96 \leq Z \leq 1.96) = 0.95</span>.</p></li>
+<li><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">(X - \mu)/\sigma \sim N(0, 1)</span>.</p></li>
+</ul>
+</section>
+<section id="bivariate-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="bivariate-normal-distribution">Bivariate Normal distribution</h2>
+<ul>
+<li><p><span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">
+f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho)^2}\right],
+</span> where <span class="math inline">Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}</span>,</p>
+<p><span class="math inline">\mu_X = E(X), \mu_Y = E(Y), \sigma_X^2 = Var(X), \sigma_Y^2 = Var(Y)</span>, and <span class="math inline">\rho = Corr(X, Y)</span>.</p></li>
+</ul>
+</section>
+<section id="properties-of-bivariate-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="properties-of-bivariate-normal-distribution">Properties of Bivariate Normal distribution</h2>
+<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution:</p>
+<ul>
+<li><p><span class="math inline">a + bX + cY \sim N(\mu^*, (\sigma^*)^2)</span>, where <span class="math display">
+\mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
+</span></p></li>
+<li><p><span class="math inline">Cov(X, Y) = 0 \Longrightarrow X</span> and <span class="math inline">Y</span> are independent.</p></li>
+<li><p><span class="math inline">E(Y | X) = \mu_Y + \frac{Cov(X, Y)}{\sigma_X^2}(X - \mu_X)</span>.</p></li>
+<li><p>Can be generalized to more than 2 variables (multivariate normal).</p></li>
+</ul>
+</section>
+<section id="appendix-the-cauchy-schwartz-inequality" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-the-cauchy-schwartz-inequality">Appendix: The Cauchy-Schwartz Inequality</h2>
+<ul>
+<li><p>Claim: <span class="math inline">|E(XY)| \leq \sqrt{EX^2 EY^2}</span>.</p></li>
+<li><p><strong>Proof</strong>: Consider the following two random variables: <span class="math inline">\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}</span> and <span class="math inline">\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}</span>. <span class="math display">
+E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
+</span> or <span class="math inline">-\sqrt{EX^2 EY^2} \leq E(XY)</span>.</p></li>
+</ul>
+</section>
+<section id="appendix-the-cauchy-schwartz-inequality-continued" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-the-cauchy-schwartz-inequality-continued">Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
+<p>Similarly, <span class="math display">
+E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
+</span> or <span class="math display">
+E(XY) \leq \sqrt{EX^2 EY^2}.
+</span></p>
+</section>
+<section id="appendix-the-cauchy-schwartz-inequality-continued-1" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-the-cauchy-schwartz-inequality-continued-1">Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
+<p>Together: <span class="math display">
+-\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},
+</span> or <span class="math display">
+|E(XY)| \leq \sqrt{EX^2 EY^2}.
+</span></p>
+<p>Let <span class="math inline">U = X - EX</span> and <span class="math inline">V = Y - EY</span>. Then, <span class="math display">
+|E(UV)| \leq \sqrt{EU^2 EV^2},
+</span> or <span class="math display">
+|E\{(X - EX)(Y - EY)\}| \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},
+</span> or <span class="math display">
+|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.
+</span></p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 2: Review of Probability"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Economics 326 — Methods of Empirical Research in Economics"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: "Vadim Marmer, UBC"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_02_review.html</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-location: right</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-title: "Table of Contents"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    smooth-scroll: true</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    html-math-method: katex</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">  pdf:</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_02_review.pdf</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">    pdf-engine: xelatex</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">    geometry: margin=0.75in</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">    fontsize: 10pt</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: false</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">  revealjs:</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_02_review_slides.html</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: solarized</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-number: c/t</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">    incremental: true</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">    html-math-method: katex</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">    scrollable: true</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">    chalkboard: false</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">    transition: none</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Randomness</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Random experiment**: an experiment the outcome of which cannot be predicted with certainty, even if the experiment is repeated under the same conditions.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Event**: a collection of outcomes of a random experiment.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Probability**: a function from events to $<span class="co">[</span><span class="ot">0,1</span><span class="co">]</span>$ interval.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If $\Omega$ is a collection of all possible outcomes, $P(\Omega) = 1$.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If $A$ is an event, $P(A) \geq 0$.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If $A_1, A_2, \ldots$ is a sequence of *disjoint* events, $P(A_1 \text{ or } A_2 \text{ or } \ldots) = P(A_1) + P(A_2) + \ldots$.</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Random variable</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Random variable**: a numerical representation of a random experiment.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Coin-flipping** example:</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  | Outcome | $X$ | $Y$ | $Z$ |</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  |---------|-----|-----|-----|</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  | Heads   | 0   | 1   | -1  |</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  | Tails   | 1   | 0   | 1   |</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Rolling a dice**</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  | Outcome | $X$ | $Y$ |</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  |---------|-----|-----|</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  | 1       | 1   | 0   |</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  | 2       | 2   | 1   |</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  | 3       | 3   | 0   |</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  | 4       | 4   | 1   |</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  | 5       | 5   | 0   |</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  | 6       | 6   | 1   |</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summation operator</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $<span class="sc">\{</span>x_i: i = 1, \ldots, n<span class="sc">\}</span>$ be a sequence of numbers.</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n} x_i = x_1 + x_2 + \ldots + x_n.</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For a constant $c$:</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n} c = nc.</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n} cx_i = c(x_1 + x_2 + \ldots + x_n) = c\sum_{i=1}^{n} x_i.</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summation operator (continued)</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $<span class="sc">\{</span>y_i: i = 1, \ldots, n<span class="sc">\}</span>$ be another sequence of numbers, and $a, b$ be two constants:</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n}(ax_i + by_i) = a\sum_{i=1}^{n} x_i + b\sum_{i=1}^{n} y_i.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>But:</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n} x_i y_i \neq \sum_{i=1}^{n} x_i \sum_{i=1}^{n} y_i.</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n} \frac{x_i}{y_i} \neq \frac{\sum_{i=1}^{n} x_i}{\sum_{i=1}^{n} y_i}.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^{n} x_i^2 \neq \left(\sum_{i=1}^{n} x_i\right)^2.</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discrete random variables</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>We often distinguish between **discrete** and **continuous** random variables.</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A **discrete** random variable takes on only a **finite or countably infinite** number of values.</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **distribution** of a discrete random variable is a list of all possible values and the probability that each value would occur:</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>  | **Value** | $x_1$ | $x_2$ | $\ldots$ | $x_n$ |</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>  |-----------|-------|-------|----------|-------|</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>  | **Probability** | $p_1$ | $p_2$ | $\ldots$ | $p_n$ |</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>  Here $p_i$ denotes the probability of a random variable $X$ taking on value $x_i$:</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  p_i = P(X = x_i) \text{ (Probability Mass Function (PMF)).}</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>  Each $p_i$ is between 0 and 1, and $\sum_{i=1}^{n} p_i = 1$.</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discrete random variables (continued)</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Indicator function:</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>\mathbf{1}(x_i \leq x) = \begin{cases} 1 &amp; \text{if } x_i \leq x <span class="sc">\\</span> 0 &amp; \text{if } x_i &gt; x \end{cases}</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cumulative Distribution Function (CDF)**:</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>F(x) = P(X \leq x) = \sum_i p_i \mathbf{1}(x_i \leq x).</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For discrete random variables, the CDF is a step function.</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Continuous random variable</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A continuous random variable takes on any real value with **zero** probability.</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For continuous random variables, the CDF is continuous and differentiable.</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The derivative of the CDF is called the **Probability Density Function (PDF)**:</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>f(x) = \frac{dF(x)}{dx} \text{ and } F(x) = \int_{-\infty}^{x} f(u) du;</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>\int_{-\infty}^{\infty} f(x) dx = 1.</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="fu">## Joint distribution (discrete)</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Two random variables $X, Y$</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>  |       | $y_1$    | $y_2$    | $\cdots$ | $y_m$    | Marginal                  |</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>  |-------|----------|----------|----------|----------|---------------------------|</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>  | $x_1$ | $p_{11}$ | $p_{12}$ | $\cdots$ | $p_{1m}$ | $p_1^X=\sum_{j=1}^mp_{1j}$ |</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>  | $x_2$ | $p_{21}$ | $p_{22}$ | $\cdots$ | $p_{2m}$ | $p_2^X=\sum_{j=1}^mp_{2j}$ |</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>  | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$               |</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  | $x_n$ | $p_{n1}$ | $p_{n2}$ | $\cdots$ | $p_{nm}$ | $p_n^X=\sum_{j=1}^mp_{nj}$ |</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>  **Joint PMF**: $p_{ij} = P(X = x_i, Y = y_j)$.</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>  **Marginal PMF**: $p_i^X = P(X = x_i) = \sum_{j=1}^{m} p_{ij}$.</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Conditional Distribution**: If $P(X = x_1) \neq 0$,</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>p_j^{Y|X=x_1} = P(Y = y_j | X = x_1) = \frac{P(Y = y_j, X = x_1)}{P(X = x_1)} = \frac{p_{1,j}}{p_1^X}</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## Joint distribution (continuous)</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Joint PDF: $f_{X,Y}(x, y)$ and $\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{X,Y}(x, y) dx dy = 1$.</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Marginal PDF: $f_X(x) = \int_{-\infty}^{\infty} f_{X,Y}(x, y) dy$.</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional PDF: $f_{Y|X=x}(y|x) = f_{X,Y}(x, y) / f_X(x)$.</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Independence</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Two (discrete) random variables are independent if **for all** $x, y$:</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>P(X = x, Y = y) = P(X = x) P(Y = y).</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If independent:</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>P(Y = y | X = x) = \frac{P(X = x, Y = y)}{P(X = x)} = P(Y = y).</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Two continuous random variables are independent if **for all** $x, y$:</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>f_{X,Y}(x, y) = f_X(x) f_Y(y).</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If independent, $f_{Y|X}(y|x) = f_Y(y)$ for all $x$.</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="fu">## Expected value</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $g$ be some function:</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>  Eg(X) = \sum_i g(x_i) p_i \text{ (discrete).}</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>  Eg(X) = \int g(x) f(x) dx \text{ (continuous).}</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>  Expectation is a transformation of a distribution (PMF or PDF) and is a **constant**!</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mean** (center of a distribution):</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>  EX = \sum_i x_i p_i \text{ or } EX = \int x f(x) dx.</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Variance** (spread of a distribution): $Var(X) = E(X - EX)^2$</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  Var(X) = \sum_i (x_i - EX)^2 p_i \text{ or } Var(X) = \int (x - EX)^2 f(x) dx.</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Standard deviation**: $\sqrt{Var(X)}$.</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $c$ is a constant, $Ec = c$, and</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Linearity:</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>E(a + bX) = \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i = a + bEX.</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Re-centering: a random variable $X - EX$ has mean zero:</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>E(X - EX) = EX - E(EX) = EX - EX = 0.</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties (continued)</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Variance formula: $Var(X) = EX^2 - (EX)^2$</span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>Var(X) = E(X - EX)^2 = E<span class="co">[</span><span class="ot">(X - EX)(X - EX)</span><span class="co">]</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>= E<span class="co">[</span><span class="ot">(X - EX)X - (X - EX) \cdot EX</span><span class="co">]</span></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>= E<span class="co">[</span><span class="ot">(X - EX)X</span><span class="co">]</span> - E<span class="co">[</span><span class="ot">(X - EX) \cdot EX</span><span class="co">]</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>= E<span class="co">[</span><span class="ot">X^2 - X \cdot EX</span><span class="co">]</span> - EX \cdot E(X - EX)</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>= EX^2 - EX \cdot EX - EX \cdot 0 = EX^2 - (EX)^2</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $EX = 0$ then $Var(X) = EX^2$.</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties (continued)</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Var(a + bX) = b^2 Var(X)$</span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>Var(a + bX) = E<span class="co">[</span><span class="ot">(a + bX) - E(a + bX)</span><span class="co">]</span>^2 = E<span class="co">[</span><span class="ot">a + bX - a - bEX</span><span class="co">]</span>^2</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>= E<span class="co">[</span><span class="ot">bX - bEX</span><span class="co">]</span>^2 = E<span class="co">[</span><span class="ot">b^2(X - EX)^2</span><span class="co">]</span> = b^2 E(X - EX)^2 = b^2 Var(X).</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Re-scaling: Let $Var(X) = \sigma^2$, so the standard deviation is $\sigma$:</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a><span class="fu">## Covariance</span></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Covariance**: Let $X, Y$ be two random variables.</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>Cov(X, Y) = E<span class="co">[</span><span class="ot">(X - EX)(Y - EY)</span><span class="co">]</span>.</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>Cov(X, Y) = \sum_i \sum_j (x_i - EX)(y_j - EY) \cdot P(X = x_i, Y = y_j).</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>Cov(X, Y) = \int \int (x - EX)(y - EY) f_{X,Y}(x, y) dx dy.</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, Y) = E(XY) - E(X) E(Y)$.</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>  Cov(X, Y) = E<span class="co">[</span><span class="ot">(X - EX)(Y - EY)</span><span class="co">]</span> = E(XY) - EX \cdot EY.</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of covariance</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, c) = 0$.</span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, X) = Var(X)$.</span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, Y) = Cov(Y, X)$.</span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, Y + Z) = Cov(X, Y) + Cov(X, Z)$.</span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(a_1 + b_1 X, a_2 + b_2 Y) = b_1 b_2 Cov(X, Y)$.</span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X$ and $Y$ are independent then $Cov(X, Y) = 0$.</span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Var(X \pm Y) = Var(X) + Var(Y) \pm 2Cov(X, Y)$.</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlation</span></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Correlation coefficient:</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>Corr(X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X) Var(Y)}}.</span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cauchy-Schwartz inequality: $|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}$ and therefore</span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>-1 \leq Corr(X, Y) \leq 1.</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Corr(X, Y) = \pm 1$ $\Leftrightarrow$ $Y = a + bX$.</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conditional expectation</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose you know that $X = x$. You can update your expectation of $Y$ by **conditional expectation**:</span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>E(Y | X = x) = \sum_i y_i P(Y = y_i | X = x) \text{ (discrete)}</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>E(Y | X = x) = \int y f_{Y|X}(y|x) dy \text{ (continuous).}</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$E(Y | X = x)$ is a constant.</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$E(Y | X)$ is a function of $X$ and is a **random variable** and a function of $X$ (Uncertainty about $X$ has not been realized yet):</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>E(Y | X) = \sum_i y_i P(Y = y_i | X) = g(X)</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>E(Y | X) = \int y f_{Y|X}(y|X) dy = g(X),</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>for some function $g$ that depends on PMF (PDF).</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of conditional expectation</span></span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional expectations satisfies all properties of unconditional expectation.</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Once you condition on $X$, you can treat any function of $X$ as a constant:</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>E(h_1(X) + h_2(X) Y | X) = h_1(X) + h_2(X) E(Y | X),</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>for any functions $h_1$ and $h_2$.</span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Law of Iterated Expectation (LIE)**:</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>E<span class="co">[</span><span class="ot">E(Y | X)</span><span class="co">]</span> = E(Y),</span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>E(E(Y | X, Z) | X) = E(Y | X).</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional variance:</span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>Var(Y | X) = E<span class="co">[</span><span class="ot">(Y - E(Y | X))^2 | X</span><span class="co">]</span>.</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mean independence**:</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>E(Y | X) = E(Y) = \text{constant.}</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## Relationship between different concepts of independence</span></span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>\begin{array}{c}</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>X \text{ and } Y \text{ are independent} <span class="sc">\\</span></span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>\Downarrow <span class="sc">\\</span></span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>E(Y | X) = \text{constant (mean independence)} <span class="sc">\\</span></span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>\Downarrow <span class="sc">\\</span></span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>Cov(X, Y) = 0 \text{ (uncorrelatedness)}</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>\end{array}</span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal distribution</span></span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv $X$ is</span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}</span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a>\mu = EX \text{ and } \sigma^2 = Var(X).</span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>We usually write $X \sim N(\mu, \sigma^2)$.</span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X \sim N(\mu, \sigma^2)$, then $a + bX \sim N(a + b\mu, b^2\sigma^2)$.</span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a><span class="fu">## Standard Normal distribution</span></span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Standard Normal rv has $\mu = 0$ and $\sigma^2 = 1$. Its PDF is $\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$.</span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Symmetric around zero (mean): if $Z \sim N(0, 1)$, $P(Z &gt; z) = P(Z &lt; -z)$.</span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thin tails: $P(-1.96 \leq Z \leq 1.96) = 0.95$.</span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X \sim N(\mu, \sigma^2)$, then $(X - \mu)/\sigma \sim N(0, 1)$.</span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bivariate Normal distribution</span></span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$X$ and $Y$ have a bivariate normal distribution if their joint PDF is given by:</span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a>  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left<span class="co">[</span><span class="ot">-\frac{Q}{2(1-\rho)^2}\right</span><span class="co">]</span>,</span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a>  where $Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}$,</span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>  $\mu_X = E(X), \mu_Y = E(Y), \sigma_X^2 = Var(X), \sigma_Y^2 = Var(Y)$, and $\rho = Corr(X, Y)$.</span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of Bivariate Normal distribution</span></span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a>If $X$ and $Y$ have a bivariate normal distribution:</span>
+<span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$a + bX + cY \sim N(\mu^*, (\sigma^*)^2)$, where</span>
+<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a>  \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.</span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, Y) = 0 \Longrightarrow X$ and $Y$ are independent.</span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$E(Y | X) = \mu_Y + \frac{Cov(X, Y)}{\sigma_X^2}(X - \mu_X)$.</span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be generalized to more than 2 variables (multivariate normal).</span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality</span></span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Claim: $|E(XY)| \leq \sqrt{EX^2 EY^2}$.</span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proof**: Consider the following two random variables: $\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}$ and $\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}$.</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>  E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,</span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>  or $-\sqrt{EX^2 EY^2} \leq E(XY)$.</span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality (continued)</span></span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>Similarly,</span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a>E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,</span>
+<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>or</span>
+<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>E(XY) \leq \sqrt{EX^2 EY^2}.</span>
+<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality (continued)</span></span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a>Together:</span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a>-\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},</span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a>or</span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>E(XY)<span class="pp">|</span> \leq \sqrt{EX^2 EY^2}.</span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a>Let $U = X - EX$ and $V = Y - EY$. Then,</span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>E(UV)<span class="pp">|</span> \leq \sqrt{EU^2 EV^2},</span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a>or</span>
+<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>E<span class="sc">\{</span>(X - EX)(Y - EY)<span class="sc">\}</span><span class="pp">|</span> \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},</span>
+<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a>or</span>
+<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>Cov(X, Y)<span class="pp">|</span> \leq \sqrt{Var(X) Var(Y)}.</span>
+<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a>$$</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<script src="326_02_review_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -30,6 +30,7 @@ format:
     scrollable: true
     chalkboard: false
     self-contained: true
+    transition: none
 ---
 
 ## What is econometrics?
@@ -37,6 +38,7 @@ format:
 Econometrics develops **statistical methods** for:
 
 - **Estimating** economic relationships
+- **Causal** or **counterfactual** analysis: what happens to an outcome when we force a change in a factor.
 - **Testing** economic theories
 - **Forecasting** important economic variables
 - **Evaluating** government and business policy
@@ -144,3 +146,38 @@ $$
 $$
 
 Cities with more crime often hire more police, so simple correlations can **spuriously** suggest police increase crime.
+
+# Forecasting vs estimation
+
+## Forecasting
+
+- **Forecasting**: predicting **out-of-sample** values of a variable: E.g.,
+  - Predict next quarter’s GDP
+  - Assess the probability of default on a loan given borrower characteristics (income, education, past history of defaults, etc.)
+  - Predictive text: given previous words, predict the next word.
+  - ChatGPT: given a prompt, generate the desired response.
+  - Predict the number of crimes in a city next year given current police force size.
+  - Forecasting equation:
+  $$
+   \widehat{\text{Number of Crimes}}= f(\text{Size of the Police Force})
+  $$
+  where $\widehat{\text{Number of Crimes}}$ is the forecasted number of crimes in a city with $\text{Size of the Police Force}$.
+  - Use data to estimate or "learn" the best forecasting function $f(\cdot)$.
+  - Focus on **prediction accuracy**: minimizing some measure of forecast errors.
+
+## Estimation
+
+- **Estimation**: estimating **structural parameters** of an economic model: E.g.,
+  - Effect of education on wages
+  - Effect of police force size on crime
+  - Policy evaluation: effect of a job training program on participants’ earnings.
+  - Structural equation:
+  $$
+   \text{Number of Crimes} = \alpha + \beta \times \text{Size of the Police Force} + U
+  $$
+  where $\beta$ is the structural parameter measuring the effect of police force size on crime, and $U$ includes other factors affecting crime.
+  - Focus on **causal or counterfactual interpretation**: what happens to the outcome when we change a variable.
+  - Best forecasting model may produce misleading counterfactual effects.
+  - Good structural model may have poor forecasting performance.
+  - Choose the right tool for the job!
+  - Causal/counterfactual analysis always requires some **assumptions** about the data generating process.
