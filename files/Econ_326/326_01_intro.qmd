@@ -170,7 +170,6 @@ Cities with more crime often hire more police, so simple correlations can **spur
 - **Estimation**: estimating **structural parameters** of an economic model: E.g.,
   - Effect of education on wages
   - Effect of police force size on crime
-  - Policy evaluation: effect of a job training program on participants’ earnings.
   - Structural equation:
   $$
    \text{Number of Crimes} = \alpha + \beta \times \text{Size of the Police Force} + U
