@@ -62,12 +62,6 @@ Econometrics develops **statistical methods** for:
   - Study gender and race discrimination
   - Study the impact of immigration on labour markets
 
-- Paarsch (1997), *Journal of Econometrics*  
-  Estimates optimal reserve prices for BC timber auctions.
-
-- Chandra et al. (2008), *Pediatrics*  
-  Studies how exposure to sexual content on TV relates to teen pregnancy.
-
 ## Types of data: cross-section
 
 ::: {.callout-note title="Definition"}
