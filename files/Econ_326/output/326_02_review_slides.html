@@ -1504,34 +1504,35 @@ f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac
 <section id="appendix-the-cauchy-schwartz-inequality" class="slide level2">
 <h2>Appendix: The Cauchy-Schwartz Inequality</h2>
 <ul>
-<li class="fragment"><p>Claim: <span class="math inline">|E(XY)| \leq \sqrt{EX^2 EY^2}</span>.</p></li>
-<li class="fragment"><p><strong>Proof</strong>: Consider the following two random variables: <span class="math inline">\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}</span> and <span class="math inline">\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}</span>. <span class="math display">
-E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
-</span> or <span class="math inline">-\sqrt{EX^2 EY^2} \leq E(XY)</span>.</p></li>
+<li class="fragment"><p>Claim: <span class="math inline">|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}</span>.</p></li>
+<li class="fragment"><p><strong>Proof</strong>: Define <span class="math display">
+U = Y - \beta X,
+</span> where <span class="math display">
+\beta = \frac{Cov(X, Y)}{Var(X)},
+</span></p>
+<ul>
+<li class="fragment">Note that <span class="math inline">\beta</span> is a constant!</li>
+<li class="fragment">Also note the connection to regression and OLS in the definition of <span class="math inline">\beta</span>.</li>
+</ul></li>
 </ul>
-</section>
-<section id="appendix-the-cauchy-schwartz-inequality-continued" class="slide level2">
-<h2>Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
-<p>Similarly, <span class="math display">
-E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
-</span> or <span class="math display">
-E(XY) \leq \sqrt{EX^2 EY^2}.
-</span></p>
-</section>
-<section id="appendix-the-cauchy-schwartz-inequality-continued-1" class="slide level2">
-<h2>Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
-<p>Together: <span class="math display">
--\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},
-</span> or <span class="math display">
-|E(XY)| \leq \sqrt{EX^2 EY^2}.
-</span></p>
-<p>Let <span class="math inline">U = X - EX</span> and <span class="math inline">V = Y - EY</span>. Then, <span class="math display">
-|E(UV)| \leq \sqrt{EU^2 EV^2},
-</span> or <span class="math display">
-|E\{(X - EX)(Y - EY)\}| \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},
-</span> or <span class="math display">
+<ul>
+<li class="fragment"><p>Since variances are always non-negative:</p>
+<p><span class="math inline">0 \leq Var(U)</span></p>
+<p><span class="fragment"><span class="math inline">\quad= Var(Y - \beta X) \quad (\text{def. of } U)</span></span></p>
+<p><span class="fragment"><span class="math inline">\quad= Var(Y) + Var(\beta X) - 2Cov(Y, \beta X) \quad (\text{prop. of var.})</span></span></p>
+<p><span class="fragment"><span class="math inline">\quad= Var(Y) + \beta^2 Var(X) - 2\beta Cov(X, Y) \quad (\text{prop. of var., cov.})</span></span></p>
+<p><span class="fragment"><span class="math inline">\quad= Var(Y) + \underbrace{\left(\frac{Cov(X, Y)}{Var(X)}\right)^2}_{=\beta^2} Var(X)  \newline \quad\qquad\qquad-2\underbrace{\left(\frac{Cov(X, Y)}{Var(X)} \right)}_{=\beta}Cov(X, Y) \quad (\text{def. of } \beta)</span></span></p>
+<p><span class="fragment"><span class="math inline">\quad= Var(Y) + \frac{Cov(X, Y)^2}{Var(X)} - 2 \frac{Cov(X, Y)^2}{Var(X)}</span></span></p>
+<p><span class="fragment"><span class="math inline">\quad= Var(Y) - \frac{Cov(X, Y)^2}{Var(X)}.</span></span></p></li>
+</ul>
+<ul>
+<li class="fragment">Rearranging: <span class="math display">
+Cov(X, Y)^2 \leq Var(X) Var(Y)
+</span></li>
+<li class="fragment">or <span class="math display">
 |Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.
-</span></p>
+</span></li>
+</ul>
 
 </section>
     </div>

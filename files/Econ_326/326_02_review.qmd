@@ -26,7 +26,7 @@ format:
     smaller: true
     slide-number: c/t
     incremental: true
-    html-math-method: katex
+    html-math-method: mathjax
     scrollable: true
     chalkboard: false
     self-contained: true
@@ -422,6 +422,7 @@ If $X$ and $Y$ have a bivariate normal distribution:
   \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
   $$
 
+
 - $Cov(X, Y) = 0 \Longrightarrow X$ and $Y$ are independent.
 
 - $E(Y | X) = \mu_Y + \frac{Cov(X, Y)}{\sigma_X^2}(X - \mu_X)$.
@@ -430,45 +431,53 @@ If $X$ and $Y$ have a bivariate normal distribution:
 
 ## Appendix: The Cauchy-Schwartz Inequality
 
-- Claim: $|E(XY)| \leq \sqrt{EX^2 EY^2}$.
+- Claim: $|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}$.
 
-- **Proof**: Consider the following two random variables: $\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}$ and $\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}$.
+- **Proof**: Define 
   $$
-  E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
+  U = Y - \beta X,
+  $$ 
+  where 
   $$
-  or $-\sqrt{EX^2 EY^2} \leq E(XY)$.
+  \beta = \frac{Cov(X, Y)}{Var(X)},
+  $$
+  - Note that $\beta$ is a constant! 
+  - Also note the connection to regression and OLS in the definition of $\beta$.
 
-## Appendix: The Cauchy-Schwartz Inequality (continued)
+::: {.content-hidden when-format="revealjs"}
+- Since variances are always non-negative:
 
-Similarly,
-$$
-E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
-$$
-or
-$$
-E(XY) \leq \sqrt{EX^2 EY^2}.
-$$
+  \begin{alignat*}{2}
+  0 & \leq Var(U)  &&\\
+    & = Var(Y - \beta X)  &&\quad (\text{def. of } U)\\
+    & = Var(Y) + Var(\beta X) - 2Cov(Y, \beta X)  &&\quad (\text{prop. of var.})\\
+    & = Var(Y) + \beta^2 Var(X) - 2\beta Cov(X, Y)  &&\quad (\text{prop. of var., cov.})\\
+    & = Var(Y) + \underbrace{\left(\frac{Cov(X, Y)}{Var(X)}\right)^2}_{=\beta^2} Var(X) &&\\
+    & \qquad - 2 \underbrace{\left(\frac{Cov(X, Y)}{Var(X)} \right)}_{=\beta}Cov(X, Y)  &&\quad (\text{def. of } \beta)\\
+    & = Var(Y) + \frac{Cov(X, Y)^2}{Var(X)} - 2 \frac{Cov(X, Y)^2}{Var(X)}   &&\\
+    & = Var(Y) - \frac{Cov(X, Y)^2}{Var(X)}. &&
+  \end{alignat*}
+:::
 
-## Appendix: The Cauchy-Schwartz Inequality (continued)
+::: {.content-visible when-format="revealjs"}
+- Since variances are always non-negative:
 
-Together:
-$$
--\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},
-$$
-or
-$$
-|E(XY)| \leq \sqrt{EX^2 EY^2}.
-$$
-
-Let $U = X - EX$ and $V = Y - EY$. Then,
-$$
-|E(UV)| \leq \sqrt{EU^2 EV^2},
-$$
-or
-$$
-|E\{(X - EX)(Y - EY)\}| \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},
-$$
-or
-$$
-|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.
-$$
+  \begin{alignat*}{2}
+  0 & \leq Var(U)  &&\\
+  \class{fragment}{& = Var(Y - \beta X)  &&\quad (\text{def. of } U)\\}
+  \class{fragment}{& = Var(Y) + Var(\beta X) - 2Cov(Y, \beta X)  &&\quad (\text{prop. of var.})\\}
+  \class{fragment}{& = Var(Y) + \beta^2 Var(X) - 2\beta Cov(X, Y)  &&\quad (\text{prop. of var., cov.})\\}
+  \class{fragment}{& = Var(Y) + \underbrace{\left(\frac{Cov(X, Y)}{Var(X)}\right)^2}_{=\beta^2} Var(X) &&\\}
+  \class{fragment}{& \qquad - 2 \underbrace{\left(\frac{Cov(X, Y)}{Var(X)} \right)}_{=\beta}Cov(X, Y)  &&\quad (\text{def. of } \beta)\\}
+  \class{fragment}{& = Var(Y) + \frac{Cov(X, Y)^2}{Var(X)} - 2 \frac{Cov(X, Y)^2}{Var(X)}   &&\\}
+  \class{fragment}{& = Var(Y) - \frac{Cov(X, Y)^2}{Var(X)}. &&}
+  \end{alignat*}
+:::  
+- Rearranging:
+  $$
+  Cov(X, Y)^2 \leq Var(X) Var(Y)
+  $$
+- or
+  $$
+  |Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.
+  $$

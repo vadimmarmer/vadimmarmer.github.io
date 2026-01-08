@@ -151,8 +151,6 @@ window.Quarto = {
   <li><a href="#bivariate-normal-distribution" id="toc-bivariate-normal-distribution" class="nav-link" data-scroll-target="#bivariate-normal-distribution">Bivariate Normal distribution</a></li>
   <li><a href="#properties-of-bivariate-normal-distribution" id="toc-properties-of-bivariate-normal-distribution" class="nav-link" data-scroll-target="#properties-of-bivariate-normal-distribution">Properties of Bivariate Normal distribution</a></li>
   <li><a href="#appendix-the-cauchy-schwartz-inequality" id="toc-appendix-the-cauchy-schwartz-inequality" class="nav-link" data-scroll-target="#appendix-the-cauchy-schwartz-inequality">Appendix: The Cauchy-Schwartz Inequality</a></li>
-  <li><a href="#appendix-the-cauchy-schwartz-inequality-continued" id="toc-appendix-the-cauchy-schwartz-inequality-continued" class="nav-link" data-scroll-target="#appendix-the-cauchy-schwartz-inequality-continued">Appendix: The Cauchy-Schwartz Inequality (continued)</a></li>
-  <li><a href="#appendix-the-cauchy-schwartz-inequality-continued-1" id="toc-appendix-the-cauchy-schwartz-inequality-continued-1" class="nav-link" data-scroll-target="#appendix-the-cauchy-schwartz-inequality-continued-1">Appendix: The Cauchy-Schwartz Inequality (continued)</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_02_review.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_02_review_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -636,34 +634,38 @@ f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac
 <section id="appendix-the-cauchy-schwartz-inequality" class="level2">
 <h2 class="anchored" data-anchor-id="appendix-the-cauchy-schwartz-inequality">Appendix: The Cauchy-Schwartz Inequality</h2>
 <ul>
-<li><p>Claim: <span class="math inline">|E(XY)| \leq \sqrt{EX^2 EY^2}</span>.</p></li>
-<li><p><strong>Proof</strong>: Consider the following two random variables: <span class="math inline">\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}</span> and <span class="math inline">\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}</span>. <span class="math display">
-E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
-</span> or <span class="math inline">-\sqrt{EX^2 EY^2} \leq E(XY)</span>.</p></li>
+<li><p>Claim: <span class="math inline">|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}</span>.</p></li>
+<li><p><strong>Proof</strong>: Define <span class="math display">
+U = Y - \beta X,
+</span> where <span class="math display">
+\beta = \frac{Cov(X, Y)}{Var(X)},
+</span></p>
+<ul>
+<li>Note that <span class="math inline">\beta</span> is a constant!</li>
+<li>Also note the connection to regression and OLS in the definition of <span class="math inline">\beta</span>.</li>
+</ul></li>
 </ul>
-</section>
-<section id="appendix-the-cauchy-schwartz-inequality-continued" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-the-cauchy-schwartz-inequality-continued">Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
-<p>Similarly, <span class="math display">
-E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,
-</span> or <span class="math display">
-E(XY) \leq \sqrt{EX^2 EY^2}.
-</span></p>
-</section>
-<section id="appendix-the-cauchy-schwartz-inequality-continued-1" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-the-cauchy-schwartz-inequality-continued-1">Appendix: The Cauchy-Schwartz Inequality (continued)</h2>
-<p>Together: <span class="math display">
--\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},
-</span> or <span class="math display">
-|E(XY)| \leq \sqrt{EX^2 EY^2}.
-</span></p>
-<p>Let <span class="math inline">U = X - EX</span> and <span class="math inline">V = Y - EY</span>. Then, <span class="math display">
-|E(UV)| \leq \sqrt{EU^2 EV^2},
-</span> or <span class="math display">
-|E\{(X - EX)(Y - EY)\}| \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},
-</span> or <span class="math display">
+<ul>
+<li><p>Since variances are always non-negative:</p>
+<p><span class="math display">\begin{alignat*}{2}
+0 &amp; \leq Var(U)  &amp;&amp;\\
+  &amp; = Var(Y - \beta X)  &amp;&amp;\quad (\text{def. of } U)\\
+  &amp; = Var(Y) + Var(\beta X) - 2Cov(Y, \beta X)  &amp;&amp;\quad (\text{prop. of var.})\\
+  &amp; = Var(Y) + \beta^2 Var(X) - 2\beta Cov(X, Y)  &amp;&amp;\quad (\text{prop. of var., cov.})\\
+  &amp; = Var(Y) + \underbrace{\left(\frac{Cov(X, Y)}{Var(X)}\right)^2}_{=\beta^2} Var(X) &amp;&amp;\\
+  &amp; \qquad - 2 \underbrace{\left(\frac{Cov(X, Y)}{Var(X)} \right)}_{=\beta}Cov(X, Y)  &amp;&amp;\quad (\text{def. of } \beta)\\
+  &amp; = Var(Y) + \frac{Cov(X, Y)^2}{Var(X)} - 2 \frac{Cov(X, Y)^2}{Var(X)}   &amp;&amp;\\
+  &amp; = Var(Y) - \frac{Cov(X, Y)^2}{Var(X)}. &amp;&amp;
+\end{alignat*}</span></p></li>
+</ul>
+<ul>
+<li>Rearranging: <span class="math display">
+Cov(X, Y)^2 \leq Var(X) Var(Y)
+</span></li>
+<li>or <span class="math display">
 |Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.
-</span></p>
+</span></li>
+</ul>
 <!-- -->
 
 </section>
@@ -1544,56 +1546,68 @@ E(XY) \leq \sqrt{EX^2 EY^2}.
 <span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a>  \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.</span>
 <span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, Y) = 0 \Longrightarrow X$ and $Y$ are independent.</span>
-<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$E(Y | X) = \mu_Y + \frac{Cov(X, Y)}{\sigma_X^2}(X - \mu_X)$.</span>
-<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be generalized to more than 2 variables (multivariate normal).</span>
-<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality</span></span>
-<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Claim: $|E(XY)| \leq \sqrt{EX^2 EY^2}$.</span>
-<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proof**: Consider the following two random variables: $\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}$ and $\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}$.</span>
-<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>  E\left(\frac{X}{\sqrt{EX^2}} + \frac{Y}{\sqrt{EY^2}}\right)^2 = 1 + 1 + 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,</span>
-<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a>  or $-\sqrt{EX^2 EY^2} \leq E(XY)$.</span>
-<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality (continued)</span></span>
-<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>Similarly,</span>
-<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a>E\left(\frac{X}{\sqrt{EX^2}} - \frac{Y}{\sqrt{EY^2}}\right)^2 = 2 - 2\frac{E(XY)}{\sqrt{EX^2 EY^2}} \geq 0,</span>
-<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a>or</span>
-<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a>E(XY) \leq \sqrt{EX^2 EY^2}.</span>
-<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality (continued)</span></span>
-<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a>Together:</span>
-<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a>-\sqrt{EX^2 EY^2} \leq E(XY) \leq \sqrt{EX^2 EY^2},</span>
-<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a>or</span>
-<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>E(XY)<span class="pp">|</span> \leq \sqrt{EX^2 EY^2}.</span>
-<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a>Let $U = X - EX$ and $V = Y - EY$. Then,</span>
-<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>E(UV)<span class="pp">|</span> \leq \sqrt{EU^2 EV^2},</span>
-<span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>or</span>
-<span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>E<span class="sc">\{</span>(X - EX)(Y - EY)<span class="sc">\}</span><span class="pp">|</span> \leq \sqrt{E(X - EX)^2 E(Y - EY)^2},</span>
-<span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a>or</span>
-<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>Cov(X, Y)<span class="pp">|</span> \leq \sqrt{Var(X) Var(Y)}.</span>
-<span id="cb1-474"><a href="#cb1-474" aria-hidden="true" tabindex="-1"></a>$$</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Cov(X, Y) = 0 \Longrightarrow X$ and $Y$ are independent.</span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$E(Y | X) = \mu_Y + \frac{Cov(X, Y)}{\sigma_X^2}(X - \mu_X)$.</span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be generalized to more than 2 variables (multivariate normal).</span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality</span></span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Claim: $|Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}$.</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proof**: Define </span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>  U = Y - \beta X,</span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a>  $$ </span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a>  where </span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>  \beta = \frac{Cov(X, Y)}{Var(X)},</span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Note that $\beta$ is a constant! </span>
+<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Also note the connection to regression and OLS in the definition of $\beta$.</span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-format="revealjs"}</span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since variances are always non-negative:</span>
+<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>  \begin{alignat*}{2}</span>
+<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a>  0 &amp; \leq Var(U)  &amp;&amp;<span class="sc">\\</span></span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a>    &amp; = Var(Y - \beta X)  &amp;&amp;\quad (\text{def. of } U)<span class="sc">\\</span></span>
+<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a>    &amp; = Var(Y) + Var(\beta X) - 2Cov(Y, \beta X)  &amp;&amp;\quad (\text{prop. of var.})<span class="sc">\\</span></span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a>    &amp; = Var(Y) + \beta^2 Var(X) - 2\beta Cov(X, Y)  &amp;&amp;\quad (\text{prop. of var., cov.})<span class="sc">\\</span></span>
+<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a>    &amp; = Var(Y) + \underbrace{\left(\frac{Cov(X, Y)}{Var(X)}\right)^2}_{=\beta^2} Var(X) &amp;&amp;<span class="sc">\\</span></span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a>    &amp; \qquad - 2 \underbrace{\left(\frac{Cov(X, Y)}{Var(X)} \right)}_{=\beta}Cov(X, Y)  &amp;&amp;\quad (\text{def. of } \beta)<span class="sc">\\</span></span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a>    &amp; = Var(Y) + \frac{Cov(X, Y)^2}{Var(X)} - 2 \frac{Cov(X, Y)^2}{Var(X)}   &amp;&amp;<span class="sc">\\</span></span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a>    &amp; = Var(Y) - \frac{Cov(X, Y)^2}{Var(X)}. &amp;&amp;</span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a>  \end{alignat*}</span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="revealjs"}</span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since variances are always non-negative:</span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>  $0 \leq Var(U)$</span>
+<span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= Var(Y - \beta X) \quad (\text{def. of } U)$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= Var(Y) + Var(\beta X) - 2Cov(Y, \beta X) \quad (\text{prop. of var.})$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= Var(Y) + \beta^2 Var(X) - 2\beta Cov(X, Y) \quad (\text{prop. of var., cov.})$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= Var(Y) + \underbrace{\left(\frac{Cov(X, Y)}{Var(X)}\right)^2}_{=\beta^2} Var(X)  \newline \quad\qquad\qquad-2\underbrace{\left(\frac{Cov(X, Y)}{Var(X)} \right)}_{=\beta}Cov(X, Y) \quad (\text{def. of } \beta)$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-474"><a href="#cb1-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-475"><a href="#cb1-475" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= Var(Y) + \frac{Cov(X, Y)^2}{Var(X)} - 2 \frac{Cov(X, Y)^2}{Var(X)}$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-476"><a href="#cb1-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-477"><a href="#cb1-477" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= Var(Y) - \frac{Cov(X, Y)^2}{Var(X)}.$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-478"><a href="#cb1-478" aria-hidden="true" tabindex="-1"></a>:::  </span>
+<span id="cb1-479"><a href="#cb1-479" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rearranging:</span>
+<span id="cb1-480"><a href="#cb1-480" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-481"><a href="#cb1-481" aria-hidden="true" tabindex="-1"></a>  Cov(X, Y)^2 \leq Var(X) Var(Y)</span>
+<span id="cb1-482"><a href="#cb1-482" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-483"><a href="#cb1-483" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>or</span>
+<span id="cb1-484"><a href="#cb1-484" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-485"><a href="#cb1-485" aria-hidden="true" tabindex="-1"></a>  |Cov(X, Y)| \leq \sqrt{Var(X) Var(Y)}.</span>
+<span id="cb1-486"><a href="#cb1-486" aria-hidden="true" tabindex="-1"></a>  $$</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
