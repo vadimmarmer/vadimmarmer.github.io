@@ -199,13 +199,26 @@ $$
 
 ## Example: Uniform distribution
 
-- A random variable $X$ follows a **Uniform distribution** on $[0, 1]$, written $X \sim Uniform(0, 1)$, if it is equally likely to take any value in $[0, 1]$.
+A random variable $X$ follows a **Uniform distribution** on $[0, 1]$, written $X \sim Uniform(0, 1)$, if it is equally likely to take any value in $[0, 1]$.
 
-- PDF:
-  $$
-  f(x) = \begin{cases} 1 & \text{if } 0 \leq x \leq 1 \\ 0 & \text{otherwise} \end{cases}
-  $$
+:::: {.columns}
+::: {.column width="50%"}
+**PDF:**
+$$
+f(x) = \begin{cases} 0 & \text{if } x < 0 \\ 1 & \text{if } 0 \leq x \leq 1 \\ 0 & \text{if } x > 1 \end{cases}
+$$
+:::
 
+::: {.column width="50%"}
+**CDF:**
+$$
+F(x) = \begin{cases} 0 & \text{if } x < 0 \\ x & \text{if } 0 \leq x \leq 1 \\ 1 & \text{if } x > 1 \end{cases}
+$$
+:::
+::::
+
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 #| echo: false
 #| fig-width: 4
@@ -224,12 +237,9 @@ segments(1, 0, 1.5, 0, lwd = 2, col = "blue")
 points(c(0, 1), c(1, 1), pch = 19, col = "blue")
 points(c(0, 1), c(0, 0), pch = 1, col = "blue")
 ```
+:::
 
-- CDF:
-  $$
-  F(x) = \begin{cases} 0 & \text{if } x < 0 \\ x & \text{if } 0 \leq x \leq 1 \\ 1 & \text{if } x > 1 \end{cases}
-  $$
-
+::: {.column width="50%"}
 ```{r}
 #| echo: false
 #| fig-width: 4
@@ -244,6 +254,8 @@ plot(x, cdf_vals, type = "l", lwd = 2, col = "red",
      ylim = c(0, 1.1), xaxt = "n")
 axis(1, at = c(0, 0.5, 1))
 ```
+:::
+::::
 
 ## Joint distribution (discrete)
 
