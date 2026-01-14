@@ -48,6 +48,11 @@ format:
           .figure-crop-50 img {
             transform: translateY(-50.3%);
           }
+          .figure-crop-small {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+          }
         </style>
   pdf:
     output-file: 326_03_simple.pdf
@@ -102,12 +107,22 @@ format:
           .figure-crop-50 img {
             transform: translateY(-50.3%);
           }
+          .figure-crop-small {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .reveal .slide img {
+            max-height: 950px;
+            width: auto;
+            height: auto;
+          }
         </style>
 ---
 
 
 
-## Introduction 
+## Introduction
 - The **simple linear regression model** is used to study the relationship between **two variables**.
 - It has many limitations, but nevertheless there are examples in the literature where the simple linear regression is applied (e.g., stock returns predictability).
 - It is also a good starting point to learning the regression technique.
@@ -125,6 +140,10 @@ format:
 :::
 :::
 
+::: {.content-visible when-format="revealjs"}
+![](figures/tab2-1.png)
+:::
+
 ## Sample and population
 
 - The econometrician observes random data:
@@ -136,7 +155,7 @@ format:
   | $\vdots$ | $\vdots$ | $\vdots$ |
   | $n$ | $Y_{n}$ | $X_{n}$ |
 
-- A pair $X_{i},Y_{i}$ is called an observation.
+- A pair $X_{i}, Y_{i}$ is called an observation.
 - **Sample**: $\left\{ \left( X_{i},Y_{i}\right) : i=1,\ldots,n\right\}$.
 - The population is the **joint distribution** of the sample.
 
@@ -257,7 +276,6 @@ $$
 Y_{i} = \underbrace{\alpha + \beta X_{i}}_{\text{Predicted by } X} + \underbrace{U_{i}}_{\text{Orthogonal to } X}
 $$
 
-::: {.tight-figure}
 ::: {.content-visible when-format="pdf"}
 \begin{center}
 \includegraphics[trim=0 0 0 5.53in,clip]{figures/fig2-1.png}
@@ -269,11 +287,15 @@ $$
 ![](figures/fig2-1.png)
 :::
 :::
+
+::: {.content-visible when-format="revealjs"}
+::: {.fragment}
+![](figures/fig2-1.png)
+:::
 :::
 
 ## Estimation problem
 
-::: {.tight-figure}
 ::: {.content-visible when-format="pdf"}
 \begin{center}
 \includegraphics[trim=0 0 0 5.54in,clip]{figures/fig2-2.png}
@@ -285,6 +307,9 @@ $$
 ![](figures/fig2-2.png)
 :::
 :::
+
+::: {.content-visible when-format="revealjs"}
+![](figures/fig2-2.png)
 :::
 
 **Problem:** estimate the unknown parameters $\alpha$ and $\beta$ using the data ($n$ observations) on $Y$ and $X$.
@@ -311,25 +336,27 @@ $$
 
 ## Solution
 
+::: {.nonincremental}
 - Let $\bar{Y}=\frac{1}{n}\sum_{i=1}^{n}Y_{i}$ and $\bar{X}=\frac{1}{n}\sum_{i=1}^{n}X_{i}$ (averages).
 
-$$
-\frac{1}{n}\sum_{i=1}^{n}\left( Y_{i} - \hat{\alpha} - \hat{\beta}X_{i}\right) = 0
-$$
-  implies
-$$
-\begin{aligned}
-\frac{1}{n}\sum_{i=1}^{n}Y_{i} - \frac{1}{n}\sum_{i=1}^{n}\hat{\alpha} - \hat{\beta}\frac{1}{n}\sum_{i=1}^{n}X_{i} &= 0 \text{ or} \\
-\bar{Y} - \hat{\alpha} - \hat{\beta}\bar{X} &= 0.
-\end{aligned}
-$$
+  $$
+  \frac{1}{n}\sum_{i=1}^{n}\left( Y_{i} - \hat{\alpha} - \hat{\beta}X_{i}\right) = 0
+  $$
+    implies
+  $$
+  \begin{aligned}
+  \frac{1}{n}\sum_{i=1}^{n}Y_{i} - \frac{1}{n}\sum_{i=1}^{n}\hat{\alpha} - \hat{\beta}\frac{1}{n}\sum_{i=1}^{n}X_{i} &= 0 \text{ or} \\
+  \bar{Y} - \hat{\alpha} - \hat{\beta}\bar{X} &= 0.
+  \end{aligned}
+  $$
 
-The fitted regression line goes through the averages.
+  The fitted regression line goes through the averages.
 
-- 
-$$
-\hat{\alpha} = \bar{Y} - \hat{\beta}\bar{X}.
-$$
+-
+  $$
+  \hat{\alpha} = \bar{Y} - \hat{\beta}\bar{X}.
+  $$
+:::
 
 ## Solution
 
@@ -367,40 +394,48 @@ $$
 
 ## Fitted line
 
+::: {.nonincremental}
 - **Fitted values**: $\hat{Y}_{i} = \hat{\alpha} + \hat{\beta}X_{i}$.
 - **Fitted residuals**: $\hat{U}_{i} = Y_{i} - \hat{\alpha} - \hat{\beta}X_{i}$.
+:::
 
-::: {.tight-figure}
 ::: {.content-visible when-format="pdf"}
 \begin{center}
-\includegraphics[trim=0 0 0 5.53in,clip]{figures/fig2-4.png}
+\includegraphics[trim=0 0 0 5.53in,clip,width=0.85\linewidth]{figures/fig2-4.png}
 \end{center}
 :::
 
 ::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-50}
+::: {.tight-figure .figure-crop .figure-crop-50 .figure-crop-small}
 ![](figures/fig2-4.png)
 :::
 :::
+
+::: {.content-visible when-format="revealjs"}
+![](figures/fig2-4.png)
 :::
 
 ## True line and fitted line
 
+::: {.nonincremental}
 - **True:** $Y_{i} = \alpha + \beta X_{i} + U_{i}$, $E U_{i} = E X_{i}U_{i} = 0$.
 - **Fitted:** $Y_{i} = \hat{\alpha} + \hat{\beta} X_{i} + \hat{U}_{i}$, $\sum_{i=1}^{n}\hat{U}_{i} = \sum_{i=1}^{n}X_{i}\hat{U}_{i} = 0$.
+:::
 
-::: {.tight-figure}
 ::: {.content-visible when-format="pdf"}
 \begin{center}
-\includegraphics[trim=0 0 0 5.54in,clip]{figures/fig2-5.png}
+\includegraphics[trim=0 0 0 5.54in,clip,width=0.85\linewidth]{figures/fig2-5.png}
 \end{center}
 :::
 
 ::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-50}
+::: {.tight-figure .figure-crop .figure-crop-50 .figure-crop-small}
 ![](figures/fig2-5.png)
 :::
 :::
+
+::: {.content-visible when-format="revealjs"}
+![](figures/fig2-5.png)
 :::
 
 ## Ordinary Least Squares (OLS)
