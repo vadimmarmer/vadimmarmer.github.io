@@ -23,6 +23,7 @@ format:
   revealjs:
     output-file: 326_01_intro_slides.html
     theme: solarized
+    css: slides_no_caps.css
     smaller: true
     slide-number: c/t
     incremental: true
