@@ -1,0 +1,297 @@
+---
+title: "Lecture 4: Properties of OLS"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_04_simple_properties.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_04_simple_properties.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+  revealjs:
+    output-file: 326_04_simple_properties_slides.html
+    theme: solarized
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+    include-in-header:
+      text: |
+        <style>
+          .reveal h1 .math,
+          .reveal h2 .math,
+          .reveal h3 .math,
+          .reveal h4 .math,
+          .reveal h5 .math {
+            text-transform: none;
+          }
+        </style>
+---
+
+# Properties of Estimators
+
+## OLS Estimators as Random Variables
+
+- The model
+  $$
+  \begin{aligned}
+  Y_{i} &= \alpha + \beta X_{i} + U_{i}, \\
+  E\left( U_{i} \mid X_{1}, \ldots, X_{n} \right) &= 0.
+  \end{aligned}
+  $$
+  Conditioning on $X$ in $E\left( U_{i} \mid X_{1}, \ldots, X_{n} \right) = 0$
+  allows us to treat all $X$'s as fixed, but $Y$ is still random.
+- The estimators
+  $$
+  \hat{\beta} = \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) Y_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \text{ and }
+  \hat{\alpha} = \bar{Y}-\hat{\beta}\bar{X}
+  $$
+  are random because they are functions of random data.
+
+## Linearity of Estimators
+
+- Since
+  $$
+  \hat{\beta} = \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) Y_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}},
+  $$
+  we can write $\hat{\beta} = \sum_{i=1}^{n}w_{i}Y_{i}$, where
+  $$
+  w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
+  $$
+  After conditioning on $X$'s, $w_{i}$'s are not random.
+- For $\hat{\alpha}$,
+  $$
+  \begin{aligned}
+  \hat{\alpha} &= \bar{Y}-\hat{\beta}\bar{X} \\
+  &= \frac{1}{n}\sum_{i=1}^{n}Y_{i}-\left( \sum_{i=1}^{n}w_{i}Y_{i}\right) \bar{X} \\
+  &= \sum_{i=1}^{n}\left( \frac{1}{n}-\bar{X}w_{i}\right) Y_{i} \\
+  &= \sum_{i=1}^{n}\left( \frac{1}{n}-\bar{X}\frac{X_{i}-\bar{X}}{ 
+  \sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}\right) Y_{i}.
+  \end{aligned}
+  $$
+
+# Unbiasedness
+
+## Definition of Unbiasedness
+
+- $\hat{\beta}$ is called an unbiased estimator if $E\hat{\beta} = \beta$.
+- Suppose that $Y_{i}=\alpha +\beta X_{i}+U_{i}$,
+  $E\left( U_{i} \mid X_{1}, \ldots, X_{n}\right) = 0$. Then
+  $E\hat{\beta}=\beta$.
+  $$
+  \begin{aligned}
+  \hat{\beta} &=
+  \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) Y_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \\
+  &= \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( \alpha +\beta X_{i}+U_{i}\right) }{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \\
+  &= \alpha \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) }{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}
+  + \beta \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) X_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}
+  + \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \\
+  &= \alpha \frac{0}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}
+  + \beta \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}{
+  \sum_{i=1}^{n}\left(X_{i}-\bar{X}\right) ^{2}}
+  + \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{aligned}
+  $$
+- or
+  $$
+  \hat{\beta}=\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  $$ 
+
+## Conditioning on Regressors
+
+- Once we condition on $X_{1}, \ldots, X_{n}$, all $X$'s in
+  $$
+  \hat{\beta}=\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}
+  $$
+  can be treated as fixed.
+- Thus,
+  $$
+  \begin{aligned}
+  E\left( \hat{\beta} \mid X_{1}, \ldots, X_{n}\right) & = 
+  E\left( \beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \mid X_{1}, \ldots, X_{n}\right) \\
+  &= \beta + 
+  E\left( \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \mid X_{1}, \ldots, X_{n}\right) \\
+  &= \beta + 
+  \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) E\left( U_{i} \mid X_{1}, \ldots, X_{n}\right) }{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{aligned}
+  $$
+
+## Proof of Unbiasedness
+
+- Thus, with $E\left( U_{i} \mid X_{1}, \ldots, X_{n}\right) = 0$, we have
+  $$
+  \begin{aligned}
+  E\left( \hat{\beta} \mid X_{1}, \ldots, X_{n}\right) &= 
+  \beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) E\left( U_{i} \mid X_{1}, \ldots, X_{n}\right)}{ 
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \\
+  &= \beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \cdot 0}{
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} = \beta.
+  \end{aligned}
+  $$
+- By the LIE,
+  $E\hat{\beta} = E\left[ E\left( \hat{\beta} \mid X_{1}, \ldots, X_{n}\right) \right]
+  = E\left[ \beta \right] = \beta$.
+
+## Strong Exogeneity of Regressors
+
+- The regressor $X$ is strongly exogenous if
+  $E\left( U_{i} \mid X_{1}, \ldots, X_{n}\right) = 0$.
+- Alternatively, we can assume that $E\left( U_{i} \mid X_{i}\right) = 0$
+  and all observations are independent:
+  $$
+  \begin{aligned}
+  E\left( U_{1} \mid X_{1}, \ldots, X_{n}\right) &= E\left( U_{1} \mid X_{1}\right), \\
+  E\left( U_{2} \mid X_{1}, \ldots, X_{n}\right) &= E\left( U_{2} \mid X_{2}\right)
+  \text{ and etc.}
+  \end{aligned}
+  $$
+- The OLS estimator is in general biased if the strong exogeneity
+  assumption is violated.
+
+# Variance of the Slope Estimator
+
+## Variance Formula and Homoskedasticity
+
+- If $Y_{i}=\alpha +\beta X_{i}+U_{i}$,
+  $E\left( U_{i} \mid X_{1}, \ldots, X_{n}\right) = 0$, and
+  $$
+  E\left( U_{i}^{2} \mid X_{1}, \ldots, X_{n}\right) = \sigma^{2} = \text{constant},
+  $$
+  and for $i \neq j$
+  $$
+  E\left( U_{i}U_{j} \mid X_{1}, \ldots, X_{n}\right) = 0,
+  $$
+  then
+  $$
+  Var\left( \hat{\beta} \mid X_{1}, \ldots, X_{n}\right) =
+  \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  $$
+- The assumption
+  $E\left( U_{i}^{2} \mid X_{1}, \ldots, X_{n}\right) = \sigma^{2} = \text{constant}$
+  is called (conditional) homoskedasticity.
+- The assumption $E\left( U_{i}U_{j} \mid X_{1}, \ldots, X_{n}\right) = 0$ for
+  $i \neq j$ can be replaced by the assumption that the observations
+  are independent.
+
+## Determinants of Variance
+
+$$
+Var\left( \hat{\beta} \mid X_{1}, \ldots, X_{n}\right) =
+\frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+$$
+
+- The variance of $\hat{\beta}$ is positively related to the variance
+  of the errors $\sigma^{2} = Var\left( U_{i}\right)$.
+- The variance of $\hat{\beta}$ is smaller when $X$'s are more dispersed.
+
+## Derivation of Variance: Setup
+
+- We are going to condition on $X$'s and will treat them as constants.
+  All expectations below are implicitly conditional on $X$'s.
+- We have $\hat{\beta}=\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}
+  \right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}$ and
+  $E\hat{\beta}=\beta$.
+  $$
+  \begin{aligned}
+  Var\left( \hat{\beta}\right) & = 
+  E\left[ \left( \hat{\beta}-E\hat{\beta}\right) ^{2}\right] \\
+  &= E\left[ \left( \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{ 
+  \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}\right] \\
+  &= \left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}
+  E\left[ \left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}\right].
+  \end{aligned}
+  $$
+
+## Derivation of Variance: Expansion
+
+- Expanding the square,
+  $$
+  \begin{aligned}
+  \left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}
+  &= \sum_{i=1}^{n}\sum_{j=1}^{n}\left( X_{i}-\bar{X}\right)
+  \left( X_{j}-\bar{X}\right) U_{i}U_{j} \\
+  &= \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}U_{i}^{2}
+  + \sum_{i=1}^{n}\sum_{j\neq i}\left( X_{i}-\bar{X}\right)
+  \left( X_{j}-\bar{X}\right) U_{i}U_{j}.
+  \end{aligned}
+  $$
+- Since $E\left( U_{i}U_{j}\right) = 0$ for $i \neq j$,
+  $$
+  \begin{aligned}
+  E\left[ \left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}\right]
+  &= \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}E U_{i}^{2} + 0 \\
+  &= \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\sigma^{2}.
+  \end{aligned}
+  $$
+
+## Derivation of Variance: Final Step
+
+We have
+$$
+\begin{aligned}
+Var\left( \hat{\beta}\right) &= 
+\left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}
+E\left[ \left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}\right], \\
+E\left[ \left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}\right]
+&= \sigma^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2},
+\end{aligned}
+$$
+and therefore,
+$$
+\begin{aligned}
+Var\left( \hat{\beta}\right) &= 
+\left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}
+\sigma^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2} \\
+&= \left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right)
+\sigma^{2}.
+\end{aligned}
+$$
+
+# Distribution of the Slope Estimator
+
+## Normality of the OLS Estimator
+
+- Assume that $U_{i}$'s are jointly normally distributed conditional
+  on $X$'s.
+- Then $Y_{i}=\alpha +\beta X_{i}+U_{i}$ are also jointly normally
+  distributed.
+- Since $\hat{\beta}=\sum_{i=1}^{n}w_{i}Y_{i}$, where
+  $w_{i}=\frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}$
+  depend only on $X$'s, $\hat{\beta}$ is also normally distributed
+  conditional on $X$'s.
+- Conditional on $X_{1}, \ldots, X_{n}$
+  $$
+  \begin{aligned}
+  \hat{\beta} &\sim N\left( E\hat{\beta}, Var\left( \hat{\beta}\right) \right) \\
+  &\sim N\left( \beta, \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right).
+  \end{aligned}
+  $$
