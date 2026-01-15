@@ -1,0 +1,4 @@
+.reveal section h1,
+.reveal section h2 {
+  text-transform: none !important;
+}
