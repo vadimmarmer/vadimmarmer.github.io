@@ -385,21 +385,80 @@ $$ \hat{\beta} = \frac{\sum_{i=1}^{n}\left( X_{i} - \bar{X}\right) Y_{i}}{\sum_{
 - **Fitted residuals**: $\hat{U}_{i} = Y_{i} - \hat{\alpha} - \hat{\beta}X_{i}$.
 :::
 
-::: {.content-visible when-format="pdf"}
-\begin{center}
-\includegraphics[trim=0 0 0 5.53in,clip,width=0.85\linewidth]{figures/fig2-4.png}
-\end{center}
-:::
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| fig-align: center
 
-::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-50 .figure-crop-small}
-![](figures/fig2-4.png)
-:::
-:::
+# Generate data
+set.seed(42)
+n <- 10
+X <- runif(n, 1, 9)
+alpha_hat <- 0.5
+beta_hat <- 0.3
+Y_hat_all <- alpha_hat + beta_hat * X
+Y <- Y_hat_all + rnorm(n, 0, 0.5)
 
-::: {.content-visible when-format="revealjs"}
-![](figures/fig2-4.png)
-:::
+par(mar = c(4, 4, 2, 1))
+plot(X, Y, pch = 19, col = "gray50",
+     xlab = expression(italic(X)), ylab = expression(italic(Y)),
+     xlim = c(0, 10), ylim = c(0, max(Y) + 0.8),
+     main = "Fitted values and residuals")
+
+# Fitted regression line
+abline(a = alpha_hat, b = beta_hat, lwd = 1.5)
+
+# Select one point with a clear positive residual
+i <- which.max(Y - Y_hat_all)
+Xi <- X[i]
+Yi <- Y[i]
+Y_hat_i <- alpha_hat + beta_hat * Xi
+
+# Highlight the selected point
+points(Xi, Yi, pch = 19, col = "black", cex = 1.3)
+
+# Function to draw a right curly brace
+draw_brace <- function(x, y1, y2, col, width = 0.15) {
+  mid <- (y1 + y2) / 2
+  # Draw curly brace shape using segments
+  n <- 20
+  # Top half
+  t1 <- seq(0, pi/2, length.out = n)
+  brace_y1 <- seq(y2, mid + (y2-y1)/8, length.out = n)
+  brace_x1 <- x + width * (1 - cos(t1)) / 2
+  # Bottom half
+  brace_y2 <- seq(mid - (y2-y1)/8, y1, length.out = n)
+  brace_x2 <- x + width * (1 - cos(rev(t1))) / 2
+  # Middle point
+  lines(brace_x1, brace_y1, col = col, lwd = 1.5)
+  lines(brace_x2, brace_y2, col = col, lwd = 1.5)
+  # Connect at middle with point
+  lines(c(x + width/2, x + width), c(mid + (y2-y1)/8, mid), col = col, lwd = 1.5)
+  lines(c(x + width, x + width/2), c(mid, mid - (y2-y1)/8), col = col, lwd = 1.5)
+}
+
+# Thin dashed vertical line from 0 to Yi
+segments(Xi, 0, Xi, Yi, lty = 2, lwd = 0.5)
+
+# Blue brace for Y_hat (fitted value): from 0 to Y_hat_i
+draw_brace(Xi + 0.1, 0, Y_hat_i, col = "blue", width = 0.25)
+
+# Red brace for U_hat (residual): from Y_hat_i to Yi
+draw_brace(Xi + 0.1, Y_hat_i, Yi, col = "red", width = 0.25)
+
+# Labels
+text(Xi + 0.15, Yi + 0.1, expression(Y[i]), cex = 0.85, adj = 0)
+text(Xi + 0.45, Y_hat_i / 2, expression(hat(Y)[i]), cex = 0.85, adj = 0, col = "blue")
+text(Xi + 0.45, (Yi + Y_hat_i) / 2, expression(hat(U)[i]), cex = 0.85, adj = 0, col = "red")
+
+# Label for X_i on x-axis
+mtext(expression(X[i]), side = 1, at = Xi, line = 0.5, cex = 0.8)
+
+# Label for regression line (moved to lower left to avoid clash)
+text(1.5, 2.8, expression(hat(Y) == hat(alpha) + hat(beta)*X), cex = 0.85)
+segments(2.5, 2.6, 3.5, alpha_hat + beta_hat * 3.5, lwd = 0.7)
+```
 
 ## True vs Fitted Regression Lines
 
@@ -408,21 +467,41 @@ $$ \hat{\beta} = \frac{\sum_{i=1}^{n}\left( X_{i} - \bar{X}\right) Y_{i}}{\sum_{
 - **Fitted:** $Y_{i} = \hat{\alpha} + \hat{\beta} X_{i} + \hat{U}_{i}$, $\sum_{i=1}^{n}\hat{U}_{i} = \sum_{i=1}^{n}X_{i}\hat{U}_{i} = 0$.
 :::
 
-::: {.content-visible when-format="pdf"}
-\begin{center}
-\includegraphics[trim=0 0 0 5.54in,clip,width=0.85\linewidth]{figures/fig2-5.png}
-\end{center}
-:::
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| fig-align: center
 
-::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-50 .figure-crop-small}
-![](figures/fig2-5.png)
-:::
-:::
+par(mar = c(4, 4, 2, 1))
 
-::: {.content-visible when-format="revealjs"}
-![](figures/fig2-5.png)
-:::
+# True parameters
+alpha <- 1.0
+beta <- 0.2
+
+# Fitted parameters (steeper slope for better separation)
+alpha_hat <- 0.3
+beta_hat <- 0.38
+
+# Plot setup
+plot(NA, xlim = c(0, 10), ylim = c(0, 4.5),
+     xlab = expression(italic(X)), ylab = expression(italic(Y)),
+     main = "True vs fitted regression lines")
+
+# True regression line (solid)
+abline(a = alpha, b = beta, lty = 1, lwd = 1.5)
+
+# Fitted regression line (dashed)
+abline(a = alpha_hat, b = beta_hat, lty = 2, lwd = 1.5)
+
+# Label for fitted line (upper, steeper line)
+text(5.5, 3.8, expression(hat(Y) == hat(alpha) + hat(beta)*X), cex = 0.85)
+segments(6.2, 3.6, 7.5, alpha_hat + beta_hat * 7.5, lwd = 0.7)
+
+# Label for true line (lower, flatter line)
+text(5.5, 1.8, expression(E(Y~"|"~X) == alpha + beta*X), cex = 0.85)
+segments(6.2, 1.95, 7.5, alpha + beta * 7.5, lwd = 0.7)
+```
 
 ## Ordinary Least Squares (OLS) Minimization
 
