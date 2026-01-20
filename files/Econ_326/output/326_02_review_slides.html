@@ -1394,6 +1394,58 @@ Var(X) = \sum_i (x_i - EX)^2 p_i \text{ or } Var(X) = \int (x - EX)^2 f(x) dx.
 <li class="fragment"><p><strong>Standard deviation</strong>: <span class="math inline">\sqrt{Var(X)}</span>.</p></li>
 </ul>
 </section>
+<section id="properties" class="slide level2">
+<h2>Properties</h2>
+<ul>
+<li class="fragment">Linearity:
+<ul>
+<li class="fragment">Discrete: <span class="math display">\begin{align*}
+E(a + bX) &amp;= \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i \\
+&amp;= a + bEX.
+\end{align*}</span></li>
+<li class="fragment">Continuous: <span class="math display">\begin{align*}
+E(a + bX) &amp;= \int (a + bx) f(x) dx = a\int f(x) dx + b\int x f(x) dx \\
+&amp;= a + bEX.
+\end{align*}</span></li>
+</ul></li>
+<li class="fragment">Re-centering: a random variable <span class="math inline">X - EX</span> has mean zero: <span class="math display">
+E(X - EX) = EX - E(EX) = EX - EX = 0.
+</span></li>
+</ul>
+</section>
+<section id="properties-continued" class="slide level2">
+<h2>Properties (continued)</h2>
+<ul>
+<li class="fragment"><p>Variance formula: <span class="math inline">Var(X) = EX^2 - (EX)^2</span> <span class="math display">\begin{align*}
+Var(X) &amp;= E(X - EX)^2 \\
+&amp;= E[(X - EX)(X - EX)] \\
+&amp;= E[(X - EX)X - (X - EX) \cdot EX] \\
+&amp;= E[(X - EX)X] - E[(X - EX) \cdot EX] \\
+&amp;= E[X^2 - X \cdot EX] - EX \cdot E(X - EX) \\
+&amp;= EX^2 - EX \cdot EX - EX \cdot 0\\
+&amp; = EX^2 - (EX)^2
+\end{align*}</span></p></li>
+<li class="fragment"><p>If <span class="math inline">EX = 0</span> then <span class="math inline">Var(X) = EX^2</span>.</p></li>
+</ul>
+</section>
+<section id="properties-continued-1" class="slide level2">
+<h2>Properties (continued)</h2>
+<ul>
+<li class="fragment"><p>If <span class="math inline">c</span> is a constant, <span class="math inline">Ec = c</span>, and <span class="math display">
+Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">Var(a + bX) = b^2 Var(X)</span> <span class="math display">\begin{align*}
+Var(a + bX) &amp;= E[(a + bX) - E(a + bX)]^2\\
+&amp; = E[a + bX - a - bEX]^2 \\
+&amp;= E[bX - bEX]^2 = E[b^2(X - EX)^2] \\
+&amp;= b^2 E(X - EX)^2 \\
+&amp;= b^2 Var(X).
+\end{align*}</span></p></li>
+<li class="fragment"><p>Re-scaling: Let <span class="math inline">Var(X) = \sigma^2</span>, so the standard deviation is <span class="math inline">\sigma</span>: <span class="math display">
+Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.
+</span></p></li>
+</ul>
+</section>
 <section id="example-bernoulli-distribution-continued" class="slide level2">
 <h2>Example: Bernoulli distribution (continued)</h2>
 <ul>
@@ -1419,50 +1471,6 @@ E(X) = \int_0^1 x \cdot 1 \, dx = \left. \frac{x^2}{2} \right|_0^1 = \frac{1}{2}
 E(X^2) = \int_0^1 x^2 \cdot 1 \, dx = \left. \frac{x^3}{3} \right|_0^1 = \frac{1}{3}.
 </span> <span class="math display">
 Var(X) = E(X^2) - (EX)^2 = \frac{1}{3} - \left(\frac{1}{2}\right)^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}.
-</span></p></li>
-</ul>
-</section>
-<section id="properties" class="slide level2">
-<h2>Properties</h2>
-<ul>
-<li class="fragment"><p>If <span class="math inline">c</span> is a constant, <span class="math inline">Ec = c</span>, and <span class="math display">
-Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.
-</span></p></li>
-<li class="fragment"><p>Linearity: <span class="math display">
-E(a + bX) = \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i = a + bEX.
-</span></p></li>
-<li class="fragment"><p>Re-centering: a random variable <span class="math inline">X - EX</span> has mean zero: <span class="math display">
-E(X - EX) = EX - E(EX) = EX - EX = 0.
-</span></p></li>
-</ul>
-</section>
-<section id="properties-continued" class="slide level2">
-<h2>Properties (continued)</h2>
-<ul>
-<li class="fragment"><p>Variance formula: <span class="math inline">Var(X) = EX^2 - (EX)^2</span> <span class="math display">\begin{align*}
-Var(X) &amp;= E(X - EX)^2 \\
-&amp;= E[(X - EX)(X - EX)] \\
-&amp;= E[(X - EX)X - (X - EX) \cdot EX] \\
-&amp;= E[(X - EX)X] - E[(X - EX) \cdot EX] \\
-&amp;= E[X^2 - X \cdot EX] - EX \cdot E(X - EX) \\
-&amp;= EX^2 - EX \cdot EX - EX \cdot 0\\
-&amp; = EX^2 - (EX)^2
-\end{align*}</span></p></li>
-<li class="fragment"><p>If <span class="math inline">EX = 0</span> then <span class="math inline">Var(X) = EX^2</span>.</p></li>
-</ul>
-</section>
-<section id="properties-continued-1" class="slide level2">
-<h2>Properties (continued)</h2>
-<ul>
-<li class="fragment"><p><span class="math inline">Var(a + bX) = b^2 Var(X)</span> <span class="math display">\begin{align*}
-Var(a + bX) &amp;= E[(a + bX) - E(a + bX)]^2\\
-&amp; = E[a + bX - a - bEX]^2 \\
-&amp;= E[bX - bEX]^2 = E[b^2(X - EX)^2] \\
-&amp;= b^2 E(X - EX)^2 \\
-&amp;= b^2 Var(X).
-\end{align*}</span></p></li>
-<li class="fragment"><p>Re-scaling: Let <span class="math inline">Var(X) = \sigma^2</span>, so the standard deviation is <span class="math inline">\sigma</span>: <span class="math display">
-Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.
 </span></p></li>
 </ul>
 </section>

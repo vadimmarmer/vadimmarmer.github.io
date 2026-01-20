@@ -328,6 +328,67 @@ $$
 
 - **Standard deviation**: $\sqrt{Var(X)}$.
 
+
+
+## Properties
+
+- Linearity:
+  - Discrete:
+\begin{align*}
+E(a + bX) &= \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i \\
+&= a + bEX.
+\end{align*}
+  - Continuous:
+\begin{align*}
+E(a + bX) &= \int (a + bx) f(x) dx = a\int f(x) dx + b\int x f(x) dx \\
+&= a + bEX.
+\end{align*}
+
+
+- Re-centering: a random variable $X - EX$ has mean zero:
+$$
+E(X - EX) = EX - E(EX) = EX - EX = 0.
+$$
+
+
+
+## Properties (continued)
+
+- Variance formula: $Var(X) = EX^2 - (EX)^2$
+  \begin{align*}
+  Var(X) &= E(X - EX)^2 \\
+  &= E[(X - EX)(X - EX)] \\
+  &= E[(X - EX)X - (X - EX) \cdot EX] \\
+  &= E[(X - EX)X] - E[(X - EX) \cdot EX] \\
+  &= E[X^2 - X \cdot EX] - EX \cdot E(X - EX) \\
+  &= EX^2 - EX \cdot EX - EX \cdot 0\\
+  & = EX^2 - (EX)^2
+  \end{align*}
+
+- If $EX = 0$ then $Var(X) = EX^2$.
+
+## Properties (continued)
+
+- If $c$ is a constant, $Ec = c$, and
+$$
+Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.
+$$
+
+
+- $Var(a + bX) = b^2 Var(X)$
+  \begin{align*}
+  Var(a + bX) &= E[(a + bX) - E(a + bX)]^2\\
+  & = E[a + bX - a - bEX]^2 \\
+  &= E[bX - bEX]^2 = E[b^2(X - EX)^2] \\
+  &= b^2 E(X - EX)^2 \\
+  &= b^2 Var(X).
+  \end{align*}
+
+- Re-scaling: Let $Var(X) = \sigma^2$, so the standard deviation is $\sigma$:
+$$
+Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.
+$$
+
 ## Example: Bernoulli distribution (continued)
 
 - Recall: $X \sim Bernoulli(p)$ takes values $\{0, 1\}$ with $P(X=1) = p$ and $P(X=0) = 1-p$.
@@ -361,54 +422,6 @@ $$
   $$
   Var(X) = E(X^2) - (EX)^2 = \frac{1}{3} - \left(\frac{1}{2}\right)^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}.
   $$
-
-## Properties
-
-- If $c$ is a constant, $Ec = c$, and
-$$
-Var(c) = E(c - Ec)^2 = (c - c)^2 = 0.
-$$
-
-- Linearity:
-$$
-E(a + bX) = \sum_i (a + bx_i) p_i = a \sum_i p_i + b \sum_i x_i p_i = a + bEX.
-$$
-
-- Re-centering: a random variable $X - EX$ has mean zero:
-$$
-E(X - EX) = EX - E(EX) = EX - EX = 0.
-$$
-
-## Properties (continued)
-
-- Variance formula: $Var(X) = EX^2 - (EX)^2$
-  \begin{align*}
-  Var(X) &= E(X - EX)^2 \\
-  &= E[(X - EX)(X - EX)] \\
-  &= E[(X - EX)X - (X - EX) \cdot EX] \\
-  &= E[(X - EX)X] - E[(X - EX) \cdot EX] \\
-  &= E[X^2 - X \cdot EX] - EX \cdot E(X - EX) \\
-  &= EX^2 - EX \cdot EX - EX \cdot 0\\
-  & = EX^2 - (EX)^2
-  \end{align*}
-
-- If $EX = 0$ then $Var(X) = EX^2$.
-
-## Properties (continued)
-
-- $Var(a + bX) = b^2 Var(X)$
-  \begin{align*}
-  Var(a + bX) &= E[(a + bX) - E(a + bX)]^2\\
-  & = E[a + bX - a - bEX]^2 \\
-  &= E[bX - bEX]^2 = E[b^2(X - EX)^2] \\
-  &= b^2 E(X - EX)^2 \\
-  &= b^2 Var(X).
-  \end{align*}
-
-- Re-scaling: Let $Var(X) = \sigma^2$, so the standard deviation is $\sigma$:
-$$
-Var\left(\frac{X}{\sigma}\right) = \frac{1}{\sigma^2} Var(X) = 1.
-$$
 
 ## Covariance
 

@@ -129,21 +129,16 @@ format:
 - It is also a good starting point to learning the regression technique.
 
 ## Key Definitions
-::: {.content-visible when-format="pdf"}
-\begin{center}
-\includegraphics[trim=0 0 0 5.6in,clip]{figures/tab2-1.png}
-\end{center}
-:::
 
-::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-51}
-![](figures/tab2-1.png)
-:::
-:::
+**Terminology for Simple Regression**
 
-::: {.content-visible when-format="revealjs"}
-![](figures/tab2-1.png)
-:::
+| $y$ | $x$ |
+|-----|-----|
+| Dependent variable | Independent variable |
+| Explained variable | Explanatory variable |
+| Response variable | Control variable |
+| Predicted variable | Predictor variable |
+| Regressand | Regressor |
 
 ## Sample vs Population
 
@@ -246,43 +241,87 @@ E X_{i}U_{i} &\overset{\text{Law of Iterated Expectation}}{=} E\,E\left( X_{i}U_
 
 $$ Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{Orthogonal to } X} $$
 
-::: {.content-visible when-format="pdf"}
-\begin{center}
-\includegraphics[trim=0 0 0 5.53in,clip]{figures/fig2-1.png}
-\end{center}
-:::
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| fig-align: center
 
-::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-50}
-![](figures/fig2-1.png)
-:::
-:::
+# Parameters
+beta0 <- 1
+beta1 <- 0.8
+x_vals <- c(1.5, 3.5, 5.5)
+sigma <- 0.6
 
-::: {.content-visible when-format="revealjs"}
-::: {.fragment}
-![](figures/fig2-1.png)
-:::
-:::
+par(mar = c(4, 4, 2, 1))
+plot(NA, xlim = c(0, 7), ylim = c(0, 7),
+     xlab = expression(italic(x)), ylab = expression(italic(y)),
+     xaxt = "n", yaxt = "n",
+     main = expression(E(italic(y)*"|"*italic(x))~"as a linear function of"~italic(x)))
+axis(1, at = x_vals, labels = expression(italic(x)[1], italic(x)[2], italic(x)[3]))
+axis(2, at = NULL, labels = FALSE)
+
+# Regression line
+abline(a = beta0, b = beta1, lwd = 2)
+
+# Draw density curves at each x value
+for (x in x_vals) {
+  mu <- beta0 + beta1 * x
+  y_seq <- seq(mu - 2.5 * sigma, mu + 2.5 * sigma, length.out = 100)
+  dens <- dnorm(y_seq, mean = mu, sd = sigma)
+  dens_scaled <- dens * 1.2
+  lines(x + dens_scaled, y_seq, lwd = 1.5)
+  points(x, mu, pch = 19, cex = 1.2)
+}
+
+# Label with line pointing to regression line (positioned to avoid density curves)
+label_x <- 5.0
+label_y <- 0.8
+point_on_line_x <- 6.8
+point_on_line_y <- beta0 + beta1 * point_on_line_x
+text(label_x, label_y, expression(E(italic(y)*"|"*italic(x)) == alpha + beta*italic(x)), adj = 0, cex = 0.9)
+segments(6.5, label_y + 0.3, point_on_line_x, point_on_line_y, lwd = 0.7)
+```
 
 # Estimation of Parameters
 
 ## Estimation Problem
 
-::: {.content-visible when-format="pdf"}
-\begin{center}
-\includegraphics[trim=0 0 0 5.54in,clip]{figures/fig2-2.png}
-\end{center}
-:::
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| fig-align: center
 
-::: {.content-visible when-format="html"}
-::: {.tight-figure .figure-crop .figure-crop-50}
-![](figures/fig2-2.png)
-:::
-:::
+# Simulated data for n observations
+set.seed(42)
+n <- 15
+X <- runif(n, 1, 10)
+alpha_true <- -0.5
+beta_true <- 0.4
+Y <- alpha_true + beta_true * X + rnorm(n, 0, 0.8)
 
-::: {.content-visible when-format="revealjs"}
-![](figures/fig2-2.png)
-:::
+par(mar = c(4, 4, 2, 1))
+plot(X, Y, pch = 19, col = "gray40",
+     xlab = expression(italic(X)), ylab = expression(italic(Y)),
+     xlim = c(0, max(X) + 1), ylim = c(min(Y) - 0.5, max(Y) + 0.5),
+     main = expression("Scatterplot of "*italic(Y)*" and "*italic(X)*", and the population regression"))
+
+# Add regression line
+abline(a = alpha_true, b = beta_true, lwd = 1.5)
+
+# Add axis lines at 0
+abline(h = 0, lty = 1, col = "black", lwd = 0.5)
+abline(v = 0, lty = 1, col = "black", lwd = 0.5)
+
+# Label for regression line with pointer
+label_x <- 7.8
+label_y <- 1.0
+point_on_line_x <- 9.5
+point_on_line_y <- alpha_true + beta_true * point_on_line_x
+text(label_x, label_y, expression(E(italic(Y)*"|"*italic(X)) == alpha + beta*italic(X)), cex = 0.8)
+segments(8.8, 1.35, point_on_line_x, point_on_line_y, lwd = 0.7)
+```
 
 **Problem:** estimate the unknown parameters $\alpha$ and $\beta$ using the data ($n$ observations) on $Y$ and $X$.
 
