@@ -20,6 +20,7 @@ format:
     fontsize: 10pt
     number-sections: false
     toc: false
+    classoption: fleqn
   revealjs:
     output-file: 326_05_gauss_markov_slides.html
     theme: solarized
@@ -27,7 +28,7 @@ format:
     smaller: true
     slide-number: c/t
     incremental: true
-    html-math-method: mathjax
+    html-math-method: katex
     scrollable: true
     chalkboard: false
     self-contained: true
@@ -35,6 +36,16 @@ format:
 ---
 
 ## There are many alternative estimators
+
+::: {.hidden}
+$
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+$
+:::
+
+We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}$.
 
 - The OLS estimator is not the only estimator we can construct. There are alternative estimators with some desirable properties.
 
@@ -54,7 +65,7 @@ format:
 
 ## Unbiasedness of $\tilde{\beta}$
 
-- If $Y_i = \alpha + \beta X_i + U_i$ and $E(U_i | X_1, \ldots, X_n) = 0$, then $\tilde{\beta}$ is **unbiased**:
+- If $Y_i = \alpha + \beta X_i + U_i$ and $\E{U_i \mid \mathbf{X}} = 0$, then $\tilde{\beta}$ is **unbiased**:
   \begin{align*}
   \tilde{\beta} &= \frac{Y_2 - Y_1}{X_2 - X_1} \\
   &= \frac{(\alpha + \beta X_2 + U_2) - (\alpha + \beta X_1 + U_1)}{X_2 - X_1} \\
@@ -62,8 +73,8 @@ format:
   &= \beta + \frac{U_2 - U_1}{X_2 - X_1}, \text{ and}
   \end{align*}
   \begin{align*}
-  E(\tilde{\beta} | X_1, X_2) &= \beta + E\left(\frac{U_2 - U_1}{X_2 - X_1} \bigg| X_1, X_2\right) \\
-  &= \beta + \frac{E(U_2 | X_1, X_2) - E(U_1 | X_1, X_2)}{X_2 - X_1} \\
+  \E{\tilde{\beta} \mid X_1, X_2} &= \beta + \E{\frac{U_2 - U_1}{X_2 - X_1} \mid X_1, X_2} \\
+  &= \beta + \frac{\E{U_2 \mid X_1, X_2} - \E{U_1 \mid X_1, X_2}}{X_2 - X_1} \\
   &= \beta.
   \end{align*}
 
@@ -71,11 +82,11 @@ format:
 
 - Among all **linear** and **unbiased** estimators, an estimator with the **smallest variance** is called the **Best Linear Unbiased Estimator** (**BLUE**).
 
-- Note that the statement is **conditional** on $X$'s:
+- Note that the statement is **conditional** on $\mathbf{X}$:
 
-  - The estimators are **unbiased** conditionally on $X$'s.
+  - The estimators are **unbiased** conditionally on $\mathbf{X}$.
 
-  - The **variance** is conditional on $X$'s.
+  - The **variance** is conditional on $\mathbf{X}$.
 
 ## Gauss-Markov Theorem
 
@@ -83,17 +94,17 @@ Suppose that
 
 - $Y_i = \alpha + \beta X_i + U_i$.
 
-- $E(U_i | X_1, \ldots, X_n) = 0$.
+- $\E{U_i \mid \mathbf{X}} = 0$.
 
-- $E(U_i^2 | X_1, \ldots, X_n) = \sigma^2$ for all $i = 1, \ldots, n$ (homoskedasticity).
+- $\E{U_i^2 \mid \mathbf{X}} = \sigma^2$ for all $i = 1, \ldots, n$ (homoskedasticity).
 
-- For all $i \neq j$, $E(U_i U_j | X_1, \ldots, X_n) = 0$.
+- For all $i \neq j$, $\E{U_i U_j \mid \mathbf{X}} = 0$.
 
-Then, conditionally on $X$'s, the OLS estimators are **BLUE**.
+Then, conditionally on $\mathbf{X}$, the OLS estimators are **BLUE**.
 
 ## Gauss-Markov Theorem (setup)
 
-- We already know that the OLS estimator $\hat{\beta}$ is linear and unbiased (conditionally on $X$'s).
+- We already know that the OLS estimator $\hat{\beta}$ is linear and unbiased (conditionally on $\mathbf{X}$).
 
 - Let $\tilde{\beta}$ be any other estimator of $\beta$ such that
 
@@ -101,29 +112,29 @@ Then, conditionally on $X$'s, the OLS estimators are **BLUE**.
     $$
     \tilde{\beta} = \sum_{i=1}^{n} c_i Y_i,
     $$
-    where $c$'s depend only on $X$'s.
+    where $c$'s depend only on $\mathbf{X}$.
 
   - $\tilde{\beta}$ is unbiased:
     $$
-    E\tilde{\beta} = \beta,
+    \E{\tilde{\beta}} = \beta,
     $$
-    where expectation is conditional on $X$'s.
+    where expectation is conditional on $\mathbf{X}$.
 
 - We need to show that for **any** such $\tilde{\beta} \neq \hat{\beta}$,
   $$
-  Var(\tilde{\beta}) > Var(\hat{\beta}),
+  \Var{\tilde{\beta}} > \Var{\hat{\beta}},
   $$
-  where the variance is conditional on $X$'s.
+  where the variance is conditional on $\mathbf{X}$.
 
 ## An outline of the proof
 
 1. First, we are going to show that the $c$'s in $\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i$ satisfy $\sum_{i=1}^{n} c_i = 0$ and $\sum_{i=1}^{n} c_i X_i = 1$.
 
-2. Using the results of Step 1, we will show that conditionally on $X$'s, $Cov(\tilde{\beta}, \hat{\beta}) = Var(\hat{\beta})$.
+2. Using the results of Step 1, we will show that conditionally on $\mathbf{X}$, $\Cov{\tilde{\beta}, \hat{\beta}} = \Var{\hat{\beta}}$.
 
-3. Using the results of Step 2, we will show that conditionally on $X$'s, $Var(\tilde{\beta}) \geq Var(\hat{\beta})$.
+3. Using the results of Step 2, we will show that conditionally on $\mathbf{X}$, $\Var{\tilde{\beta}} \geq \Var{\hat{\beta}}$.
 
-4. Lastly, we will show that $Var(\tilde{\beta}) = Var(\hat{\beta})$ if and only if $\tilde{\beta} = \hat{\beta}$.
+4. Lastly, we will show that $\Var{\tilde{\beta}} = \Var{\hat{\beta}}$ if and only if $\tilde{\beta} = \hat{\beta}$.
 
 ## Proof: Step 1
 
@@ -133,23 +144,23 @@ Then, conditionally on $X$'s, the OLS estimators are **BLUE**.
   &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i.
   \end{align*}
 
-- Conditionally on $X$'s,
+- Conditionally on $\mathbf{X}$,
   \begin{align*}
-  E\tilde{\beta} &= E\left(\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i\right) \\
-  &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i E U_i \\
+  \E{\tilde{\beta}} &= \E{\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i} \\
+  &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i \E{U_i} \\
   &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
   \end{align*}
 
 ## Proof: Step 1 (continued)
 
-- From the **linearity** we have that, conditionally on $X$'s,
+- From the **linearity** we have that, conditionally on $\mathbf{X}$,
   $$
-  E\tilde{\beta} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+  \E{\tilde{\beta}} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
   $$
 
-- From the **unbiasedness** we have that conditionally on $X$'s,
+- From the **unbiasedness** we have that conditionally on $\mathbf{X}$,
   $$
-  \beta = E\tilde{\beta} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+  \beta = \E{\tilde{\beta}} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
   $$
 
 - Since this has to be true for **any** $\alpha$ and $\beta$, it follows now that
@@ -167,78 +178,78 @@ Then, conditionally on $X$'s, the OLS estimators are **BLUE**.
   \hat{\beta} = \beta + \sum_{i=1}^{n} w_i U_i, \text{ with } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
   $$
 
-- Conditionally on $X$'s,
+- Conditionally on $\mathbf{X}$,
   \begin{align*}
-  Cov(\tilde{\beta}, \hat{\beta}) &= E[(\tilde{\beta} - \beta)(\hat{\beta} - \beta)] \\
-  &= E\left[\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right)\right] \\
-  &= \sum_{i=1}^{n} c_i w_i E(U_i^2) + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j E(U_i U_j).
+  \Cov{\tilde{\beta}, \hat{\beta}} &= \E{(\tilde{\beta} - \beta)(\hat{\beta} - \beta)} \\
+  &= \E{\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right)} \\
+  &= \sum_{i=1}^{n} c_i w_i \E{U_i^2} + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j}.
   \end{align*}
 
 ## Proof: Step 2 (continued)
 
 $$
-Cov(\tilde{\beta}, \hat{\beta}) = \sum_{i=1}^{n} c_i w_i E(U_i^2) + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j E(U_i U_j).
+\Cov{\tilde{\beta}, \hat{\beta}} = \sum_{i=1}^{n} c_i w_i \E{U_i^2} + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j}.
 $$
 
-- Since $E(U_i^2) = \sigma^2$ for all $i$'s:
+- Since $\E{U_i^2} = \sigma^2$ for all $i$'s:
   $$
-  \sum_{i=1}^{n} c_i w_i E(U_i^2) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+  \sum_{i=1}^{n} c_i w_i \E{U_i^2} = \sigma^2 \sum_{i=1}^{n} c_i w_i.
   $$
 
-- Since $E(U_i U_j) = 0$ for all $i \neq j$,
+- Since $\E{U_i U_j} = 0$ for all $i \neq j$,
   $$
-  \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j E(U_i U_j) = 0.
+  \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j} = 0.
   $$
 
 - Thus,
   $$
-  Cov(\tilde{\beta}, \hat{\beta}) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+  \Cov{\tilde{\beta}, \hat{\beta}} = \sigma^2 \sum_{i=1}^{n} c_i w_i.
   $$
 
 ## Proof: Step 2 (continued)
 
-Conditionally on $X$'s:
+Conditionally on $\mathbf{X}$:
 $$
-Cov(\tilde{\beta}, \hat{\beta}) = \sigma^2 \sum_{i=1}^{n} c_i w_i \text{ and } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
+\Cov{\tilde{\beta}, \hat{\beta}} = \sigma^2 \sum_{i=1}^{n} c_i w_i \text{ and } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
 $$
 \begin{align*}
-Cov(\tilde{\beta}, \hat{\beta}) &= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
+\Cov{\tilde{\beta}, \hat{\beta}} &= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) \\
-&= Var(\hat{\beta}).
+&= \Var{\hat{\beta}}.
 \end{align*}
 
 ## Proof: Step 3
 
 - We know now that for any **linear** and **unbiased** $\tilde{\beta}$,
   $$
-  Cov(\tilde{\beta}, \hat{\beta}) = Var(\hat{\beta}).
+  \Cov{\tilde{\beta}, \hat{\beta}} = \Var{\hat{\beta}}.
   $$
 
-- Let's consider $Var(\tilde{\beta} - \hat{\beta})$:
+- Let's consider $\Var{\tilde{\beta} - \hat{\beta}}$:
   \begin{align*}
-  Var(\tilde{\beta} - \hat{\beta}) &= Var(\tilde{\beta}) + Var(\hat{\beta}) - 2 Cov(\tilde{\beta}, \hat{\beta}) \\
-  &= Var(\tilde{\beta}) + Var(\hat{\beta}) - 2 Var(\hat{\beta}) \\
-  &= Var(\tilde{\beta}) - Var(\hat{\beta}).
+  \Var{\tilde{\beta} - \hat{\beta}} &= \Var{\tilde{\beta}} + \Var{\hat{\beta}} - 2 \Cov{\tilde{\beta}, \hat{\beta}} \\
+  &= \Var{\tilde{\beta}} + \Var{\hat{\beta}} - 2 \Var{\hat{\beta}} \\
+  &= \Var{\tilde{\beta}} - \Var{\hat{\beta}}.
   \end{align*}
 
-- But since $Var(\tilde{\beta} - \hat{\beta}) \geq 0$,
+- But since $\Var{\tilde{\beta} - \hat{\beta}} \geq 0$,
   $$
-  Var(\tilde{\beta}) - Var(\hat{\beta}) \geq 0
+  \Var{\tilde{\beta}} - \Var{\hat{\beta}} \geq 0
   $$
   or
   $$
-  Var(\tilde{\beta}) \geq Var(\hat{\beta}).
+  \Var{\tilde{\beta}} \geq \Var{\hat{\beta}}.
   $$
 
 ## Proof: Step 4 (Uniqueness)
 
-Suppose that $Var(\tilde{\beta}) = Var(\hat{\beta})$.
+Suppose that $\Var{\tilde{\beta}} = \Var{\hat{\beta}}$.
 
 - Then,
   $$
-  Var(\tilde{\beta} - \hat{\beta}) = Var(\tilde{\beta}) - Var(\hat{\beta}) = 0.
+  \Var{\tilde{\beta} - \hat{\beta}} = \Var{\tilde{\beta}} - \Var{\hat{\beta}} = 0.
   $$
 
 - Thus, $\tilde{\beta} - \hat{\beta}$ is not random or
@@ -248,7 +259,7 @@ Suppose that $Var(\tilde{\beta}) = Var(\hat{\beta})$.
 
 - This constant also has to be zero because
   \begin{align*}
-  E\tilde{\beta} &= E\hat{\beta} + \text{constant} \\
+  \E{\tilde{\beta}} &= \E{\hat{\beta}} + \text{constant} \\
   &= \beta + \text{constant},
   \end{align*}
   and in order for $\tilde{\beta}$ to be **unbiased**

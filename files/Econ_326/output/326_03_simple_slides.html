@@ -1112,6 +1112,10 @@ Vadim Marmer, UBC
 </section>
 <section id="overview-of-simple-linear-regression" class="slide level2">
 <h2>Overview of Simple Linear Regression</h2>
+<div class="hidden">
+$
+<p>$</p>
+</div>
 <ul>
 <li class="fragment">The <strong>simple linear regression model</strong> is used to study the relationship between <strong>two variables</strong>.</li>
 <li class="fragment">It has many limitations, but nevertheless there are examples in the literature where the simple linear regression is applied (e.g., stock returns predictability).</li>
@@ -1200,22 +1204,22 @@ Vadim Marmer, UBC
 <section id="conditional-expectation-function" class="slide level2">
 <h2>Conditional Expectation Function</h2>
 <ul>
-<li class="fragment"><p>We model the relationship between <span class="math inline">Y</span> and <span class="math inline">X</span> using the <strong>conditional expectation</strong>: <span class="math display"> E\left( Y_{i}|X_{i}\right) = \alpha + \beta X_{i}. </span></p></li>
-<li class="fragment"><p><strong>Intercept</strong>: <span class="math inline">\alpha = E\left( Y_{i}|X_{i}=0\right)</span>.</p></li>
+<li class="fragment"><p>We model the relationship between <span class="math inline">Y</span> and <span class="math inline">X</span> using the <strong>conditional expectation</strong>: <span class="math display"> \mathrm{E}\left[Y_{i}|X_{i}\right] = \alpha + \beta X_{i}. </span></p></li>
+<li class="fragment"><p><strong>Intercept</strong>: <span class="math inline">\alpha = \mathrm{E}\left[Y_{i}|X_{i}=0\right]</span>.</p></li>
 <li class="fragment"><p><strong>Slope</strong>: <span class="math inline">\beta</span> measures the effect of a unit change in <span class="math inline">X</span> on <span class="math inline">Y</span>: <span class="math display"> \begin{aligned}
-\beta &amp;= E\left( Y_{i}|X_{i}=x+1\right) - E\left( Y_{i}|X_{i}=x\right) \\ &amp;= \left[ \alpha + \beta (x+1)\right] - \left[ \alpha + \beta x\right].
+\beta &amp;= \mathrm{E}\left[Y_{i}|X_{i}=x+1\right] - \mathrm{E}\left[Y_{i}|X_{i}=x\right] \\ &amp;= \left[ \alpha + \beta (x+1)\right] - \left[ \alpha + \beta x\right].
 \end{aligned} </span></p></li>
-<li class="fragment"><p><strong>Marginal effect</strong> of <span class="math inline">X</span> on <span class="math inline">Y</span>: <span class="math display"> \beta = \frac{dE\left( Y_{i}|X_{i}\right)}{dX_{i}}. </span></p></li>
+<li class="fragment"><p><strong>Marginal effect</strong> of <span class="math inline">X</span> on <span class="math inline">Y</span>: <span class="math display"> \beta = \frac{d\mathrm{E}\left[Y_{i}|X_{i}\right]}{dX_{i}}. </span></p></li>
 <li class="fragment"><p><strong>The effect is the same for all <span class="math inline">x</span></strong>.</p></li>
 </ul>
 </section>
 <section id="regression-error-term" class="slide level2">
 <h2>Regression Error Term</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\alpha</span> and <span class="math inline">\beta</span> in <span class="math inline">E\left( Y_{i}|X_{i}\right) = \alpha + \beta X_{i}</span> are <strong>unknown</strong>.</p></li>
-<li class="fragment"><p><strong>Residual (error)</strong>: <span class="math display"> U_{i} = Y_{i} - E\left( Y_{i}|X_{i}\right) = Y_{i} - \left( \alpha + \beta X_{i}\right). </span> <span class="math inline">U_{i}</span>’s are <strong>unobservable</strong>.</p></li>
+<li class="fragment"><p><span class="math inline">\alpha</span> and <span class="math inline">\beta</span> in <span class="math inline">\mathrm{E}\left[Y_{i}|X_{i}\right] = \alpha + \beta X_{i}</span> are <strong>unknown</strong>.</p></li>
+<li class="fragment"><p><strong>Residual (error)</strong>: <span class="math display"> U_{i} = Y_{i} - \mathrm{E}\left[Y_{i}|X_{i}\right] = Y_{i} - \left( \alpha + \beta X_{i}\right). </span> <span class="math inline">U_{i}</span>’s are <strong>unobservable</strong>.</p></li>
 <li class="fragment"><p><strong>The model</strong>: <span class="math display"> \begin{aligned}
-Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ E\left( U_{i}|X_{i}\right) &amp;= 0.
+Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right] &amp;= 0.
 \end{aligned} </span></p></li>
 </ul>
 </section>
@@ -1254,11 +1258,11 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ E\left( U_{i}|X_{i}\right) &amp;= 
 <section id="assumption-of-orthogonality" class="slide level2">
 <h2>Assumption of Orthogonality</h2>
 <p>The model: <span class="math display"> Y_{i} = \alpha + \beta X_{i} + U_{i}. </span></p>
-<p>We assume that <span class="math inline">E\left( U_{i}|X_{i}\right) = 0</span>.</p>
+<p>We assume that <span class="math inline">\mathrm{E}\left[U_{i}|X_{i}\right] = 0</span>.</p>
 <ul>
-<li class="fragment"><p><span class="math inline">E U_{i} = 0</span>. <span class="math display"> E U_{i} \overset{\text{Law of Iterated Expectation}}{=} E\,E\left( U_{i}|X_{i}\right) = E\,0 = 0. </span></p></li>
-<li class="fragment"><p><span class="math inline">Cov\left( X_{i},U_{i}\right) = E X_{i}U_{i} = 0</span>. <span class="math display"> \begin{aligned}
-E X_{i}U_{i} &amp;\overset{\text{Law of Iterated Expectation}}{=} E\,E\left( X_{i}U_{i}|X_{i}\right) \\ &amp;= E\left[ X_{i} E\left( U_{i}|X_{i}\right) \right] = E\left[ X_{i} 0 \right] = 0.
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span>. <span class="math display"> \mathrm{E}\left[U_{i}\right] \overset{\text{Law of Iterated Expectation}}{=} \mathrm{E}\left[\mathrm{E}\left[U_{i}|X_{i}\right]\right] = \mathrm{E}\left[0\right] = 0. </span></p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{Cov}\left(X_{i},U_{i}\right) = \mathrm{E}\left[X_{i}U_{i}\right] = 0</span>. <span class="math display"> \begin{aligned}
+\mathrm{E}\left[X_{i}U_{i}\right] &amp;\overset{\text{Law of Iterated Expectation}}{=} \mathrm{E}\left[\mathrm{E}\left[X_{i}U_{i}|X_{i}\right]\right] \\ &amp;= \mathrm{E}\left[X_{i} \mathrm{E}\left[U_{i}|X_{i}\right]\right] = \mathrm{E}\left[X_{i} \cdot 0\right] = 0.
 \end{aligned} </span></p></li>
 </ul>
 </section>
@@ -1281,7 +1285,7 @@ E X_{i}U_{i} &amp;\overset{\text{Law of Iterated Expectation}}{=} E\,E\left( X_{
 <h2>Method of Moments Estimator</h2>
 <ul>
 <li class="fragment"><p>We assume that <span class="math display"> \begin{aligned}
-E U_{i} &amp;= E\left( Y_{i} - \alpha - \beta X_{i}\right) = 0. \\ E X_{i}U_{i} &amp;= E X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right) = 0.
+\mathrm{E}\left[U_{i}\right] &amp;= \mathrm{E}\left[Y_{i} - \alpha - \beta X_{i}\right] = 0. \\ \mathrm{E}\left[X_{i}U_{i}\right] &amp;= \mathrm{E}\left[X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right)\right] = 0.
 \end{aligned} </span></p></li>
 <li class="fragment"><p>An <strong>estimator</strong> is a function of the observable data; it can depend only on observable <span class="math inline">X</span> and <span class="math inline">Y</span>. Let <span class="math inline">\hat{\alpha}</span> and <span class="math inline">\hat{\beta}</span> denote the estimators of <span class="math inline">\alpha</span> and <span class="math inline">\beta</span>.</p></li>
 <li class="fragment"><p><strong>Method of moments:</strong> replace expectations with averages. <strong>Normal equations</strong>: <span class="math display"> \begin{aligned}
@@ -1330,7 +1334,7 @@ E U_{i} &amp;= E\left( Y_{i} - \alpha - \beta X_{i}\right) = 0. \\ E X_{i}U_{i} 
 <section id="true-vs-fitted-regression-lines" class="slide level2">
 <h2>True vs Fitted Regression Lines</h2>
 <ul>
-<li><strong>True:</strong> <span class="math inline">Y_{i} = \alpha + \beta X_{i} + U_{i}</span>, <span class="math inline">E U_{i} = E X_{i}U_{i} = 0</span>.</li>
+<li><strong>True:</strong> <span class="math inline">Y_{i} = \alpha + \beta X_{i} + U_{i}</span>, <span class="math inline">\mathrm{E}\left[U_{i}\right] = \mathrm{E}\left[X_{i}U_{i}\right] = 0</span>.</li>
 <li><strong>Fitted:</strong> <span class="math inline">Y_{i} = \hat{\alpha} + \hat{\beta} X_{i} + \hat{U}_{i}</span>, <span class="math inline">\sum_{i=1}^{n}\hat{U}_{i} = \sum_{i=1}^{n}X_{i}\hat{U}_{i} = 0</span>.</li>
 </ul>
 

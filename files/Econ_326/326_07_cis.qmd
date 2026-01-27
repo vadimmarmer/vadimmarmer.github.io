@@ -20,6 +20,7 @@ format:
     fontsize: 10pt
     number-sections: false
     toc: false
+    classoption: fleqn
   revealjs:
     output-file: 326_07_cis_slides.html
     theme: solarized
@@ -36,25 +37,35 @@ format:
 
 ## Point estimation
 
+::: {.hidden}
+$
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+$
+:::
+
+We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}$.
+
 - Our model:
 
   1. $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.$
 
-  2. $E\left( U_{i}|X_{1},\ldots ,X_{n}\right) =0$ for all $i$'s.
+  2. $\E{U_{i}\mid \mathbf{X}} =0$ for all $i$'s.
 
-  3. $E\left( U_{i}^{2}|X_{1},\ldots ,X_{n}\right) =\sigma ^{2}$ for all $i$'s.
+  3. $\E{U_{i}^{2}\mid \mathbf{X}} =\sigma ^{2}$ for all $i$'s.
 
-  4. $E\left( U_{i}U_{j}|X_{1},\ldots ,X_{n}\right) =0$ for all $i\neq j$.
+  4. $\E{U_{i}U_{j}\mid \mathbf{X}} =0$ for all $i\neq j$.
 
-  5. $U$'s are jointly normally distributed conditional on $X$'s.
+  5. $U$'s are jointly normally distributed conditional on $\mathbf{X}$.
 
 - The OLS estimator $\hat{\beta}_{1}$ is a **point estimator** of $\beta _{1}.$
 
-- For our model, conditional on $X$'s:
+- For our model, conditional on $\mathbf{X}$:
   $$
   \begin{aligned}
-  \hat{\beta}_{1} &\sim N\left( \beta _{1},Var\left( \hat{\beta}_{1}\right) \right), \\
-  Var\left( \hat{\beta}_{1}\right) &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \hat{\beta}_{1} &\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}} \right), \\
+  \Var{\hat{\beta}_{1}} &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   \end{aligned}
   $$
 
@@ -91,14 +102,14 @@ format:
 
 - The problem is choosing $c_{1-\alpha }$ such that $P\left( \beta_{1}\in CI_{1-\alpha }\right) =1-\alpha .$
 
-- In choosing $c_{1-\alpha }$ we will be relying on the fact that given our assumptions and conditionally on $X$'s:
+- In choosing $c_{1-\alpha }$ we will be relying on the fact that given our assumptions and conditionally on $\mathbf{X}$:
   $$
-  \hat{\beta}_{1}\sim N\left( \beta _{1},Var\left( \hat{\beta}_{1}\right)\right) \text{ and }Var\left( \hat{\beta}_{1}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}}\right) \text{ and }\Var{\hat{\beta}_{1}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   $$
 
-- Note that conditionally on $X$'s:
+- Note that conditionally on $\mathbf{X}$:
   $$
-  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{Var\left( \hat{\beta}_{1}\right) }}\sim N\left( 0,1\right) .
+  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\sim N\left( 0,1\right) .
   $$
 
 ## Quantiles (percentiles) of the standard normal distribution
@@ -114,29 +125,29 @@ format:
 
 ## $\sigma^2$ is known (infeasible CIs)
 
-- **Suppose** (for a moment) that $\sigma ^{2}$ is known, and we can compute exactly the variance of $\hat{\beta}_{1}$ as $Var\left( \hat{\beta}_{1}\right) =\sigma ^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}.$
+- **Suppose** (for a moment) that $\sigma ^{2}$ is known, and we can compute exactly the variance of $\hat{\beta}_{1}$ as $\Var{\hat{\beta}_{1}} =\sigma ^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}.$
 
 - Consider the following CI:
   $$
-  CI_{1-\alpha }=\left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) }\right] .
+  CI_{1-\alpha }=\left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\right] .
   $$
 
 - For example, if $1-\alpha =0.95 \Longleftrightarrow \alpha =0.05\Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96$, and
   $$
-  CI_{0.95}=\left[ \hat{\beta}_{1}-1.96\sqrt{Var\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+1.96\sqrt{Var\left( \hat{\beta}_{1}\right) }\right] .
+  CI_{0.95}=\left[ \hat{\beta}_{1}-1.96\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+1.96\sqrt{\Var{\hat{\beta}_{1}} }\right] .
   $$
 
 ## Validity of the infeasible CIs ($\sigma^2$ is known)
 
-- We need to show that $P\left( \beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) }\right] \right)=1-\alpha .$
+- We need to show that $P\left( \beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\right] \right)=1-\alpha .$
 
 - Next,
   $$
   \begin{aligned}
-  &\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) }\leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) } \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) }\leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) } \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) }\leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) } \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{Var\left( \hat{\beta}_{1}\right) }}\leq z_{1-\alpha /2}
+  &\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} } \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} } \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} } \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\leq z_{1-\alpha /2}
   \end{aligned}
   $$
 
@@ -145,15 +156,15 @@ format:
 - We have that
   $$
   \begin{aligned}
-  &\beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{Var\left( \hat{\beta}_{1}\right) }\right] \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{Var\left( \hat{\beta}_{1}\right) }}\leq z_{1-\alpha /2}.
+  &\beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\right] \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\leq z_{1-\alpha /2}.
   \end{aligned}
   $$
 
-- Let $Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{Var\left( \hat{\beta}_{1}\right) }}\sim N\left( 0,1\right)$.
+- Let $Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\sim N\left( 0,1\right)$.
   $$
   \begin{aligned}
-  &P\left( -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{Var\left( \hat{\beta}_{1}\right) }}\leq z_{1-\alpha /2}\right) \\
+  &P\left( -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\leq z_{1-\alpha /2}\right) \\
   &=P\left( -z_{1-\alpha /2}\leq Z\leq z_{1-\alpha /2}\right) \\
   &=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2}\right) \\
   &=1-\alpha /2-\alpha /2=1-\alpha .
@@ -169,7 +180,7 @@ format:
 
 - We can replace $\sigma ^{2}$ by $s^{2}$, however, the result does not have a normal distribution any more:
   $$
-  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{Var}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2},\text{ where }\widehat{Var}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2},\text{ where }\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   $$
   Here $t_{n-2}$ denotes the $t$-distribution with $n-2$ degrees of freedom.
 
@@ -191,8 +202,8 @@ format:
 - We can now construct a feasible confidence interval with $1-\alpha$ coverage as:
   $$
   \begin{aligned}
-  CI_{1-\alpha } &=\left[ \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{Var}\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{Var}\left( \hat{\beta}_{1}\right) }\right], \\
-  &\text{where }\widehat{Var}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  CI_{1-\alpha } &=\left[ \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\right], \\
+  &\text{where }\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   \end{aligned}
   $$
 

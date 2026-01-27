@@ -1061,11 +1061,16 @@ Vadim Marmer, UBC
 </div>
 
 </section>
-<section id="the-importance-of-sigma2" class="slide level2">
+<section id="the-importance-of-sigma2" class="slide level2 hidden-macro">
 <h2>The importance of <span class="math inline">\sigma^2</span></h2>
+<div class="hidden">
+$
+<p>$</p>
+</div>
+<p>We use the notation <span class="math inline">\mathrm{E}\left[\cdot \mid \mathbf{X}\right] = \mathrm{E}\left[\cdot \mid X_1, \ldots, X_n\right]</span>.</p>
 <ul>
-<li class="fragment">The variance of <span class="math inline">\hat{\beta}</span> depends on the unknown <span class="math inline">\sigma^{2} = E[U_i^{2}]</span>: <span class="math display">
-Var\!\left( \hat{\beta} \mid X_{1}, \ldots, X_{n} \right) = \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)^{2}}.
+<li class="fragment">The variance of <span class="math inline">\hat{\beta}</span> depends on the unknown <span class="math inline">\sigma^{2} = \mathrm{E}\left[U_i^{2}\right]</span>: <span class="math display">
+\mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) = \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)^{2}}.
 </span></li>
 <li class="fragment">If <span class="math inline">U</span>’s were observable, we could estimate <span class="math inline">\sigma^{2}</span> by <span class="math inline">\frac{1}{n}\sum_{i=1}^{n}U_{i}^{2}</span>, which is unbiased, but infeasible.</li>
 <li class="fragment">Using residuals <span class="math inline">\hat{U}_{i}=Y_{i}-\hat{\alpha}-\hat{\beta}X_{i}</span> gives a feasible estimator <span class="math display">
@@ -1082,9 +1087,9 @@ s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <li class="fragment">Assumptions:
 <ol type="1">
 <li class="fragment"><span class="math inline">Y_{i}=\alpha +\beta X_{i}+U_{i}</span>.</li>
-<li class="fragment"><span class="math inline">E\left( U_{i}\mid X_{1},\ldots ,X_{n}\right) =0</span> for all <span class="math inline">i</span>.</li>
-<li class="fragment"><span class="math inline">E\left( U_{i}^{2}\mid X_{1},\ldots ,X_{n}\right) =\sigma ^{2}</span> for all <span class="math inline">i</span>.</li>
-<li class="fragment"><span class="math inline">E\left( U_{i}U_{j}\mid X_{1},\ldots ,X_{n}\right) =0</span> for all <span class="math inline">i\neq j</span>.</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[U_{i}\mid \mathbf{X}\right] =0</span> for all <span class="math inline">i</span>.</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[U_{i}^{2}\mid \mathbf{X}\right] =\sigma ^{2}</span> for all <span class="math inline">i</span>.</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[U_{i}U_{j}\mid \mathbf{X}\right] =0</span> for all <span class="math inline">i\neq j</span>.</li>
 </ol></li>
 <li class="fragment">Since <span class="math inline">\hat{U}_{i}=Y_{i}-\hat{\alpha}-\hat{\beta}X_{i}</span>, dividing by <span class="math inline">n-2</span> adjusts for estimating <span class="math inline">\alpha</span> and <span class="math inline">\beta</span>.</li>
 </ul>
@@ -1105,7 +1110,7 @@ Y_{i}-\bar{Y} &amp;= \beta \left( X_{i}-\bar{X}\right) +U_{i}-\bar{U},
 </span> Thus, <span class="math display">
 \sum_{i=1}^{n}\hat{U}_{i}^{2} =\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}+\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}-2\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right).
 </span></p>
-<p>To show <span class="math inline">E\sum_{i=1}^{n}\hat{U}_{i}^{2}=\left( n-2\right) \sigma ^{2}</span>, we verify the three expectations below.</p>
+<p>To show <span class="math inline">\mathrm{E}\left[\sum_{i=1}^{n}\hat{U}_{i}^{2}\right]=\left( n-2\right) \sigma ^{2}</span>, we verify the three expectations below.</p>
 </section>
 <section id="expectation-of-sum_i1n-leftu_i-baruright2" class="slide level2">
 <h2>Expectation of <span class="math inline">\sum_{i=1}^{n} \left(U_i-\bar{U}\right)^2</span></h2>
@@ -1113,15 +1118,15 @@ Y_{i}-\bar{Y} &amp;= \beta \left( X_{i}-\bar{X}\right) +U_{i}-\bar{U},
 \sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2} &amp;= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}\right) ^{2} \\
 &amp;= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}^{2}+\sum_{i=1}^{n}\sum_{j\neq i}U_{i}U_{j}\right).
 \end{align*}</span> Taking expectations and using the assumptions, <span class="math display">
-E\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}=n\sigma ^{2}-\frac{1}{n}n\sigma ^{2}=\left( n-1\right) \sigma ^{2}.
+\mathrm{E}\left[\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}\right]=n\sigma ^{2}-\frac{1}{n}n\sigma ^{2}=\left( n-1\right) \sigma ^{2}.
 </span></p>
 </section>
 <section id="expectation-of-left-hatbeta-beta-right2sum_i1nleft-x_i-barxright2" class="slide level2">
 <h2>Expectation of <span class="math inline">\left( \hat{\beta}-\beta \right)^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)^{2}</span></h2>
-<p>Because <span class="math inline">E\hat{\beta}=\beta</span> (conditionally on <span class="math inline">X</span>), <span class="math display">
-E\left( \hat{\beta}-\beta \right) ^{2}=Var\left( \hat{\beta}\right)=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+<p>Because <span class="math inline">\mathrm{E}\left[\hat{\beta}\right]=\beta</span> (conditionally on <span class="math inline">\mathbf{X}</span>), <span class="math display">
+\mathrm{E}\left[\left( \hat{\beta}-\beta \right) ^{2}\right]=\mathrm{Var}\left(\hat{\beta}\right)=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 </span> Hence, <span class="math display">
-E\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}=\sigma^{2}.
+\mathrm{E}\left[\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\right]=\sigma^{2}.
 </span></p>
 </section>
 <section id="expectation-of-left-hatbeta---betaright-sum_i1n-leftx_i---barxrightleftu_i-baruright" class="slide level2">
@@ -1133,30 +1138,30 @@ E\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) 
 </span> Therefore, <span class="math display">\begin{align*}
 \left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)\left( U_{i}-\bar{U}\right)
 &amp;=\frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}.
-\end{align*}</span> Conditionally on <span class="math inline">X</span>’s, <span class="math display">
-E\left[ \left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right) \right] = \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\left( \sigma ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\right)=\sigma ^{2}.
+\end{align*}</span> Conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
+\mathrm{E}\left[\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right)\right] = \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\left( \sigma ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\right)=\sigma ^{2}.
 </span></p>
 </section>
 <section id="putting-it-together" class="slide level2">
 <h2>Putting it together</h2>
 <p>Using the three expectations above, <span class="math display">
-E\sum_{i=1}^{n}\hat{U}_{i}^{2}=\left( n-1\right) \sigma ^{2}+\sigma^{2}-2\sigma ^{2}=\left( n-2\right) \sigma ^{2},
+\mathrm{E}\left[\sum_{i=1}^{n}\hat{U}_{i}^{2}\right]=\left( n-1\right) \sigma ^{2}+\sigma^{2}-2\sigma ^{2}=\left( n-2\right) \sigma ^{2},
 </span> so <span class="math inline">s^{2}</span> is unbiased for <span class="math inline">\sigma^{2}</span>.</p>
 </section>
 <section id="estimating-the-variance-of-hatbeta" class="slide level2">
 <h2>Estimating the variance of <span class="math inline">\hat{\beta}</span></h2>
 <ul>
-<li class="fragment">Variance of <span class="math inline">\hat{\beta}</span> (conditional on <span class="math inline">X</span>’s): <span class="math display">
-Var\left( \hat{\beta}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+<li class="fragment">Variance of <span class="math inline">\hat{\beta}</span> (conditional on <span class="math inline">\mathbf{X}</span>): <span class="math display">
+\mathrm{Var}\left(\hat{\beta}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 </span></li>
 <li class="fragment">Estimator of <span class="math inline">\sigma ^{2}</span>: <span class="math display">
 s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\alpha}-\hat{\beta}X_{i}\right) ^{2}.
 </span></li>
 <li class="fragment">Estimator of the variance of <span class="math inline">\hat{\beta}</span>: <span class="math display">
-\widehat{Var}\left( \hat{\beta}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\widehat{\mathrm{Var}}\left( \hat{\beta}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 </span></li>
 <li class="fragment">Standard error of <span class="math inline">\hat{\beta}</span>: <span class="math display">
-SE\left( \hat{\beta}\right) =\sqrt{\widehat{Var}\left( \hat{\beta}\right)}=\sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
+\mathrm{SE}\left( \hat{\beta}\right) =\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}\right)}=\sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
 </span></li>
 </ul>
 

@@ -492,6 +492,59 @@ margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 text-transform: none !important;
 }
 </style>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var head = document.getElementsByTagName("head")[0];
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css";
+      head.appendChild(link);
+      
+      function renderMathElements() {
+        var mathElements = document.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            if (window.katex) {
+              window.katex.render(texText.data, mathElements[i], {
+                displayMode: mathElements[i].classList.contains('display'),
+                throwOnError: false,
+                macros: macros,
+                fleqn: false
+              });
+            } else {
+              console.error("KaTeX has not been loaded correctly, as not found globally.");
+            }
+          }
+        }
+      }
+
+      var script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js";
+      script.onload = renderMathElements;
+      
+      // Check for RequireJS and AMD detection as it conflicts with KaTeX loading.
+      if (typeof require === 'function' && typeof define === 'function' && define.amd) {
+        // Disable require.js AMD detection temporarily, as it conflicts with KaTeX loading using CommonJS
+        var disableAmdScript = document.createElement("script");
+        disableAmdScript.textContent = 'window._amd_backup = window.define.amd; window.define.amd = false;';
+        head.appendChild(disableAmdScript);
+        
+        // overwrite onload to restore Require.js AMD detection
+        script.onload = function() {
+          // Restore Require.js AMD detection
+          window.define.amd = window._amd_backup;
+          delete window._amd_backup;
+          renderMathElements();
+        };
+      }
+
+      head.appendChild(script);
+    });
+  </script>
+  
   <style type="text/css">.reveal
 div.sourceCode
 pre
@@ -1006,41 +1059,46 @@ Vadim Marmer, UBC
 </section>
 <section id="there-are-many-alternative-estimators" class="slide level2">
 <h2>There are many alternative estimators</h2>
+<div class="hidden">
+$
+<p>$</p>
+</div>
+<p>We use the notation <span class="math inline">\mathrm{E}\left[\cdot \mid \mathbf{X}\right] = \mathrm{E}\left[\cdot \mid X_1, \ldots, X_n\right]</span>.</p>
 <ul>
 <li class="fragment"><p>The OLS estimator is not the only estimator we can construct. There are alternative estimators with some desirable properties.</p></li>
-<li class="fragment"><p>Example: Using only the first two observations, suppose that <span class="math inline">\(X_2 \neq X_1\)</span>. <span class="math display">\[
+<li class="fragment"><p>Example: Using only the first two observations, suppose that <span class="math inline">X_2 \neq X_1</span>. <span class="math display">
 \tilde{\beta} = \frac{Y_2 - Y_1}{X_2 - X_1}.
-\]</span></p></li>
-<li class="fragment"><p><span class="math inline">\(\tilde{\beta}\)</span> is <strong>linear</strong>: <span class="math display">\[
+</span></p></li>
+<li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is <strong>linear</strong>: <span class="math display">
 \tilde{\beta} = c_1 Y_1 + c_2 Y_2,
-\]</span> where <span class="math display">\[
+</span> where <span class="math display">
 c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
-\]</span></p></li>
+</span></p></li>
 </ul>
 </section>
 <section id="unbiasedness-of-tildebeta" class="slide level2">
-<h2>Unbiasedness of <span class="math inline">\(\tilde{\beta}\)</span></h2>
+<h2>Unbiasedness of <span class="math inline">\tilde{\beta}</span></h2>
 <ul>
-<li class="fragment">If <span class="math inline">\(Y_i = \alpha + \beta X_i + U_i\)</span> and <span class="math inline">\(E(U_i | X_1, \ldots, X_n) = 0\)</span>, then <span class="math inline">\(\tilde{\beta}\)</span> is <strong>unbiased</strong>: <span class="math display">\[\begin{align*}
+<li class="fragment">If <span class="math inline">Y_i = \alpha + \beta X_i + U_i</span> and <span class="math inline">\mathrm{E}\left[U_i \mid \mathbf{X}\right] = 0</span>, then <span class="math inline">\tilde{\beta}</span> is <strong>unbiased</strong>: <span class="math display">\begin{align*}
 \tilde{\beta} &amp;= \frac{Y_2 - Y_1}{X_2 - X_1} \\
 &amp;= \frac{(\alpha + \beta X_2 + U_2) - (\alpha + \beta X_1 + U_1)}{X_2 - X_1} \\
 &amp;= \frac{\beta(X_2 - X_1)}{X_2 - X_1} + \frac{U_2 - U_1}{X_2 - X_1} \\
 &amp;= \beta + \frac{U_2 - U_1}{X_2 - X_1}, \text{ and}
-\end{align*}\]</span> <span class="math display">\[\begin{align*}
-E(\tilde{\beta} | X_1, X_2) &amp;= \beta + E\left(\frac{U_2 - U_1}{X_2 - X_1} \bigg| X_1, X_2\right) \\
-&amp;= \beta + \frac{E(U_2 | X_1, X_2) - E(U_1 | X_1, X_2)}{X_2 - X_1} \\
+\end{align*}</span> <span class="math display">\begin{align*}
+\mathrm{E}\left[\tilde{\beta} \mid X_1, X_2\right] &amp;= \beta + \mathrm{E}\left[\frac{U_2 - U_1}{X_2 - X_1} \mid X_1, X_2\right] \\
+&amp;= \beta + \frac{\mathrm{E}\left[U_2 \mid X_1, X_2\right] - \mathrm{E}\left[U_1 \mid X_1, X_2\right]}{X_2 - X_1} \\
 &amp;= \beta.
-\end{align*}\]</span></li>
+\end{align*}</span></li>
 </ul>
 </section>
 <section id="an-optimality-criterion" class="slide level2">
 <h2>An optimality criterion</h2>
 <ul>
 <li class="fragment"><p>Among all <strong>linear</strong> and <strong>unbiased</strong> estimators, an estimator with the <strong>smallest variance</strong> is called the <strong>Best Linear Unbiased Estimator</strong> (<strong>BLUE</strong>).</p></li>
-<li class="fragment"><p>Note that the statement is <strong>conditional</strong> on <span class="math inline">\(X\)</span>’s:</p>
+<li class="fragment"><p>Note that the statement is <strong>conditional</strong> on <span class="math inline">\mathbf{X}</span>:</p>
 <ul>
-<li class="fragment"><p>The estimators are <strong>unbiased</strong> conditionally on <span class="math inline">\(X\)</span>’s.</p></li>
-<li class="fragment"><p>The <strong>variance</strong> is conditional on <span class="math inline">\(X\)</span>’s.</p></li>
+<li class="fragment"><p>The estimators are <strong>unbiased</strong> conditionally on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li class="fragment"><p>The <strong>variance</strong> is conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
 </ul></li>
 </ul>
 </section>
@@ -1048,146 +1106,146 @@ E(\tilde{\beta} | X_1, X_2) &amp;= \beta + E\left(\frac{U_2 - U_1}{X_2 - X_1} \b
 <h2>Gauss-Markov Theorem</h2>
 <p>Suppose that</p>
 <ul>
-<li class="fragment"><p><span class="math inline">\(Y_i = \alpha + \beta X_i + U_i\)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\(E(U_i | X_1, \ldots, X_n) = 0\)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\(E(U_i^2 | X_1, \ldots, X_n) = \sigma^2\)</span> for all <span class="math inline">\(i = 1, \ldots, n\)</span> (homoskedasticity).</p></li>
-<li class="fragment"><p>For all <span class="math inline">\(i \neq j\)</span>, <span class="math inline">\(E(U_i U_j | X_1, \ldots, X_n) = 0\)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Y_i = \alpha + \beta X_i + U_i</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i \mid \mathbf{X}\right] = 0</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] = \sigma^2</span> for all <span class="math inline">i = 1, \ldots, n</span> (homoskedasticity).</p></li>
+<li class="fragment"><p>For all <span class="math inline">i \neq j</span>, <span class="math inline">\mathrm{E}\left[U_i U_j \mid \mathbf{X}\right] = 0</span>.</p></li>
 </ul>
-<p>Then, conditionally on <span class="math inline">\(X\)</span>’s, the OLS estimators are <strong>BLUE</strong>.</p>
+<p>Then, conditionally on <span class="math inline">\mathbf{X}</span>, the OLS estimators are <strong>BLUE</strong>.</p>
 </section>
 <section id="gauss-markov-theorem-setup" class="slide level2">
 <h2>Gauss-Markov Theorem (setup)</h2>
 <ul>
-<li class="fragment"><p>We already know that the OLS estimator <span class="math inline">\(\hat{\beta}\)</span> is linear and unbiased (conditionally on <span class="math inline">\(X\)</span>’s).</p></li>
-<li class="fragment"><p>Let <span class="math inline">\(\tilde{\beta}\)</span> be any other estimator of <span class="math inline">\(\beta\)</span> such that</p>
+<li class="fragment"><p>We already know that the OLS estimator <span class="math inline">\hat{\beta}</span> is linear and unbiased (conditionally on <span class="math inline">\mathbf{X}</span>).</p></li>
+<li class="fragment"><p>Let <span class="math inline">\tilde{\beta}</span> be any other estimator of <span class="math inline">\beta</span> such that</p>
 <ul>
-<li class="fragment"><p><span class="math inline">\(\tilde{\beta}\)</span> is linear: <span class="math display">\[
+<li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is linear: <span class="math display">
 \tilde{\beta} = \sum_{i=1}^{n} c_i Y_i,
-\]</span> where <span class="math inline">\(c\)</span>’s depend only on <span class="math inline">\(X\)</span>’s.</p></li>
-<li class="fragment"><p><span class="math inline">\(\tilde{\beta}\)</span> is unbiased: <span class="math display">\[
-E\tilde{\beta} = \beta,
-\]</span> where expectation is conditional on <span class="math inline">\(X\)</span>’s.</p></li>
+</span> where <span class="math inline">c</span>’s depend only on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is unbiased: <span class="math display">
+\mathrm{E}\left[\tilde{\beta}\right] = \beta,
+</span> where expectation is conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
 </ul></li>
-<li class="fragment"><p>We need to show that for <strong>any</strong> such <span class="math inline">\(\tilde{\beta} \neq \hat{\beta}\)</span>, <span class="math display">\[
-Var(\tilde{\beta}) &gt; Var(\hat{\beta}),
-\]</span> where the variance is conditional on <span class="math inline">\(X\)</span>’s.</p></li>
+<li class="fragment"><p>We need to show that for <strong>any</strong> such <span class="math inline">\tilde{\beta} \neq \hat{\beta}</span>, <span class="math display">
+\mathrm{Var}\left(\tilde{\beta}\right) &gt; \mathrm{Var}\left(\hat{\beta}\right),
+</span> where the variance is conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
 </ul>
 </section>
 <section id="an-outline-of-the-proof" class="slide level2 scrollable">
 <h2>An outline of the proof</h2>
 <ol type="1">
-<li class="fragment"><p>First, we are going to show that the <span class="math inline">\(c\)</span>’s in <span class="math inline">\(\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i\)</span> satisfy <span class="math inline">\(\sum_{i=1}^{n} c_i = 0\)</span> and <span class="math inline">\(\sum_{i=1}^{n} c_i X_i = 1\)</span>.</p></li>
-<li class="fragment"><p>Using the results of Step 1, we will show that conditionally on <span class="math inline">\(X\)</span>’s, <span class="math inline">\(Cov(\tilde{\beta}, \hat{\beta}) = Var(\hat{\beta})\)</span>.</p></li>
-<li class="fragment"><p>Using the results of Step 2, we will show that conditionally on <span class="math inline">\(X\)</span>’s, <span class="math inline">\(Var(\tilde{\beta}) \geq Var(\hat{\beta})\)</span>.</p></li>
-<li class="fragment"><p>Lastly, we will show that <span class="math inline">\(Var(\tilde{\beta}) = Var(\hat{\beta})\)</span> if and only if <span class="math inline">\(\tilde{\beta} = \hat{\beta}\)</span>.</p></li>
+<li class="fragment"><p>First, we are going to show that the <span class="math inline">c</span>’s in <span class="math inline">\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i</span> satisfy <span class="math inline">\sum_{i=1}^{n} c_i = 0</span> and <span class="math inline">\sum_{i=1}^{n} c_i X_i = 1</span>.</p></li>
+<li class="fragment"><p>Using the results of Step 1, we will show that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right)</span>.</p></li>
+<li class="fragment"><p>Using the results of Step 2, we will show that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{Var}\left(\tilde{\beta}\right) \geq \mathrm{Var}\left(\hat{\beta}\right)</span>.</p></li>
+<li class="fragment"><p>Lastly, we will show that <span class="math inline">\mathrm{Var}\left(\tilde{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right)</span> if and only if <span class="math inline">\tilde{\beta} = \hat{\beta}</span>.</p></li>
 </ol>
 </section>
 <section id="proof-step-1" class="slide level2">
 <h2>Proof: Step 1</h2>
 <ul>
-<li class="fragment"><p>Since <span class="math inline">\(\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i\)</span>, <span class="math display">\[\begin{align*}
+<li class="fragment"><p>Since <span class="math inline">\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i</span>, <span class="math display">\begin{align*}
 \tilde{\beta} &amp;= \sum_{i=1}^{n} c_i (\alpha + \beta X_i + U_i) \\
 &amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i.
-\end{align*}\]</span></p></li>
-<li class="fragment"><p>Conditionally on <span class="math inline">\(X\)</span>’s, <span class="math display">\[\begin{align*}
-E\tilde{\beta} &amp;= E\left(\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i\right) \\
-&amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i E U_i \\
+\end{align*}</span></p></li>
+<li class="fragment"><p>Conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">\begin{align*}
+\mathrm{E}\left[\tilde{\beta}\right] &amp;= \mathrm{E}\left[\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i\right] \\
+&amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i \mathrm{E}\left[U_i\right] \\
 &amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
-\end{align*}\]</span></p></li>
+\end{align*}</span></p></li>
 </ul>
 </section>
 <section id="proof-step-1-continued" class="slide level2">
 <h2>Proof: Step 1 (continued)</h2>
 <ul>
-<li class="fragment"><p>From the <strong>linearity</strong> we have that, conditionally on <span class="math inline">\(X\)</span>’s, <span class="math display">\[
-E\tilde{\beta} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
-\]</span></p></li>
-<li class="fragment"><p>From the <strong>unbiasedness</strong> we have that conditionally on <span class="math inline">\(X\)</span>’s, <span class="math display">\[
-\beta = E\tilde{\beta} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
-\]</span></p></li>
-<li class="fragment"><p>Since this has to be true for <strong>any</strong> <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, it follows now that <span class="math display">\[
+<li class="fragment"><p>From the <strong>linearity</strong> we have that, conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
+\mathrm{E}\left[\tilde{\beta}\right] = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+</span></p></li>
+<li class="fragment"><p>From the <strong>unbiasedness</strong> we have that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
+\beta = \mathrm{E}\left[\tilde{\beta}\right] = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+</span></p></li>
+<li class="fragment"><p>Since this has to be true for <strong>any</strong> <span class="math inline">\alpha</span> and <span class="math inline">\beta</span>, it follows now that <span class="math display">
 \sum_{i=1}^{n} c_i = 0, \quad \sum_{i=1}^{n} c_i X_i = 1.
-\]</span></p></li>
+</span></p></li>
 </ul>
 </section>
 <section id="proof-step-2" class="slide level2">
 <h2>Proof: Step 2</h2>
 <ul>
-<li class="fragment"><p>We have <span class="math display">\[
+<li class="fragment"><p>We have <span class="math display">
 \tilde{\beta} = \beta + \sum_{i=1}^{n} c_i U_i, \text{ with } \sum_{i=1}^{n} c_i = 0, \sum_{i=1}^{n} c_i X_i = 1.
-\]</span> <span class="math display">\[
+</span> <span class="math display">
 \hat{\beta} = \beta + \sum_{i=1}^{n} w_i U_i, \text{ with } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
-\]</span></p></li>
-<li class="fragment"><p>Conditionally on <span class="math inline">\(X\)</span>’s, <span class="math display">\[\begin{align*}
-Cov(\tilde{\beta}, \hat{\beta}) &amp;= E[(\tilde{\beta} - \beta)(\hat{\beta} - \beta)] \\
-&amp;= E\left[\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right)\right] \\
-&amp;= \sum_{i=1}^{n} c_i w_i E(U_i^2) + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j E(U_i U_j).
-\end{align*}\]</span></p></li>
+</span></p></li>
+<li class="fragment"><p>Conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">\begin{align*}
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) &amp;= \mathrm{E}\left[(\tilde{\beta} - \beta)(\hat{\beta} - \beta)\right] \\
+&amp;= \mathrm{E}\left[\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right)\right] \\
+&amp;= \sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2\right] + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j\right].
+\end{align*}</span></p></li>
 </ul>
 </section>
 <section id="proof-step-2-continued" class="slide level2">
 <h2>Proof: Step 2 (continued)</h2>
-<p><span class="math display">\[
-Cov(\tilde{\beta}, \hat{\beta}) = \sum_{i=1}^{n} c_i w_i E(U_i^2) + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j E(U_i U_j).
-\]</span></p>
+<p><span class="math display">
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2\right] + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j\right].
+</span></p>
 <ul>
-<li class="fragment"><p>Since <span class="math inline">\(E(U_i^2) = \sigma^2\)</span> for all <span class="math inline">\(i\)</span>’s: <span class="math display">\[
-\sum_{i=1}^{n} c_i w_i E(U_i^2) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
-\]</span></p></li>
-<li class="fragment"><p>Since <span class="math inline">\(E(U_i U_j) = 0\)</span> for all <span class="math inline">\(i \neq j\)</span>, <span class="math display">\[
-\sum_{i=1}^{n} \sum_{j \neq i} c_i w_j E(U_i U_j) = 0.
-\]</span></p></li>
-<li class="fragment"><p>Thus, <span class="math display">\[
-Cov(\tilde{\beta}, \hat{\beta}) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
-\]</span></p></li>
+<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_i^2\right] = \sigma^2</span> for all <span class="math inline">i</span>’s: <span class="math display">
+\sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2\right] = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+</span></p></li>
+<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_i U_j\right] = 0</span> for all <span class="math inline">i \neq j</span>, <span class="math display">
+\sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j\right] = 0.
+</span></p></li>
+<li class="fragment"><p>Thus, <span class="math display">
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+</span></p></li>
 </ul>
 </section>
 <section id="proof-step-2-continued-1" class="slide level2">
 <h2>Proof: Step 2 (continued)</h2>
-<p>Conditionally on <span class="math inline">\(X\)</span>’s: <span class="math display">\[
-Cov(\tilde{\beta}, \hat{\beta}) = \sigma^2 \sum_{i=1}^{n} c_i w_i \text{ and } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
-\]</span> <span class="math display">\[\begin{align*}
-Cov(\tilde{\beta}, \hat{\beta}) &amp;= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
+<p>Conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \sigma^2 \sum_{i=1}^{n} c_i w_i \text{ and } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
+</span> <span class="math display">\begin{align*}
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) &amp;= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) \\
-&amp;= Var(\hat{\beta}).
-\end{align*}\]</span></p>
+&amp;= \mathrm{Var}\left(\hat{\beta}\right).
+\end{align*}</span></p>
 </section>
 <section id="proof-step-3" class="slide level2">
 <h2>Proof: Step 3</h2>
 <ul>
-<li class="fragment"><p>We know now that for any <strong>linear</strong> and <strong>unbiased</strong> <span class="math inline">\(\tilde{\beta}\)</span>, <span class="math display">\[
-Cov(\tilde{\beta}, \hat{\beta}) = Var(\hat{\beta}).
-\]</span></p></li>
-<li class="fragment"><p>Let’s consider <span class="math inline">\(Var(\tilde{\beta} - \hat{\beta})\)</span>: <span class="math display">\[\begin{align*}
-Var(\tilde{\beta} - \hat{\beta}) &amp;= Var(\tilde{\beta}) + Var(\hat{\beta}) - 2 Cov(\tilde{\beta}, \hat{\beta}) \\
-&amp;= Var(\tilde{\beta}) + Var(\hat{\beta}) - 2 Var(\hat{\beta}) \\
-&amp;= Var(\tilde{\beta}) - Var(\hat{\beta}).
-\end{align*}\]</span></p></li>
-<li class="fragment"><p>But since <span class="math inline">\(Var(\tilde{\beta} - \hat{\beta}) \geq 0\)</span>, <span class="math display">\[
-Var(\tilde{\beta}) - Var(\hat{\beta}) \geq 0
-\]</span> or <span class="math display">\[
-Var(\tilde{\beta}) \geq Var(\hat{\beta}).
-\]</span></p></li>
+<li class="fragment"><p>We know now that for any <strong>linear</strong> and <strong>unbiased</strong> <span class="math inline">\tilde{\beta}</span>, <span class="math display">
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right).
+</span></p></li>
+<li class="fragment"><p>Let’s consider <span class="math inline">\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right)</span>: <span class="math display">\begin{align*}
+\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right) &amp;= \mathrm{Var}\left(\tilde{\beta}\right) + \mathrm{Var}\left(\hat{\beta}\right) - 2 \mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) \\
+&amp;= \mathrm{Var}\left(\tilde{\beta}\right) + \mathrm{Var}\left(\hat{\beta}\right) - 2 \mathrm{Var}\left(\hat{\beta}\right) \\
+&amp;= \mathrm{Var}\left(\tilde{\beta}\right) - \mathrm{Var}\left(\hat{\beta}\right).
+\end{align*}</span></p></li>
+<li class="fragment"><p>But since <span class="math inline">\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right) \geq 0</span>, <span class="math display">
+\mathrm{Var}\left(\tilde{\beta}\right) - \mathrm{Var}\left(\hat{\beta}\right) \geq 0
+</span> or <span class="math display">
+\mathrm{Var}\left(\tilde{\beta}\right) \geq \mathrm{Var}\left(\hat{\beta}\right).
+</span></p></li>
 </ul>
 </section>
 <section id="proof-step-4-uniqueness" class="slide level2">
 <h2>Proof: Step 4 (Uniqueness)</h2>
-<p>Suppose that <span class="math inline">\(Var(\tilde{\beta}) = Var(\hat{\beta})\)</span>.</p>
+<p>Suppose that <span class="math inline">\mathrm{Var}\left(\tilde{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right)</span>.</p>
 <ul>
-<li class="fragment"><p>Then, <span class="math display">\[
-Var(\tilde{\beta} - \hat{\beta}) = Var(\tilde{\beta}) - Var(\hat{\beta}) = 0.
-\]</span></p></li>
-<li class="fragment"><p>Thus, <span class="math inline">\(\tilde{\beta} - \hat{\beta}\)</span> is not random or <span class="math display">\[
+<li class="fragment"><p>Then, <span class="math display">
+\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right) = \mathrm{Var}\left(\tilde{\beta}\right) - \mathrm{Var}\left(\hat{\beta}\right) = 0.
+</span></p></li>
+<li class="fragment"><p>Thus, <span class="math inline">\tilde{\beta} - \hat{\beta}</span> is not random or <span class="math display">
 \tilde{\beta} - \hat{\beta} = \text{constant}.
-\]</span></p></li>
-<li class="fragment"><p>This constant also has to be zero because <span class="math display">\[\begin{align*}
-E\tilde{\beta} &amp;= E\hat{\beta} + \text{constant} \\
+</span></p></li>
+<li class="fragment"><p>This constant also has to be zero because <span class="math display">\begin{align*}
+\mathrm{E}\left[\tilde{\beta}\right] &amp;= \mathrm{E}\left[\hat{\beta}\right] + \text{constant} \\
 &amp;= \beta + \text{constant},
-\end{align*}\]</span> and in order for <span class="math inline">\(\tilde{\beta}\)</span> to be <strong>unbiased</strong> <span class="math display">\[
+\end{align*}</span> and in order for <span class="math inline">\tilde{\beta}</span> to be <strong>unbiased</strong> <span class="math display">
 \text{constant} = 0 \text{ or } \tilde{\beta} = \hat{\beta}.
-\]</span></p></li>
+</span></p></li>
 </ul>
 
 </section>
@@ -2171,8 +2229,6 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
-  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
-</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2340,27 +2396,9 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

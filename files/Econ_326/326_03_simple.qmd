@@ -61,6 +61,7 @@ format:
     fontsize: 10pt
     number-sections: false
     toc: false
+    classoption: fleqn
   revealjs:
     output-file: 326_03_simple_slides.html
     theme: solarized
@@ -124,6 +125,14 @@ format:
 # Introduction and Definitions
 
 ## Overview of Simple Linear Regression
+
+::: {.hidden}
+$
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+$
+:::
 - The **simple linear regression model** is used to study the relationship between **two variables**.
 - It has many limitations, but nevertheless there are examples in the literature where the simple linear regression is applied (e.g., stock returns predictability).
 - It is also a good starting point to learning the regression technique.
@@ -160,30 +169,30 @@ format:
 ## Conditional Expectation Function
 
 - We model the relationship between $Y$ and $X$ using the **conditional expectation**:
-$$ E\left( Y_{i}|X_{i}\right) = \alpha + \beta X_{i}. $$
+$$ \E{Y_{i}|X_{i}} = \alpha + \beta X_{i}. $$
 
-- **Intercept**: $\alpha = E\left( Y_{i}|X_{i}=0\right)$.
+- **Intercept**: $\alpha = \E{Y_{i}|X_{i}=0}$.
 
 - **Slope**: $\beta$ measures the effect of a unit change in $X$ on $Y$:
 $$ \begin{aligned}
-\beta &= E\left( Y_{i}|X_{i}=x+1\right) - E\left( Y_{i}|X_{i}=x\right) \\ &= \left[ \alpha + \beta (x+1)\right] - \left[ \alpha + \beta x\right].
+\beta &= \E{Y_{i}|X_{i}=x+1} - \E{Y_{i}|X_{i}=x} \\ &= \left[ \alpha + \beta (x+1)\right] - \left[ \alpha + \beta x\right].
 \end{aligned} $$
 
 - **Marginal effect** of $X$ on $Y$:
-$$ \beta = \frac{dE\left( Y_{i}|X_{i}\right)}{dX_{i}}. $$
+$$ \beta = \frac{d\E{Y_{i}|X_{i}}}{dX_{i}}. $$
 
 - **The effect is the same for all $x$**.
 
 ## Regression Error Term
 
-- $\alpha$ and $\beta$ in $E\left( Y_{i}|X_{i}\right) = \alpha + \beta X_{i}$ are **unknown**.
+- $\alpha$ and $\beta$ in $\E{Y_{i}|X_{i}} = \alpha + \beta X_{i}$ are **unknown**.
 - **Residual (error)**:
-$$ U_{i} = Y_{i} - E\left( Y_{i}|X_{i}\right) = Y_{i} - \left( \alpha + \beta X_{i}\right). $$
+$$ U_{i} = Y_{i} - \E{Y_{i}|X_{i}} = Y_{i} - \left( \alpha + \beta X_{i}\right). $$
   $U_{i}$'s are **unobservable**.
 
 - **The model**:
 $$ \begin{aligned}
-Y_{i} &= \alpha + \beta X_{i} + U_{i}, \\ E\left( U_{i}|X_{i}\right) &= 0.
+Y_{i} &= \alpha + \beta X_{i} + U_{i}, \\ \E{U_{i}|X_{i}} &= 0.
 \end{aligned} $$
 
 ## Functional Form: Linearity
@@ -227,14 +236,14 @@ $$ Y=\alpha K^{\beta_{1}}L^{\beta_{2}} \Longrightarrow \log Y=\log \alpha + \bet
 The model:
 $$ Y_{i} = \alpha + \beta X_{i} + U_{i}. $$
 
-We assume that $E\left( U_{i}|X_{i}\right) = 0$.
+We assume that $\E{U_{i}|X_{i}} = 0$.
 
-- $E U_{i} = 0$.
-$$ E U_{i} \overset{\text{Law of Iterated Expectation}}{=} E\,E\left( U_{i}|X_{i}\right) = E\,0 = 0. $$
+- $\E{U_{i}} = 0$.
+$$ \E{U_{i}} \overset{\text{Law of Iterated Expectation}}{=} \E{\E{U_{i}|X_{i}}} = \E{0} = 0. $$
 
-- $Cov\left( X_{i},U_{i}\right) = E X_{i}U_{i} = 0$.
+- $\Cov{X_{i},U_{i}} = \E{X_{i}U_{i}} = 0$.
 $$ \begin{aligned}
-E X_{i}U_{i} &\overset{\text{Law of Iterated Expectation}}{=} E\,E\left( X_{i}U_{i}|X_{i}\right) \\ &= E\left[ X_{i} E\left( U_{i}|X_{i}\right) \right] = E\left[ X_{i} 0 \right] = 0.
+\E{X_{i}U_{i}} &\overset{\text{Law of Iterated Expectation}}{=} \E{\E{X_{i}U_{i}|X_{i}}} \\ &= \E{X_{i} \E{U_{i}|X_{i}}} = \E{X_{i} \cdot 0} = 0.
 \end{aligned} $$
 
 ## Decomposition into Predicted and Error Components
@@ -329,7 +338,7 @@ segments(8.8, 1.35, point_on_line_x, point_on_line_y, lwd = 0.7)
 
 - We assume that
 $$ \begin{aligned}
-E U_{i} &= E\left( Y_{i} - \alpha - \beta X_{i}\right) = 0. \\ E X_{i}U_{i} &= E X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right) = 0.
+\E{U_{i}} &= \E{Y_{i} - \alpha - \beta X_{i}} = 0. \\ \E{X_{i}U_{i}} &= \E{X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right)} = 0.
 \end{aligned} $$
 
 - An **estimator** is a function of the observable data; it can depend only on observable $X$ and $Y$. Let $\hat{\alpha}$ and $\hat{\beta}$ denote the estimators of $\alpha$ and $\beta$.
@@ -463,7 +472,7 @@ segments(2.5, 2.6, 3.5, alpha_hat + beta_hat * 3.5, lwd = 0.7)
 ## True vs Fitted Regression Lines
 
 ::: {.nonincremental}
-- **True:** $Y_{i} = \alpha + \beta X_{i} + U_{i}$, $E U_{i} = E X_{i}U_{i} = 0$.
+- **True:** $Y_{i} = \alpha + \beta X_{i} + U_{i}$, $\E{U_{i}} = \E{X_{i}U_{i}} = 0$.
 - **Fitted:** $Y_{i} = \hat{\alpha} + \hat{\beta} X_{i} + \hat{U}_{i}$, $\sum_{i=1}^{n}\hat{U}_{i} = \sum_{i=1}^{n}X_{i}\hat{U}_{i} = 0$.
 :::
 
