@@ -18,11 +18,19 @@ See more info at https://academicpages.github.io/
 
 ## To run locally (not on GitHub Pages, to serve on your own computer)
 
+Quick start (recommended):
+
+1. Run `./bin/setup` once to install Ruby dependencies
+1. Run `./bin/serve`
+1. Open `http://localhost:4000`
+
+Manual setup (if you prefer):
+
 1. Clone the repository and made updates as detailed above
 1. Make sure you have ruby-dev, bundler, and nodejs installed: `sudo apt install ruby-dev ruby-bundler nodejs`
 1. Run `bundle clean` to clean up the directory (no need to run `--force`)
 1. Run `bundle install` to install ruby dependencies. If you get errors, delete Gemfile.lock and try again.
-1. Run `bundle exec jekyll liveserve` to generate the HTML and serve it from `localhost:4000` the local server will automatically rebuild and refresh the pages on change.
+1. Run `bundle exec jekyll serve --livereload --config _config.yml,_config.dev.yml` to generate the HTML and serve it from `localhost:4000` the local server will automatically rebuild and refresh the pages on change.
 
 # Changelog -- bugfixes and enhancements
 

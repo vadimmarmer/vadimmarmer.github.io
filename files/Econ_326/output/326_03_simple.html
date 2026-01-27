@@ -178,7 +178,7 @@ window.Quarto = {
   <li><a href="#functional-form-linearity" id="toc-functional-form-linearity" class="nav-link" data-scroll-target="#functional-form-linearity">Functional Form: Linearity</a></li>
   <li><a href="#log-linear-specification" id="toc-log-linear-specification" class="nav-link" data-scroll-target="#log-linear-specification">Log-Linear Specification</a></li>
   <li><a href="#log-log-specification" id="toc-log-log-specification" class="nav-link" data-scroll-target="#log-log-specification">Log-Log Specification</a></li>
-  <li><a href="#assumption-of-orthogonality" id="toc-assumption-of-orthogonality" class="nav-link" data-scroll-target="#assumption-of-orthogonality">Assumption of Orthogonality</a></li>
+  <li><a href="#assumption-of-orthogonality" id="toc-assumption-of-orthogonality" class="nav-link" data-scroll-target="#assumption-of-orthogonality">Assumption of “Orthogonality”</a></li>
   <li><a href="#decomposition-into-predicted-and-error-components" id="toc-decomposition-into-predicted-and-error-components" class="nav-link" data-scroll-target="#decomposition-into-predicted-and-error-components">Decomposition into Predicted and Error Components</a></li>
   </ul></li>
   <li><a href="#estimation-of-parameters" id="toc-estimation-of-parameters" class="nav-link" data-scroll-target="#estimation-of-parameters">Estimation of Parameters</a>
@@ -369,7 +369,7 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right]
 </ul>
 </section>
 <section id="assumption-of-orthogonality" class="level2">
-<h2 class="anchored" data-anchor-id="assumption-of-orthogonality">Assumption of Orthogonality</h2>
+<h2 class="anchored" data-anchor-id="assumption-of-orthogonality">Assumption of “Orthogonality”</h2>
 <p>The model: <span class="math display"> Y_{i} = \alpha + \beta X_{i} + U_{i}. </span></p>
 <p>We assume that <span class="math inline">\mathrm{E}\left[U_{i}|X_{i}\right] = 0</span>.</p>
 <ul>
@@ -381,7 +381,7 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right]
 </section>
 <section id="decomposition-into-predicted-and-error-components" class="level2">
 <h2 class="anchored" data-anchor-id="decomposition-into-predicted-and-error-components">Decomposition into Predicted and Error Components</h2>
-<p><span class="math display"> Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{Orthogonal to } X} </span></p>
+<p><span class="math display"> Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{"Orthogonal to" } X} </span></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -411,7 +411,7 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right]
 <section id="method-of-moments-estimator" class="level2">
 <h2 class="anchored" data-anchor-id="method-of-moments-estimator">Method of Moments Estimator</h2>
 <ul>
-<li><p>We assume that <span class="math display"> \begin{aligned}
+<li><p>Our assumptions imply: <span class="math display"> \begin{aligned}
 \mathrm{E}\left[U_{i}\right] &amp;= \mathrm{E}\left[Y_{i} - \alpha - \beta X_{i}\right] = 0. \\ \mathrm{E}\left[X_{i}U_{i}\right] &amp;= \mathrm{E}\left[X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right)\right] = 0.
 \end{aligned} </span></p></li>
 <li><p>An <strong>estimator</strong> is a function of the observable data; it can depend only on observable <span class="math inline">X</span> and <span class="math inline">Y</span>. Let <span class="math inline">\hat{\alpha}</span> and <span class="math inline">\hat{\beta}</span> denote the estimators of <span class="math inline">\alpha</span> and <span class="math inline">\beta</span>.</p></li>
@@ -1191,7 +1191,7 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right]
 <span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>$$ Y=\alpha K^{\beta_{1}}L^{\beta_{2}} \Longrightarrow \log Y=\log \alpha + \beta_{1}\log K + \beta_{2}\log L $$ </span>
 <span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>  (two regressors: log of capital and log of labour).</span>
 <span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumption of Orthogonality</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumption of "Orthogonality"</span></span>
 <span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>The model:</span>
 <span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>$$ Y_{i} = \alpha + \beta X_{i} + U_{i}. $$</span>
@@ -1208,7 +1208,7 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right]
 <span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="fu">## Decomposition into Predicted and Error Components</span></span>
 <span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>$$ Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{Orthogonal to } X} $$</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>$$ Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{"Orthogonal to" } X} $$</span>
 <span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -1296,7 +1296,7 @@ Y_{i} &amp;= \alpha + \beta X_{i} + U_{i}, \\ \mathrm{E}\left[U_{i}|X_{i}\right]
 <span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a><span class="fu">## Method of Moments Estimator</span></span>
 <span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We assume that</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Our assumptions imply:</span>
 <span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>$$ \begin{aligned}</span>
 <span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>\E{U_{i}} &amp;= \E{Y_{i} - \alpha - \beta X_{i}} = 0. \\ \E{X_{i}U_{i}} &amp;= \E{X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right)} = 0.</span>
 <span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>\end{aligned} $$</span>

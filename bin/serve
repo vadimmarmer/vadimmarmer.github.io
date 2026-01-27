@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+user_gem_bin="$(ruby -e 'require "rubygems"; print Gem.user_dir + "/bin"' 2>/dev/null || true)"
+if [ -n "$user_gem_bin" ] && [ -d "$user_gem_bin" ]; then
+  export PATH="$user_gem_bin:$PATH"
+fi
+
+user_gem_dir="$(ruby -e 'require "rubygems"; print Gem.user_dir' 2>/dev/null || true)"
+if [ -n "$user_gem_dir" ] && [ -d "$user_gem_dir" ]; then
+  export GEM_HOME="${GEM_HOME:-$user_gem_dir}"
+  if [ -n "${GEM_PATH:-}" ]; then
+    export GEM_PATH="$GEM_PATH:$user_gem_dir"
+  else
+    export GEM_PATH="$GEM_HOME"
+  fi
+fi
+
+export BUNDLE_PATH="${BUNDLE_PATH:-$repo_root/vendor/bundle}"
+export BUNDLE_DISABLE_SHARED_GEMS=1
+
+if ! command -v bundle >/dev/null 2>&1; then
+  echo "Bundler not found. Install Ruby + Bundler, then rerun: https://jekyllrb.com/docs/installation/"
+  exit 1
+fi
+
+bundle check >/dev/null 2>&1 || bundle install
+
+export JEKYLL_ENV="${JEKYLL_ENV:-development}"
+
+bundle exec jekyll serve \
+  --livereload \
+  --config _config.yml,_config.dev.yml \
+  "$@"

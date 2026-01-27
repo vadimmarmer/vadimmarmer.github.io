@@ -231,7 +231,7 @@ $$ \begin{aligned}
 $$ Y=\alpha K^{\beta_{1}}L^{\beta_{2}} \Longrightarrow \log Y=\log \alpha + \beta_{1}\log K + \beta_{2}\log L $$ 
   (two regressors: log of capital and log of labour).
 
-## Assumption of Orthogonality
+## Assumption of "Orthogonality"
 
 The model:
 $$ Y_{i} = \alpha + \beta X_{i} + U_{i}. $$
@@ -248,7 +248,7 @@ $$ \begin{aligned}
 
 ## Decomposition into Predicted and Error Components
 
-$$ Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{Orthogonal to } X} $$
+$$ Y_{i} = \underbrace{\alpha + \beta X_{i}}_{ \text{Predicted by } X} + \underbrace{U_{i}}_{ \text{"Orthogonal to" } X} $$
 
 ```{r}
 #| echo: false
@@ -336,7 +336,7 @@ segments(8.8, 1.35, point_on_line_x, point_on_line_y, lwd = 0.7)
 
 ## Method of Moments Estimator
 
-- We assume that
+- Our assumptions imply:
 $$ \begin{aligned}
 \E{U_{i}} &= \E{Y_{i} - \alpha - \beta X_{i}} = 0. \\ \E{X_{i}U_{i}} &= \E{X_{i}\left( Y_{i} - \alpha - \beta X_{i}\right)} = 0.
 \end{aligned} $$
