@@ -529,6 +529,68 @@ $$
 \E{Y | X} = \E{Y} = \text{constant.}
 $$
 
+## Example: conditional expectation and LIE
+
+::: {.nonincremental}
+- Joint PMF of $X \in \{0, 1\}$ and $Y \in \{1, 2, 3\}$:
+:::
+
+|  | $Y=1$ | $Y=2$ | $Y=3$ | $P(X=x)$ |
+|---|---|---|---|---|
+| $X=0$ | $\tfrac{1}{10}$ | $\tfrac{2}{10}$ | $\tfrac{2}{10}$ | $\tfrac{1}{2}$ |
+| $X=1$ | $\tfrac{2}{10}$ | $\tfrac{2}{10}$ | $\tfrac{1}{10}$ | $\tfrac{1}{2}$ |
+| $P(Y=y)$ | $\tfrac{3}{10}$ | $\tfrac{4}{10}$ | $\tfrac{3}{10}$ | $1$ |
+
+- Conditional PMFs (divide joint probabilities by marginal of $X$):
+$$
+P(Y=y | X=0): \quad \tfrac{1/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2} = \tfrac{1}{5},\ \tfrac{2}{5},\ \tfrac{2}{5}
+$$
+$$
+P(Y=y | X=1): \quad \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{1/10}{1/2} = \tfrac{2}{5},\ \tfrac{2}{5},\ \tfrac{1}{5}
+$$
+
+- $X$ and $Y$ are not independent since the conditional PMFs of $Y$ given $X=x$ are different for $x=0$ and $x=1$.
+
+- Conditional expectations:
+$$
+\E{Y | X=0} = 1 \cdot \tfrac{1}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{2}{5} = \tfrac{1+4+6}{5} = \tfrac{11}{5}
+$$
+$$
+\E{Y | X=1} = 1 \cdot \tfrac{2}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{1}{5} = \tfrac{2+4+3}{5} = \tfrac{9}{5}
+$$
+
+- LIE check: $\E{\E{Y|X}} = \frac{11}{5} \cdot \frac{1}{2} + \frac{9}{5} \cdot \frac{1}{2} = \frac{11}{10} + \frac{9}{10} = 2$
+- Direct: $\E{Y} = 1 \cdot \frac{3}{10} + 2 \cdot \frac{4}{10} + 3 \cdot \frac{3}{10} = \frac{3+8+9}{10} = 2$ ✓
+
+## Proof of the Law of Iterated Expectations
+
+- Let $X$ take values $x_1, \ldots, x_n$ and $Y$ take values $y_1, \ldots, y_m$.
+
+::: {.fragment}
+$\displaystyle \E{\E{Y | X}} = \sum_{i=1}^{n} \E{Y | X = x_i}\, P(X = x_i)$
+:::
+
+::: {.fragment}
+$\displaystyle = \sum_{i=1}^{n} \left(\sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\right) P(X = x_i)$
+:::
+
+::: {.fragment}
+$\displaystyle = \sum_{i=1}^{n} \sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\, P(X = x_i)$
+:::
+
+::: {.fragment}
+$\displaystyle = \sum_{j=1}^{m} y_j \sum_{i=1}^{n} P(Y = y_j,\, X = x_i)$
+:::
+
+::: {.fragment}
+$\displaystyle = \sum_{j=1}^{m} y_j\, P(Y = y_j) = \E{Y}$
+:::
+
+- Key steps: 
+  - $P(Y = y_j | X = x_i) \cdot P(X = x_i) = P(Y = y_j,\, X = x_i)$.
+  - Changing the order of summation.
+  - Summing over $i$ gives marginal $P(Y = y_j)$.
+  
 ## Relationship between different concepts of independence
 
 $$

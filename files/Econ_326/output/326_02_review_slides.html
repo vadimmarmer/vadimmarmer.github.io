@@ -1553,6 +1553,97 @@ f_{X,Y}(x, y) = f_X(x) f_Y(y).
 </span></p></li>
 </ul>
 </section>
+<section id="example-conditional-expectation-and-lie" class="slide level2">
+<h2>Example: conditional expectation and LIE</h2>
+<ul>
+<li>Joint PMF of <span class="math inline">X \in \{0, 1\}</span> and <span class="math inline">Y \in \{1, 2, 3\}</span>:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">Y=1</span></th>
+<th><span class="math inline">Y=2</span></th>
+<th><span class="math inline">Y=3</span></th>
+<th><span class="math inline">P(X=x)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">X=0</span></td>
+<td><span class="math inline">\tfrac{1}{10}</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{1}{2}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">X=1</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{1}{10}</span></td>
+<td><span class="math inline">\tfrac{1}{2}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">P(Y=y)</span></td>
+<td><span class="math inline">\tfrac{3}{10}</span></td>
+<td><span class="math inline">\tfrac{4}{10}</span></td>
+<td><span class="math inline">\tfrac{3}{10}</span></td>
+<td><span class="math inline">1</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment"><p>Conditional PMFs (divide joint probabilities by marginal of <span class="math inline">X</span>): <span class="math display">
+P(Y=y | X=0): \quad \tfrac{1/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2} = \tfrac{1}{5},\ \tfrac{2}{5},\ \tfrac{2}{5}
+</span> <span class="math display">
+P(Y=y | X=1): \quad \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{1/10}{1/2} = \tfrac{2}{5},\ \tfrac{2}{5},\ \tfrac{1}{5}
+</span></p></li>
+<li class="fragment"><p><span class="math inline">X</span> and <span class="math inline">Y</span> are not independent since the conditional PMFs of <span class="math inline">Y</span> given <span class="math inline">X=x</span> are different for <span class="math inline">x=0</span> and <span class="math inline">x=1</span>.</p></li>
+<li class="fragment"><p>Conditional expectations: <span class="math display">
+\mathrm{E}\left[Y | X=0\right] = 1 \cdot \tfrac{1}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{2}{5} = \tfrac{1+4+6}{5} = \tfrac{11}{5}
+</span> <span class="math display">
+\mathrm{E}\left[Y | X=1\right] = 1 \cdot \tfrac{2}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{1}{5} = \tfrac{2+4+3}{5} = \tfrac{9}{5}
+</span></p></li>
+<li class="fragment"><p>LIE check: <span class="math inline">\mathrm{E}\left[\mathrm{E}\left[Y|X\right]\right] = \frac{11}{5} \cdot \frac{1}{2} + \frac{9}{5} \cdot \frac{1}{2} = \frac{11}{10} + \frac{9}{10} = 2</span></p></li>
+<li class="fragment"><p>Direct: <span class="math inline">\mathrm{E}\left[Y\right] = 1 \cdot \frac{3}{10} + 2 \cdot \frac{4}{10} + 3 \cdot \frac{3}{10} = \frac{3+8+9}{10} = 2</span> ✓</p></li>
+</ul>
+</section>
+<section id="proof-of-the-law-of-iterated-expectations" class="slide level2">
+<h2>Proof of the Law of Iterated Expectations</h2>
+<ul>
+<li class="fragment">Let <span class="math inline">X</span> take values <span class="math inline">x_1, \ldots, x_n</span> and <span class="math inline">Y</span> take values <span class="math inline">y_1, \ldots, y_m</span>.</li>
+</ul>
+<div class="fragment">
+<p><span class="math inline">\displaystyle \mathrm{E}\left[\mathrm{E}\left[Y | X\right]\right] = \sum_{i=1}^{n} \mathrm{E}\left[Y | X = x_i\right]\, P(X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{i=1}^{n} \left(\sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\right) P(X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{i=1}^{n} \sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\, P(X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{j=1}^{m} y_j \sum_{i=1}^{n} P(Y = y_j,\, X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{j=1}^{m} y_j\, P(Y = y_j) = \mathrm{E}\left[Y\right]</span></p>
+</div>
+<ul>
+<li class="fragment">Key steps:
+<ul>
+<li class="fragment"><span class="math inline">P(Y = y_j | X = x_i) \cdot P(X = x_i) = P(Y = y_j,\, X = x_i)</span>.</li>
+<li class="fragment">Changing the order of summation.</li>
+<li class="fragment">Summing over <span class="math inline">i</span> gives marginal <span class="math inline">P(Y = y_j)</span>.</li>
+</ul></li>
+</ul>
+</section>
 <section id="relationship-between-different-concepts-of-independence" class="slide level2">
 <h2>Relationship between different concepts of independence</h2>
 <p><span class="math display">

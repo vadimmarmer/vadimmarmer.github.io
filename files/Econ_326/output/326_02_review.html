@@ -150,6 +150,8 @@ window.Quarto = {
   <li><a href="#correlation" id="toc-correlation" class="nav-link" data-scroll-target="#correlation">Correlation</a></li>
   <li><a href="#conditional-expectation" id="toc-conditional-expectation" class="nav-link" data-scroll-target="#conditional-expectation">Conditional expectation</a></li>
   <li><a href="#properties-of-conditional-expectation" id="toc-properties-of-conditional-expectation" class="nav-link" data-scroll-target="#properties-of-conditional-expectation">Properties of conditional expectation</a></li>
+  <li><a href="#example-conditional-expectation-and-lie" id="toc-example-conditional-expectation-and-lie" class="nav-link" data-scroll-target="#example-conditional-expectation-and-lie">Example: conditional expectation and LIE</a></li>
+  <li><a href="#proof-of-the-law-of-iterated-expectations" id="toc-proof-of-the-law-of-iterated-expectations" class="nav-link" data-scroll-target="#proof-of-the-law-of-iterated-expectations">Proof of the Law of Iterated Expectations</a></li>
   <li><a href="#relationship-between-different-concepts-of-independence" id="toc-relationship-between-different-concepts-of-independence" class="nav-link" data-scroll-target="#relationship-between-different-concepts-of-independence">Relationship between different concepts of independence</a></li>
   <li><a href="#normal-distribution" id="toc-normal-distribution" class="nav-link" data-scroll-target="#normal-distribution">Normal distribution</a></li>
   <li><a href="#standard-normal-distribution" id="toc-standard-normal-distribution" class="nav-link" data-scroll-target="#standard-normal-distribution">Standard Normal distribution</a></li>
@@ -687,6 +689,99 @@ f_{X,Y}(x, y) = f_X(x) f_Y(y).
 <li><p><strong>Mean independence</strong>: <span class="math display">
 \mathrm{E}\left[Y | X\right] = \mathrm{E}\left[Y\right] = \text{constant.}
 </span></p></li>
+</ul>
+</section>
+<section id="example-conditional-expectation-and-lie" class="level2">
+<h2 class="anchored" data-anchor-id="example-conditional-expectation-and-lie">Example: conditional expectation and LIE</h2>
+<div class="nonincremental">
+<ul>
+<li>Joint PMF of <span class="math inline">X \in \{0, 1\}</span> and <span class="math inline">Y \in \{1, 2, 3\}</span>:</li>
+</ul>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">Y=1</span></th>
+<th><span class="math inline">Y=2</span></th>
+<th><span class="math inline">Y=3</span></th>
+<th><span class="math inline">P(X=x)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">X=0</span></td>
+<td><span class="math inline">\tfrac{1}{10}</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{1}{2}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">X=1</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{2}{10}</span></td>
+<td><span class="math inline">\tfrac{1}{10}</span></td>
+<td><span class="math inline">\tfrac{1}{2}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">P(Y=y)</span></td>
+<td><span class="math inline">\tfrac{3}{10}</span></td>
+<td><span class="math inline">\tfrac{4}{10}</span></td>
+<td><span class="math inline">\tfrac{3}{10}</span></td>
+<td><span class="math inline">1</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Conditional PMFs (divide joint probabilities by marginal of <span class="math inline">X</span>): <span class="math display">
+P(Y=y | X=0): \quad \tfrac{1/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2} = \tfrac{1}{5},\ \tfrac{2}{5},\ \tfrac{2}{5}
+</span> <span class="math display">
+P(Y=y | X=1): \quad \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{1/10}{1/2} = \tfrac{2}{5},\ \tfrac{2}{5},\ \tfrac{1}{5}
+</span></p></li>
+<li><p><span class="math inline">X</span> and <span class="math inline">Y</span> are not independent since the conditional PMFs of <span class="math inline">Y</span> given <span class="math inline">X=x</span> are different for <span class="math inline">x=0</span> and <span class="math inline">x=1</span>.</p></li>
+<li><p>Conditional expectations: <span class="math display">
+\mathrm{E}\left[Y | X=0\right] = 1 \cdot \tfrac{1}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{2}{5} = \tfrac{1+4+6}{5} = \tfrac{11}{5}
+</span> <span class="math display">
+\mathrm{E}\left[Y | X=1\right] = 1 \cdot \tfrac{2}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{1}{5} = \tfrac{2+4+3}{5} = \tfrac{9}{5}
+</span></p></li>
+<li><p>LIE check: <span class="math inline">\mathrm{E}\left[\mathrm{E}\left[Y|X\right]\right] = \frac{11}{5} \cdot \frac{1}{2} + \frac{9}{5} \cdot \frac{1}{2} = \frac{11}{10} + \frac{9}{10} = 2</span></p></li>
+<li><p>Direct: <span class="math inline">\mathrm{E}\left[Y\right] = 1 \cdot \frac{3}{10} + 2 \cdot \frac{4}{10} + 3 \cdot \frac{3}{10} = \frac{3+8+9}{10} = 2</span> ✓</p></li>
+</ul>
+</section>
+<section id="proof-of-the-law-of-iterated-expectations" class="level2">
+<h2 class="anchored" data-anchor-id="proof-of-the-law-of-iterated-expectations">Proof of the Law of Iterated Expectations</h2>
+<ul>
+<li>Let <span class="math inline">X</span> take values <span class="math inline">x_1, \ldots, x_n</span> and <span class="math inline">Y</span> take values <span class="math inline">y_1, \ldots, y_m</span>.</li>
+</ul>
+<div class="fragment">
+<p><span class="math inline">\displaystyle \mathrm{E}\left[\mathrm{E}\left[Y | X\right]\right] = \sum_{i=1}^{n} \mathrm{E}\left[Y | X = x_i\right]\, P(X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{i=1}^{n} \left(\sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\right) P(X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{i=1}^{n} \sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\, P(X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{j=1}^{m} y_j \sum_{i=1}^{n} P(Y = y_j,\, X = x_i)</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\displaystyle = \sum_{j=1}^{m} y_j\, P(Y = y_j) = \mathrm{E}\left[Y\right]</span></p>
+</div>
+<ul>
+<li>Key steps:
+<ul>
+<li><span class="math inline">P(Y = y_j | X = x_i) \cdot P(X = x_i) = P(Y = y_j,\, X = x_i)</span>.</li>
+<li>Changing the order of summation.</li>
+<li>Summing over <span class="math inline">i</span> gives marginal <span class="math inline">P(Y = y_j)</span>.</li>
+</ul></li>
 </ul>
 </section>
 <section id="relationship-between-different-concepts-of-independence" class="level2">
@@ -1764,122 +1859,184 @@ U = Y - \beta X,
 <span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a>\E{Y | X} = \E{Y} = \text{constant.}</span>
 <span id="cb1-536"><a href="#cb1-536" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a><span class="fu">## Relationship between different concepts of independence</span></span>
+<span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: conditional expectation and LIE</span></span>
 <span id="cb1-539"><a href="#cb1-539" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a>\begin{array}{c}</span>
-<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a>X \text{ and } Y \text{ are independent} <span class="sc">\\</span></span>
-<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a>\Downarrow <span class="sc">\\</span></span>
-<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a>\E{Y | X} = \text{constant (mean independence)} <span class="sc">\\</span></span>
-<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a>\Downarrow <span class="sc">\\</span></span>
-<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a>\Cov{X, Y} = 0 \text{ (uncorrelatedness)}</span>
-<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a>\end{array}</span>
-<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a>::: {.nonincremental}</span>
+<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Joint PMF of $X \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$ and $Y \in <span class="sc">\{</span>1, 2, 3<span class="sc">\}</span>$:</span>
+<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>  <span class="pp">|</span> $Y=1$ <span class="pp">|</span> $Y=2$ <span class="pp">|</span> $Y=3$ <span class="pp">|</span> $P(X=x)$ <span class="pp">|</span></span>
+<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|---|</span></span>
+<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> $X=0$ <span class="pp">|</span> $\tfrac{1}{10}$ <span class="pp">|</span> $\tfrac{2}{10}$ <span class="pp">|</span> $\tfrac{2}{10}$ <span class="pp">|</span> $\tfrac{1}{2}$ <span class="pp">|</span></span>
+<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> $X=1$ <span class="pp">|</span> $\tfrac{2}{10}$ <span class="pp">|</span> $\tfrac{2}{10}$ <span class="pp">|</span> $\tfrac{1}{10}$ <span class="pp">|</span> $\tfrac{1}{2}$ <span class="pp">|</span></span>
+<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> $P(Y=y)$ <span class="pp">|</span> $\tfrac{3}{10}$ <span class="pp">|</span> $\tfrac{4}{10}$ <span class="pp">|</span> $\tfrac{3}{10}$ <span class="pp">|</span> $1$ <span class="pp">|</span></span>
 <span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal distribution</span></span>
-<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv $X$ is</span>
+<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional PMFs (divide joint probabilities by marginal of $X$):</span>
+<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a>P(Y=y | X=0): \quad \tfrac{1/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2} = \tfrac{1}{5},\ \tfrac{2}{5},\ \tfrac{2}{5}</span>
 <span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a>f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}</span>
-<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a>P(Y=y | X=1): \quad \tfrac{2/10}{1/2},\ \tfrac{2/10}{1/2},\ \tfrac{1/10}{1/2} = \tfrac{2}{5},\ \tfrac{2}{5},\ \tfrac{1}{5}</span>
 <span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a>\mu = \E{X} \text{ and } \sigma^2 = \Var{X}.</span>
-<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a>We usually write $X \sim N(\mu, \sigma^2)$.</span>
-<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X \sim N(\mu, \sigma^2)$, then $a + bX \sim N(a + b\mu, b^2\sigma^2)$.</span>
-<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a><span class="fu">## Standard Normal distribution</span></span>
-<span id="cb1-564"><a href="#cb1-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-565"><a href="#cb1-565" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Standard Normal rv has $\mu = 0$ and $\sigma^2 = 1$. Its PDF is $\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$.</span>
-<span id="cb1-566"><a href="#cb1-566" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-567"><a href="#cb1-567" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Symmetric around zero (mean): if $Z \sim N(0, 1)$, $P(Z &gt; z) = P(Z &lt; -z)$.</span>
-<span id="cb1-568"><a href="#cb1-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-569"><a href="#cb1-569" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thin tails: $P(-1.96 \leq Z \leq 1.96) = 0.95$.</span>
+<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$X$ and $Y$ are not independent since the conditional PMFs of $Y$ given $X=x$ are different for $x=0$ and $x=1$.</span>
+<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional expectations:</span>
+<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a>\E{Y | X=0} = 1 \cdot \tfrac{1}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{2}{5} = \tfrac{1+4+6}{5} = \tfrac{11}{5}</span>
+<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-564"><a href="#cb1-564" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-565"><a href="#cb1-565" aria-hidden="true" tabindex="-1"></a>\E{Y | X=1} = 1 \cdot \tfrac{2}{5} + 2 \cdot \tfrac{2}{5} + 3 \cdot \tfrac{1}{5} = \tfrac{2+4+3}{5} = \tfrac{9}{5}</span>
+<span id="cb1-566"><a href="#cb1-566" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-567"><a href="#cb1-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-568"><a href="#cb1-568" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>LIE check: $\E{\E{Y|X}} = \frac{11}{5} \cdot \frac{1}{2} + \frac{9}{5} \cdot \frac{1}{2} = \frac{11}{10} + \frac{9}{10} = 2$</span>
+<span id="cb1-569"><a href="#cb1-569" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Direct: $\E{Y} = 1 \cdot \frac{3}{10} + 2 \cdot \frac{4}{10} + 3 \cdot \frac{3}{10} = \frac{3+8+9}{10} = 2$ ✓</span>
 <span id="cb1-570"><a href="#cb1-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-571"><a href="#cb1-571" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X \sim N(\mu, \sigma^2)$, then $(X - \mu)/\sigma \sim N(0, 1)$.</span>
+<span id="cb1-571"><a href="#cb1-571" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the Law of Iterated Expectations</span></span>
 <span id="cb1-572"><a href="#cb1-572" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-573"><a href="#cb1-573" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bivariate Normal distribution</span></span>
+<span id="cb1-573"><a href="#cb1-573" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $X$ take values $x_1, \ldots, x_n$ and $Y$ take values $y_1, \ldots, y_m$.</span>
 <span id="cb1-574"><a href="#cb1-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-575"><a href="#cb1-575" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$X$ and $Y$ have a bivariate normal distribution if their joint PDF is given by:</span>
-<span id="cb1-576"><a href="#cb1-576" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-577"><a href="#cb1-577" aria-hidden="true" tabindex="-1"></a>  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left<span class="co">[</span><span class="ot">-\frac{Q}{2(1-\rho)^2}\right</span><span class="co">]</span>,</span>
-<span id="cb1-578"><a href="#cb1-578" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-579"><a href="#cb1-579" aria-hidden="true" tabindex="-1"></a>  where $Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}$,</span>
-<span id="cb1-580"><a href="#cb1-580" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-581"><a href="#cb1-581" aria-hidden="true" tabindex="-1"></a>  $\mu_X = \E{X}, \mu_Y = \E{Y}, \sigma_X^2 = \Var{X}, \sigma_Y^2 = \Var{Y}$, and $\rho = \mathrm{Corr}(X, Y)$.</span>
+<span id="cb1-575"><a href="#cb1-575" aria-hidden="true" tabindex="-1"></a>::: {.fragment}</span>
+<span id="cb1-576"><a href="#cb1-576" aria-hidden="true" tabindex="-1"></a>$\displaystyle \E{\E{Y | X}} = \sum_{i=1}^{n} \E{Y | X = x_i}\, P(X = x_i)$</span>
+<span id="cb1-577"><a href="#cb1-577" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-578"><a href="#cb1-578" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-579"><a href="#cb1-579" aria-hidden="true" tabindex="-1"></a>::: {.fragment}</span>
+<span id="cb1-580"><a href="#cb1-580" aria-hidden="true" tabindex="-1"></a>$\displaystyle = \sum_{i=1}^{n} \left(\sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\right) P(X = x_i)$</span>
+<span id="cb1-581"><a href="#cb1-581" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-582"><a href="#cb1-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-583"><a href="#cb1-583" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of Bivariate Normal distribution</span></span>
-<span id="cb1-584"><a href="#cb1-584" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-585"><a href="#cb1-585" aria-hidden="true" tabindex="-1"></a>If $X$ and $Y$ have a bivariate normal distribution:</span>
+<span id="cb1-583"><a href="#cb1-583" aria-hidden="true" tabindex="-1"></a>::: {.fragment}</span>
+<span id="cb1-584"><a href="#cb1-584" aria-hidden="true" tabindex="-1"></a>$\displaystyle = \sum_{i=1}^{n} \sum_{j=1}^{m} y_j\, P(Y = y_j | X = x_i)\, P(X = x_i)$</span>
+<span id="cb1-585"><a href="#cb1-585" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-586"><a href="#cb1-586" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-587"><a href="#cb1-587" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$a + bX + cY \sim N(\mu^*, (\sigma^*)^2)$, where</span>
-<span id="cb1-588"><a href="#cb1-588" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-589"><a href="#cb1-589" aria-hidden="true" tabindex="-1"></a>  \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.</span>
-<span id="cb1-590"><a href="#cb1-590" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-591"><a href="#cb1-591" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-592"><a href="#cb1-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-593"><a href="#cb1-593" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Cov{X, Y} = 0 \Longrightarrow X$ and $Y$ are independent.</span>
+<span id="cb1-587"><a href="#cb1-587" aria-hidden="true" tabindex="-1"></a>::: {.fragment}</span>
+<span id="cb1-588"><a href="#cb1-588" aria-hidden="true" tabindex="-1"></a>$\displaystyle = \sum_{j=1}^{m} y_j \sum_{i=1}^{n} P(Y = y_j,\, X = x_i)$</span>
+<span id="cb1-589"><a href="#cb1-589" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-590"><a href="#cb1-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-591"><a href="#cb1-591" aria-hidden="true" tabindex="-1"></a>::: {.fragment}</span>
+<span id="cb1-592"><a href="#cb1-592" aria-hidden="true" tabindex="-1"></a>$\displaystyle = \sum_{j=1}^{m} y_j\, P(Y = y_j) = \E{Y}$</span>
+<span id="cb1-593"><a href="#cb1-593" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-594"><a href="#cb1-594" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-595"><a href="#cb1-595" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\E{Y | X} = \mu_Y + \frac{\Cov{X, Y}}{\sigma_X^2}(X - \mu_X)$.</span>
-<span id="cb1-596"><a href="#cb1-596" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-597"><a href="#cb1-597" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be generalized to more than 2 variables (multivariate normal).</span>
-<span id="cb1-598"><a href="#cb1-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-599"><a href="#cb1-599" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality</span></span>
-<span id="cb1-600"><a href="#cb1-600" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-601"><a href="#cb1-601" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Claim: $|\Cov{X, Y}| \leq \sqrt{\Var{X} \Var{Y}}$.</span>
-<span id="cb1-602"><a href="#cb1-602" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-603"><a href="#cb1-603" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proof**: Define</span>
-<span id="cb1-604"><a href="#cb1-604" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-605"><a href="#cb1-605" aria-hidden="true" tabindex="-1"></a>  U = Y - \beta X,</span>
-<span id="cb1-606"><a href="#cb1-606" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-607"><a href="#cb1-607" aria-hidden="true" tabindex="-1"></a>  where</span>
-<span id="cb1-608"><a href="#cb1-608" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-609"><a href="#cb1-609" aria-hidden="true" tabindex="-1"></a>  \beta = \frac{\Cov{X, Y}}{\Var{X}},</span>
-<span id="cb1-610"><a href="#cb1-610" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-611"><a href="#cb1-611" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Note that $\beta$ is a constant!</span>
-<span id="cb1-612"><a href="#cb1-612" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Also note the connection to regression and OLS in the definition of $\beta$.</span>
+<span id="cb1-595"><a href="#cb1-595" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Key steps: </span>
+<span id="cb1-596"><a href="#cb1-596" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$P(Y = y_j | X = x_i) \cdot P(X = x_i) = P(Y = y_j,\, X = x_i)$.</span>
+<span id="cb1-597"><a href="#cb1-597" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Changing the order of summation.</span>
+<span id="cb1-598"><a href="#cb1-598" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Summing over $i$ gives marginal $P(Y = y_j)$.</span>
+<span id="cb1-599"><a href="#cb1-599" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-600"><a href="#cb1-600" aria-hidden="true" tabindex="-1"></a><span class="fu">## Relationship between different concepts of independence</span></span>
+<span id="cb1-601"><a href="#cb1-601" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-602"><a href="#cb1-602" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-603"><a href="#cb1-603" aria-hidden="true" tabindex="-1"></a>\begin{array}{c}</span>
+<span id="cb1-604"><a href="#cb1-604" aria-hidden="true" tabindex="-1"></a>X \text{ and } Y \text{ are independent} <span class="sc">\\</span></span>
+<span id="cb1-605"><a href="#cb1-605" aria-hidden="true" tabindex="-1"></a>\Downarrow <span class="sc">\\</span></span>
+<span id="cb1-606"><a href="#cb1-606" aria-hidden="true" tabindex="-1"></a>\E{Y | X} = \text{constant (mean independence)} <span class="sc">\\</span></span>
+<span id="cb1-607"><a href="#cb1-607" aria-hidden="true" tabindex="-1"></a>\Downarrow <span class="sc">\\</span></span>
+<span id="cb1-608"><a href="#cb1-608" aria-hidden="true" tabindex="-1"></a>\Cov{X, Y} = 0 \text{ (uncorrelatedness)}</span>
+<span id="cb1-609"><a href="#cb1-609" aria-hidden="true" tabindex="-1"></a>\end{array}</span>
+<span id="cb1-610"><a href="#cb1-610" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-611"><a href="#cb1-611" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-612"><a href="#cb1-612" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal distribution</span></span>
 <span id="cb1-613"><a href="#cb1-613" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-614"><a href="#cb1-614" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-format="revealjs"}</span>
-<span id="cb1-615"><a href="#cb1-615" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since variances are always non-negative:</span>
-<span id="cb1-616"><a href="#cb1-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-617"><a href="#cb1-617" aria-hidden="true" tabindex="-1"></a>  \begin{alignat*}{2}</span>
-<span id="cb1-618"><a href="#cb1-618" aria-hidden="true" tabindex="-1"></a>  0 &amp; \leq \Var{U}  &amp;&amp;<span class="sc">\\</span></span>
-<span id="cb1-619"><a href="#cb1-619" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y - \beta X}  &amp;&amp;\quad (\text{def. of } U)<span class="sc">\\</span></span>
-<span id="cb1-620"><a href="#cb1-620" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \Var{\beta X} - 2\Cov{Y, \beta X}  &amp;&amp;\quad (\text{prop. of var.})<span class="sc">\\</span></span>
-<span id="cb1-621"><a href="#cb1-621" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \beta^2 \Var{X} - 2\beta \Cov{X, Y}  &amp;&amp;\quad (\text{prop. of var., cov.})<span class="sc">\\</span></span>
-<span id="cb1-622"><a href="#cb1-622" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^2}_{=\beta^2} \Var{X} &amp;&amp;<span class="sc">\\</span></span>
-<span id="cb1-623"><a href="#cb1-623" aria-hidden="true" tabindex="-1"></a>    &amp; \qquad - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y}  &amp;&amp;\quad (\text{def. of } \beta)<span class="sc">\\</span></span>
-<span id="cb1-624"><a href="#cb1-624" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \frac{\Cov{X, Y}^2}{\Var{X}} - 2 \frac{\Cov{X, Y}^2}{\Var{X}}   &amp;&amp;<span class="sc">\\</span></span>
-<span id="cb1-625"><a href="#cb1-625" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} - \frac{\Cov{X, Y}^2}{\Var{X}}. &amp;&amp;</span>
-<span id="cb1-626"><a href="#cb1-626" aria-hidden="true" tabindex="-1"></a>  \end{alignat*}</span>
-<span id="cb1-627"><a href="#cb1-627" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-614"><a href="#cb1-614" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv $X$ is</span>
+<span id="cb1-615"><a href="#cb1-615" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-616"><a href="#cb1-616" aria-hidden="true" tabindex="-1"></a>f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}</span>
+<span id="cb1-617"><a href="#cb1-617" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-618"><a href="#cb1-618" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-619"><a href="#cb1-619" aria-hidden="true" tabindex="-1"></a>\mu = \E{X} \text{ and } \sigma^2 = \Var{X}.</span>
+<span id="cb1-620"><a href="#cb1-620" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-621"><a href="#cb1-621" aria-hidden="true" tabindex="-1"></a>We usually write $X \sim N(\mu, \sigma^2)$.</span>
+<span id="cb1-622"><a href="#cb1-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-623"><a href="#cb1-623" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X \sim N(\mu, \sigma^2)$, then $a + bX \sim N(a + b\mu, b^2\sigma^2)$.</span>
+<span id="cb1-624"><a href="#cb1-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-625"><a href="#cb1-625" aria-hidden="true" tabindex="-1"></a><span class="fu">## Standard Normal distribution</span></span>
+<span id="cb1-626"><a href="#cb1-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-627"><a href="#cb1-627" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Standard Normal rv has $\mu = 0$ and $\sigma^2 = 1$. Its PDF is $\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$.</span>
 <span id="cb1-628"><a href="#cb1-628" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-629"><a href="#cb1-629" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="revealjs"}</span>
-<span id="cb1-630"><a href="#cb1-630" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since variances are always non-negative:</span>
-<span id="cb1-631"><a href="#cb1-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-632"><a href="#cb1-632" aria-hidden="true" tabindex="-1"></a>  $0 \leq \Var{U}$</span>
-<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-634"><a href="#cb1-634" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y - \beta X} \quad (\text{def. of } U)$</span><span class="co">]</span>{.fragment}</span>
-<span id="cb1-635"><a href="#cb1-635" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \Var{\beta X} - 2\Cov{Y, \beta X} \quad (\text{prop. of var.})$</span><span class="co">]</span>{.fragment}</span>
-<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \beta^2 \Var{X} - 2\beta \Cov{X, Y} \quad (\text{prop. of var., cov.})$</span><span class="co">]</span>{.fragment}</span>
-<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^2}_{=\beta^2} \Var{X} - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y} \quad (\text{def. of } \beta)$</span><span class="co">]</span>{.fragment}</span>
-<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \frac{\Cov{X, Y}^2}{\Var{X}} - 2 \frac{\Cov{X, Y}^2}{\Var{X}}$</span><span class="co">]</span>{.fragment}</span>
-<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} - \frac{\Cov{X, Y}^2}{\Var{X}}.$</span><span class="co">]</span>{.fragment}</span>
-<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-646"><a href="#cb1-646" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rearranging:</span>
-<span id="cb1-647"><a href="#cb1-647" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-648"><a href="#cb1-648" aria-hidden="true" tabindex="-1"></a>  \Cov{X, Y}^2 \leq \Var{X} \Var{Y}</span>
-<span id="cb1-649"><a href="#cb1-649" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-650"><a href="#cb1-650" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>or</span>
-<span id="cb1-651"><a href="#cb1-651" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-652"><a href="#cb1-652" aria-hidden="true" tabindex="-1"></a>  |\Cov{X, Y}| \leq \sqrt{\Var{X} \Var{Y}}.</span>
-<span id="cb1-653"><a href="#cb1-653" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-629"><a href="#cb1-629" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Symmetric around zero (mean): if $Z \sim N(0, 1)$, $P(Z &gt; z) = P(Z &lt; -z)$.</span>
+<span id="cb1-630"><a href="#cb1-630" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-631"><a href="#cb1-631" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thin tails: $P(-1.96 \leq Z \leq 1.96) = 0.95$.</span>
+<span id="cb1-632"><a href="#cb1-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X \sim N(\mu, \sigma^2)$, then $(X - \mu)/\sigma \sim N(0, 1)$.</span>
+<span id="cb1-634"><a href="#cb1-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-635"><a href="#cb1-635" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bivariate Normal distribution</span></span>
+<span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$X$ and $Y$ have a bivariate normal distribution if their joint PDF is given by:</span>
+<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a>  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left<span class="co">[</span><span class="ot">-\frac{Q}{2(1-\rho)^2}\right</span><span class="co">]</span>,</span>
+<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a>  where $Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}$,</span>
+<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a>  $\mu_X = \E{X}, \mu_Y = \E{Y}, \sigma_X^2 = \Var{X}, \sigma_Y^2 = \Var{Y}$, and $\rho = \mathrm{Corr}(X, Y)$.</span>
+<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of Bivariate Normal distribution</span></span>
+<span id="cb1-646"><a href="#cb1-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-647"><a href="#cb1-647" aria-hidden="true" tabindex="-1"></a>If $X$ and $Y$ have a bivariate normal distribution:</span>
+<span id="cb1-648"><a href="#cb1-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-649"><a href="#cb1-649" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$a + bX + cY \sim N(\mu^*, (\sigma^*)^2)$, where</span>
+<span id="cb1-650"><a href="#cb1-650" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-651"><a href="#cb1-651" aria-hidden="true" tabindex="-1"></a>  \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.</span>
+<span id="cb1-652"><a href="#cb1-652" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-653"><a href="#cb1-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-654"><a href="#cb1-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-655"><a href="#cb1-655" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Cov{X, Y} = 0 \Longrightarrow X$ and $Y$ are independent.</span>
+<span id="cb1-656"><a href="#cb1-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-657"><a href="#cb1-657" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\E{Y | X} = \mu_Y + \frac{\Cov{X, Y}}{\sigma_X^2}(X - \mu_X)$.</span>
+<span id="cb1-658"><a href="#cb1-658" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-659"><a href="#cb1-659" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be generalized to more than 2 variables (multivariate normal).</span>
+<span id="cb1-660"><a href="#cb1-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-661"><a href="#cb1-661" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: The Cauchy-Schwartz Inequality</span></span>
+<span id="cb1-662"><a href="#cb1-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-663"><a href="#cb1-663" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Claim: $|\Cov{X, Y}| \leq \sqrt{\Var{X} \Var{Y}}$.</span>
+<span id="cb1-664"><a href="#cb1-664" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-665"><a href="#cb1-665" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proof**: Define</span>
+<span id="cb1-666"><a href="#cb1-666" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-667"><a href="#cb1-667" aria-hidden="true" tabindex="-1"></a>  U = Y - \beta X,</span>
+<span id="cb1-668"><a href="#cb1-668" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-669"><a href="#cb1-669" aria-hidden="true" tabindex="-1"></a>  where</span>
+<span id="cb1-670"><a href="#cb1-670" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-671"><a href="#cb1-671" aria-hidden="true" tabindex="-1"></a>  \beta = \frac{\Cov{X, Y}}{\Var{X}},</span>
+<span id="cb1-672"><a href="#cb1-672" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-673"><a href="#cb1-673" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Note that $\beta$ is a constant!</span>
+<span id="cb1-674"><a href="#cb1-674" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Also note the connection to regression and OLS in the definition of $\beta$.</span>
+<span id="cb1-675"><a href="#cb1-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-676"><a href="#cb1-676" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-format="revealjs"}</span>
+<span id="cb1-677"><a href="#cb1-677" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since variances are always non-negative:</span>
+<span id="cb1-678"><a href="#cb1-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-679"><a href="#cb1-679" aria-hidden="true" tabindex="-1"></a>  \begin{alignat*}{2}</span>
+<span id="cb1-680"><a href="#cb1-680" aria-hidden="true" tabindex="-1"></a>  0 &amp; \leq \Var{U}  &amp;&amp;<span class="sc">\\</span></span>
+<span id="cb1-681"><a href="#cb1-681" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y - \beta X}  &amp;&amp;\quad (\text{def. of } U)<span class="sc">\\</span></span>
+<span id="cb1-682"><a href="#cb1-682" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \Var{\beta X} - 2\Cov{Y, \beta X}  &amp;&amp;\quad (\text{prop. of var.})<span class="sc">\\</span></span>
+<span id="cb1-683"><a href="#cb1-683" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \beta^2 \Var{X} - 2\beta \Cov{X, Y}  &amp;&amp;\quad (\text{prop. of var., cov.})<span class="sc">\\</span></span>
+<span id="cb1-684"><a href="#cb1-684" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^2}_{=\beta^2} \Var{X} &amp;&amp;<span class="sc">\\</span></span>
+<span id="cb1-685"><a href="#cb1-685" aria-hidden="true" tabindex="-1"></a>    &amp; \qquad - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y}  &amp;&amp;\quad (\text{def. of } \beta)<span class="sc">\\</span></span>
+<span id="cb1-686"><a href="#cb1-686" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} + \frac{\Cov{X, Y}^2}{\Var{X}} - 2 \frac{\Cov{X, Y}^2}{\Var{X}}   &amp;&amp;<span class="sc">\\</span></span>
+<span id="cb1-687"><a href="#cb1-687" aria-hidden="true" tabindex="-1"></a>    &amp; = \Var{Y} - \frac{\Cov{X, Y}^2}{\Var{X}}. &amp;&amp;</span>
+<span id="cb1-688"><a href="#cb1-688" aria-hidden="true" tabindex="-1"></a>  \end{alignat*}</span>
+<span id="cb1-689"><a href="#cb1-689" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-690"><a href="#cb1-690" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-691"><a href="#cb1-691" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="revealjs"}</span>
+<span id="cb1-692"><a href="#cb1-692" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since variances are always non-negative:</span>
+<span id="cb1-693"><a href="#cb1-693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-694"><a href="#cb1-694" aria-hidden="true" tabindex="-1"></a>  $0 \leq \Var{U}$</span>
+<span id="cb1-695"><a href="#cb1-695" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-696"><a href="#cb1-696" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y - \beta X} \quad (\text{def. of } U)$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-697"><a href="#cb1-697" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-698"><a href="#cb1-698" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \Var{\beta X} - 2\Cov{Y, \beta X} \quad (\text{prop. of var.})$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-699"><a href="#cb1-699" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-700"><a href="#cb1-700" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \beta^2 \Var{X} - 2\beta \Cov{X, Y} \quad (\text{prop. of var., cov.})$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-701"><a href="#cb1-701" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-702"><a href="#cb1-702" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^2}_{=\beta^2} \Var{X} - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y} \quad (\text{def. of } \beta)$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-703"><a href="#cb1-703" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-704"><a href="#cb1-704" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} + \frac{\Cov{X, Y}^2}{\Var{X}} - 2 \frac{\Cov{X, Y}^2}{\Var{X}}$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-705"><a href="#cb1-705" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-706"><a href="#cb1-706" aria-hidden="true" tabindex="-1"></a>  <span class="co">[</span><span class="ot">$\quad= \Var{Y} - \frac{\Cov{X, Y}^2}{\Var{X}}.$</span><span class="co">]</span>{.fragment}</span>
+<span id="cb1-707"><a href="#cb1-707" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-708"><a href="#cb1-708" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rearranging:</span>
+<span id="cb1-709"><a href="#cb1-709" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-710"><a href="#cb1-710" aria-hidden="true" tabindex="-1"></a>  \Cov{X, Y}^2 \leq \Var{X} \Var{Y}</span>
+<span id="cb1-711"><a href="#cb1-711" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-712"><a href="#cb1-712" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>or</span>
+<span id="cb1-713"><a href="#cb1-713" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-714"><a href="#cb1-714" aria-hidden="true" tabindex="-1"></a>  |\Cov{X, Y}| \leq \sqrt{\Var{X} \Var{Y}}.</span>
+<span id="cb1-715"><a href="#cb1-715" aria-hidden="true" tabindex="-1"></a>  $$</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
