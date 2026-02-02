@@ -539,7 +539,7 @@ $$
 |---|---|---|---|---|
 | $X=0$ | $\tfrac{1}{10}$ | $\tfrac{2}{10}$ | $\tfrac{2}{10}$ | $\tfrac{1}{2}$ |
 | $X=1$ | $\tfrac{2}{10}$ | $\tfrac{2}{10}$ | $\tfrac{1}{10}$ | $\tfrac{1}{2}$ |
-| $P(Y=y)$ | $\tfrac{3}{10}$ | $\tfrac{4}{10}$ | $\tfrac{3}{10}$ | $1$ |
+| $P(Y=y)$ | $\tfrac{3}{10}$ | $\tfrac{4}{10}$ | $\tfrac{3}{10}$ |  |
 
 - Conditional PMFs (divide joint probabilities by marginal of $X$):
 $$
