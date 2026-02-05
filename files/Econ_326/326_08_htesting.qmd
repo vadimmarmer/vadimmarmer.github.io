@@ -1,0 +1,359 @@
+---
+title: "Lecture 8: Hypothesis testing (Part 1)"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_08_htesting.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_08_htesting.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_08_htesting_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Hypothesis testing
+
+::: {.hidden}
+$
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+$
+:::
+
+- Hypothesis testing is one of a fundamental problems in statistics.
+
+- A hypothesis is (usually) an **assertion** about the unknown population parameters such as $\beta _{1}$ in $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.$
+
+- Using the data, the econometrician has to determine whether an assertion is **true** or **false**.
+
+- Example: **Phillips curve**:
+  $$
+  \text{Unemployment}_{t}=\beta _{0}+\beta _{1}\text{Inflation}_{t}+U_{t}.
+  $$
+
+  In this example, we are interested in testing if $\beta _{1}=0$ (no Phillips curve) against $\beta _{1}<0$ (Phillips curve).
+
+## Assumptions
+
+- $\beta _{1}$ is unknown, and we have to rely on its OLS estimator $\hat{\beta}_{1}.$
+
+- We need to know the distribution of $\hat{\beta}_{1}$ or of its certain functions.
+
+- We will assume that the assumptions of the **Normal Classical Linear Regression** model are satisfied:
+
+  1. $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.$
+
+  2. $\E{U_{i}\mid X_{1},\ldots ,X_{n}} =0$ for all $i$'s.
+
+  3. $\E{U_{i}^{2}\mid X_{1},\ldots ,X_{n}} =\sigma ^{2}$ for all $i$'s.
+
+  4. $\E{U_{i}U_{j}\mid X_{1},\ldots ,X_{n}} =0$ for all $i\neq j$.
+
+  5. $U$'s are jointly normally distributed conditional on $X$'s.
+
+- Recall that, in this case, conditionally on $X$'s:
+  $$
+  \hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}} \right) \text{, where }\Var{\hat{\beta}_{1}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  $$
+
+## Null and alternative hypotheses
+
+- Usually, we have **two competing hypotheses**, and we want to draw a conclusion, based on the data, as to which of the hypotheses is true.
+
+- **Null hypothesis**, denoted as **$H_{0}$**: A hypothesis that is held to be true, unless the data provides a **sufficient** evidence against it.
+
+- **Alternative hypothesis**, denoted as **$H_{1}$**: A hypothesis against which the null is tested. It is held to be true if the null is found false.
+
+- Usually, the econometrician has to carry the **"burden of proof,"** and the case that he is interested in is stated as $H_{1}$.
+
+- The econometrician has to prove that his assertion ($H_{1}$) is true by showing that the data rejects $H_{0}$.
+
+- The two hypotheses must be **disjoint**: it should be the case that either $H_{0}$ is true or $H_{1}$ but never together simultaneously.
+
+## Decision rule
+
+- The econometrician has to choose between $H_{0}$ and $H_{1}.$
+
+- The **decision rule** that leads the econometrician to **reject or not to reject $H_{0}$** is based on a **test statistic**, which is a **function of the data** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots n\right\} .$
+
+- Usually, one rejects $H_{0}$ if the test statistic falls into a **critical region**. A critical region is constructed by taking into account the probability of making a wrong decision.
+
+## Errors
+
+- There are two types of errors that the econometrician can make:
+
+  |  | Truth: $H_0$ | Truth: $H_1$ |
+  |---|---|---|
+  | Decision: $H_0$ | $\checkmark$ | Type II error |
+  | Decision: $H_1$ | Type I error | $\checkmark$ |
+
+- **Type I error** is the error of rejecting $H_{0}$ when $H_{0}$ is true.
+
+- The probability of Type I error is denoted by $\alpha$ and called **significance level** or **size** of a test:
+  $$
+  P\left( \text{Type I error}\right) =P\left( \text{reject }H_{0}|H_{0}\text{ is true}\right) =\alpha .
+  $$
+
+- **Type II error** is the error of not rejecting $H_{0}$ when $H_{1}$ is true.
+
+- **Power** of a test:
+  $$
+  1-P\left( \text{Type II error}\right) =1-P\left( \text{Accept }H_{0}|H_{0}\text{ is false}\right) .
+  $$
+
+## Errors
+
+- The decision rule depends on a **test statistic** $T.$
+
+- The real line is split into two regions: **acceptance region** and **rejection region** (critical region).
+
+- When $T$ is in the acceptance region, we accept $H_{0}$ (and risk making a Type II error).
+
+- When $T$ is in the rejection (critical) region, we reject $H_{0}$ (and risk making a Type I error).
+
+- Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error $\alpha ,$ one makes the critical region smaller, which increases the probability of the Type II error. Thus it is impossible to make both errors arbitrary small.
+
+- By convention, $\alpha$ is chosen to be a small number, for example, $\alpha =0.01,0.05,$ or $0.10.$ (This is in agreement with the econometrician carrying the burden of proof).
+
+## Steps
+
+- The following are the steps of the hypothesis testing:
+
+  1. Specify $H_{0}$ and $H_{1}.$
+
+  2. Choose the significance level $\alpha .$
+
+  3. Define a decision rule (critical region).
+
+  4. Perform the test using the data: given the data compute the test statistic and see if it falls into the critical region.
+
+- The decision depends on the significance level $\alpha$: larger values of $\alpha$ correspond to bigger critical regions (probability of Type I error is larger).
+
+- It is **easier** to reject the null for larger values of $\alpha$.
+
+- **$p$-value**: Given the data, the **smallest** significance level at which the null can be rejected.
+
+## Two-sided tests
+
+- For $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, consider testing
+  $$
+  H_{0}:\beta _{1}=\beta _{1,0},
+  $$
+  against
+  $$
+  H_{1}:\beta _{1}\neq \beta _{1,0}.
+  $$
+
+- $\beta _{1}$ is the true **unknown** value of the slope parameter.
+
+- $\beta _{1,0}$ is a **known** number specified by the econometrician. (For example $\beta _{1,0}$ is zero if you want to test $\beta _{1}=0$).
+
+- Such a test is called **two-sided** because the alternative hypothesis $H_{1}$ does not specify in which direction $\beta _{1}$ can deviate from the asserted value $\beta _{1,0}.$
+
+## Two-sided tests when $\sigma^2$ is known (infeasible test)
+
+- Suppose for a moment that $\sigma ^{2}$ is known.
+
+- Consider the following **test statistic**:
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},\text{ where }\Var{\hat{\beta}_{1}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  $$
+
+- Consider the following **decision rule** (test):
+  $$
+  \text{Reject }H_{0}:\beta _{1}=\beta _{1,0}\text{ when }\left\vert T\right\vert >z_{1-\alpha /2},
+  $$
+  where $z_{1-\alpha /2}$ is the $\left( 1-\alpha /2\right)$ quantile of the standard normal distribution (**critical value**).
+
+## Test validity and power
+
+- We need to establish that:
+
+  1. The test is **valid**, where the validity of a test means that it has **correct size** or $P\left( \text{Type I error}\right) =\alpha$:
+     $$
+     P\left( \left\vert T\right\vert >z_{1-\alpha /2}|\beta _{1}=\beta _{1,0}\right) =\alpha .
+     $$
+
+  2. The test has **power**: when $\beta _{1}\neq \beta _{1,0}$ ($H_{0}$ is false), the test rejects $H_{0}$ with probability that exceeds $\alpha$:
+     $$
+     P\left( \left\vert T\right\vert >z_{1-\alpha /2}|\beta _{1}\neq \beta _{1,0}\right) >\alpha .
+     $$
+
+- We want $P\left( \left\vert T\right\vert >z_{1-\alpha /2}|\beta _{1}\neq \beta _{1,0}\right)$ to be as large as possible.
+
+- Note that $P\left( \left\vert T\right\vert >z_{1-\alpha /2}|\beta _{1}\neq \beta _{1,0}\right)$ depends on the true value $\beta _{1}.$
+
+## The distribution of $T$ when $\sigma^2$ is known (infeasible test)
+
+- Write
+  $$
+  \begin{aligned}
+  T &=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }}=\frac{\hat{\beta}_{1}-\beta _{1}+\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }} \\
+  &=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}+\frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }}.
+  \end{aligned}
+  $$
+
+- Under our assumptions and conditionally on $X$'s:
+  $$
+  \hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}} \right) ,\text{ or }\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\sim N\left( 0,1\right) .
+  $$
+
+- We have that conditionally on $X$'s: $T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},1\right) .$
+
+## Size when $\sigma^2$ is known (infeasible test)
+
+- We have that
+  $$
+  T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},1\right) .
+  $$
+
+- When $H_{0}:\beta _{1}=\beta _{1,0}$ is true, $T\overset{H_{0}}{\sim }N\left( 0,1\right)$.
+
+- We reject $H_{0}$ when
+  $$
+  \left\vert T\right\vert >z_{1-\alpha /2}\Leftrightarrow T>z_{1-\alpha /2}\text{ or }T<-z_{1-\alpha /2}.
+  $$
+
+- Let $Z\sim N\left( 0,1\right) .$
+  $$
+  \begin{aligned}
+  P\left( \text{Reject }H_{0}|H_{0}\text{ is true}\right) &=P\left( Z>z_{1-\alpha /2}\right) +P\left( Z<-z_{1-\alpha /2}\right) \\
+  &=\alpha /2+\alpha /2=\alpha
+  \end{aligned}
+  $$
+
+## The distribution of $T$ when $\sigma^2$ is known (infeasible test)
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+# Null distribution: N(0,1) with rejection regions at +/- z_{1-alpha/2}
+alpha <- 0.05
+z_crit <- qnorm(1 - alpha / 2)
+
+x <- seq(-4, 4, length.out = 400)
+y <- dnorm(x)
+
+plot(x, y, type = "l", lwd = 2,
+     xlab = "", ylab = "",
+     main = expression("Distribution of T under " * H[0]),
+     axes = FALSE)
+axis(1, at = c(-z_crit, 0, z_crit),
+     labels = c(expression(-z[1-alpha/2]), "0", expression(z[1-alpha/2])))
+axis(2)
+
+# Shade left tail
+x_left <- seq(-4, -z_crit, length.out = 200)
+polygon(c(x_left, rev(x_left)),
+        c(dnorm(x_left), rep(0, length(x_left))),
+        col = "lightblue", border = NA)
+
+# Shade right tail
+x_right <- seq(z_crit, 4, length.out = 200)
+polygon(c(x_right, rev(x_right)),
+        c(dnorm(x_right), rep(0, length(x_right))),
+        col = "lightblue", border = NA)
+
+# Re-draw the curve on top
+lines(x, y, lwd = 2)
+
+# Labels for the shaded areas
+text(-3, 0.03, expression(alpha / 2), cex = 1.2)
+text(3, 0.03, expression(alpha / 2), cex = 1.2)
+```
+
+## Power of the test when $\sigma^2$ is known (infeasible test)
+
+- Under $H_{1},$ $\beta _{1}-\beta _{1,0}\neq 0$ and the distribution of $T$ is **not** centered zero: $T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},1\right) .$
+
+- When $\beta _{1}-\beta _{1,0}>0:$
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+# Two overlapping normals: N(0,1) under H0 and N(mu,1) under H1
+alpha <- 0.05
+z_crit <- qnorm(1 - alpha / 2)
+mu <- 2.5  # shift under H1
+
+x <- seq(-4, 4 + mu, length.out = 500)
+y0 <- dnorm(x, mean = 0, sd = 1)
+y1 <- dnorm(x, mean = mu, sd = 1)
+
+plot(x, y0, type = "l", lwd = 2, lty = 2,
+     xlab = "", ylab = "",
+     ylim = c(0, max(c(y0, y1)) * 1.1),
+     main = expression("Distribution of T under " * H[0] * " and " * H[1]),
+     axes = FALSE)
+axis(1, at = c(-z_crit, 0, z_crit, mu),
+     labels = c(expression(-z[1-alpha/2]), "0",
+                expression(z[1-alpha/2]),
+                expression(mu)))
+axis(2)
+
+# Shade rejection regions under H1 curve
+# Left tail
+x_left <- seq(min(x), -z_crit, length.out = 200)
+polygon(c(x_left, rev(x_left)),
+        c(dnorm(x_left, mu), rep(0, length(x_left))),
+        col = rgb(1, 0.6, 0.6, 0.5), border = NA)
+
+# Right tail
+x_right <- seq(z_crit, max(x), length.out = 200)
+polygon(c(x_right, rev(x_right)),
+        c(dnorm(x_right, mu), rep(0, length(x_right))),
+        col = rgb(1, 0.6, 0.6, 0.5), border = NA)
+
+# Also shade rejection regions under H0 curve (lightly)
+polygon(c(x_left, rev(x_left)),
+        c(dnorm(x_left, 0), rep(0, length(x_left))),
+        col = rgb(0.6, 0.8, 1, 0.4), border = NA)
+x_right0 <- seq(z_crit, max(x), length.out = 200)
+polygon(c(x_right0, rev(x_right0)),
+        c(dnorm(x_right0, 0), rep(0, length(x_right0))),
+        col = rgb(0.6, 0.8, 1, 0.4), border = NA)
+
+# Re-draw curves on top
+lines(x, y0, lwd = 2, lty = 2)
+lines(x, y1, lwd = 2)
+
+# Labels
+text(0, max(y0) * 0.6, expression(H[0]), cex = 1.2)
+text(mu, max(y1) * 0.6, expression(H[1]), cex = 1.2)
+
+# Vertical lines at critical values
+abline(v = c(-z_crit, z_crit), lty = 3, col = "gray40")
+
+legend("topright", legend = c(expression(H[0]: N(0,1)),
+                               expression(H[1]: N(mu,1))),
+       lty = c(2, 1), lwd = 2, cex = 0.9, bg = "white")
+```
+
+- Rejection probability exceeds $\alpha$ under $H_{1}$: power increases with the distance from $H_{0}$ ($\left\vert \beta _{1,0}-\beta _{1}\right\vert$) and decreases with $\Var{\hat{\beta}_{1}}$.
