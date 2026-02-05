@@ -110,14 +110,10 @@ $
 Suppose that
 
 - $Y_i = \alpha + \beta X_i + U_i$.
-
 - $\E{U_i \mid \mathbf{X}} = 0$.
-
 - $\E{U_i^2 \mid \mathbf{X}} = \sigma^2$ for all $i = 1, \ldots, n$ (homoskedasticity).
-
 - For all $i \neq j$, $\E{U_i U_j \mid \mathbf{X}} = 0$.
-
-Then the OLS estimators are **BLUE**.
+- Then the OLS estimator is **BLUE**.
 
 ## Gauss-Markov Theorem (setup)
 
@@ -140,17 +136,17 @@ Then the OLS estimators are **BLUE**.
 
 ## An outline of the proof
 
-1. First, we are going to show that the $c$'s in $\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i$ satisfy $\sum_{i=1}^{n} c_i = 0$ and $\sum_{i=1}^{n} c_i X_i = 1$.
+1. Show that the $c$'s in $\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i$ satisfy $\sum_{i=1}^{n} c_i = 0$ and $\sum_{i=1}^{n} c_i X_i = 1$.
 
-2. Using the results of Step 1, we will show that $\Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$.
+2. Using the results of Step 1, show that $\Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$.
 
-3. Using the results of Step 2, we will show that $\Var{\tilde{\beta} \mid \mathbf{X}} \geq \Var{\hat{\beta} \mid \mathbf{X}}$.
+3. Using the results of Step 2, show that $\Var{\tilde{\beta} \mid \mathbf{X}} \geq \Var{\hat{\beta} \mid \mathbf{X}}$.
 
-4. Lastly, we will show that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$ if and only if $\tilde{\beta} = \hat{\beta}$.
+4. Show that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$ if and only if $\tilde{\beta} = \hat{\beta}$.
 
 ## Proof: Step 1
 
-- Since $\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i$,
+- Since $\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i$ (linearity),
   \begin{align*}
   \tilde{\beta} &= \sum_{i=1}^{n} c_i (\alpha + \beta X_i + U_i) \\
   &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i.
@@ -289,15 +285,19 @@ Suppose that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathb
 
 ## What if homoskedasticity fails?
 
-- Suppose that $\E{U_i^2 \mid \mathbf{X}} = \sigma^2(X_i)=\sigma_i^2$, where $\sigma_i^2$ may differ across observations (**heteroskedasticity**).
+- Suppose that 
+  $$
+  \E{U_i^2 \mid \mathbf{X}} = \sigma^2(X_i)=\sigma_i^2,
+  $$
+  where $\sigma_i^2$ may differ across observations (**heteroskedasticity**).
 
 - **Unbiasedness** of the OLS estimator $\hat{\beta}$ **still holds**. The proof of unbiasedness only uses:
 
   1. $Y_i = \alpha + \beta X_i + U_i$.
 
   2. $\E{U_i \mid \mathbf{X}} = 0$.
-
-  It does **not** require homoskedasticity.
+   
+   - It does **not** require homoskedasticity.
 
 - However, the OLS estimator is **no longer BLUE**.
 
@@ -307,7 +307,12 @@ Suppose that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathb
 
 ## Transforming the model
 
-- Suppose we know $\sigma_i^2 = \Var{U_i \mid \mathbf{X}}$ for each $i$. Divide both sides of $Y_i = \alpha + \beta X_i + U_i$ by $\sigma_i$:
+- Suppose we know $\sigma_i^2 = \Var{U_i \mid \mathbf{X}}$ for each $i$. Divide both sides of 
+  $$
+  Y_i = \alpha + \beta X_i + U_i
+  $$
+  by $\sigma_i$:
+- We have:
   $$
   \frac{Y_i}{\sigma_i} = \alpha \cdot \frac{1}{\sigma_i} + \beta \cdot \frac{X_i}{\sigma_i} + \frac{U_i}{\sigma_i}.
   $$
