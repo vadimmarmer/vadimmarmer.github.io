@@ -35,7 +35,7 @@ format:
     transition: none
 ---
 
-## There are many alternative estimators
+## What we have so far
 
 ::: {.hidden}
 $
@@ -45,11 +45,35 @@ $
 $
 :::
 
-We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}$.
+- **Simple linear regression model**:
+  \begin{align*}
+  & Y_i = \beta_0 + \beta_1 X_i + U_i,\\
+  & \E{U_i \mid \mathbf{X}}= 0,\\
+  &\Var{U_i \mid \mathbf{X}} =\sigma^2,\\
+  &\Cov{U_i, U_j \mid \mathbf{X}} = 0 \text{ for all } i \neq j.
+  \end{align*}
 
-- The OLS estimator is not the only estimator we can construct. There are alternative estimators with some desirable properties.
+- **OLS estimator**:
+  $$
+  \hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+  $$
 
-- Example: Using only the first two observations, suppose that $X_2 \neq X_1$.
+- **Unbiasedness**: $\E{\hat{\beta}_1 \mid \mathbf{X}} = \beta_1.$
+
+- **Variance**:
+  $$
+  \Var{\hat{\beta}_1\mid \mathbf X} = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+  $$
+
+- **Question**: Is OLS the best we can do?
+
+## There are many alternative estimators
+
+- The OLS estimator is not the only estimator we can construct. 
+- There are alternative estimators with some desirable properties.
+
+## Example of an alternative estimator
+- Using only the first two observations, suppose that $X_2 \neq X_1$.
   $$
   \tilde{\beta} = \frac{Y_2 - Y_1}{X_2 - X_1}.
   $$
@@ -63,30 +87,23 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
   c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
   $$
 
-## Unbiasedness of $\tilde{\beta}$
-
-- If $Y_i = \alpha + \beta X_i + U_i$ and $\E{U_i \mid \mathbf{X}} = 0$, then $\tilde{\beta}$ is **unbiased**:
+- Signal/noise decomposition of $\tilde{\beta}$:
   \begin{align*}
   \tilde{\beta} &= \frac{Y_2 - Y_1}{X_2 - X_1} \\
   &= \frac{(\alpha + \beta X_2 + U_2) - (\alpha + \beta X_1 + U_1)}{X_2 - X_1} \\
   &= \frac{\beta(X_2 - X_1)}{X_2 - X_1} + \frac{U_2 - U_1}{X_2 - X_1} \\
-  &= \beta + \frac{U_2 - U_1}{X_2 - X_1}, \text{ and}
+  &= \beta + \frac{U_2 - U_1}{X_2 - X_1}.
   \end{align*}
+- Uniasedness of $\tilde{\beta}$:
   \begin{align*}
-  \E{\tilde{\beta} \mid X_1, X_2} &= \beta + \E{\frac{U_2 - U_1}{X_2 - X_1} \mid X_1, X_2} \\
-  &= \beta + \frac{\E{U_2 \mid X_1, X_2} - \E{U_1 \mid X_1, X_2}}{X_2 - X_1} \\
+  \E{\tilde{\beta} \mid \mathbf X} &= \beta + \E{\frac{U_2 - U_1}{X_2 - X_1} \mid \mathbf X} \\
+  &= \beta + \frac{\E{U_2 \mid \mathbf X} - \E{U_1 \mid \mathbf X}}{X_2 - X_1} \\
   &= \beta.
   \end{align*}
 
-## An optimality criterion
+## Optimality of an estimator: BLUE
 
 - Among all **linear** and **unbiased** estimators, an estimator with the **smallest variance** is called the **Best Linear Unbiased Estimator** (**BLUE**).
-
-- Note that the statement is **conditional** on $\mathbf{X}$:
-
-  - The estimators are **unbiased** conditionally on $\mathbf{X}$.
-
-  - The **variance** is conditional on $\mathbf{X}$.
 
 ## Gauss-Markov Theorem
 
@@ -100,11 +117,11 @@ Suppose that
 
 - For all $i \neq j$, $\E{U_i U_j \mid \mathbf{X}} = 0$.
 
-Then, conditionally on $\mathbf{X}$, the OLS estimators are **BLUE**.
+Then the OLS estimators are **BLUE**.
 
 ## Gauss-Markov Theorem (setup)
 
-- We already know that the OLS estimator $\hat{\beta}$ is linear and unbiased (conditionally on $\mathbf{X}$).
+- We already know that the OLS estimator $\hat{\beta}$ is linear and unbiased.
 
 - Let $\tilde{\beta}$ be any other estimator of $\beta$ such that
 
@@ -114,27 +131,22 @@ Then, conditionally on $\mathbf{X}$, the OLS estimators are **BLUE**.
     $$
     where $c$'s depend only on $\mathbf{X}$.
 
-  - $\tilde{\beta}$ is unbiased:
-    $$
-    \E{\tilde{\beta}} = \beta,
-    $$
-    where expectation is conditional on $\mathbf{X}$.
+  - $\tilde{\beta}$ is unbiased: $\E{\tilde{\beta} \mid \mathbf{X}} = \beta.$
 
 - We need to show that for **any** such $\tilde{\beta} \neq \hat{\beta}$,
   $$
-  \Var{\tilde{\beta}} > \Var{\hat{\beta}},
+  \Var{\tilde{\beta} \mid \mathbf{X}} > \Var{\hat{\beta} \mid \mathbf{X}}.
   $$
-  where the variance is conditional on $\mathbf{X}$.
 
 ## An outline of the proof
 
 1. First, we are going to show that the $c$'s in $\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i$ satisfy $\sum_{i=1}^{n} c_i = 0$ and $\sum_{i=1}^{n} c_i X_i = 1$.
 
-2. Using the results of Step 1, we will show that conditionally on $\mathbf{X}$, $\Cov{\tilde{\beta}, \hat{\beta}} = \Var{\hat{\beta}}$.
+2. Using the results of Step 1, we will show that $\Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$.
 
-3. Using the results of Step 2, we will show that conditionally on $\mathbf{X}$, $\Var{\tilde{\beta}} \geq \Var{\hat{\beta}}$.
+3. Using the results of Step 2, we will show that $\Var{\tilde{\beta} \mid \mathbf{X}} \geq \Var{\hat{\beta} \mid \mathbf{X}}$.
 
-4. Lastly, we will show that $\Var{\tilde{\beta}} = \Var{\hat{\beta}}$ if and only if $\tilde{\beta} = \hat{\beta}$.
+4. Lastly, we will show that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$ if and only if $\tilde{\beta} = \hat{\beta}$.
 
 ## Proof: Step 1
 
@@ -144,26 +156,25 @@ Then, conditionally on $\mathbf{X}$, the OLS estimators are **BLUE**.
   &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i.
   \end{align*}
 
-- Conditionally on $\mathbf{X}$,
+- Therefore,
   \begin{align*}
-  \E{\tilde{\beta}} &= \E{\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i} \\
-  &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i \E{U_i} \\
+  \E{\tilde{\beta} \mid \mathbf{X}} &= \E{\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i \mid \mathbf{X}} \\
+  &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i \E{U_i \mid \mathbf{X}} \\
   &= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
   \end{align*}
 
-## Proof: Step 1 (continued)
 
-- From the **linearity** we have that, conditionally on $\mathbf{X}$,
+- From the **linearity** we have that
   $$
-  \E{\tilde{\beta}} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
-  $$
-
-- From the **unbiasedness** we have that conditionally on $\mathbf{X}$,
-  $$
-  \beta = \E{\tilde{\beta}} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+  \E{\tilde{\beta} \mid \mathbf{X}} = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
   $$
 
-- Since this has to be true for **any** $\alpha$ and $\beta$, it follows now that
+- From the **unbiasedness** we have that
+  $$
+  {\color{red}\beta} = \E{\tilde{\beta} \mid \mathbf{X}} = \alpha \sum_{i=1}^{n} c_i + {\color{red}\beta} \sum_{i=1}^{n} c_i X_i.
+  $$
+
+- Since this has to be true for **any** $\alpha$, $\beta$, and the $X$'s, it follows now that
   $$
   \sum_{i=1}^{n} c_i = 0, \quad \sum_{i=1}^{n} c_i X_i = 1.
   $$
@@ -178,78 +189,71 @@ Then, conditionally on $\mathbf{X}$, the OLS estimators are **BLUE**.
   \hat{\beta} = \beta + \sum_{i=1}^{n} w_i U_i, \text{ with } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
   $$
 
-- Conditionally on $\mathbf{X}$,
+- Then,
   \begin{align*}
-  \Cov{\tilde{\beta}, \hat{\beta}} &= \E{(\tilde{\beta} - \beta)(\hat{\beta} - \beta)} \\
-  &= \E{\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right)} \\
-  &= \sum_{i=1}^{n} c_i w_i \E{U_i^2} + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j}.
+  \Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} &= \E{(\tilde{\beta} - \beta)(\hat{\beta} - \beta) \mid \mathbf{X}} \\
+  &= \E{\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right) \mid \mathbf{X}} \\
+  &= \sum_{i=1}^{n} c_i w_i \E{U_i^2 \mid \mathbf{X}} + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j \mid \mathbf{X}}.
   \end{align*}
 
-## Proof: Step 2 (continued)
 
-$$
-\Cov{\tilde{\beta}, \hat{\beta}} = \sum_{i=1}^{n} c_i w_i \E{U_i^2} + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j}.
-$$
-
-- Since $\E{U_i^2} = \sigma^2$ for all $i$'s:
+- Since $\E{U_i^2 \mid \mathbf{X}} = \sigma^2$ for all $i$'s:
   $$
-  \sum_{i=1}^{n} c_i w_i \E{U_i^2} = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+  \sum_{i=1}^{n} c_i w_i \E{U_i^2 \mid \mathbf{X}} = \sigma^2 \sum_{i=1}^{n} c_i w_i.
   $$
 
-- Since $\E{U_i U_j} = 0$ for all $i \neq j$,
+- Since $\E{U_i U_j \mid \mathbf{X}} = 0$ for all $i \neq j$,
   $$
-  \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j} = 0.
+  \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \E{U_i U_j \mid \mathbf{X}} = 0.
   $$
 
 - Thus,
   $$
-  \Cov{\tilde{\beta}, \hat{\beta}} = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+  \Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} = \sigma^2 \sum_{i=1}^{n} c_i w_i.
   $$
-
-## Proof: Step 2 (continued)
-
-Conditionally on $\mathbf{X}$:
+  and
 $$
-\Cov{\tilde{\beta}, \hat{\beta}} = \sigma^2 \sum_{i=1}^{n} c_i w_i \text{ and } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
+ w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
 $$
+- We have:
 \begin{align*}
-\Cov{\tilde{\beta}, \hat{\beta}} &= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
+\Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} &= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) \\
-&= \Var{\hat{\beta}}.
+&= \Var{\hat{\beta} \mid \mathbf{X}}.
 \end{align*}
 
 ## Proof: Step 3
 
 - We know now that for any **linear** and **unbiased** $\tilde{\beta}$,
   $$
-  \Cov{\tilde{\beta}, \hat{\beta}} = \Var{\hat{\beta}}.
+  \Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}.
   $$
 
-- Let's consider $\Var{\tilde{\beta} - \hat{\beta}}$:
+- Let's consider $\Var{\tilde{\beta} - \hat{\beta} \mid \mathbf{X}}$:
   \begin{align*}
-  \Var{\tilde{\beta} - \hat{\beta}} &= \Var{\tilde{\beta}} + \Var{\hat{\beta}} - 2 \Cov{\tilde{\beta}, \hat{\beta}} \\
-  &= \Var{\tilde{\beta}} + \Var{\hat{\beta}} - 2 \Var{\hat{\beta}} \\
-  &= \Var{\tilde{\beta}} - \Var{\hat{\beta}}.
+  \Var{\tilde{\beta} - \hat{\beta} \mid \mathbf{X}} &= \Var{\tilde{\beta} \mid \mathbf{X}} + \Var{\hat{\beta} \mid \mathbf{X}} - 2 \Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} \\
+  &= \Var{\tilde{\beta} \mid \mathbf{X}} + \Var{\hat{\beta} \mid \mathbf{X}} - 2 \Var{\hat{\beta} \mid \mathbf{X}} \\
+  &= \Var{\tilde{\beta} \mid \mathbf{X}} - \Var{\hat{\beta} \mid \mathbf{X}}.
   \end{align*}
 
-- But since $\Var{\tilde{\beta} - \hat{\beta}} \geq 0$,
+- But since $\Var{\tilde{\beta} - \hat{\beta} \mid \mathbf{X}} \geq 0$,
   $$
-  \Var{\tilde{\beta}} - \Var{\hat{\beta}} \geq 0
+  \Var{\tilde{\beta} \mid \mathbf{X}} - \Var{\hat{\beta} \mid \mathbf{X}} \geq 0
   $$
   or
   $$
-  \Var{\tilde{\beta}} \geq \Var{\hat{\beta}}.
+  \Var{\tilde{\beta} \mid \mathbf{X}} \geq \Var{\hat{\beta} \mid \mathbf{X}}.
   $$
 
 ## Proof: Step 4 (Uniqueness)
 
-Suppose that $\Var{\tilde{\beta}} = \Var{\hat{\beta}}$.
+Suppose that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathbf{X}}$.
 
 - Then,
   $$
-  \Var{\tilde{\beta} - \hat{\beta}} = \Var{\tilde{\beta}} - \Var{\hat{\beta}} = 0.
+  \Var{\tilde{\beta} - \hat{\beta} \mid \mathbf{X}} = \Var{\tilde{\beta} \mid \mathbf{X}} - \Var{\hat{\beta} \mid \mathbf{X}} = 0.
   $$
 
 - Thus, $\tilde{\beta} - \hat{\beta}$ is not random or
@@ -259,10 +263,96 @@ Suppose that $\Var{\tilde{\beta}} = \Var{\hat{\beta}}$.
 
 - This constant also has to be zero because
   \begin{align*}
-  \E{\tilde{\beta}} &= \E{\hat{\beta}} + \text{constant} \\
+  \E{\tilde{\beta} \mid \mathbf{X}} &= \E{\hat{\beta} \mid \mathbf{X}} + \text{constant} \\
   &= \beta + \text{constant},
   \end{align*}
   and in order for $\tilde{\beta}$ to be **unbiased**
   $$
   \text{constant} = 0 \text{ or } \tilde{\beta} = \hat{\beta}.
   $$
+
+## Why does unbiasedness matter?
+
+- The Gauss-Markov Theorem says that OLS is the best among **linear unbiased** estimators. Can we do better if we drop unbiasedness?
+
+- Consider $\tilde{\beta} = 0$ (always "estimate" the slope as zero, regardless of the data).
+
+- $\tilde{\beta} = 0$ is **linear**: $\tilde{\beta} = \sum_{i=1}^n 0 \cdot Y_i = 0$.
+
+- $\tilde{\beta} = 0$ is **biased**: $\E{\tilde{\beta} \mid \mathbf{X}} = 0 \neq \beta$ (unless $\beta = 0$).
+
+- $\Var{\tilde{\beta} \mid \mathbf{X}} = 0 < \Var{\hat{\beta} \mid \mathbf{X}}$.
+
+- So $\tilde{\beta} = 0$ has a **smaller variance** than OLS, but it is useless as an estimator because it ignores the data entirely.
+
+- This illustrates why the **unbiasedness** requirement in the Gauss-Markov Theorem is essential: without it, one can trivially achieve zero variance by using a constant.
+
+## What if homoskedasticity fails?
+
+- Suppose that $\E{U_i^2 \mid \mathbf{X}} = \sigma^2(X_i)=\sigma_i^2$, where $\sigma_i^2$ may differ across observations (**heteroskedasticity**).
+
+- **Unbiasedness** of the OLS estimator $\hat{\beta}$ **still holds**. The proof of unbiasedness only uses:
+
+  1. $Y_i = \alpha + \beta X_i + U_i$.
+
+  2. $\E{U_i \mid \mathbf{X}} = 0$.
+
+  It does **not** require homoskedasticity.
+
+- However, the OLS estimator is **no longer BLUE**.
+
+- The Gauss-Markov proof relied on $\E{U_i^2 \mid \mathbf{X}} = \sigma^2$ being the **same** for all $i$'s.
+
+- There exists another linear unbiased estimator with a **smaller variance** than OLS.
+
+## Transforming the model
+
+- Suppose we know $\sigma_i^2 = \Var{U_i \mid \mathbf{X}}$ for each $i$. Divide both sides of $Y_i = \alpha + \beta X_i + U_i$ by $\sigma_i$:
+  $$
+  \frac{Y_i}{\sigma_i} = \alpha \cdot \frac{1}{\sigma_i} + \beta \cdot \frac{X_i}{\sigma_i} + \frac{U_i}{\sigma_i}.
+  $$
+
+- Define the **transformed variables**:
+  $$
+  Y_i^* = \frac{Y_i}{\sigma_i}, \quad X_{0i}^* = \frac{1}{\sigma_i}, \quad X_{1i}^* = \frac{X_i}{\sigma_i}, \quad U_i^* = \frac{U_i}{\sigma_i}.
+  $$
+
+- The transformed model is:
+  $$
+  Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
+  $$
+
+- The transformed errors $U_i^*$ satisfy:
+
+  - $\E{U_i^* \mid \mathbf{X}} = \frac{1}{\sigma_i}\E{U_i \mid \mathbf{X}} = 0.$
+
+  - $\Var{U_i^* \mid \mathbf{X}} = \frac{1}{\sigma_i^2}\Var{U_i \mid \mathbf{X}} = \frac{\sigma_i^2}{\sigma_i^2} = 1.$
+
+- The transformed errors are **homoskedastic**: $\Var{U_i^* \mid \mathbf{X}} = 1$ for all $i$'s.
+
+- The Gauss-Markov assumptions hold for the transformed model, so OLS applied to the **transformed** data is **BLUE**.
+
+## Weighted Least Squares (WLS)
+
+- OLS applied to the transformed model minimizes (w.r.t. $a$ and $b$):
+  $$
+   \sum_{i=1}^{n} \frac{(Y_i - a - b X_i)^2}{\sigma_i^2} = \sum_{i=1}^{n} w_i (Y_i - a - b X_i)^2,
+  $$
+  where $w_i = 1/\sigma_i^2$.
+
+- This is called **Weighted Least Squares** (WLS).
+
+- **Interpretation**: WLS gives **more weight** to observations with smaller variance (more precise observations) and **less weight** to observations with larger variance (noisier observations).
+- The WLS estimator is BLUE for $\beta$ in the original model.
+
+- The WLS estimator of $\beta$ is:
+  $$
+  \hat{\beta}_{WLS} = \frac{\sum_{i=1}^{n} w_i (X_i - \bar{X}_w)(Y_i - \bar{Y}_w)}{\sum_{i=1}^{n} w_i (X_i - \bar{X}_w)^2},
+  $$
+  where $w_i = 1/\sigma_i^2$, $\bar{X}_w = \frac{\sum_{i=1}^n w_i X_i}{\sum_{i=1}^n w_i}$, and $\bar{Y}_w = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i}$.
+
+
+
+
+
+- **Practical limitation**: WLS requires knowledge of $\sigma_i^2$, which is typically unknown.

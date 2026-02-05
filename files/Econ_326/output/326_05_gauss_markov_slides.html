@@ -1057,16 +1057,40 @@ Vadim Marmer, UBC
 </div>
 
 </section>
-<section id="there-are-many-alternative-estimators" class="slide level2">
-<h2>There are many alternative estimators</h2>
+<section id="what-we-have-so-far" class="slide level2">
+<h2>What we have so far</h2>
 <div class="hidden">
 $
 <p>$</p>
 </div>
-<p>We use the notation <span class="math inline">\mathrm{E}\left[\cdot \mid \mathbf{X}\right] = \mathrm{E}\left[\cdot \mid X_1, \ldots, X_n\right]</span>.</p>
 <ul>
-<li class="fragment"><p>The OLS estimator is not the only estimator we can construct. There are alternative estimators with some desirable properties.</p></li>
-<li class="fragment"><p>Example: Using only the first two observations, suppose that <span class="math inline">X_2 \neq X_1</span>. <span class="math display">
+<li class="fragment"><p><strong>Simple linear regression model</strong>: <span class="math display">\begin{align*}
+&amp; Y_i = \beta_0 + \beta_1 X_i + U_i,\\
+&amp; \mathrm{E}\left[U_i \mid \mathbf{X}\right]= 0,\\
+&amp;\mathrm{Var}\left(U_i \mid \mathbf{X}\right) =\sigma^2,\\
+&amp;\mathrm{Cov}\left(U_i, U_j \mid \mathbf{X}\right) = 0 \text{ for all } i \neq j.
+\end{align*}</span></p></li>
+<li class="fragment"><p><strong>OLS estimator</strong>: <span class="math display">
+\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+</span></p></li>
+<li class="fragment"><p><strong>Unbiasedness</strong>: <span class="math inline">\mathrm{E}\left[\hat{\beta}_1 \mid \mathbf{X}\right] = \beta_1.</span></p></li>
+<li class="fragment"><p><strong>Variance</strong>: <span class="math display">
+\mathrm{Var}\left(\hat{\beta}_1\mid \mathbf X\right) = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+</span></p></li>
+<li class="fragment"><p><strong>Question</strong>: Is OLS the best we can do?</p></li>
+</ul>
+</section>
+<section id="there-are-many-alternative-estimators" class="slide level2">
+<h2>There are many alternative estimators</h2>
+<ul>
+<li class="fragment">The OLS estimator is not the only estimator we can construct.</li>
+<li class="fragment">There are alternative estimators with some desirable properties.</li>
+</ul>
+</section>
+<section id="example-of-an-alternative-estimator" class="slide level2">
+<h2>Example of an alternative estimator</h2>
+<ul>
+<li class="fragment"><p>Using only the first two observations, suppose that <span class="math inline">X_2 \neq X_1</span>. <span class="math display">
 \tilde{\beta} = \frac{Y_2 - Y_1}{X_2 - X_1}.
 </span></p></li>
 <li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is <strong>linear</strong>: <span class="math display">
@@ -1074,32 +1098,23 @@ $
 </span> where <span class="math display">
 c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
 </span></p></li>
-</ul>
-</section>
-<section id="unbiasedness-of-tildebeta" class="slide level2">
-<h2>Unbiasedness of <span class="math inline">\tilde{\beta}</span></h2>
-<ul>
-<li class="fragment">If <span class="math inline">Y_i = \alpha + \beta X_i + U_i</span> and <span class="math inline">\mathrm{E}\left[U_i \mid \mathbf{X}\right] = 0</span>, then <span class="math inline">\tilde{\beta}</span> is <strong>unbiased</strong>: <span class="math display">\begin{align*}
+<li class="fragment"><p>Signal/noise decomposition of <span class="math inline">\tilde{\beta}</span>: <span class="math display">\begin{align*}
 \tilde{\beta} &amp;= \frac{Y_2 - Y_1}{X_2 - X_1} \\
 &amp;= \frac{(\alpha + \beta X_2 + U_2) - (\alpha + \beta X_1 + U_1)}{X_2 - X_1} \\
 &amp;= \frac{\beta(X_2 - X_1)}{X_2 - X_1} + \frac{U_2 - U_1}{X_2 - X_1} \\
-&amp;= \beta + \frac{U_2 - U_1}{X_2 - X_1}, \text{ and}
-\end{align*}</span> <span class="math display">\begin{align*}
-\mathrm{E}\left[\tilde{\beta} \mid X_1, X_2\right] &amp;= \beta + \mathrm{E}\left[\frac{U_2 - U_1}{X_2 - X_1} \mid X_1, X_2\right] \\
-&amp;= \beta + \frac{\mathrm{E}\left[U_2 \mid X_1, X_2\right] - \mathrm{E}\left[U_1 \mid X_1, X_2\right]}{X_2 - X_1} \\
+&amp;= \beta + \frac{U_2 - U_1}{X_2 - X_1}.
+\end{align*}</span></p></li>
+<li class="fragment"><p>Uniasedness of <span class="math inline">\tilde{\beta}</span>: <span class="math display">\begin{align*}
+\mathrm{E}\left[\tilde{\beta} \mid \mathbf X\right] &amp;= \beta + \mathrm{E}\left[\frac{U_2 - U_1}{X_2 - X_1} \mid \mathbf X\right] \\
+&amp;= \beta + \frac{\mathrm{E}\left[U_2 \mid \mathbf X\right] - \mathrm{E}\left[U_1 \mid \mathbf X\right]}{X_2 - X_1} \\
 &amp;= \beta.
-\end{align*}</span></li>
+\end{align*}</span></p></li>
 </ul>
 </section>
-<section id="an-optimality-criterion" class="slide level2">
-<h2>An optimality criterion</h2>
+<section id="optimality-of-an-estimator-blue" class="slide level2">
+<h2>Optimality of an estimator: BLUE</h2>
 <ul>
-<li class="fragment"><p>Among all <strong>linear</strong> and <strong>unbiased</strong> estimators, an estimator with the <strong>smallest variance</strong> is called the <strong>Best Linear Unbiased Estimator</strong> (<strong>BLUE</strong>).</p></li>
-<li class="fragment"><p>Note that the statement is <strong>conditional</strong> on <span class="math inline">\mathbf{X}</span>:</p>
-<ul>
-<li class="fragment"><p>The estimators are <strong>unbiased</strong> conditionally on <span class="math inline">\mathbf{X}</span>.</p></li>
-<li class="fragment"><p>The <strong>variance</strong> is conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
-</ul></li>
+<li class="fragment">Among all <strong>linear</strong> and <strong>unbiased</strong> estimators, an estimator with the <strong>smallest variance</strong> is called the <strong>Best Linear Unbiased Estimator</strong> (<strong>BLUE</strong>).</li>
 </ul>
 </section>
 <section id="gauss-markov-theorem" class="slide level2">
@@ -1111,33 +1126,31 @@ c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
 <li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] = \sigma^2</span> for all <span class="math inline">i = 1, \ldots, n</span> (homoskedasticity).</p></li>
 <li class="fragment"><p>For all <span class="math inline">i \neq j</span>, <span class="math inline">\mathrm{E}\left[U_i U_j \mid \mathbf{X}\right] = 0</span>.</p></li>
 </ul>
-<p>Then, conditionally on <span class="math inline">\mathbf{X}</span>, the OLS estimators are <strong>BLUE</strong>.</p>
+<p>Then the OLS estimators are <strong>BLUE</strong>.</p>
 </section>
 <section id="gauss-markov-theorem-setup" class="slide level2">
 <h2>Gauss-Markov Theorem (setup)</h2>
 <ul>
-<li class="fragment"><p>We already know that the OLS estimator <span class="math inline">\hat{\beta}</span> is linear and unbiased (conditionally on <span class="math inline">\mathbf{X}</span>).</p></li>
+<li class="fragment"><p>We already know that the OLS estimator <span class="math inline">\hat{\beta}</span> is linear and unbiased.</p></li>
 <li class="fragment"><p>Let <span class="math inline">\tilde{\beta}</span> be any other estimator of <span class="math inline">\beta</span> such that</p>
 <ul>
 <li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is linear: <span class="math display">
 \tilde{\beta} = \sum_{i=1}^{n} c_i Y_i,
 </span> where <span class="math inline">c</span>’s depend only on <span class="math inline">\mathbf{X}</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is unbiased: <span class="math display">
-\mathrm{E}\left[\tilde{\beta}\right] = \beta,
-</span> where expectation is conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\tilde{\beta}</span> is unbiased: <span class="math inline">\mathrm{E}\left[\tilde{\beta} \mid \mathbf{X}\right] = \beta.</span></p></li>
 </ul></li>
 <li class="fragment"><p>We need to show that for <strong>any</strong> such <span class="math inline">\tilde{\beta} \neq \hat{\beta}</span>, <span class="math display">
-\mathrm{Var}\left(\tilde{\beta}\right) &gt; \mathrm{Var}\left(\hat{\beta}\right),
-</span> where the variance is conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
+\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) &gt; \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right).
+</span></p></li>
 </ul>
 </section>
 <section id="an-outline-of-the-proof" class="slide level2 scrollable">
 <h2>An outline of the proof</h2>
 <ol type="1">
 <li class="fragment"><p>First, we are going to show that the <span class="math inline">c</span>’s in <span class="math inline">\tilde{\beta} = \sum_{i=1}^{n} c_i Y_i</span> satisfy <span class="math inline">\sum_{i=1}^{n} c_i = 0</span> and <span class="math inline">\sum_{i=1}^{n} c_i X_i = 1</span>.</p></li>
-<li class="fragment"><p>Using the results of Step 1, we will show that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right)</span>.</p></li>
-<li class="fragment"><p>Using the results of Step 2, we will show that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{Var}\left(\tilde{\beta}\right) \geq \mathrm{Var}\left(\hat{\beta}\right)</span>.</p></li>
-<li class="fragment"><p>Lastly, we will show that <span class="math inline">\mathrm{Var}\left(\tilde{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right)</span> if and only if <span class="math inline">\tilde{\beta} = \hat{\beta}</span>.</p></li>
+<li class="fragment"><p>Using the results of Step 1, we will show that <span class="math inline">\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) = \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right)</span>.</p></li>
+<li class="fragment"><p>Using the results of Step 2, we will show that <span class="math inline">\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) \geq \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right)</span>.</p></li>
+<li class="fragment"><p>Lastly, we will show that <span class="math inline">\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) = \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right)</span> if and only if <span class="math inline">\tilde{\beta} = \hat{\beta}</span>.</p></li>
 </ol>
 </section>
 <section id="proof-step-1" class="slide level2">
@@ -1147,23 +1160,18 @@ c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
 \tilde{\beta} &amp;= \sum_{i=1}^{n} c_i (\alpha + \beta X_i + U_i) \\
 &amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i.
 \end{align*}</span></p></li>
-<li class="fragment"><p>Conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">\begin{align*}
-\mathrm{E}\left[\tilde{\beta}\right] &amp;= \mathrm{E}\left[\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i\right] \\
-&amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i \mathrm{E}\left[U_i\right] \\
+<li class="fragment"><p>Therefore, <span class="math display">\begin{align*}
+\mathrm{E}\left[\tilde{\beta} \mid \mathbf{X}\right] &amp;= \mathrm{E}\left[\alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i U_i \mid \mathbf{X}\right] \\
+&amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i + \sum_{i=1}^{n} c_i \mathrm{E}\left[U_i \mid \mathbf{X}\right] \\
 &amp;= \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
 \end{align*}</span></p></li>
-</ul>
-</section>
-<section id="proof-step-1-continued" class="slide level2">
-<h2>Proof: Step 1 (continued)</h2>
-<ul>
-<li class="fragment"><p>From the <strong>linearity</strong> we have that, conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
-\mathrm{E}\left[\tilde{\beta}\right] = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+<li class="fragment"><p>From the <strong>linearity</strong> we have that <span class="math display">
+\mathrm{E}\left[\tilde{\beta} \mid \mathbf{X}\right] = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
 </span></p></li>
-<li class="fragment"><p>From the <strong>unbiasedness</strong> we have that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
-\beta = \mathrm{E}\left[\tilde{\beta}\right] = \alpha \sum_{i=1}^{n} c_i + \beta \sum_{i=1}^{n} c_i X_i.
+<li class="fragment"><p>From the <strong>unbiasedness</strong> we have that <span class="math display">
+{\color{red}\beta} = \mathrm{E}\left[\tilde{\beta} \mid \mathbf{X}\right] = \alpha \sum_{i=1}^{n} c_i + {\color{red}\beta} \sum_{i=1}^{n} c_i X_i.
 </span></p></li>
-<li class="fragment"><p>Since this has to be true for <strong>any</strong> <span class="math inline">\alpha</span> and <span class="math inline">\beta</span>, it follows now that <span class="math display">
+<li class="fragment"><p>Since this has to be true for <strong>any</strong> <span class="math inline">\alpha</span>, <span class="math inline">\beta</span>, and the <span class="math inline">X</span>’s, it follows now that <span class="math display">
 \sum_{i=1}^{n} c_i = 0, \quad \sum_{i=1}^{n} c_i X_i = 1.
 </span></p></li>
 </ul>
@@ -1176,76 +1184,128 @@ c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
 </span> <span class="math display">
 \hat{\beta} = \beta + \sum_{i=1}^{n} w_i U_i, \text{ with } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
 </span></p></li>
-<li class="fragment"><p>Conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">\begin{align*}
-\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) &amp;= \mathrm{E}\left[(\tilde{\beta} - \beta)(\hat{\beta} - \beta)\right] \\
-&amp;= \mathrm{E}\left[\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right)\right] \\
-&amp;= \sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2\right] + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j\right].
+<li class="fragment"><p>Then, <span class="math display">\begin{align*}
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) &amp;= \mathrm{E}\left[(\tilde{\beta} - \beta)(\hat{\beta} - \beta) \mid \mathbf{X}\right] \\
+&amp;= \mathrm{E}\left[\left(\sum_{i=1}^{n} c_i U_i\right)\left(\sum_{i=1}^{n} w_i U_i\right) \mid \mathbf{X}\right] \\
+&amp;= \sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j \mid \mathbf{X}\right].
 \end{align*}</span></p></li>
-</ul>
-</section>
-<section id="proof-step-2-continued" class="slide level2">
-<h2>Proof: Step 2 (continued)</h2>
-<p><span class="math display">
-\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2\right] + \sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j\right].
-</span></p>
-<ul>
-<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_i^2\right] = \sigma^2</span> for all <span class="math inline">i</span>’s: <span class="math display">
-\sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2\right] = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] = \sigma^2</span> for all <span class="math inline">i</span>’s: <span class="math display">
+\sum_{i=1}^{n} c_i w_i \mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] = \sigma^2 \sum_{i=1}^{n} c_i w_i.
 </span></p></li>
-<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_i U_j\right] = 0</span> for all <span class="math inline">i \neq j</span>, <span class="math display">
-\sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j\right] = 0.
+<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_i U_j \mid \mathbf{X}\right] = 0</span> for all <span class="math inline">i \neq j</span>, <span class="math display">
+\sum_{i=1}^{n} \sum_{j \neq i} c_i w_j \mathrm{E}\left[U_i U_j \mid \mathbf{X}\right] = 0.
 </span></p></li>
 <li class="fragment"><p>Thus, <span class="math display">
-\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) = \sigma^2 \sum_{i=1}^{n} c_i w_i.
+</span> and <span class="math display">
+w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
 </span></p></li>
-</ul>
-</section>
-<section id="proof-step-2-continued-1" class="slide level2">
-<h2>Proof: Step 2 (continued)</h2>
-<p>Conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">
-\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \sigma^2 \sum_{i=1}^{n} c_i w_i \text{ and } w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
-</span> <span class="math display">\begin{align*}
-\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) &amp;= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
+<li class="fragment"><p>We have: <span class="math display">\begin{align*}
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) &amp;= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) \\
-&amp;= \mathrm{Var}\left(\hat{\beta}\right).
-\end{align*}</span></p>
+&amp;= \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right).
+\end{align*}</span></p></li>
+</ul>
 </section>
 <section id="proof-step-3" class="slide level2">
 <h2>Proof: Step 3</h2>
 <ul>
 <li class="fragment"><p>We know now that for any <strong>linear</strong> and <strong>unbiased</strong> <span class="math inline">\tilde{\beta}</span>, <span class="math display">
-\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right).
+\mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) = \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right).
 </span></p></li>
-<li class="fragment"><p>Let’s consider <span class="math inline">\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right)</span>: <span class="math display">\begin{align*}
-\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right) &amp;= \mathrm{Var}\left(\tilde{\beta}\right) + \mathrm{Var}\left(\hat{\beta}\right) - 2 \mathrm{Cov}\left(\tilde{\beta}, \hat{\beta}\right) \\
-&amp;= \mathrm{Var}\left(\tilde{\beta}\right) + \mathrm{Var}\left(\hat{\beta}\right) - 2 \mathrm{Var}\left(\hat{\beta}\right) \\
-&amp;= \mathrm{Var}\left(\tilde{\beta}\right) - \mathrm{Var}\left(\hat{\beta}\right).
+<li class="fragment"><p>Let’s consider <span class="math inline">\mathrm{Var}\left(\tilde{\beta} - \hat{\beta} \mid \mathbf{X}\right)</span>: <span class="math display">\begin{align*}
+\mathrm{Var}\left(\tilde{\beta} - \hat{\beta} \mid \mathbf{X}\right) &amp;= \mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) + \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) - 2 \mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) \\
+&amp;= \mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) + \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) - 2 \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) \\
+&amp;= \mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) - \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right).
 \end{align*}</span></p></li>
-<li class="fragment"><p>But since <span class="math inline">\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right) \geq 0</span>, <span class="math display">
-\mathrm{Var}\left(\tilde{\beta}\right) - \mathrm{Var}\left(\hat{\beta}\right) \geq 0
+<li class="fragment"><p>But since <span class="math inline">\mathrm{Var}\left(\tilde{\beta} - \hat{\beta} \mid \mathbf{X}\right) \geq 0</span>, <span class="math display">
+\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) - \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) \geq 0
 </span> or <span class="math display">
-\mathrm{Var}\left(\tilde{\beta}\right) \geq \mathrm{Var}\left(\hat{\beta}\right).
+\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) \geq \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right).
 </span></p></li>
 </ul>
 </section>
 <section id="proof-step-4-uniqueness" class="slide level2">
 <h2>Proof: Step 4 (Uniqueness)</h2>
-<p>Suppose that <span class="math inline">\mathrm{Var}\left(\tilde{\beta}\right) = \mathrm{Var}\left(\hat{\beta}\right)</span>.</p>
+<p>Suppose that <span class="math inline">\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) = \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right)</span>.</p>
 <ul>
 <li class="fragment"><p>Then, <span class="math display">
-\mathrm{Var}\left(\tilde{\beta} - \hat{\beta}\right) = \mathrm{Var}\left(\tilde{\beta}\right) - \mathrm{Var}\left(\hat{\beta}\right) = 0.
+\mathrm{Var}\left(\tilde{\beta} - \hat{\beta} \mid \mathbf{X}\right) = \mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) - \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) = 0.
 </span></p></li>
 <li class="fragment"><p>Thus, <span class="math inline">\tilde{\beta} - \hat{\beta}</span> is not random or <span class="math display">
 \tilde{\beta} - \hat{\beta} = \text{constant}.
 </span></p></li>
 <li class="fragment"><p>This constant also has to be zero because <span class="math display">\begin{align*}
-\mathrm{E}\left[\tilde{\beta}\right] &amp;= \mathrm{E}\left[\hat{\beta}\right] + \text{constant} \\
+\mathrm{E}\left[\tilde{\beta} \mid \mathbf{X}\right] &amp;= \mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right] + \text{constant} \\
 &amp;= \beta + \text{constant},
 \end{align*}</span> and in order for <span class="math inline">\tilde{\beta}</span> to be <strong>unbiased</strong> <span class="math display">
 \text{constant} = 0 \text{ or } \tilde{\beta} = \hat{\beta}.
 </span></p></li>
+</ul>
+</section>
+<section id="why-does-unbiasedness-matter" class="slide level2">
+<h2>Why does unbiasedness matter?</h2>
+<ul>
+<li class="fragment"><p>The Gauss-Markov Theorem says that OLS is the best among <strong>linear unbiased</strong> estimators. Can we do better if we drop unbiasedness?</p></li>
+<li class="fragment"><p>Consider <span class="math inline">\tilde{\beta} = 0</span> (always “estimate” the slope as zero, regardless of the data).</p></li>
+<li class="fragment"><p><span class="math inline">\tilde{\beta} = 0</span> is <strong>linear</strong>: <span class="math inline">\tilde{\beta} = \sum_{i=1}^n 0 \cdot Y_i = 0</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\tilde{\beta} = 0</span> is <strong>biased</strong>: <span class="math inline">\mathrm{E}\left[\tilde{\beta} \mid \mathbf{X}\right] = 0 \neq \beta</span> (unless <span class="math inline">\beta = 0</span>).</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{Var}\left(\tilde{\beta} \mid \mathbf{X}\right) = 0 &lt; \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right)</span>.</p></li>
+<li class="fragment"><p>So <span class="math inline">\tilde{\beta} = 0</span> has a <strong>smaller variance</strong> than OLS, but it is useless as an estimator because it ignores the data entirely.</p></li>
+<li class="fragment"><p>This illustrates why the <strong>unbiasedness</strong> requirement in the Gauss-Markov Theorem is essential: without it, one can trivially achieve zero variance by using a constant.</p></li>
+</ul>
+</section>
+<section id="what-if-homoskedasticity-fails" class="slide level2 scrollable">
+<h2>What if homoskedasticity fails?</h2>
+<ul>
+<li class="fragment"><p>Suppose that <span class="math inline">\mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] = \sigma^2(X_i)=\sigma_i^2</span>, where <span class="math inline">\sigma_i^2</span> may differ across observations (<strong>heteroskedasticity</strong>).</p></li>
+<li class="fragment"><p><strong>Unbiasedness</strong> of the OLS estimator <span class="math inline">\hat{\beta}</span> <strong>still holds</strong>. The proof of unbiasedness only uses:</p>
+<ol type="1">
+<li class="fragment"><p><span class="math inline">Y_i = \alpha + \beta X_i + U_i</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i \mid \mathbf{X}\right] = 0</span>.</p></li>
+</ol>
+<p>It does <strong>not</strong> require homoskedasticity.</p></li>
+<li class="fragment"><p>However, the OLS estimator is <strong>no longer BLUE</strong>.</p></li>
+<li class="fragment"><p>The Gauss-Markov proof relied on <span class="math inline">\mathrm{E}\left[U_i^2 \mid \mathbf{X}\right] = \sigma^2</span> being the <strong>same</strong> for all <span class="math inline">i</span>’s.</p></li>
+<li class="fragment"><p>There exists another linear unbiased estimator with a <strong>smaller variance</strong> than OLS.</p></li>
+</ul>
+</section>
+<section id="transforming-the-model" class="slide level2">
+<h2>Transforming the model</h2>
+<ul>
+<li class="fragment"><p>Suppose we know <span class="math inline">\sigma_i^2 = \mathrm{Var}\left(U_i \mid \mathbf{X}\right)</span> for each <span class="math inline">i</span>. Divide both sides of <span class="math inline">Y_i = \alpha + \beta X_i + U_i</span> by <span class="math inline">\sigma_i</span>: <span class="math display">
+\frac{Y_i}{\sigma_i} = \alpha \cdot \frac{1}{\sigma_i} + \beta \cdot \frac{X_i}{\sigma_i} + \frac{U_i}{\sigma_i}.
+</span></p></li>
+<li class="fragment"><p>Define the <strong>transformed variables</strong>: <span class="math display">
+Y_i^* = \frac{Y_i}{\sigma_i}, \quad X_{0i}^* = \frac{1}{\sigma_i}, \quad X_{1i}^* = \frac{X_i}{\sigma_i}, \quad U_i^* = \frac{U_i}{\sigma_i}.
+</span></p></li>
+<li class="fragment"><p>The transformed model is: <span class="math display">
+Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
+</span></p></li>
+<li class="fragment"><p>The transformed errors <span class="math inline">U_i^*</span> satisfy:</p>
+<ul>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^* \mid \mathbf{X}\right] = \frac{1}{\sigma_i}\mathrm{E}\left[U_i \mid \mathbf{X}\right] = 0.</span></p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{Var}\left(U_i^* \mid \mathbf{X}\right) = \frac{1}{\sigma_i^2}\mathrm{Var}\left(U_i \mid \mathbf{X}\right) = \frac{\sigma_i^2}{\sigma_i^2} = 1.</span></p></li>
+</ul></li>
+<li class="fragment"><p>The transformed errors are <strong>homoskedastic</strong>: <span class="math inline">\mathrm{Var}\left(U_i^* \mid \mathbf{X}\right) = 1</span> for all <span class="math inline">i</span>’s.</p></li>
+<li class="fragment"><p>The Gauss-Markov assumptions hold for the transformed model, so OLS applied to the <strong>transformed</strong> data is <strong>BLUE</strong>.</p></li>
+</ul>
+</section>
+<section id="weighted-least-squares-wls" class="slide level2">
+<h2>Weighted Least Squares (WLS)</h2>
+<ul>
+<li class="fragment"><p>OLS applied to the transformed model minimizes (w.r.t. <span class="math inline">a</span> and <span class="math inline">b</span>): <span class="math display">
+\sum_{i=1}^{n} \frac{(Y_i - a - b X_i)^2}{\sigma_i^2} = \sum_{i=1}^{n} w_i (Y_i - a - b X_i)^2,
+</span> where <span class="math inline">w_i = 1/\sigma_i^2</span>.</p></li>
+<li class="fragment"><p>This is called <strong>Weighted Least Squares</strong> (WLS).</p></li>
+<li class="fragment"><p><strong>Interpretation</strong>: WLS gives <strong>more weight</strong> to observations with smaller variance (more precise observations) and <strong>less weight</strong> to observations with larger variance (noisier observations).</p></li>
+<li class="fragment"><p>The WLS estimator is BLUE for <span class="math inline">\beta</span> in the original model.</p></li>
+<li class="fragment"><p>The WLS estimator of <span class="math inline">\beta</span> is: <span class="math display">
+\hat{\beta}_{WLS} = \frac{\sum_{i=1}^{n} w_i (X_i - \bar{X}_w)(Y_i - \bar{Y}_w)}{\sum_{i=1}^{n} w_i (X_i - \bar{X}_w)^2},
+</span> where <span class="math inline">w_i = 1/\sigma_i^2</span>, <span class="math inline">\bar{X}_w = \frac{\sum_{i=1}^n w_i X_i}{\sum_{i=1}^n w_i}</span>, and <span class="math inline">\bar{Y}_w = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i}</span>.</p></li>
+<li class="fragment"><p><strong>Practical limitation</strong>: WLS requires knowledge of <span class="math inline">\sigma_i^2</span>, which is typically unknown.</p></li>
 </ul>
 
 </section>
