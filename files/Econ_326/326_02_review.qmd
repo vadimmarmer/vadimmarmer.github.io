@@ -1,6 +1,6 @@
 ---
 title: "Lecture 2: Review of Probability"
-subtitle: "Economics 326 — Introduction to Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -192,7 +192,7 @@ $$
 
 ## Continuous random variable
 
-- A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).
+- A random variable is continuously distributed if the range of possible values it can take is uncountably infinite (for example, a real line).
 
 - A continuous random variable takes on any real value with **zero** probability.
 
@@ -386,9 +386,9 @@ $$
 
 - $\Var{a + bX} = b^2 \Var{X}$
   \begin{align*}
-  \Var{a + bX} &= \E{(a + bX) - \E{a + bX}}^2\\
-  & = \E{a + bX - a - b\E{X}}^2 \\
-  &= \E{bX - b\E{X}}^2 = \E{b^2(X - \E{X})^2} \\
+  \Var{a + bX} &= \E{((a + bX) - \E{a + bX})^2}\\
+  & = \E{(a + bX - a - b\E{X})^2} \\
+  &= \E{(bX - b\E{X})^2} = \E{b^2(X - \E{X})^2} \\
   &= b^2 \E{(X - \E{X})^2} \\
   &= b^2 \Var{X}.
   \end{align*}
@@ -503,7 +503,7 @@ for some function $g$ that depends on PMF (PDF).
 
 ## Properties of conditional expectation
 
-- Conditional expectations satisfies all properties of unconditional expectation.
+- Conditional expectation satisfies all properties of unconditional expectation.
 
 - Once you condition on $X$, you can treat any function of $X$ as a constant:
 $$
@@ -630,7 +630,7 @@ We usually write $X \sim N(\mu, \sigma^2)$.
 
 - $X$ and $Y$ have a bivariate normal distribution if their joint PDF is given by:
   $$
-  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho)^2}\right],
+  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
   $$
   where $Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}$,
 

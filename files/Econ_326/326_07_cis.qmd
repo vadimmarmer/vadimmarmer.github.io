@@ -188,7 +188,7 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
   - the sample size ($n$),
 
-  - and the number of parameters one have to estimate to compute $s^{2}$ (two in this case, $\beta _{0}$ and $\beta _{1}$).
+  - and the number of parameters one has to estimate to compute $s^{2}$ (two in this case, $\beta _{0}$ and $\beta _{1}$).
 
 ## Feasible confidence intervals ($\sigma^2$ is unknown)
 

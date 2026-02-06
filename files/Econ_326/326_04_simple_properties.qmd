@@ -1,6 +1,6 @@
 ---
 title: "Lecture 4: Properties of OLS"
-subtitle: "Economics 326 — Introduction to Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -45,19 +45,21 @@ format:
           }
         </style>
 ---
+
 ## Properties of Estimators
 
-1. Random
-2. Mean 
-3. Variance
-4. Distribution
-   
 ::: {.hidden}
-$$
+$
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
-$$
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+$
 :::
+
+1. Random
+2. Mean
+3. Variance
+4. Distribution
    
 ## OLS Estimators as Random Variables
 
@@ -74,7 +76,7 @@ $$
   $$
   \E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}.
   $$
-  That is, $\mathbf{X}=(X_1, \ldots, X_n)$
+  That is, $\mathbf{X}=(X_1, \ldots, X_n)$.
 - The estimators
   $$
   \hat{\beta} = \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) Y_{i}}{
@@ -216,7 +218,7 @@ $$
   \begin{aligned}
   \E{U_{1} \mid \mathbf{X}} &= \E{U_{1} \mid X_{1}}, \\
   \E{U_{2} \mid \mathbf{X}} &= \E{U_{2} \mid X_{2}}
-  \text{ and etc.}
+  \text{ etc.}
   \end{aligned}
   $$
 - The OLS estimator is in general biased if the strong exogeneity

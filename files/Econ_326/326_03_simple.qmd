@@ -1,6 +1,6 @@
 ---
 title: "Lecture 3: Simple Linear Regression and OLS"
-subtitle: "Economics 326 — Introduction to Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -133,9 +133,10 @@ $
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
 $
 :::
+
 - The **simple linear regression model** is used to study the relationship between **two variables**.
 - It has many limitations, but nevertheless there are examples in the literature where the simple linear regression is applied (e.g., stock returns predictability).
-- It is also a good starting point to learning the regression technique.
+- It is also a good starting point for learning the regression technique.
 
 ## Key Definitions
 
@@ -161,7 +162,7 @@ $
   | $n$ | $Y_{n}$ | $X_{n}$ |
 
 - A pair $X_{i}, Y_{i}$ is called an observation.
-- **Sample**: $\left\{ \left( X_{i},Y_{i}\right) : i=1,…,n\right\}$.
+- **Sample**: $\left\{ \left( X_{i},Y_{i}\right) : i=1,\ldots,n\right\}$.
 - The population is the **joint distribution** of the sample.
 
 # Simple Linear Regression Model

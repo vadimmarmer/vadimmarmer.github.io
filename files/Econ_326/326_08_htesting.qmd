@@ -45,7 +45,7 @@ $
 $
 :::
 
-- Hypothesis testing is one of a fundamental problems in statistics.
+- Hypothesis testing is one of the fundamental problems in statistics.
 
 - A hypothesis is (usually) an **assertion** about the unknown population parameters such as $\beta _{1}$ in $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.$
 
@@ -85,7 +85,7 @@ $
 
 - Usually, we have **two competing hypotheses**, and we want to draw a conclusion, based on the data, as to which of the hypotheses is true.
 
-- **Null hypothesis**, denoted as **$H_{0}$**: A hypothesis that is held to be true, unless the data provides a **sufficient** evidence against it.
+- **Null hypothesis**, denoted as **$H_{0}$**: A hypothesis that is held to be true, unless the data provides **sufficient** evidence against it.
 
 - **Alternative hypothesis**, denoted as **$H_{1}$**: A hypothesis against which the null is tested. It is held to be true if the null is found false.
 
@@ -136,7 +136,7 @@ $
 
 - When $T$ is in the rejection (critical) region, we reject $H_{0}$ (and risk making a Type I error).
 
-- Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error $\alpha ,$ one makes the critical region smaller, which increases the probability of the Type II error. Thus it is impossible to make both errors arbitrary small.
+- Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error $\alpha ,$ one makes the critical region smaller, which increases the probability of the Type II error. Thus it is impossible to make both errors arbitrarily small.
 
 - By convention, $\alpha$ is chosen to be a small number, for example, $\alpha =0.01,0.05,$ or $0.10.$ (This is in agreement with the econometrician carrying the burden of proof).
 

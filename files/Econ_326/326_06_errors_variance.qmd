@@ -1,6 +1,6 @@
 ---
 title: "Lecture 6: Estimating the variance of errors"
-subtitle: "Economics 326 — Introduction to Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -35,7 +35,7 @@ format:
     transition: none
 ---
 
-## The importance of $\sigma^2$ {.hidden-macro}
+## The importance of $\sigma^2$
 
 ::: {.hidden}
 $
@@ -47,7 +47,7 @@ $
 
 We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}$.
 
-- The variance of $\hat{\beta}$ depends on the unknown $\sigma^{2} = \E{U_i^{2}}$:
+- The variance of $\hat{\beta}$ depends on the unknown $\sigma^{2} = \E{U_i^{2} \mid \mathbf{X}}$:
   $$
   \Var{\hat{\beta} \mid \mathbf{X}} = \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)^{2}}.
   $$
@@ -74,10 +74,12 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 ## Expressing $\hat{U}_i$ in terms of $U_i$
 
 From
-\begin{align*}
+$$
+\begin{aligned}
 \hat{U}_{i} &= \left( Y_{i}-\bar{Y}\right) -\hat{\beta}\left( X_{i}-\bar{X}\right), \\
 Y_{i}-\bar{Y} &= \beta \left( X_{i}-\bar{X}\right) +U_{i}-\bar{U},
-\end{align*}
+\end{aligned}
+$$
 we get
 $$
 \hat{U}_{i}=\left( U_{i}-\bar{U}\right) -\left( \hat{\beta}-\beta \right)\left( X_{i}-\bar{X}\right).
@@ -97,10 +99,12 @@ To show $\E{\sum_{i=1}^{n}\hat{U}_{i}^{2}}=\left( n-2\right) \sigma ^{2}$, we ve
 
 ## Expectation of $\sum_{i=1}^{n} \left(U_i-\bar{U}\right)^2$
 
-\begin{align*}
+$$
+\begin{aligned}
 \sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2} &= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}\right) ^{2} \\
 &= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}^{2}+\sum_{i=1}^{n}\sum_{j\neq i}U_{i}U_{j}\right).
-\end{align*}
+\end{aligned}
+$$
 Taking expectations and using the assumptions,
 $$
 \E{\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}}=n\sigma ^{2}-\frac{1}{n}n\sigma ^{2}=\left( n-1\right) \sigma ^{2}.
@@ -128,10 +132,12 @@ $$
 \hat{\beta}-\beta =\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 $$
 Therefore,
-\begin{align*}
+$$
+\begin{aligned}
 \left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)\left( U_{i}-\bar{U}\right)
 &=\frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}.
-\end{align*}
+\end{aligned}
+$$
 Conditionally on $\mathbf{X}$,
 $$
 \E{\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right)} = \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\left( \sigma ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\right)=\sigma ^{2}.

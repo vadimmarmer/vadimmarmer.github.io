@@ -1,6 +1,6 @@
 ---
 title: "Lecture 5: Gauss-Markov Theorem"
-subtitle: "Economics 326 — Introduction to Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -24,7 +24,7 @@ format:
   revealjs:
     output-file: 326_05_gauss_markov_slides.html
     theme: solarized
-    css: 326_05_gauss_markov_slides.css
+    css: slides_no_caps.css
     smaller: true
     slide-number: c/t
     incremental: true
@@ -47,7 +47,7 @@ $
 
 - **Simple linear regression model**:
   \begin{align*}
-  & Y_i = \beta_0 + \beta_1 X_i + U_i,\\
+  & Y_i = \alpha + \beta X_i + U_i,\\
   & \E{U_i \mid \mathbf{X}}= 0,\\
   &\Var{U_i \mid \mathbf{X}} =\sigma^2,\\
   &\Cov{U_i, U_j \mid \mathbf{X}} = 0 \text{ for all } i \neq j.
@@ -55,14 +55,14 @@ $
 
 - **OLS estimator**:
   $$
-  \hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+  \hat{\beta} = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
   $$
 
-- **Unbiasedness**: $\E{\hat{\beta}_1 \mid \mathbf{X}} = \beta_1.$
+- **Unbiasedness**: $\E{\hat{\beta} \mid \mathbf{X}} = \beta.$
 
 - **Variance**:
   $$
-  \Var{\hat{\beta}_1\mid \mathbf X} = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+  \Var{\hat{\beta}\mid \mathbf X} = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
   $$
 
 - **Question**: Is OLS the best we can do?
@@ -94,7 +94,7 @@ $
   &= \frac{\beta(X_2 - X_1)}{X_2 - X_1} + \frac{U_2 - U_1}{X_2 - X_1} \\
   &= \beta + \frac{U_2 - U_1}{X_2 - X_1}.
   \end{align*}
-- Uniasedness of $\tilde{\beta}$:
+- Unbiasedness of $\tilde{\beta}$:
   \begin{align*}
   \E{\tilde{\beta} \mid \mathbf X} &= \beta + \E{\frac{U_2 - U_1}{X_2 - X_1} \mid \mathbf X} \\
   &= \beta + \frac{\E{U_2 \mid \mathbf X} - \E{U_1 \mid \mathbf X}}{X_2 - X_1} \\
@@ -216,7 +216,7 @@ $$
 \Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} &= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) \\
 &= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) \\
-&= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) \\
+&= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 - \bar{X} \cdot 0) \\
 &= \Var{\hat{\beta} \mid \mathbf{X}}.
 \end{align*}
 
@@ -361,3 +361,4 @@ Suppose that $\Var{\tilde{\beta} \mid \mathbf{X}} = \Var{\hat{\beta} \mid \mathb
 
 
 - **Practical limitation**: WLS requires knowledge of $\sigma_i^2$, which is typically unknown.
+
