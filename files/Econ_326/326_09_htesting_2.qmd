@@ -1,0 +1,280 @@
+---
+title: "Lecture 9: Hypothesis testing (Part 2)"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_09_htesting_2.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_09_htesting_2.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_09_htesting_2_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## The two-sided $t$-test
+
+::: {.hidden}
+$
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+$
+:::
+
+- We are testing $H_{0}:\beta _{1}=\beta _{1,0}$ against $H_{1}:\beta _{1}\neq \beta _{1,0}.$
+
+- When $\sigma ^{2}$ is **unknown**, we replace it with $s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}.$
+
+- The **$t$-statistic**:
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}}.
+  $$
+
+- We also replace the standard normal critical values $z_{1-\alpha /2}$ with the $t_{n-2}$ critical values $t_{n-2,1-\alpha /2}.$
+
+  However, **for large $n$**, $t_{n-2,1-\alpha /2}\approx z_{1-\alpha /2}.$
+
+- The two-sided **$t$-test**:
+  $$
+  \text{Reject }H_{0}\text{ when }\left\vert T\right\vert >t_{n-2,1-\alpha /2}.
+  $$
+
+## The two-sided $p$-value
+
+- The decision to accept or reject $H_{0}$ depends on the critical value $t_{n-2,1-\alpha /2}.$
+
+- If $\alpha _{1}>\alpha _{2}$ then $t_{1-\alpha _{1}/2}<t_{1-\alpha _{2}/2}.$
+
+- Thus, it is easier to reject $H_{0}$ with the significance level $\alpha _{1}$ since it corresponds to a smaller acceptance region.
+
+- $p$-value is the **smallest** significance level $\alpha$ for which we can reject $H_{0}.$
+
+## The two-sided $p$-value
+
+- In order to find $p$-value:
+
+  1. Compute $T$.
+
+  2. Find $\tau$ such that $\left\vert T\right\vert =t_{n-2,1-\tau }.$
+
+  3. The $p$-value$=\tau \times 2.$
+
+- Note that for all $\alpha >p$-value,
+  $$
+  \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}>t_{n-2,1-\alpha /2}
+  $$
+  and we will reject $H_{0}.$
+
+- For all $\alpha \leq p$-value,
+  $$
+  \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}\leq t_{n-2,1-\alpha /2}
+  $$
+  and we will accept $H_{0}$.
+
+## Example of $p$-value calculation
+
+Suppose a regression with 19 observations produced the following output:
+
+```
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+           x |  -.6725304   .5804943    -1.16   0.263    -1.897266    .5522055
+       _cons |   10.18197   .2509365    40.58   0.000     9.652542     10.7114
+------------------------------------------------------------------------------
+```
+
+- Here, $\hat{\beta}_{1}=-0.6725,\beta _{1,0}=0,$ and in the 4th column $t=-0.6725/0.5804=-1.16.$
+
+- Thus, $\left\vert T\right\vert =1.16$ and df=17.
+
+- From the $t$-table, the closest critical value is $t_{17,1-0.15}=1.069$.
+
+  (The probability that a random variable with $t_{17}$-distribution lies on the right of $1.16$ is $\approx 0.15$.)
+
+- The $p$-value is then $\approx 0.15\times 2=0.300$.
+
+## Stata
+
+- We can compute critical values and $p$-values using Stata instead of using the tables.
+
+- To compute standard normal critical values use:
+  $$
+  \text{display invnormal(}\tau \text{),}
+  $$
+  where $\tau$ is a number between 0 and 1.
+
+- For example: display invnormal(1-0.05/2) produces 1.959964.
+
+- For $t$ critical values use
+  $$
+  \text{display invttail(}df\text{,}\tau \text{),}
+  $$
+  where $df$ is the number of degrees of freedom and $\tau$ is a number between 0 and 1.
+
+  **Note that here $\tau$ is the right-tail probability!**
+
+- For example, display invttail(62,0.05/2) produces 1.9989715.
+
+## Stata
+
+- To compute two-sided normal $p$-values use:
+  $$
+  \text{display 2}\ast \left( \text{1-normal}\left( T\right) \right) .
+  $$
+
+- For example, display 2*$\left( \text{1-normal(1.96)}\right)$ produces 0.04999579.
+
+- To compute two-sided $t$-distribution $p$-values, use
+  $$
+  \text{display 2*}\left( \text{ttail(}df,T\text{)}\right) ,
+  $$
+  **Note that ttail gives the right tail probabilities!**
+
+- For example, display 2*$\left( \text{ttail(}62,1.96\text{)}\right)$ produces 0.05449415.
+
+## Example
+
+```
+         Rent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+       AvgInc |    .011580   .0013084     8.85   0.000     .0089646    .0141954
+```
+
+- Stata reports the $t$-statistics and the $p$-value for $H_{0}:\beta =0.$
+
+- To test $H_{0}$ whether the coefficient of AvgInc is zero: $T=0.01158/0.0013084=8.85.$
+
+- The $p$-value is extremely close to zero, (display 2*$\left( \text{ttail(}62,8.85\text{)}\right)$ gives $1.345\times 10^{-12}$), so for all reasonable significance levels $\alpha ,$ we reject $H_{0}$ that the coefficient of AvgInc is zero.
+
+- AvgInc is a **statistically significant** regressor.
+
+## Example (continued)
+
+```
+       AvgInc |    .011580   .0013084     8.85   0.000     .0089646    .0141954
+```
+
+- Consider now testing $H_{0}$ that the coefficient of AvgInc is 0.009 against the alternative that it is different from 0.009.
+
+- $T=\left( 0.01158-0.009\right) /0.0013084\approx 1.97.$
+
+- At 5% significance level, $t_{62,0.975}\approx 1.999>T$ and we accept $H_{0}.$
+
+- At 10% significance level, $t_{62,0.95}\approx 1.67<T$ and we reject $H_{0}.$
+
+- The two sided $p$-value is 2*$\left( \text{ttail(}62,1.97\text{)}\right)$ $\Longrightarrow$ $\approx$0.053.
+
+- For $\alpha \leq 0.053$ we will accept $H_{0}$ and for $\alpha >0.053$ we will reject $H_{0}.$
+
+## Confidence intervals and hypothesis testing
+
+- There is one-to-one correspondence between confidence intervals and hypothesis testing.
+
+- We cannot reject $H_{0}:\beta _{1}=\beta _{1,0}$ against a two-sided alternative if $\left\vert T\right\vert \leq t_{n-2,1-\alpha /2}$ or if and only if:
+  $$
+  \begin{gathered}
+  -t_{n-2,1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\leq t_{n-2,1-\alpha /2} \\
+  \Longleftrightarrow \\
+  \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\leq \beta _{1,0}\leq \hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) } \\
+  \Longleftrightarrow \\
+  \beta _{1,0}\in CI_{1-\alpha }.
+  \end{gathered}
+  $$
+
+- Thus, for any $\beta _{1,0}\in CI_{1-\alpha },$ we **cannot reject** $H_{0}:\beta _{1}=\beta _{1,0}$ against $H_{1}:\beta _{1}\neq \beta _{1,0}$ at significance level $\alpha .$
+
+## Example
+
+```
+         Rent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+       AvgInc |    .011580   .0013084     8.85   0.000     .0089646    .0141954
+```
+
+- The 95% confidence interval for the coefficient of AvgInc is [0.0089646, 0.0141954].
+
+- A significance level 5% test of $H_{0}:\beta _{1}=\beta _{1,0}$ against $H_{1}:\beta _{1}\neq \beta _{1,0}$ will not reject $H_{0}$ if $\beta _{1,0}\in [0.0089646,0.0141954].$
+
+## One-sided tests
+
+- Consider testing $H_{0}:\beta _{1}\leq \beta _{1,0}$ against $H_{1}:\beta _{1}>\beta _{1,0}.$
+
+- It is reasonable to reject $H_{0}$ when $\hat{\beta}_{1}-\beta _{1,0}$ is large and positive or when
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}>c_{1-\alpha }
+  $$
+  where $c_{1-\alpha}$ is a positive constant.
+
+- The null hypothesis $H_{0}$ is **composite**. The probability of rejection under $H_{0}$ depends on $\beta _{1}.$
+
+- We pick the critical value $c_{1-\alpha}$ so that
+  $$
+  P\left( \frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \leq \alpha
+  $$
+  for all $\beta _{1}\leq \beta _{1,0}.$
+
+## One-sided tests
+
+- For **all** $\beta _{1}\leq \beta _{1,0},$
+  $$
+  \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\leq 0,
+  $$
+  and
+  $$
+  \begin{aligned}
+  &P\left( \frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \\
+  &=P\left( \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}+\frac{\beta _{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \\
+  &\leq P\left( \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \\
+  &=\alpha \text{ if }c_{1-\alpha }=t_{n-2,1-\alpha }.
+  \end{aligned}
+  $$
+
+## One-sided tests
+
+- For size $\alpha$ test, we reject $H_{0}:\beta _{1}\leq \beta _{1,0}$ against $H_{1}:\beta _{1}>\beta _{1,0}$ when
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}>t_{n-2,1-\alpha }.
+  $$
+  where $t_{n-2,1-\alpha}$ is the critical value corresponding to $t$-distribution with $n-2$ degrees of freedom.
+
+  - Note that we use $1-\alpha$ and not $1-\alpha /2$ for choosing critical values in the case of one-sided testing.
+
+- For size $\alpha$ test, we reject $H_{0}:\beta _{1}\geq \beta _{1,0}$ against $H_{1}:\beta _{1}<\beta _{1,0}$ when
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}<-t_{n-2,1-\alpha }.
+  $$
+
+## One-sided tests
+
+- One-sided $p$-values for $H_{0}:\beta _{1}\leq \beta _{1,0}$ against $H_{1}:\beta _{1}>\beta _{1,0}$:
+
+  1. Compute $T$.
+
+  2. Find $\tau$ such that $T=t_{n-2,1-\tau }.$
+
+  3. The $p$-value$=\tau .$
