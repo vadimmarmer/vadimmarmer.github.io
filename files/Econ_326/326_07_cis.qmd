@@ -62,12 +62,10 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 - The OLS estimator $\hat{\beta}_{1}$ is a **point estimator** of $\beta _{1}.$
 
 - For our model, conditional on $\mathbf{X}$:
-  $$
-  \begin{aligned}
-  \hat{\beta}_{1} &\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}} \right), \\
-  \Var{\hat{\beta}_{1}} &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  \end{aligned}
-  $$
+  \begin{align*}
+  \hat{\beta}_{1} &\sim N\left( \beta _{1},\Var{\hat{\beta}_{1} \mid \mathbf{X}} \right), \\
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{align*}
 
 - With probability **one**, we have that $\hat{\beta}_{1}\neq \beta _{1}.$
 
@@ -85,9 +83,9 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
 - Confidence interval: $CI_{1-\alpha }=[LB_{1-\alpha },UB_{1-\alpha }].$ The lower bound (LB) and upper bound (UB) should depend on the coverage probability $1-\alpha.$
 
-- The formal definition of CI: It is a **random interval** $CI_{1-\alpha}$ such that conditional on $X$'s,
+- The formal definition of CI: It is a **random interval** $CI_{1-\alpha}$ such that conditionally on $\mathbf{X}$,
   $$
-  P\left( \beta _{1}\in CI_{1-\alpha }\right) =1-\alpha .
+  P\left( \beta _{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .
   $$
   Note that the random element is $CI_{1-\alpha}$.
 
@@ -100,19 +98,20 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
   CI_{1-\alpha }=\left[ \hat{\beta}_{1}-c_{1-\alpha },\hat{\beta}_{1}+c_{1-\alpha }\right]
   $$
 
-- The problem is choosing $c_{1-\alpha }$ such that $P\left( \beta_{1}\in CI_{1-\alpha }\right) =1-\alpha .$
+- The problem is choosing $c_{1-\alpha }$ such that $P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .$
 
 - In choosing $c_{1-\alpha }$ we will be relying on the fact that given our assumptions and conditionally on $\mathbf{X}$:
-  $$
-  \hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}}\right) \text{ and }\Var{\hat{\beta}_{1}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  $$
+  \begin{align*}
+  &\hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1} \mid \mathbf{X}}\right), \\
+  &\Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{align*}
 
 - Note that conditionally on $\mathbf{X}$:
   $$
-  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\sim N\left( 0,1\right) .
+  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}\sim N\left( 0,1\right) .
   $$
 
-## Quantiles (percentiles) of the standard normal distribution
+## Standard normal quantiles
 
 - Let $Z\sim N\left( 0,1\right) .$ The $\tau$-th **quantile** (percentile) of the standard normal distribution is $z_{\tau }$ such that
   $$
@@ -125,63 +124,65 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
 ## $\sigma^2$ is known (infeasible CIs)
 
-- **Suppose** (for a moment) that $\sigma ^{2}$ is known, and we can compute exactly the variance of $\hat{\beta}_{1}$ as $\Var{\hat{\beta}_{1}} =\sigma ^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}.$
+- **Suppose** (for a moment) that $\sigma ^{2}$ is known, and we can compute exactly the variance of $\hat{\beta}_{1}$:
+  $$
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  $$
 
 - Consider the following CI:
+  \begin{align*}
+  CI_{1-\alpha } = \Big[ &\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }, \\
+  &\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }\Big] .
+  \end{align*}
+
+- For example, if $1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96$, and
+  \begin{align*}
+  CI_{0.95} = \Big[ &\hat{\beta}_{1}-1.96\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }, \\
+  &\hat{\beta}_{1}+1.96\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }\Big] .
+  \end{align*}
+
+## Infeasible CI validity ($\sigma^2$ known)
+
+- We need to show that
   $$
-  CI_{1-\alpha }=\left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\right] .
+  P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha .
   $$
 
-- For example, if $1-\alpha =0.95 \Longleftrightarrow \alpha =0.05\Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96$, and
-  $$
-  CI_{0.95}=\left[ \hat{\beta}_{1}-1.96\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+1.96\sqrt{\Var{\hat{\beta}_{1}} }\right] .
-  $$
+- Next, let $\sigma_{\hat{\beta}_{1}} = \sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}}}$. Then:
+  \begin{align*}
+  &\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}
+  \end{align*}
 
-## Validity of the infeasible CIs ($\sigma^2$ is known)
-
-- We need to show that $P\left( \beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\right] \right)=1-\alpha .$
-
-- Next,
-  $$
-  \begin{aligned}
-  &\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} } \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} } \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} } \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\leq z_{1-\alpha /2}
-  \end{aligned}
-  $$
-
-## Validity of the infeasible CIs ($\sigma^2$ is known)
+## Infeasible CI validity ($\sigma^2$ known)
 
 - We have that
-  $$
-  \begin{aligned}
-  &\beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1}} }\right] \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\leq z_{1-\alpha /2}.
-  \end{aligned}
-  $$
+  \begin{align*}
+  &\beta _{1}\in CI_{1-\alpha} \\
+  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}\leq z_{1-\alpha /2}.
+  \end{align*}
 
-- Let $Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\sim N\left( 0,1\right)$.
-  $$
-  \begin{aligned}
-  &P\left( -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\leq z_{1-\alpha /2}\right) \\
-  &=P\left( -z_{1-\alpha /2}\leq Z\leq z_{1-\alpha /2}\right) \\
-  &=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2}\right) \\
+- Let $Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}\sim N\left( 0,1\right)$ conditionally on $\mathbf{X}$.
+  \begin{align*}
+  &P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
+  &=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
   &=1-\alpha /2-\alpha /2=1-\alpha .
-  \end{aligned}
-  $$
+  \end{align*}
 
-## Feasible confidence intervals ($\sigma^2$ is unknown)
+## Feasible CIs ($\sigma^2$ unknown)
 
 - Since $\sigma ^{2}$ is unknown, we must estimate it from the data:
   $$
   s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
   $$
 
-- We can replace $\sigma ^{2}$ by $s^{2}$, however, the result does not have a normal distribution any more:
-  $$
-  \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2},\text{ where }\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  $$
+- We can replace $\sigma ^{2}$ by $s^{2}$; however, the result does not have a normal distribution anymore:
+  \begin{align*}
+  &\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2}, \\
+  &\text{where } \widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{align*}
   Here $t_{n-2}$ denotes the $t$-distribution with $n-2$ degrees of freedom.
 
 - The degrees of freedom depend on
@@ -190,7 +191,7 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
   - and the number of parameters one has to estimate to compute $s^{2}$ (two in this case, $\beta _{0}$ and $\beta _{1}$).
 
-## Feasible confidence intervals ($\sigma^2$ is unknown)
+## Feasible CIs ($\sigma^2$ unknown)
 
 - Let $t_{df,\tau }$ be the $\tau$-th quantile of the $t$-distribution with the number of degrees of freedom $df$: If $T\sim t_{df}$ then
   $$
@@ -200,12 +201,11 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 - Similarly to the normal distribution, the $t$-distribution is centered at zero and is symmetric around zero: $t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.$
 
 - We can now construct a feasible confidence interval with $1-\alpha$ coverage as:
-  $$
-  \begin{aligned}
-  CI_{1-\alpha } &=\left[ \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\right], \\
-  &\text{where }\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  \end{aligned}
-  $$
+  \begin{align*}
+  CI_{1-\alpha } = \Big[ &\hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }, \\
+  &\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\Big], \\
+  \text{where } &\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{align*}
 
 ## Example: Rent rates and average income
 
@@ -215,9 +215,9 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
 - $t_{62,0.95}\approx 1.671 \Longrightarrow$ The **90%** confidence interval for $\beta _{1}$ is $\left[ 0.0115-1.671\times 0.0013,0.0115+1.671\times 0.0013\right] = [0.0093,0.0137].$
 
-## The effect of estimation of $\sigma^2$
+## The effect of estimating $\sigma^2$
 
-- The $t$-distribution has heavier tails than normal.
+- The $t$-distribution has heavier tails than the normal.
 
 - $t_{df,1-\alpha /2}>z_{1-\alpha /2}$, but as $df$ increases $t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.$
 
@@ -225,8 +225,8 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
 ## Interpretation of confidence intervals
 
-- The confidence interval $CI_{1-\alpha }$ is a function of the **sample** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}$, and therefore is **random**. This allows us to talk about probability of $CI_{1-\alpha }$ containing the true value of $\beta _{1}.$
+- The confidence interval $CI_{1-\alpha }$ is a function of the **sample** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}$, and therefore is **random**. This allows us to talk about the probability of $CI_{1-\alpha }$ containing the true value of $\beta _{1}.$
 
-- Once the confidence interval is computed given the data, we have its **one realization**. The realization of $CI_{1-\alpha }$ or (computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true $\beta _{1}.$
+- Once the confidence interval is computed given the data, we have its **one realization**. The realization of $CI_{1-\alpha }$ (the computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true $\beta _{1}.$
 
 - **Once the confidence interval is computed, it either contains the true value $\beta _{1}$ or it does not**.

@@ -149,7 +149,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">Lecture 5: Gauss-Markov Theorem</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Economics 326 — Introduction to Econometrics II</p>
+<p class="subtitle lead">Economics 326 — Methods of Empirical Research in Economics</p>
 </div>
 
 
@@ -180,17 +180,17 @@ $
 </div>
 <ul>
 <li><p><strong>Simple linear regression model</strong>: <span class="math display">\begin{align*}
-&amp; Y_i = \beta_0 + \beta_1 X_i + U_i,\\
+&amp; Y_i = \alpha + \beta X_i + U_i,\\
 &amp; \mathrm{E}\left[U_i \mid \mathbf{X}\right]= 0,\\
 &amp;\mathrm{Var}\left(U_i \mid \mathbf{X}\right) =\sigma^2,\\
 &amp;\mathrm{Cov}\left(U_i, U_j \mid \mathbf{X}\right) = 0 \text{ for all } i \neq j.
 \end{align*}</span></p></li>
 <li><p><strong>OLS estimator</strong>: <span class="math display">
-\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+\hat{\beta} = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
 </span></p></li>
-<li><p><strong>Unbiasedness</strong>: <span class="math inline">\mathrm{E}\left[\hat{\beta}_1 \mid \mathbf{X}\right] = \beta_1.</span></p></li>
+<li><p><strong>Unbiasedness</strong>: <span class="math inline">\mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right] = \beta.</span></p></li>
 <li><p><strong>Variance</strong>: <span class="math display">
-\mathrm{Var}\left(\hat{\beta}_1\mid \mathbf X\right) = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
+\mathrm{Var}\left(\hat{\beta}\mid \mathbf X\right) = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.
 </span></p></li>
 <li><p><strong>Question</strong>: Is OLS the best we can do?</p></li>
 </ul>
@@ -219,7 +219,7 @@ c_1 = -\frac{1}{X_2 - X_1} \text{ and } c_2 = \frac{1}{X_2 - X_1}.
 &amp;= \frac{\beta(X_2 - X_1)}{X_2 - X_1} + \frac{U_2 - U_1}{X_2 - X_1} \\
 &amp;= \beta + \frac{U_2 - U_1}{X_2 - X_1}.
 \end{align*}</span></p></li>
-<li><p>Uniasedness of <span class="math inline">\tilde{\beta}</span>: <span class="math display">\begin{align*}
+<li><p>Unbiasedness of <span class="math inline">\tilde{\beta}</span>: <span class="math display">\begin{align*}
 \mathrm{E}\left[\tilde{\beta} \mid \mathbf X\right] &amp;= \beta + \mathrm{E}\left[\frac{U_2 - U_1}{X_2 - X_1} \mid \mathbf X\right] \\
 &amp;= \beta + \frac{\mathrm{E}\left[U_2 \mid \mathbf X\right] - \mathrm{E}\left[U_1 \mid \mathbf X\right]}{X_2 - X_1} \\
 &amp;= \beta.
@@ -319,7 +319,7 @@ w_i = \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2}.
 \mathrm{Cov}\left(\tilde{\beta}, \hat{\beta} \mid \mathbf{X}\right) &amp;= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) \\
 &amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) \\
-&amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) \\
+&amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 - \bar{X} \cdot 0) \\
 &amp;= \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right).
 \end{align*}</span></p></li>
 </ul>
@@ -887,7 +887,7 @@ Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 5: Gauss-Markov Theorem"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Economics 326 — Introduction to Econometrics II"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Economics 326 — Methods of Empirical Research in Economics"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: "Vadim Marmer, UBC"</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
@@ -911,7 +911,7 @@ Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">  revealjs:</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_05_gauss_markov_slides.html</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: solarized</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">    css: 326_05_gauss_markov_slides.css</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">    css: slides_no_caps.css</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-number: c/t</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">    incremental: true</span></span>
@@ -934,7 +934,7 @@ Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Simple linear regression model**:</span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  &amp; Y_i = \beta_0 + \beta_1 X_i + U_i,<span class="sc">\\</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  &amp; Y_i = \alpha + \beta X_i + U_i,<span class="sc">\\</span></span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  &amp; \E{U_i \mid \mathbf{X}}= 0,<span class="sc">\\</span></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  &amp;\Var{U_i \mid \mathbf{X}} =\sigma^2,<span class="sc">\\</span></span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  &amp;\Cov{U_i, U_j \mid \mathbf{X}} = 0 \text{ for all } i \neq j.</span>
@@ -942,14 +942,14 @@ Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**OLS estimator**:</span>
 <span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  \hat{\beta} = \frac{\sum_{i=1}^{n}(X_i - \bar{X})Y_i}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.</span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Unbiasedness**: $\E{\hat{\beta}_1 \mid \mathbf{X}} = \beta_1.$</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Unbiasedness**: $\E{\hat{\beta} \mid \mathbf{X}} = \beta.$</span>
 <span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Variance**:</span>
 <span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  \Var{\hat{\beta}_1\mid \mathbf X} = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  \Var{\hat{\beta}\mid \mathbf X} = \frac{\sigma^2}{\sum_{i=1}^{n}(X_i - \bar{X})^2}.</span>
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Question**: Is OLS the best we can do?</span>
@@ -981,7 +981,7 @@ Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
 <span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{\beta(X_2 - X_1)}{X_2 - X_1} + \frac{U_2 - U_1}{X_2 - X_1} <span class="sc">\\</span></span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta + \frac{U_2 - U_1}{X_2 - X_1}.</span>
 <span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Uniasedness of $\tilde{\beta}$:</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Unbiasedness of $\tilde{\beta}$:</span>
 <span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  \E{\tilde{\beta} \mid \mathbf X} &amp;= \beta + \E{\frac{U_2 - U_1}{X_2 - X_1} \mid \mathbf X} <span class="sc">\\</span></span>
 <span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta + \frac{\E{U_2 \mid \mathbf X} - \E{U_1 \mid \mathbf X}}{X_2 - X_1} <span class="sc">\\</span></span>
@@ -1103,7 +1103,7 @@ Y_i^* = \alpha \, X_{0i}^* + \beta \, X_{1i}^* + U_i^*.
 <span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>\Cov{\tilde{\beta}, \hat{\beta} \mid \mathbf{X}} &amp;= \sigma^2 \sum_{i=1}^{n} c_i \frac{X_i - \bar{X}}{\sum_{j=1}^{n} (X_j - \bar{X})^2} <span class="sc">\\</span></span>
 <span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>&amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \sum_{i=1}^{n} c_i (X_i - \bar{X}) <span class="sc">\\</span></span>
 <span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>&amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} \left(\sum_{i=1}^{n} c_i X_i - \bar{X} \sum_{i=1}^{n} c_i\right) <span class="sc">\\</span></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>&amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 + \bar{X} \cdot 0) <span class="sc">\\</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>&amp;= \frac{\sigma^2}{\sum_{j=1}^{n} (X_j - \bar{X})^2} (1 - \bar{X} \cdot 0) <span class="sc">\\</span></span>
 <span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>&amp;= \Var{\hat{\beta} \mid \mathbf{X}}.</span>
 <span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>\end{align*}</span>
 <span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>

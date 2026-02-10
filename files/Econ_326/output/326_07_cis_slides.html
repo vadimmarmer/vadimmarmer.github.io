@@ -1078,12 +1078,10 @@ $
 <li class="fragment"><p><span class="math inline">U</span>’s are jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
 </ol></li>
 <li class="fragment"><p>The OLS estimator <span class="math inline">\hat{\beta}_{1}</span> is a <strong>point estimator</strong> of <span class="math inline">\beta _{1}.</span></p></li>
-<li class="fragment"><p>For our model, conditional on <span class="math inline">\mathbf{X}</span>: <span class="math display">
-\begin{aligned}
-\hat{\beta}_{1} &amp;\sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1}\right) \right), \\
-\mathrm{Var}\left(\hat{\beta}_{1}\right) &amp;=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{aligned}
-</span></p></li>
+<li class="fragment"><p>For our model, conditional on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
+\hat{\beta}_{1} &amp;\sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) \right), \\
+\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\end{align*}</span></p></li>
 <li class="fragment"><p>With probability <strong>one</strong>, we have that <span class="math inline">\hat{\beta}_{1}\neq \beta _{1}.</span></p></li>
 </ul>
 </section>
@@ -1098,8 +1096,8 @@ $
 </ul></li>
 <li class="fragment"><p><span class="math inline">1-\alpha</span> is called the <strong>coverage probability</strong>.</p></li>
 <li class="fragment"><p>Confidence interval: <span class="math inline">CI_{1-\alpha }=[LB_{1-\alpha },UB_{1-\alpha }].</span> The lower bound (LB) and upper bound (UB) should depend on the coverage probability <span class="math inline">1-\alpha.</span></p></li>
-<li class="fragment"><p>The formal definition of CI: It is a <strong>random interval</strong> <span class="math inline">CI_{1-\alpha}</span> such that conditional on <span class="math inline">X</span>’s, <span class="math display">
-P\left( \beta _{1}\in CI_{1-\alpha }\right) =1-\alpha .
+<li class="fragment"><p>The formal definition of CI: It is a <strong>random interval</strong> <span class="math inline">CI_{1-\alpha}</span> such that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
+P\left( \beta _{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .
 </span> Note that the random element is <span class="math inline">CI_{1-\alpha}</span>.</p></li>
 <li class="fragment"><p>Sometimes, a CI is defined as <span class="math inline">P\left( \beta _{1}\in CI_{1-\alpha}\right) \geq 1-\alpha .</span></p></li>
 </ul>
@@ -1110,17 +1108,18 @@ P\left( \beta _{1}\in CI_{1-\alpha }\right) =1-\alpha .
 <li class="fragment"><p>One approach to constructing CIs is to consider a <strong>symmetric</strong> interval around the estimator <span class="math inline">\hat{\beta}_{1}</span>: <span class="math display">
 CI_{1-\alpha }=\left[ \hat{\beta}_{1}-c_{1-\alpha },\hat{\beta}_{1}+c_{1-\alpha }\right]
 </span></p></li>
-<li class="fragment"><p>The problem is choosing <span class="math inline">c_{1-\alpha }</span> such that <span class="math inline">P\left( \beta_{1}\in CI_{1-\alpha }\right) =1-\alpha .</span></p></li>
-<li class="fragment"><p>In choosing <span class="math inline">c_{1-\alpha }</span> we will be relying on the fact that given our assumptions and conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">
-\hat{\beta}_{1}\sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1}\right)\right) \text{ and }\mathrm{Var}\left(\hat{\beta}_{1}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-</span></p></li>
+<li class="fragment"><p>The problem is choosing <span class="math inline">c_{1-\alpha }</span> such that <span class="math inline">P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .</span></p></li>
+<li class="fragment"><p>In choosing <span class="math inline">c_{1-\alpha }</span> we will be relying on the fact that given our assumptions and conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
+&amp;\hat{\beta}_{1}\sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)\right), \\
+&amp;\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\end{align*}</span></p></li>
 <li class="fragment"><p>Note that conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">
-\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }}\sim N\left( 0,1\right) .
+\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }}\sim N\left( 0,1\right) .
 </span></p></li>
 </ul>
 </section>
-<section id="quantiles-percentiles-of-the-standard-normal-distribution" class="slide level2">
-<h2>Quantiles (percentiles) of the standard normal distribution</h2>
+<section id="standard-normal-quantiles" class="slide level2">
+<h2>Standard normal quantiles</h2>
 <ul>
 <li class="fragment"><p>Let <span class="math inline">Z\sim N\left( 0,1\right) .</span> The <span class="math inline">\tau</span>-th <strong>quantile</strong> (percentile) of the standard normal distribution is <span class="math inline">z_{\tau }</span> such that <span class="math display">
 P\left( Z\leq z_{\tau }\right) =\tau .
@@ -1132,77 +1131,76 @@ P\left( Z\leq z_{\tau }\right) =\tau .
 <section id="sigma2-is-known-infeasible-cis" class="slide level2">
 <h2><span class="math inline">\sigma^2</span> is known (infeasible CIs)</h2>
 <ul>
-<li class="fragment"><p><strong>Suppose</strong> (for a moment) that <span class="math inline">\sigma ^{2}</span> is known, and we can compute exactly the variance of <span class="math inline">\hat{\beta}_{1}</span> as <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1}\right) =\sigma ^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}.</span></p></li>
-<li class="fragment"><p>Consider the following CI: <span class="math display">
-CI_{1-\alpha }=\left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\right] .
+<li class="fragment"><p><strong>Suppose</strong> (for a moment) that <span class="math inline">\sigma ^{2}</span> is known, and we can compute exactly the variance of <span class="math inline">\hat{\beta}_{1}</span>: <span class="math display">
+\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 </span></p></li>
-<li class="fragment"><p>For example, if <span class="math inline">1-\alpha =0.95 \Longleftrightarrow \alpha =0.05\Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96</span>, and <span class="math display">
-CI_{0.95}=\left[ \hat{\beta}_{1}-1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) },\hat{\beta}_{1}+1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\right] .
-</span></p></li>
+<li class="fragment"><p>Consider the following CI: <span class="math display">\begin{align*}
+CI_{1-\alpha } = \Big[ &amp;\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }, \\
+&amp;\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }\Big] .
+\end{align*}</span></p></li>
+<li class="fragment"><p>For example, if <span class="math inline">1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96</span>, and <span class="math display">\begin{align*}
+CI_{0.95} = \Big[ &amp;\hat{\beta}_{1}-1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }, \\
+&amp;\hat{\beta}_{1}+1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }\Big] .
+\end{align*}</span></p></li>
 </ul>
 </section>
-<section id="validity-of-the-infeasible-cis-sigma2-is-known" class="slide level2">
-<h2>Validity of the infeasible CIs (<span class="math inline">\sigma^2</span> is known)</h2>
+<section id="infeasible-ci-validity-sigma2-known" class="slide level2">
+<h2>Infeasible CI validity (<span class="math inline">\sigma^2</span> known)</h2>
 <ul>
-<li class="fragment"><p>We need to show that <span class="math inline">P\left( \beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\right] \right)=1-\alpha .</span></p></li>
-<li class="fragment"><p>Next, <span class="math display">
-\begin{aligned}
-&amp;\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) } \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) } \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) } \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }}\leq z_{1-\alpha /2}
-\end{aligned}
+<li class="fragment"><p>We need to show that <span class="math display">
+P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha .
 </span></p></li>
+<li class="fragment"><p>Next, let <span class="math inline">\sigma_{\hat{\beta}_{1}} = \sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)}</span>. Then: <span class="math display">\begin{align*}
+&amp;\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+&amp;\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+&amp;\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+&amp;\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}
+\end{align*}</span></p></li>
 </ul>
 </section>
-<section id="validity-of-the-infeasible-cis-sigma2-is-known-1" class="slide level2">
-<h2>Validity of the infeasible CIs (<span class="math inline">\sigma^2</span> is known)</h2>
+<section id="infeasible-ci-validity-sigma2-known-1" class="slide level2">
+<h2>Infeasible CI validity (<span class="math inline">\sigma^2</span> known)</h2>
 <ul>
-<li class="fragment"><p>We have that <span class="math display">
-\begin{aligned}
-&amp;\beta _{1}\in \left[ \hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) },\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }\right] \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }}\leq z_{1-\alpha /2}.
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>Let <span class="math inline">Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }}\sim N\left( 0,1\right)</span>. <span class="math display">
-\begin{aligned}
-&amp;P\left( -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1}\right) }}\leq z_{1-\alpha /2}\right) \\
-&amp;=P\left( -z_{1-\alpha /2}\leq Z\leq z_{1-\alpha /2}\right) \\
-&amp;=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2}\right) \\
+<li class="fragment"><p>We have that <span class="math display">\begin{align*}
+&amp;\beta _{1}\in CI_{1-\alpha} \\
+&amp;\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }}\leq z_{1-\alpha /2}.
+\end{align*}</span></p></li>
+<li class="fragment"><p>Let <span class="math inline">Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }}\sim N\left( 0,1\right)</span> conditionally on <span class="math inline">\mathbf{X}</span>. <span class="math display">\begin{align*}
+&amp;P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
+&amp;=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
 &amp;=1-\alpha /2-\alpha /2=1-\alpha .
-\end{aligned}
-</span></p></li>
+\end{align*}</span></p></li>
 </ul>
 </section>
-<section id="feasible-confidence-intervals-sigma2-is-unknown" class="slide level2">
-<h2>Feasible confidence intervals (<span class="math inline">\sigma^2</span> is unknown)</h2>
+<section id="feasible-cis-sigma2-unknown" class="slide level2">
+<h2>Feasible CIs (<span class="math inline">\sigma^2</span> unknown)</h2>
 <ul>
 <li class="fragment"><p>Since <span class="math inline">\sigma ^{2}</span> is unknown, we must estimate it from the data: <span class="math display">
 s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
 </span></p></li>
-<li class="fragment"><p>We can replace <span class="math inline">\sigma ^{2}</span> by <span class="math inline">s^{2}</span>, however, the result does not have a normal distribution any more: <span class="math display">
-\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2},\text{ where }\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-</span> Here <span class="math inline">t_{n-2}</span> denotes the <span class="math inline">t</span>-distribution with <span class="math inline">n-2</span> degrees of freedom.</p></li>
+<li class="fragment"><p>We can replace <span class="math inline">\sigma ^{2}</span> by <span class="math inline">s^{2}</span>; however, the result does not have a normal distribution anymore: <span class="math display">\begin{align*}
+&amp;\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2}, \\
+&amp;\text{where } \widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\end{align*}</span> Here <span class="math inline">t_{n-2}</span> denotes the <span class="math inline">t</span>-distribution with <span class="math inline">n-2</span> degrees of freedom.</p></li>
 <li class="fragment"><p>The degrees of freedom depend on</p>
 <ul>
 <li class="fragment"><p>the sample size (<span class="math inline">n</span>),</p></li>
-<li class="fragment"><p>and the number of parameters one have to estimate to compute <span class="math inline">s^{2}</span> (two in this case, <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>).</p></li>
+<li class="fragment"><p>and the number of parameters one has to estimate to compute <span class="math inline">s^{2}</span> (two in this case, <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>).</p></li>
 </ul></li>
 </ul>
 </section>
-<section id="feasible-confidence-intervals-sigma2-is-unknown-1" class="slide level2">
-<h2>Feasible confidence intervals (<span class="math inline">\sigma^2</span> is unknown)</h2>
+<section id="feasible-cis-sigma2-unknown-1" class="slide level2">
+<h2>Feasible CIs (<span class="math inline">\sigma^2</span> unknown)</h2>
 <ul>
 <li class="fragment"><p>Let <span class="math inline">t_{df,\tau }</span> be the <span class="math inline">\tau</span>-th quantile of the <span class="math inline">t</span>-distribution with the number of degrees of freedom <span class="math inline">df</span>: If <span class="math inline">T\sim t_{df}</span> then <span class="math display">
 P\left( T\leq t_{df,\tau }\right) =\tau .
 </span></p></li>
 <li class="fragment"><p>Similarly to the normal distribution, the <span class="math inline">t</span>-distribution is centered at zero and is symmetric around zero: <span class="math inline">t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.</span></p></li>
-<li class="fragment"><p>We can now construct a feasible confidence interval with <span class="math inline">1-\alpha</span> coverage as: <span class="math display">
-\begin{aligned}
-CI_{1-\alpha } &amp;=\left[ \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) },\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\right], \\
-&amp;\text{where }\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{aligned}
-</span></p></li>
+<li class="fragment"><p>We can now construct a feasible confidence interval with <span class="math inline">1-\alpha</span> coverage as: <span class="math display">\begin{align*}
+CI_{1-\alpha } = \Big[ &amp;\hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }, \\
+&amp;\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\Big], \\
+\text{where } &amp;\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\end{align*}</span></p></li>
 </ul>
 </section>
 <section id="example-rent-rates-and-average-income" class="slide level2">
@@ -1213,10 +1211,10 @@ CI_{1-\alpha } &amp;=\left[ \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\m
 <li class="fragment"><p><span class="math inline">t_{62,0.95}\approx 1.671 \Longrightarrow</span> The <strong>90%</strong> confidence interval for <span class="math inline">\beta _{1}</span> is <span class="math inline">\left[ 0.0115-1.671\times 0.0013,0.0115+1.671\times 0.0013\right] = [0.0093,0.0137].</span></p></li>
 </ul>
 </section>
-<section id="the-effect-of-estimation-of-sigma2" class="slide level2">
-<h2>The effect of estimation of <span class="math inline">\sigma^2</span></h2>
+<section id="the-effect-of-estimating-sigma2" class="slide level2">
+<h2>The effect of estimating <span class="math inline">\sigma^2</span></h2>
 <ul>
-<li class="fragment"><p>The <span class="math inline">t</span>-distribution has heavier tails than normal.</p></li>
+<li class="fragment"><p>The <span class="math inline">t</span>-distribution has heavier tails than the normal.</p></li>
 <li class="fragment"><p><span class="math inline">t_{df,1-\alpha /2}&gt;z_{1-\alpha /2}</span>, but as <span class="math inline">df</span> increases <span class="math inline">t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.</span></p></li>
 <li class="fragment"><p>When the sample size <span class="math inline">n</span> is large, <span class="math inline">t_{n-2,1-\alpha /2}</span> can be replaced with <span class="math inline">z_{1-\alpha /2}.</span></p></li>
 </ul>
@@ -1224,8 +1222,8 @@ CI_{1-\alpha } &amp;=\left[ \hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\m
 <section id="interpretation-of-confidence-intervals" class="slide level2">
 <h2>Interpretation of confidence intervals</h2>
 <ul>
-<li class="fragment"><p>The confidence interval <span class="math inline">CI_{1-\alpha }</span> is a function of the <strong>sample</strong> <span class="math inline">\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}</span>, and therefore is <strong>random</strong>. This allows us to talk about probability of <span class="math inline">CI_{1-\alpha }</span> containing the true value of <span class="math inline">\beta _{1}.</span></p></li>
-<li class="fragment"><p>Once the confidence interval is computed given the data, we have its <strong>one realization</strong>. The realization of <span class="math inline">CI_{1-\alpha }</span> or (computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true <span class="math inline">\beta _{1}.</span></p></li>
+<li class="fragment"><p>The confidence interval <span class="math inline">CI_{1-\alpha }</span> is a function of the <strong>sample</strong> <span class="math inline">\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}</span>, and therefore is <strong>random</strong>. This allows us to talk about the probability of <span class="math inline">CI_{1-\alpha }</span> containing the true value of <span class="math inline">\beta _{1}.</span></p></li>
+<li class="fragment"><p>Once the confidence interval is computed given the data, we have its <strong>one realization</strong>. The realization of <span class="math inline">CI_{1-\alpha }</span> (the computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true <span class="math inline">\beta _{1}.</span></p></li>
 <li class="fragment"><p><strong>Once the confidence interval is computed, it either contains the true value <span class="math inline">\beta _{1}</span> or it does not</strong>.</p></li>
 </ul>
 
