@@ -45,6 +45,8 @@ $
 $
 :::
 
+We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}$.
+
 - Hypothesis testing is one of the fundamental problems in statistics.
 
 - A hypothesis is (usually) an **assertion** about the unknown population parameters such as $\beta _{1}$ in $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.$
@@ -58,29 +60,6 @@ $
 
   In this example, we are interested in testing if $\beta _{1}=0$ (no Phillips curve) against $\beta _{1}<0$ (Phillips curve).
 
-## Assumptions
-
-- $\beta _{1}$ is unknown, and we have to rely on its OLS estimator $\hat{\beta}_{1}.$
-
-- We need to know the distribution of $\hat{\beta}_{1}$ or of its certain functions.
-
-- We will assume that the assumptions of the **Normal Classical Linear Regression** model are satisfied:
-
-  1. $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.$
-
-  2. $\E{U_{i}\mid X_{1},\ldots ,X_{n}} =0$ for all $i$'s.
-
-  3. $\E{U_{i}^{2}\mid X_{1},\ldots ,X_{n}} =\sigma ^{2}$ for all $i$'s.
-
-  4. $\E{U_{i}U_{j}\mid X_{1},\ldots ,X_{n}} =0$ for all $i\neq j$.
-
-  5. $U$'s are jointly normally distributed conditional on $X$'s.
-
-- Recall that, in this case, conditionally on $X$'s:
-  $$
-  \hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}} \right) \text{, where }\Var{\hat{\beta}_{1}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  $$
-
 ## Null and alternative hypotheses
 
 - Usually, we have **two competing hypotheses**, and we want to draw a conclusion, based on the data, as to which of the hypotheses is true.
@@ -93,13 +72,13 @@ $
 
 - The econometrician has to prove that his assertion ($H_{1}$) is true by showing that the data rejects $H_{0}$.
 
-- The two hypotheses must be **disjoint**: it should be the case that either $H_{0}$ is true or $H_{1}$ but never together simultaneously.
+- The two hypotheses must be **disjoint**: it should be the case that either $H_{0}$ is true or $H_{1}$ but never both simultaneously.
 
 ## Decision rule
 
 - The econometrician has to choose between $H_{0}$ and $H_{1}.$
 
-- The **decision rule** that leads the econometrician to **reject or not to reject $H_{0}$** is based on a **test statistic**, which is a **function of the data** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots n\right\} .$
+- The **decision rule** that leads the econometrician to **reject or not to reject $H_{0}$** is based on a **test statistic**, which is a **function of the data** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots, n\right\} .$
 
 - Usually, one rejects $H_{0}$ if the test statistic falls into a **critical region**. A critical region is constructed by taking into account the probability of making a wrong decision.
 
@@ -158,6 +137,14 @@ $
 
 - **$p$-value**: Given the data, the **smallest** significance level at which the null can be rejected.
 
+## Assumptions
+
+- Recall: under the **Normal Classical Linear Regression** model and conditionally on $\mathbf{X}$:
+  \begin{align*}
+  &\hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1} \mid \mathbf{X}} \right), \\
+  &\Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{align*}
+
 ## Two-sided tests
 
 - For $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, consider testing
@@ -175,14 +162,15 @@ $
 
 - Such a test is called **two-sided** because the alternative hypothesis $H_{1}$ does not specify in which direction $\beta _{1}$ can deviate from the asserted value $\beta _{1,0}.$
 
-## Two-sided tests when $\sigma^2$ is known (infeasible test)
+## Two-sided test ($\sigma^2$ known)
 
 - Suppose for a moment that $\sigma ^{2}$ is known.
 
 - Consider the following **test statistic**:
-  $$
-  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},\text{ where }\Var{\hat{\beta}_{1}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  $$
+  \begin{align*}
+  &T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}, \\
+  &\text{where } \Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \end{align*}
 
 - Consider the following **decision rule** (test):
   $$
@@ -208,31 +196,33 @@ $
 
 - Note that $P\left( \left\vert T\right\vert >z_{1-\alpha /2}|\beta _{1}\neq \beta _{1,0}\right)$ depends on the true value $\beta _{1}.$
 
-## The distribution of $T$ when $\sigma^2$ is known (infeasible test)
+## Distribution of $T$ ($\sigma^2$ known)
 
 - Write
+  \begin{align*}
+  T &=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}=\frac{\hat{\beta}_{1}-\beta _{1}+\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }} \\
+  &=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}+\frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}.
+  \end{align*}
+
+- Under our assumptions and conditionally on $\mathbf{X}$:
+  \begin{align*}
+  &\hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1} \mid \mathbf{X}} \right), \\
+  &\text{or } \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}\sim N\left( 0,1\right) .
+  \end{align*}
+
+- We have that conditionally on $\mathbf{X}$:
   $$
-  \begin{aligned}
-  T &=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }}=\frac{\hat{\beta}_{1}-\beta _{1}+\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }} \\
-  &=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}+\frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }}.
-  \end{aligned}
+  T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }},1\right) .
   $$
 
-- Under our assumptions and conditionally on $X$'s:
-  $$
-  \hat{\beta}_{1}\sim N\left( \beta _{1},\Var{\hat{\beta}_{1}} \right) ,\text{ or }\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1}} }}\sim N\left( 0,1\right) .
-  $$
+## Size of the test ($\sigma^2$ known)
 
-- We have that conditionally on $X$'s: $T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},1\right) .$
-
-## Size when $\sigma^2$ is known (infeasible test)
-
-- We have that
+- Conditionally on $\mathbf{X}$, we have that
   $$
-  T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},1\right) .
+  T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }},1\right) .
   $$
 
-- When $H_{0}:\beta _{1}=\beta _{1,0}$ is true, $T\overset{H_{0}}{\sim }N\left( 0,1\right)$.
+- When $H_{0}:\beta _{1}=\beta _{1,0}$ is true, $T\overset{H_{0}}{\sim }N\left( 0,1\right)$ conditionally on $\mathbf{X}$.
 
 - We reject $H_{0}$ when
   $$
@@ -240,14 +230,12 @@ $
   $$
 
 - Let $Z\sim N\left( 0,1\right) .$
-  $$
-  \begin{aligned}
+  \begin{align*}
   P\left( \text{Reject }H_{0}|H_{0}\text{ is true}\right) &=P\left( Z>z_{1-\alpha /2}\right) +P\left( Z<-z_{1-\alpha /2}\right) \\
   &=\alpha /2+\alpha /2=\alpha
-  \end{aligned}
-  $$
+  \end{align*}
 
-## The distribution of $T$ when $\sigma^2$ is known (infeasible test)
+## Distribution of $T$ ($\sigma^2$ known)
 
 ```{r}
 #| echo: false
@@ -288,9 +276,12 @@ text(-3, 0.03, expression(alpha / 2), cex = 1.2)
 text(3, 0.03, expression(alpha / 2), cex = 1.2)
 ```
 
-## Power of the test when $\sigma^2$ is known (infeasible test)
+## Power ($\sigma^2$ known)
 
-- Under $H_{1},$ $\beta _{1}-\beta _{1,0}\neq 0$ and the distribution of $T$ is **not** centered zero: $T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1}} }},1\right) .$
+- Under $H_{1},$ $\beta _{1}-\beta _{1,0}\neq 0$ and, conditionally on $\mathbf{X}$, the distribution of $T$ is **not** centered at zero:
+  $$
+  T\sim N\left( \frac{\beta _{1}-\beta _{1,0}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }},1\right) .
+  $$
 
 - When $\beta _{1}-\beta _{1,0}>0:$
 

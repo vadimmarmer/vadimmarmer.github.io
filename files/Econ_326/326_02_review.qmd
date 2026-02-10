@@ -1,6 +1,6 @@
 ---
 title: "Lecture 2: Review of Probability"
-subtitle: "Economics 326 — Methods of Empirical Research in Economics"
+subtitle: "Economics 326 — Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:

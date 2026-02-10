@@ -1,6 +1,6 @@
 ---
 title: "Lecture 9: Hypothesis testing (Part 2)"
-subtitle: "Economics 326 — Methods of Empirical Research in Economics"
+subtitle: "Economics 326 — Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:

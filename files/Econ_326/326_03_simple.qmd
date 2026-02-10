@@ -1,6 +1,6 @@
 ---
 title: "Lecture 3: Simple Linear Regression and OLS"
-subtitle: "Economics 326 — Methods of Empirical Research in Economics"
+subtitle: "Economics 326 — Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:

@@ -1050,7 +1050,7 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Lecture 7: Confidence intervals</h1>
-  <p class="subtitle">Economics 326 — Methods of Empirical Research in Economics</p>
+  <p class="subtitle">Economics 326 — Econometrics II</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -1064,10 +1064,8 @@ Vadim Marmer, UBC
 <section id="point-estimation" class="slide level2 scrollable">
 <h2>Point estimation</h2>
 <div class="hidden">
-$
-<p>$</p>
+
 </div>
-<p>We use the notation <span class="math inline">\mathrm{E}\left[\cdot \mid \mathbf{X}\right] = \mathrm{E}\left[\cdot \mid X_1, \ldots, X_n\right]</span>.</p>
 <ul>
 <li class="fragment"><p>Our model:</p>
 <ol type="1">
@@ -1078,11 +1076,60 @@ $
 <li class="fragment"><p><span class="math inline">U</span>’s are jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
 </ol></li>
 <li class="fragment"><p>The OLS estimator <span class="math inline">\hat{\beta}_{1}</span> is a <strong>point estimator</strong> of <span class="math inline">\beta _{1}.</span></p></li>
-<li class="fragment"><p>For our model, conditional on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
-\hat{\beta}_{1} &amp;\sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) \right), \\
-\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}</span></p></li>
 <li class="fragment"><p>With probability <strong>one</strong>, we have that <span class="math inline">\hat{\beta}_{1}\neq \beta _{1}.</span></p></li>
+<li class="fragment"><p>To construct interval estimators, we need to know the distribution of <span class="math inline">\hat{\beta}_{1}</span>.</p></li>
+</ul>
+</section>
+<section id="normal-distribution" class="slide level2">
+<h2>Normal distribution</h2>
+<ul>
+<li class="fragment"><p>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv <span class="math inline">X</span> is <span class="math display">
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}
+</span> <span class="math display">
+\mu = \mathrm{E}\left[X\right] \text{ and } \sigma^2 = \mathrm{Var}\left(X\right).
+</span> We usually write <span class="math inline">X \sim N(\mu, \sigma^2)</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">a + bX \sim N(a + b\mu, b^2\sigma^2)</span>.</p></li>
+</ul>
+</section>
+<section id="standard-normal-distribution" class="slide level2">
+<h2>Standard normal distribution</h2>
+<ul>
+<li class="fragment"><p>Standard normal rv has <span class="math inline">\mu = 0</span> and <span class="math inline">\sigma^2 = 1</span>. Its PDF is <span class="math inline">\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)</span>.</p></li>
+<li class="fragment"><p>Symmetric around zero (mean): if <span class="math inline">Z \sim N(0, 1)</span>, <span class="math inline">P(Z &gt; z) = P(Z &lt; -z)</span>.</p></li>
+<li class="fragment"><p>Thin tails: <span class="math inline">P(-1.96 \leq Z \leq 1.96) = 0.95</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">(X - \mu)/\sigma \sim N(0, 1)</span>.</p></li>
+</ul>
+</section>
+<section id="bivariate-normal-distribution" class="slide level2">
+<h2>Bivariate normal distribution</h2>
+<ul>
+<li class="fragment"><p><span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">
+f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
+</span> where <span class="math inline">Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}</span>,</p>
+<p><span class="math inline">\mu_X = \mathrm{E}\left[X\right], \mu_Y = \mathrm{E}\left[Y\right], \sigma_X^2 = \mathrm{Var}\left(X\right), \sigma_Y^2 = \mathrm{Var}\left(Y\right)</span>, and <span class="math inline">\rho = \mathrm{Corr}(X, Y)</span>.</p></li>
+</ul>
+</section>
+<section id="properties-of-bivariate-normal" class="slide level2">
+<h2>Properties of bivariate normal</h2>
+<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution:</p>
+<ul>
+<li class="fragment"><p><span class="math inline">a + bX + cY \sim N(\mu^*, (\sigma^*)^2)</span>, where <span class="math display">
+\mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{Cov}\left(X, Y\right) = 0 \Longrightarrow X</span> and <span class="math inline">Y</span> are independent.</p></li>
+<li class="fragment"><p>Can be generalized to more than 2 variables (multivariate normal).</p></li>
+</ul>
+</section>
+<section id="normality-of-the-ols-estimator" class="slide level2">
+<h2>Normality of the OLS estimator</h2>
+<ul>
+<li class="fragment"><p>Assume that <span class="math inline">U_{i}</span>’s are jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span> (Assumption 5).</p></li>
+<li class="fragment"><p>Then <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span> are also jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li class="fragment"><p>Since <span class="math inline">\hat{\beta}_{1}=\sum_{i=1}^{n}w_{i}Y_{i}</span>, where <span class="math inline">w_{i}=\frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}</span> depend only on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\hat{\beta}_{1}</span> is also normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li class="fragment"><p>Conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
+&amp;\hat{\beta}_{1} \mid \mathbf{X} \sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) \right), \\
+&amp;\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\end{align*}</span></p></li>
 </ul>
 </section>
 <section id="interval-estimation-problem" class="slide level2">
@@ -1110,7 +1157,7 @@ CI_{1-\alpha }=\left[ \hat{\beta}_{1}-c_{1-\alpha },\hat{\beta}_{1}+c_{1-\alpha 
 </span></p></li>
 <li class="fragment"><p>The problem is choosing <span class="math inline">c_{1-\alpha }</span> such that <span class="math inline">P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .</span></p></li>
 <li class="fragment"><p>In choosing <span class="math inline">c_{1-\alpha }</span> we will be relying on the fact that given our assumptions and conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
-&amp;\hat{\beta}_{1}\sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)\right), \\
+&amp;\hat{\beta}_{1} \mid \mathbf{X} \sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)\right), \\
 &amp;\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 \end{align*}</span></p></li>
 <li class="fragment"><p>Note that conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">
