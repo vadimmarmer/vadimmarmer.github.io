@@ -259,13 +259,84 @@ If $X$ and $Y$ have a bivariate normal distribution:
   \text{where } &\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   \end{align*}
 
-## Example: Rent rates and average income
+## Example: Data
 
-- Data (RENTAL.DTA): 64 cities in 1990, Rent = average rent, AvgInc = per capita income: Rent$_{i}=\beta _{0}+\beta _{1}$AvgInc$_{i}+U_{i}.$
+- Data: `rental` from the `wooldridge` R package. 64 US cities in 1990.
+  - `rent`: average monthly rent (\$)
+  - `avginc`: per capita income (\$)
 
-- $t_{62,0.975}\approx 2.00 \Longrightarrow$ The **95%** confidence interval for $\beta _{1}$ is $\left[ 0.0115-2\times 0.0013,0.0115+2\times 0.0013\right] = [0.0089,0.0141].$
+- Model: Rent$_{i}=\beta _{0}+\beta _{1}$AvgInc$_{i}+U_{i}.$
 
-- $t_{62,0.95}\approx 1.671 \Longrightarrow$ The **90%** confidence interval for $\beta _{1}$ is $\left[ 0.0115-1.671\times 0.0013,0.0115+1.671\times 0.0013\right] = [0.0093,0.0137].$
+```{r}
+library(wooldridge)
+data("rental")
+rental90 <- subset(rental, y90 == 1)
+head(rental90[, c("city", "rent", "avginc")])
+```
+
+## Example: OLS regression
+
+```{r}
+reg <- lm(rent ~ avginc, data = rental90)
+summary(reg)
+```
+
+## Example: Extracting key values
+
+```{r}
+# Estimated slope and its standard error
+beta1_hat <- coef(reg)["avginc"]
+se_beta1  <- summary(reg)$coefficients["avginc", "Std. Error"]
+cat("beta_1_hat =", round(beta1_hat, 4), "\n")
+cat("SE(beta_1_hat) =", round(se_beta1, 4), "\n")
+```
+
+```{r}
+# Degrees of freedom: n - 2
+n  <- nrow(rental90)
+df <- n - 2
+cat("n =", n, ",  df =", df, "\n")
+```
+
+## Example: 95% confidence interval
+
+```{r}
+# Critical value
+t_95 <- qt(0.975, df)
+cat("t_{62, 0.975} =", round(t_95, 3), "\n")
+```
+
+```{r}
+# 95% CI: beta_1_hat +/- t * SE
+CI_95 <- c(beta1_hat - t_95 * se_beta1,
+           beta1_hat + t_95 * se_beta1)
+round(CI_95, 4)
+```
+
+```{r}
+# Check with confint()
+confint(reg, "avginc", level = 0.95)
+```
+
+## Example: 90% confidence interval
+
+```{r}
+# Critical value
+t_90 <- qt(0.95, df)
+cat("t_{62, 0.95} =", round(t_90, 3), "\n")
+```
+
+```{r}
+# 90% CI: beta_1_hat +/- t * SE
+CI_90 <- c(beta1_hat - t_90 * se_beta1,
+           beta1_hat + t_90 * se_beta1)
+round(CI_90, 4)
+```
+
+```{r}
+# Check with confint()
+confint(reg, "avginc", level = 0.90)
+```
 
 ## The effect of estimating $\sigma^2$
 
