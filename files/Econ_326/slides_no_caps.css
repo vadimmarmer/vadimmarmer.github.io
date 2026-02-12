@@ -6,3 +6,20 @@
 .reveal section h6 {
   text-transform: none !important;
 }
+
+/* Correctly hide MathJax fragments (rows or markers) */
+.reveal .slides section mjx-container .fragment:not(.visible) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Ensure visibility when they become active */
+.reveal .slides section mjx-container .fragment.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Handle the case where children might need explicit showing */
+.reveal .slides section mjx-container .fragment.visible * {
+  visibility: inherit !important;
+}

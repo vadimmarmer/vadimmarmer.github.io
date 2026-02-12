@@ -1,0 +1,116 @@
+<script>
+window.addEventListener('load', function() {
+  if (!window.Reveal) {
+    return;
+  }
+
+  const MARKER_CLASS = 'mjxfrag';
+
+  function syncRevealFragments() {
+    const currentSlide = Reveal.getCurrentSlide && Reveal.getCurrentSlide();
+    if (currentSlide && Reveal.syncFragments) {
+      Reveal.syncFragments(currentSlide);
+    } else {
+      Reveal.sync();
+    }
+  }
+
+  function normalizeContainer(container) {
+    const markers = Array.from(container.querySelectorAll('.' + MARKER_CLASS));
+    if (!markers.length) {
+      return false;
+    }
+
+    const chtmlRows = Array.from(container.querySelectorAll('mjx-mtr'));
+    const rowIndexes = new Set();
+
+    markers.forEach(function(marker) {
+      const chtmlRow = marker.closest('mjx-mtr');
+      if (chtmlRow) {
+        const idx = chtmlRows.indexOf(chtmlRow);
+        if (idx >= 0) {
+          rowIndexes.add(idx);
+        }
+        return;
+      }
+
+      const mmlRow = marker.closest('mtr');
+      if (!mmlRow || !mmlRow.parentElement) {
+        return;
+      }
+
+      const idx = Array.prototype.indexOf.call(mmlRow.parentElement.children, mmlRow);
+      if (idx >= 0 && idx < chtmlRows.length) {
+        rowIndexes.add(idx);
+      }
+    });
+
+    container.querySelectorAll('.fragment').forEach(function(node) {
+      node.classList.remove('fragment', 'visible', 'current-fragment');
+      node.removeAttribute('data-fragment-index');
+    });
+
+    const rowTargets = Array.from(rowIndexes)
+      .sort(function(a, b) { return a - b; })
+      .map(function(idx) { return chtmlRows[idx]; })
+      .filter(Boolean);
+
+    (rowTargets.length ? rowTargets : markers).forEach(function(node) {
+      node.classList.add('fragment', 'mathjax-row-fragment');
+    });
+
+    return true;
+  }
+
+  function normalizeMathFragments(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    let touched = false;
+
+    scope.querySelectorAll('mjx-container').forEach(function(container) {
+      touched = normalizeContainer(container) || touched;
+    });
+
+    if (touched) {
+      syncRevealFragments();
+    }
+  }
+
+  function kickoff(root) {
+    const target = root || document;
+    normalizeMathFragments(target);
+    setTimeout(function() {
+      normalizeMathFragments(target);
+    }, 50);
+  }
+
+  if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+    MathJax.startup.promise.then(function() {
+      kickoff(document);
+    });
+  } else {
+    setTimeout(function() {
+      kickoff(document);
+    }, 500);
+  }
+
+  Reveal.on('slidechanged', function(event) {
+    kickoff(event.currentSlide || document);
+  });
+
+  const observer = new MutationObserver(function(mutations) {
+    const hasMathJaxNodes = mutations.some(function(mutation) {
+      return Array.from(mutation.addedNodes).some(function(node) {
+        return node instanceof Element &&
+          ((node.matches && node.matches('mjx-container')) ||
+           (node.querySelector && node.querySelector('mjx-container')));
+      });
+    });
+
+    if (hasMathJaxNodes) {
+      normalizeMathFragments(document);
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>

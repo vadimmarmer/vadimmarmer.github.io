@@ -561,6 +561,20 @@ code span.wa { color: #5e5e5e; font-style: italic; }
 .reveal section h6 {
 text-transform: none !important;
 }
+
+.reveal .slides section mjx-container .fragment:not(.visible) {
+opacity: 0 !important;
+visibility: hidden !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible {
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible * {
+visibility: inherit !important;
+}
 </style>
   <style type="text/css">.reveal
 div.sourceCode
@@ -1063,7 +1077,7 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Lecture 7: Confidence intervals</h1>
-  <p class="subtitle">Economics 326 — Econometrics II</p>
+  <p class="subtitle">Economics 326 — Methods of Empirical Research in Economics</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -1074,24 +1088,32 @@ Vadim Marmer, UBC
 </div>
 
 </section>
-<section id="point-estimation" class="slide level2 scrollable">
-<h2>Point estimation</h2>
+<section id="point-vs-interval-estimators" class="slide level2 scrollable">
+<h2>Point vs interval estimators</h2>
 <div class="hidden">
-
+$
+<p>$</p>
 </div>
-<span style="display:none">\(\newcommand{\fragment}[2]{\class{fragment}{#2}}\)</span>
+<span style="display:none">\(\newcommand{\fragment}[1]{\class{mjxfrag}{#1}}\)</span>
 <ul>
-<li class="fragment"><p>Our model:</p>
+<li class="fragment"><p>Recall our model:</p>
 <ol type="1">
-<li class="fragment"><p><span class="math inline">\(Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.\)</span></p></li>
-<li class="fragment"><p><span class="math inline">\(\mathrm{E}\left[U_{i}\mid \mathbf{X}\right] =0\)</span> for all <span class="math inline">\(i\)</span>’s.</p></li>
-<li class="fragment"><p><span class="math inline">\(\mathrm{E}\left[U_{i}^{2}\mid \mathbf{X}\right] =\sigma ^{2}\)</span> for all <span class="math inline">\(i\)</span>’s.</p></li>
-<li class="fragment"><p><span class="math inline">\(\mathrm{E}\left[U_{i}U_{j}\mid \mathbf{X}\right] =0\)</span> for all <span class="math inline">\(i\neq j\)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\(U\)</span>’s are jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
+<li class="fragment"><span class="math inline">\(Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.\)</span></li>
+<li class="fragment"><span class="math inline">\(\mathrm{E}\left[U_{i}\mid \mathbf{X}\right] =0\)</span> for all <span class="math inline">\(i\)</span>’s.</li>
+<li class="fragment"><span class="math inline">\(\mathrm{E}\left[U_{i}^{2}\mid \mathbf{X}\right] =\sigma ^{2}\)</span> for all <span class="math inline">\(i\)</span>’s.</li>
+<li class="fragment"><span class="math inline">\(\mathrm{E}\left[U_{i}U_{j}\mid \mathbf{X}\right] =0\)</span> for all <span class="math inline">\(i\neq j\)</span>.</li>
 </ol></li>
-<li class="fragment"><p>The OLS estimator <span class="math inline">\(\hat{\beta}_{1}\)</span> is a <strong>point estimator</strong> of <span class="math inline">\(\beta _{1}.\)</span></p></li>
-<li class="fragment"><p>With probability <strong>one</strong>, we have that <span class="math inline">\(\hat{\beta}_{1}\neq \beta _{1}.\)</span></p></li>
-<li class="fragment"><p>To construct interval estimators, we need to know the distribution of <span class="math inline">\(\hat{\beta}_{1}\)</span>.</p></li>
+<li class="fragment"><p>So far we have established that conditionally on <span class="math inline">\(\mathbf{X}\)</span>:</p>
+<ul>
+<li class="fragment"><span class="math inline">\(\mathrm{E}\left[\hat{\beta}_{1} \mid \mathbf{X}\right] = \beta_{1}\)</span> (unbiasedness),</li>
+<li class="fragment"><span class="math inline">\(\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) = \dfrac{\sigma^{2}}{\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}}\)</span>.</li>
+</ul></li>
+<li class="fragment"><p>If the <span class="math inline">\(U_i\)</span>’s are continuously distributed, then with probability <strong>one</strong>, <span class="math inline">\(\hat{\beta}_{1}\neq \beta _{1}\)</span>: <span class="math display">\[
+\hat{\beta}_{1} = \beta_{1} + \frac{\sum_{i=1}^{n}(X_{i}-\bar{X})U_{i}}{\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}}.
+\]</span></p></li>
+<li class="fragment"><p>An <strong>interval estimator</strong> is a random interval <span class="math inline">\([LB, UB]\)</span> that contains the true parameter value with a pre-specified probability.</p></li>
+<li class="fragment"><p>To construct an interval estimator for <span class="math inline">\(\beta_{1}\)</span>, we need to know the <strong>distribution</strong> of <span class="math inline">\(\hat{\beta}_{1}\)</span>.</p></li>
+<li class="fragment"><p>This requires an additional assumption about the distribution of <span class="math inline">\(U_i\)</span>’s. Let’s first review the normal distribution.</p></li>
 </ul>
 </section>
 <section id="normal-distribution" class="slide level2">
@@ -1108,7 +1130,7 @@ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\ri
 <section id="standard-normal-distribution" class="slide level2">
 <h2>Standard normal distribution</h2>
 <ul>
-<li class="fragment"><p>Standard normal rv has <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma^2 = 1\)</span>. Its PDF is <span class="math inline">\(\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)\)</span>.</p></li>
+<li class="fragment"><p>A standard normal rv has <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma^2 = 1\)</span>. Its PDF is <span class="math inline">\(\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)\)</span>.</p></li>
 <li class="fragment"><p>Symmetric around zero (mean): if <span class="math inline">\(Z \sim N(0, 1)\)</span>, <span class="math display">\[\begin{align*}
 P(Z &gt; 0) &amp;= P(Z &lt; 0)=0.5,\\
 P(Z &gt; z) &amp;= P(Z &lt; -z) \text{ for any } z.
@@ -1120,27 +1142,29 @@ P(Z &gt; z) &amp;= P(Z &lt; -z) \text{ for any } z.
 <section id="bivariate-normal-distribution" class="slide level2">
 <h2>Bivariate normal distribution</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">\[
+<li class="fragment"><span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">\[
 f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
-\]</span> where <span class="math inline">\(Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}\)</span>,</p>
-<p><span class="math inline">\(\mu_X = \mathrm{E}\left[X\right], \mu_Y = \mathrm{E}\left[Y\right], \sigma_X^2 = \mathrm{Var}\left(X\right), \sigma_Y^2 = \mathrm{Var}\left(Y\right)\)</span>, and <span class="math inline">\(\rho = \mathrm{Corr}(X, Y)\)</span>.</p></li>
+\]</span> where <span class="math display">\[\begin{align*}
+Q &amp;= \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} \\
+&amp;\quad - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y},
+\end{align*}\]</span> <span class="math inline">\(\mu_X = \mathrm{E}\left[X\right]\)</span>, <span class="math inline">\(\mu_Y = \mathrm{E}\left[Y\right]\)</span>, <span class="math inline">\(\sigma_X^2 = \mathrm{Var}\left(X\right)\)</span>, <span class="math inline">\(\sigma_Y^2 = \mathrm{Var}\left(Y\right)\)</span>, and <span class="math inline">\(\rho = \mathrm{Corr}(X, Y)\)</span>.</li>
 </ul>
 </section>
 <section id="properties-of-bivariate-normal" class="slide level2">
 <h2>Properties of bivariate normal</h2>
-<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have a bivariate normal distribution:</p>
 <ul>
-<li class="fragment"><p><span class="math inline">\(a + bX + cY \sim N(\mu^*, (\sigma^*)^2)\)</span>, where <span class="math display">\[
-\mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
-\]</span></p></li>
+<li class="fragment"><p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have a bivariate normal distribution, then <span class="math inline">\(a + bX + cY \sim N(\mu^*, (\sigma^*)^2)\)</span>, where <span class="math display">\[\begin{align*}
+\mu^* &amp;= a + b\mu_X + c\mu_Y, \\
+(\sigma^*)^2 &amp;= b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
+\end{align*}\]</span></p></li>
 <li class="fragment"><p><span class="math inline">\(\mathrm{Cov}\left(X, Y\right) = 0 \Longrightarrow X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p></li>
-<li class="fragment"><p>Can be generalized to more than 2 variables (multivariate normal).</p></li>
+<li class="fragment"><p>This can be generalized to more than 2 variables (multivariate normal).</p></li>
 </ul>
 </section>
 <section id="normality-of-the-ols-estimator" class="slide level2">
 <h2>Normality of the OLS estimator</h2>
 <ul>
-<li class="fragment"><p>Assume that <span class="math inline">\(U_{i}\)</span>’s are jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span> (Assumption 5).</p></li>
+<li class="fragment"><p><strong>Assumption 5:</strong> <span class="math inline">\(U\)</span>’s are jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
 <li class="fragment"><p>Then <span class="math inline">\(Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}\)</span> are also jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
 <li class="fragment"><p>Since <span class="math inline">\(\hat{\beta}_{1}=\sum_{i=1}^{n}w_{i}Y_{i}\)</span>, where <span class="math inline">\(w_{i}=\frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}\)</span> depend only on <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\hat{\beta}_{1}\)</span> is also normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
 <li class="fragment"><p>Conditionally on <span class="math inline">\(\mathbf{X}\)</span>: <span class="math display">\[\begin{align*}
@@ -1173,7 +1197,7 @@ P\left( \beta _{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .
 CI_{1-\alpha }=\left[ \hat{\beta}_{1}-c_{1-\alpha },\hat{\beta}_{1}+c_{1-\alpha }\right]
 \]</span></p></li>
 <li class="fragment"><p>The problem is choosing <span class="math inline">\(c_{1-\alpha }\)</span> such that <span class="math inline">\(P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .\)</span></p></li>
-<li class="fragment"><p>In choosing <span class="math inline">\(c_{1-\alpha }\)</span> we will be relying on the fact that given our assumptions and conditionally on <span class="math inline">\(\mathbf{X}\)</span>: <span class="math display">\[\begin{align*}
+<li class="fragment"><p>In choosing <span class="math inline">\(c_{1-\alpha }\)</span>, we will be relying on the fact that, given our assumptions and conditionally on <span class="math inline">\(\mathbf{X}\)</span>: <span class="math display">\[\begin{align*}
 &amp;\hat{\beta}_{1} \mid \mathbf{X} \sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)\right), \\
 &amp;\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 \end{align*}\]</span></p></li>
@@ -1202,62 +1226,46 @@ P\left( Z\leq z_{\tau }\right) =\tau .
 CI_{1-\alpha } = \Big[ &amp;\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }, \\
 &amp;\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }\Big] .
 \end{align*}\]</span></p></li>
-<li class="fragment"><p>For example, if <span class="math inline">\(1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96\)</span>, and <span class="math display">\[\begin{align*}
-CI_{0.95} = \Big[ &amp;\hat{\beta}_{1}-1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }, \\
-&amp;\hat{\beta}_{1}+1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }\Big] .
+<li class="fragment"><p>For example, if <span class="math inline">\(1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96\)</span>, and <span class="math inline">\(CI_{0.95}\)</span> is <span class="math display">\[\begin{align*}
+\hat{\beta}_{1} \pm 1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) } .
 \end{align*}\]</span></p></li>
 </ul>
 </section>
 <section id="infeasible-ci-validity-sigma2-known" class="slide level2">
 <h2>Infeasible CI validity (<span class="math inline">\(\sigma^2\)</span> known)</h2>
-<div class="fragment">
 <ul>
-<li>We need to show that <span class="math display">\[
-P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha .
-\]</span></li>
+<li><p><strong>Goal:</strong> show that <span class="math inline">\(P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha\)</span>.</p></li>
+<li><p><strong>Notation:</strong> <span class="math inline">\(\sigma_{\hat{\beta}_{1}} = \sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)}\)</span>.</p></li>
+<li><p><strong>Key fact:</strong> <span class="math inline">\(Z=\dfrac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\sim N(0,1)\)</span> conditionally on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
 </ul>
-</div>
-<div class="fragment">
-<ul>
-<li>Next, let <span class="math inline">\(\sigma_{\hat{\beta}_{1}} = \sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)}\)</span>. Then: <span class="math display">\[
+<p><span class="math display">\[
 \begin{aligned}
-&amp;\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-&amp;\fragment{1}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
-&amp;\fragment{2}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
-&amp;\fragment{3}{{}\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}}
+&amp;P\left(\beta _{1} \in CI_{1-\alpha} \mid \mathbf{X}\right) \\
+&amp;\fragment{{}= P\left(\hat{\beta}_{1} - z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1} \leq \hat{\beta}_{1} + z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \mid \mathbf{X}\right)} \\
+&amp;\fragment{{}= P\left(-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1} - \hat{\beta}_{1} \leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \mid \mathbf{X}\right)} \\
+&amp;\fragment{{}= P\left(-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1} - \beta _{1} \leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \mid \mathbf{X}\right)} \\
+&amp;\fragment{{}= P\left(-z_{1-\alpha /2} \leq \frac{\hat{\beta}_{1} - \beta _{1}}{\sigma_{\hat{\beta}_{1}}} \leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&amp;\fragment{{}= P\left(-z_{1-\alpha /2} \leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&amp;\fragment{{}= P\left(Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) - P\left(Z \leq -z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&amp;\fragment{{}= \left(1-\alpha /2\right) - \alpha /2} \\
+&amp;\fragment{{}= 1-\alpha .}
 \end{aligned}
-\]</span></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>We have that <span class="math inline">\(\beta _{1}\in CI_{1-\alpha}\)</span> <span class="math display">\[
-\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}.
-\]</span></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>Let <span class="math inline">\(Z=\dfrac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\sim N\left( 0,1\right)\)</span> conditionally on <span class="math inline">\(\mathbf{X}\)</span>. <span class="math display">\[
-\begin{aligned}
-&amp;P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
-&amp;\fragment{1}{{}=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
-&amp;\fragment{2}{{}=1-\alpha /2-\alpha /2=1-\alpha .}
-\end{aligned}
-\]</span></li>
-</ul>
-</div>
+\]</span></p>
 </section>
 <section id="feasible-cis-sigma2-unknown" class="slide level2">
 <h2>Feasible CIs (<span class="math inline">\(\sigma^2\)</span> unknown)</h2>
 <ul>
-<li class="fragment"><p>Since <span class="math inline">\(\sigma ^{2}\)</span> is unknown, we must estimate it from the data: <span class="math display">\[
-s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
-\]</span></p></li>
-<li class="fragment"><p>We can replace <span class="math inline">\(\sigma ^{2}\)</span> by <span class="math inline">\(s^{2}\)</span>; however, the result does not have a normal distribution anymore: <span class="math display">\[\begin{align*}
-&amp;\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2}, \\
-&amp;\text{where } \widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}\]</span> Here <span class="math inline">\(t_{n-2}\)</span> denotes the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p></li>
+<li class="fragment"><p>Since <span class="math inline">\(\sigma ^{2}\)</span> is unknown, we must estimate it from the data: <span class="math display">\[\begin{align*}
+s^{2} &amp;= \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \\
+&amp;= \frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
+\end{align*}\]</span></p></li>
+<li class="fragment"><p>The <strong>standard error</strong> of <span class="math inline">\(\hat{\beta}_{1}\)</span> is defined as <span class="math display">\[\begin{align*}
+\mathrm{se}\left(\hat{\beta}_{1}\right) &amp;= \sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}\right)} \\
+&amp;= \sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
+\end{align*}\]</span></p></li>
+<li class="fragment"><p>Replacing <span class="math inline">\(\sigma\)</span> by its estimate does not give a normal distribution anymore: <span class="math display">\[
+\frac{\hat{\beta}_{1}-\beta _{1}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}\mid \mathbf{X}\sim t_{n-2}.
+\]</span> Here <span class="math inline">\(t_{n-2}\)</span> denotes the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p></li>
 <li class="fragment"><p>The degrees of freedom depend on</p>
 <ul>
 <li class="fragment"><p>the sample size (<span class="math inline">\(n\)</span>),</p></li>
@@ -1272,11 +1280,9 @@ s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\lef
 P\left( T\leq t_{df,\tau }\right) =\tau .
 \]</span></p></li>
 <li class="fragment"><p>Similarly to the normal distribution, the <span class="math inline">\(t\)</span>-distribution is centered at zero and is symmetric around zero: <span class="math inline">\(t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.\)</span></p></li>
-<li class="fragment"><p>We can now construct a feasible confidence interval with <span class="math inline">\(1-\alpha\)</span> coverage as: <span class="math display">\[\begin{align*}
-CI_{1-\alpha } = \Big[ &amp;\hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }, \\
-&amp;\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\Big], \\
-\text{where } &amp;\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}\]</span></p></li>
+<li class="fragment"><p>We can now construct a feasible <span class="math inline">\(CI_{1-\alpha }\)</span> as <span class="math display">\[
+\hat{\beta}_{1}\pm t_{n-2,1-\alpha /2} \times \mathrm{se}\left(\hat{\beta}_{1}\right).
+\]</span></p></li>
 </ul>
 </section>
 <section id="example" class="slide level2">
@@ -1325,7 +1331,7 @@ F-statistic: 78.34 on 1 and 62 DF,  p-value: 1.341e-12</code></pre>
 avginc 0.008964625 0.01419539</code></pre>
 </div>
 </div></li>
-<li class="fragment"><p>90% CI for the slope coefficient</p>
+<li class="fragment"><p>90% CI for the slope coefficient:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a><span class="fu">confint</span>(reg, <span class="st">&quot;avginc&quot;</span>, <span class="at">level =</span> <span class="fl">0.90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2552,6 +2558,122 @@ window.QuartoSupport = function () {
           RevealZoom
         ]
       });
+    </script>
+    <script>
+    window.addEventListener('load', function() {
+      if (!window.Reveal) {
+        return;
+      }
+
+      const MARKER_CLASS = 'mjxfrag';
+
+      function syncRevealFragments() {
+        const currentSlide = Reveal.getCurrentSlide && Reveal.getCurrentSlide();
+        if (currentSlide && Reveal.syncFragments) {
+          Reveal.syncFragments(currentSlide);
+        } else {
+          Reveal.sync();
+        }
+      }
+
+      function normalizeContainer(container) {
+        const markers = Array.from(container.querySelectorAll('.' + MARKER_CLASS));
+        if (!markers.length) {
+          return false;
+        }
+
+        const chtmlRows = Array.from(container.querySelectorAll('mjx-mtr'));
+        const rowIndexes = new Set();
+
+        markers.forEach(function(marker) {
+          const chtmlRow = marker.closest('mjx-mtr');
+          if (chtmlRow) {
+            const idx = chtmlRows.indexOf(chtmlRow);
+            if (idx >= 0) {
+              rowIndexes.add(idx);
+            }
+            return;
+          }
+
+          const mmlRow = marker.closest('mtr');
+          if (!mmlRow || !mmlRow.parentElement) {
+            return;
+          }
+
+          const idx = Array.prototype.indexOf.call(mmlRow.parentElement.children, mmlRow);
+          if (idx >= 0 && idx < chtmlRows.length) {
+            rowIndexes.add(idx);
+          }
+        });
+
+        container.querySelectorAll('.fragment').forEach(function(node) {
+          node.classList.remove('fragment', 'visible', 'current-fragment');
+          node.removeAttribute('data-fragment-index');
+        });
+
+        const rowTargets = Array.from(rowIndexes)
+          .sort(function(a, b) { return a - b; })
+          .map(function(idx) { return chtmlRows[idx]; })
+          .filter(Boolean);
+
+        (rowTargets.length ? rowTargets : markers).forEach(function(node) {
+          node.classList.add('fragment', 'mathjax-row-fragment');
+        });
+
+        return true;
+      }
+
+      function normalizeMathFragments(root) {
+        const scope = root && root.querySelectorAll ? root : document;
+        let touched = false;
+
+        scope.querySelectorAll('mjx-container').forEach(function(container) {
+          touched = normalizeContainer(container) || touched;
+        });
+
+        if (touched) {
+          syncRevealFragments();
+        }
+      }
+
+      function kickoff(root) {
+        const target = root || document;
+        normalizeMathFragments(target);
+        setTimeout(function() {
+          normalizeMathFragments(target);
+        }, 50);
+      }
+
+      if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+        MathJax.startup.promise.then(function() {
+          kickoff(document);
+        });
+      } else {
+        setTimeout(function() {
+          kickoff(document);
+        }, 500);
+      }
+
+      Reveal.on('slidechanged', function(event) {
+        kickoff(event.currentSlide || document);
+      });
+
+      const observer = new MutationObserver(function(mutations) {
+        const hasMathJaxNodes = mutations.some(function(mutation) {
+          return Array.from(mutation.addedNodes).some(function(node) {
+            return node instanceof Element &&
+              ((node.matches && node.matches('mjx-container')) ||
+               (node.querySelector && node.querySelector('mjx-container')));
+          });
+        });
+
+        if (hasMathJaxNodes) {
+          normalizeMathFragments(document);
+        }
+      });
+
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
     </script>
     
     <script>

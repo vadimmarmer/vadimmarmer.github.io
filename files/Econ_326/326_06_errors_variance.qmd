@@ -1,6 +1,6 @@
 ---
 title: "Lecture 6: Estimating the variance of errors"
-subtitle: "Economics 326 — Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -38,9 +38,13 @@ format:
 ## The importance of $\sigma^2$
 
 ::: {.hidden}
+$
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+$
 :::
 
 - The variance of $\hat{\beta}$ depends on the unknown $\sigma^{2} = \E{U_i^{2} \mid \mathbf{X}}$:
@@ -83,9 +87,9 @@ format:
   $$
   \hat{U}_{i}=U_{i}-\bar{U} -\left( \hat{\beta}-\beta \right)\left( X_{i}-\bar{X}\right).
   $$
-- $\hat U_i$ is related to $U_i$, but it is contaminated by the estimation errors.
+- $\hat{U}_i$ is related to $U_i$, but it is contaminated by the estimation errors.
 
-## Expanding $\sum_{i=1}^{n}\hat{U}_i^2$
+## Expanding $\sum \hat{U}_i^2$
 
 - We have:
   $$
@@ -106,9 +110,20 @@ format:
 
 - To show $\E{\sum_{i=1}^{n}\hat{U}_{i}^{2}\mid \mathbf{X}}=\left( n-2\right) \sigma ^{2}$, we verify the three terms on the RHS:
 
-- **Claim 1:** $\quad\E{\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}\mid \mathbf{X}}=\left( n-1\right) \sigma ^{2}$.
-- **Claim 2:** $\quad\E{\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\mid \mathbf{X}}=\sigma ^{2}$.
-- **Claim 3:** $\quad-2\cdot \E{\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right)\mid \mathbf{X}}=-2 \cdot\sigma ^{2}$.
+- **Claim 1:**
+  $$
+  \E{\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}\mid \mathbf{X}}=\left( n-1\right) \sigma ^{2}.
+  $$
+- **Claim 2:**
+  \begin{align*}
+  &\E{\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\mid \mathbf{X}} \\
+  &\quad =\sigma ^{2}.
+  \end{align*}
+- **Claim 3:**
+  \begin{align*}
+  &-2\cdot \E{\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right)\mid \mathbf{X}} \\
+  &\quad =-2\sigma ^{2}.
+  \end{align*}
 
 ## Estimating the variance of $\hat{\beta}$
 
@@ -117,42 +132,46 @@ format:
   \Var{\hat{\beta}\mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   $$
 - Estimator of $\sigma ^{2}$:
-  $$
-  s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\alpha}-\hat{\beta}X_{i}\right) ^{2}.
-  $$
+  \begin{align*}
+  s^{2} &= \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \\
+  &= \frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\alpha}-\hat{\beta}X_{i}\right) ^{2}.
+  \end{align*}
 - Estimator of the variance of $\hat{\beta}$:
   $$
-  \widehat{\mathrm{Var}}\left( \hat{\beta}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  \Vhat{\hat{\beta}} =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   $$
 - Standard error of $\hat{\beta}$:
-  $$
-  \mathrm{SE}\left( \hat{\beta}\right) =\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}\right)}=\sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
-  $$
+  \begin{align*}
+  \se{\hat{\beta}} &= \sqrt{\Vhat{\hat{\beta}}} \\
+  &= \sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
+  \end{align*}
 
 ## Example in R
 
 - Regress hourly wage on years of education using the `wage1` dataset from Wooldridge:
 
-```{r}
-library(wooldridge)
-data("wage1")
-fit <- lm(wage ~ educ, data = wage1)
-summary(fit)
-```
+  ```{r}
+  library(wooldridge)
+  data("wage1")
+  fit <- lm(wage ~ educ, data = wage1)
+  summary(fit)
+  ```
 
-- `Std. Error` column: standard errors $\mathrm{SE}(\hat{\alpha})$ and $\mathrm{SE}(\hat{\beta})$
+- `Std. Error` column: standard errors $\se{\hat{\alpha}}$ and $\se{\hat{\beta}}$
 - `Residual standard error`: $s = \sqrt{s^2}$; so $s^2 = 3.378^2 \approx 11.41$
 - The estimate $s^2$ can also be extracted directly:
 
-```{r}
-summary(fit)$sigma^2
-```
+  ```{r}
+  summary(fit)$sigma^2
+  ```
 
 ## Proof of Claim 1
 
 \begin{align*}
-\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2} &= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}\right) ^{2} \\
-&= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}^{2}+\sum_{i=1}^{n}\sum_{j\neq i}U_{i}U_{j}\right).
+\sum_{i=1}^{n}\left( U_{i}-\bar{U}\right) ^{2}
+&= \sum_{i=1}^{n}U_{i}^{2}-\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}\right) ^{2} \\
+&= \sum_{i=1}^{n}U_{i}^{2} \\
+&\quad -\frac{1}{n}\left( \sum_{i=1}^{n}U_{i}^{2}+\sum_{i=1}^{n}\sum_{j\neq i}U_{i}U_{j}\right).
 \end{align*}
 Taking conditional expectations and using the assumptions,
 \begin{align*}
@@ -164,13 +183,16 @@ Taking conditional expectations and using the assumptions,
 ## Proof of Claim 2
 
 Because $\E{\hat{\beta}\mid \mathbf{X}}=\beta$,
-$$
-\E{\left( \hat{\beta}-\beta \right) ^{2}\mid \mathbf{X}}=\Var{\hat{\beta}\mid \mathbf{X}}=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-$$
+\begin{align*}
+\E{\left( \hat{\beta}-\beta \right) ^{2}\mid \mathbf{X}}
+&= \Var{\hat{\beta}\mid \mathbf{X}} \\
+&= \frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+\end{align*}
 Hence,
-$$
-\E{\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\mid \mathbf{X}}=\sigma^{2}.
-$$
+\begin{align*}
+&\E{\left( \hat{\beta}-\beta \right) ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\mid \mathbf{X}} \\
+&\quad =\sigma^{2}.
+\end{align*}
 
 ## Proof of Claim 3
 
@@ -184,19 +206,22 @@ $$
 $$
 Therefore,
 \begin{align*}
-\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)\left( U_{i}-\bar{U}\right)
-&=\frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}.
+&\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right)\left( U_{i}-\bar{U}\right) \\
+&\quad =\frac{\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 \end{align*}
 Conditionally on $\mathbf{X}$,
 \begin{align*}
 &\E{\left( \hat{\beta}-\beta \right) \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \left( U_{i}-\bar{U}\right)\mid \mathbf{X}} \\
-&\quad = \frac{\sigma ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}=\sigma ^{2}.
+&\quad = \frac{\sigma ^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \\
+&\quad = \sigma ^{2}.
 \end{align*}
 
 ## Putting it together
 
 Using the three expectations above,
-$$
-\E{\sum_{i=1}^{n}\hat{U}_{i}^{2}\mid \mathbf{X}}=\left( n-1\right) \sigma ^{2}+\sigma^{2}-2\sigma ^{2}=\left( n-2\right) \sigma ^{2},
-$$
+\begin{align*}
+\E{\sum_{i=1}^{n}\hat{U}_{i}^{2}\mid \mathbf{X}}
+&= \left( n-1\right) \sigma ^{2}+\sigma^{2}-2\sigma ^{2} \\
+&= \left( n-2\right) \sigma ^{2},
+\end{align*}
 so $s^{2}$ is unbiased for $\sigma^{2}$.

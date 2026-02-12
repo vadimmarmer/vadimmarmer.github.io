@@ -148,6 +148,8 @@ exclude:
   - package.json
   - tmp
   - vendor
+  - "*.qmd"
+  - files/Econ_326/mathjax_fragment_issue.md
 keep_files:
   - .git
   - .svn

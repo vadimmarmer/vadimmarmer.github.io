@@ -1,5 +1,5 @@
 ---
-title: "Lecture 8: Hypothesis testing (Part 1)"
+title: "Lecture 8: Hypothesis testing"
 subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
@@ -42,10 +42,10 @@ $
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
 $
 :::
-
-We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}$.
 
 - Hypothesis testing is one of the fundamental problems in statistics.
 
@@ -115,7 +115,7 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
 - When $T$ is in the rejection (critical) region, we reject $H_{0}$ (and risk making a Type I error).
 
-- Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error $\alpha ,$ one makes the critical region smaller, which increases the probability of the Type II error. Thus it is impossible to make both errors arbitrarily small.
+- Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error $\alpha ,$ one makes the critical region smaller, which increases the probability of the Type II error. Thus, it is impossible to make both errors arbitrarily small.
 
 - By convention, $\alpha$ is chosen to be a small number, for example, $\alpha =0.01,0.05,$ or $0.10.$ (This is in agreement with the econometrician carrying the burden of proof).
 
@@ -158,7 +158,7 @@ We use the notation $\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}
 
 - $\beta _{1}$ is the true **unknown** value of the slope parameter.
 
-- $\beta _{1,0}$ is a **known** number specified by the econometrician. (For example $\beta _{1,0}$ is zero if you want to test $\beta _{1}=0$).
+- $\beta _{1,0}$ is a **known** number specified by the econometrician. (For example, $\beta _{1,0}$ is zero if you want to test $\beta _{1}=0$).
 
 - Such a test is called **two-sided** because the alternative hypothesis $H_{1}$ does not specify in which direction $\beta _{1}$ can deviate from the asserted value $\beta _{1,0}.$
 
@@ -285,66 +285,314 @@ text(3, 0.03, expression(alpha / 2), cex = 1.2)
 
 - When $\beta _{1}-\beta _{1,0}>0:$
 
-```{r}
-#| echo: false
-#| fig-align: center
+  ```{r}
+  #| echo: false
+  #| fig-align: center
 
-# Two overlapping normals: N(0,1) under H0 and N(mu,1) under H1
-alpha <- 0.05
-z_crit <- qnorm(1 - alpha / 2)
-mu <- 2.5  # shift under H1
+  # Two overlapping normals: N(0,1) under H0 and N(mu,1) under H1
+  alpha <- 0.05
+  z_crit <- qnorm(1 - alpha / 2)
+  mu <- 2.5  # shift under H1
 
-x <- seq(-4, 4 + mu, length.out = 500)
-y0 <- dnorm(x, mean = 0, sd = 1)
-y1 <- dnorm(x, mean = mu, sd = 1)
+  x <- seq(-4, 4 + mu, length.out = 500)
+  y0 <- dnorm(x, mean = 0, sd = 1)
+  y1 <- dnorm(x, mean = mu, sd = 1)
 
-plot(x, y0, type = "l", lwd = 2, lty = 2,
-     xlab = "", ylab = "",
-     ylim = c(0, max(c(y0, y1)) * 1.1),
-     main = expression("Distribution of T under " * H[0] * " and " * H[1]),
-     axes = FALSE)
-axis(1, at = c(-z_crit, 0, z_crit, mu),
-     labels = c(expression(-z[1-alpha/2]), "0",
-                expression(z[1-alpha/2]),
-                expression(mu)))
-axis(2)
+  plot(x, y0, type = "l", lwd = 2, lty = 2,
+       xlab = "", ylab = "",
+       ylim = c(0, max(c(y0, y1)) * 1.1),
+       main = expression("Distribution of T under " * H[0] * " and " * H[1]),
+       axes = FALSE)
+  axis(1, at = c(-z_crit, 0, z_crit, mu),
+       labels = c(expression(-z[1-alpha/2]), "0",
+                  expression(z[1-alpha/2]),
+                  expression(mu)))
+  axis(2)
 
-# Shade rejection regions under H1 curve
-# Left tail
-x_left <- seq(min(x), -z_crit, length.out = 200)
-polygon(c(x_left, rev(x_left)),
-        c(dnorm(x_left, mu), rep(0, length(x_left))),
-        col = rgb(1, 0.6, 0.6, 0.5), border = NA)
+  # Shade rejection regions under H1 curve
+  # Left tail
+  x_left <- seq(min(x), -z_crit, length.out = 200)
+  polygon(c(x_left, rev(x_left)),
+          c(dnorm(x_left, mu), rep(0, length(x_left))),
+          col = rgb(1, 0.6, 0.6, 0.5), border = NA)
 
-# Right tail
-x_right <- seq(z_crit, max(x), length.out = 200)
-polygon(c(x_right, rev(x_right)),
-        c(dnorm(x_right, mu), rep(0, length(x_right))),
-        col = rgb(1, 0.6, 0.6, 0.5), border = NA)
+  # Right tail
+  x_right <- seq(z_crit, max(x), length.out = 200)
+  polygon(c(x_right, rev(x_right)),
+          c(dnorm(x_right, mu), rep(0, length(x_right))),
+          col = rgb(1, 0.6, 0.6, 0.5), border = NA)
 
-# Also shade rejection regions under H0 curve (lightly)
-polygon(c(x_left, rev(x_left)),
-        c(dnorm(x_left, 0), rep(0, length(x_left))),
-        col = rgb(0.6, 0.8, 1, 0.4), border = NA)
-x_right0 <- seq(z_crit, max(x), length.out = 200)
-polygon(c(x_right0, rev(x_right0)),
-        c(dnorm(x_right0, 0), rep(0, length(x_right0))),
-        col = rgb(0.6, 0.8, 1, 0.4), border = NA)
+  # Also shade rejection regions under H0 curve (lightly)
+  polygon(c(x_left, rev(x_left)),
+          c(dnorm(x_left, 0), rep(0, length(x_left))),
+          col = rgb(0.6, 0.8, 1, 0.4), border = NA)
+  x_right0 <- seq(z_crit, max(x), length.out = 200)
+  polygon(c(x_right0, rev(x_right0)),
+          c(dnorm(x_right0, 0), rep(0, length(x_right0))),
+          col = rgb(0.6, 0.8, 1, 0.4), border = NA)
 
-# Re-draw curves on top
-lines(x, y0, lwd = 2, lty = 2)
-lines(x, y1, lwd = 2)
+  # Re-draw curves on top
+  lines(x, y0, lwd = 2, lty = 2)
+  lines(x, y1, lwd = 2)
 
-# Labels
-text(0, max(y0) * 0.6, expression(H[0]), cex = 1.2)
-text(mu, max(y1) * 0.6, expression(H[1]), cex = 1.2)
+  # Labels
+  text(0, max(y0) * 0.6, expression(H[0]), cex = 1.2)
+  text(mu, max(y1) * 0.6, expression(H[1]), cex = 1.2)
 
-# Vertical lines at critical values
-abline(v = c(-z_crit, z_crit), lty = 3, col = "gray40")
+  # Vertical lines at critical values
+  abline(v = c(-z_crit, z_crit), lty = 3, col = "gray40")
 
-legend("topright", legend = c(expression(H[0]: N(0,1)),
-                               expression(H[1]: N(mu,1))),
-       lty = c(2, 1), lwd = 2, cex = 0.9, bg = "white")
-```
+  legend("topright", legend = c(expression(H[0]: N(0,1)),
+                                 expression(H[1]: N(mu,1))),
+         lty = c(2, 1), lwd = 2, cex = 0.9, bg = "white")
+  ```
 
-- Rejection probability exceeds $\alpha$ under $H_{1}$: power increases with the distance from $H_{0}$ ($\left\vert \beta _{1,0}-\beta _{1}\right\vert$) and decreases with $\Var{\hat{\beta}_{1}}$.
+- Rejection probability exceeds $\alpha$ under $H_{1}$: power increases with the distance from $H_{0}$ ($\left\vert \beta _{1,0}-\beta _{1}\right\vert$) and decreases with $\Var{\hat{\beta}_{1} \mid \mathbf{X}}$.
+
+## The two-sided $t$-test
+
+- We are testing $H_{0}:\beta _{1}=\beta _{1,0}$ against $H_{1}:\beta _{1}\neq \beta _{1,0}.$
+
+- When $\sigma ^{2}$ is **unknown**, we replace it with $s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}.$
+
+- Recall the **standard error** of $\hat{\beta}_{1}$:
+  $$
+  \se{\hat{\beta}_{1}} = \sqrt{\Vhat{\hat{\beta}_{1}}} = \sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
+  $$
+
+- The **$t$-statistic**:
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}.
+  $$
+
+- We also replace the standard normal critical values $z_{1-\alpha /2}$ with the $t_{n-2}$ critical values $t_{n-2,1-\alpha /2}.$
+
+  However, **for large $n$**, $t_{n-2,1-\alpha /2}\approx z_{1-\alpha /2}.$
+
+- The two-sided **$t$-test**:
+  $$
+  \text{Reject }H_{0}\text{ when }\left\vert T\right\vert >t_{n-2,1-\alpha /2}.
+  $$
+
+## The two-sided $p$-value
+
+- The decision to accept or reject $H_{0}$ depends on the critical value $t_{n-2,1-\alpha /2}.$
+
+- If $\alpha _{1}>\alpha _{2}$ then $t_{n-2,1-\alpha _{1}/2}<t_{n-2,1-\alpha _{2}/2}.$
+
+- Thus, it is easier to reject $H_{0}$ with the significance level $\alpha _{1}$ since it corresponds to a smaller acceptance region.
+
+- $p$-value is the **smallest** significance level $\alpha$ for which we can reject $H_{0}.$
+
+## The two-sided $p$-value
+
+- In order to find the $p$-value:
+
+  1. Compute $T$.
+
+  2. The $p$-value $= 2 \cdot P(t_{n-2} \leq -|T|).$
+
+  3. In R: `2 * pt(-abs(T), df = n - 2)`.
+
+- Note that for all $\alpha >p$-value,
+  $$
+  \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}>t_{n-2,1-\alpha /2}
+  $$
+  and we will reject $H_{0}.$
+
+- For all $\alpha \leq p$-value,
+  $$
+  \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}\leq t_{n-2,1-\alpha /2}
+  $$
+  and we will accept $H_{0}$.
+
+## Example of $p$-value calculation
+
+- Suppose a regression with 19 observations produced the following output:
+
+  ```
+  Coefficients:
+              Estimate Std. Error t value Pr(>|t|)
+  (Intercept) 10.18197    0.25094   40.58   <2e-16 ***
+  x           -0.67253    0.58049   -1.16    0.263
+  ```
+
+- Here, $\hat{\beta}_{1}=-0.6725,\beta _{1,0}=0,$ and the `t value` column gives $t=-0.6725/0.5804=-1.16.$
+
+- Thus, $\left\vert T\right\vert =1.16$ and df=17.
+
+- The two-sided $p$-value:
+  ```{r}
+  2 * pt(-abs(-1.16), df = 17)
+  ```
+
+- The $p$-value is large, so we cannot reject $H_{0}$ at conventional significance levels.
+
+## Computing in R
+
+- We compute critical values and $p$-values using R.
+
+- To compute standard normal quantiles use `qnorm(τ)`, where $\tau$ is a number between 0 and 1:
+  ```{r}
+  # z critical value for a two-sided 5% test
+  qnorm(1 - 0.05 / 2)
+  ```
+
+- For $t$ critical values use `qt(τ, df)`, where $df$ is the number of degrees of freedom and $\tau$ is the left-tail probability:
+  ```{r}
+  # t critical value for a two-sided 5% test with 62 df
+  qt(1 - 0.05 / 2, df = 62)
+  ```
+
+## Computing in R
+
+- To compute two-sided normal $p$-values use `2 * pnorm(-abs(T))`:
+  ```{r}
+  # Two-sided normal p-value for T = 1.96
+  2 * pnorm(-abs(1.96))
+  ```
+
+- To compute two-sided $t$-distribution $p$-values, use `2 * pt(-abs(T), df)`:
+  ```{r}
+  # Two-sided t p-value for T = 1.96 with 62 df
+  2 * pt(-abs(1.96), df = 62)
+  ```
+
+## Example
+
+- Data: `rental` from the `wooldridge` R package. 64 US cities in 1990.
+  - `rent`: average monthly rent (\$)
+  - `avginc`: per capita income (\$)
+
+- Model: Rent$_{i}=\beta _{0}+\beta _{1}$AvgInc$_{i}+U_{i}.$
+
+- Regression output:
+  ```{r}
+  library(wooldridge)
+  data("rental")
+  rental90 <- subset(rental, y90 == 1)
+  reg <- lm(rent ~ avginc, data = rental90)
+  summary(reg)$coefficients
+  ```
+
+- R reports the $t$-statistics and the $p$-value for $H_{0}:\beta_1 =0.$
+
+- To test $H_{0}$ whether the coefficient of AvgInc is zero: $T=0.01158/0.0013084=8.85.$
+
+- The $p$-value is extremely close to zero:
+  ```{r}
+  2 * pt(-abs(8.85), df = 62)
+  ```
+  So for all reasonable significance levels $\alpha ,$ we reject $H_{0}$ that the coefficient of AvgInc is zero.
+
+- AvgInc is a **statistically significant** regressor.
+
+## Example (continued)
+
+- Consider now testing $H_{0}$ that the coefficient of AvgInc is 0.009 against the alternative that it is different from 0.009.
+
+- $T=\left( 0.01158-0.009\right) /0.0013084\approx 1.97.$
+  ```{r}
+  T_stat <- (0.01158 - 0.009) / 0.0013084
+  T_stat
+  ```
+
+- At 5% significance level, $t_{62,0.975}\approx 1.999>T$ and we accept $H_{0}.$
+  ```{r}
+  qt(0.975, df = 62)
+  ```
+
+- At 10% significance level, $t_{62,0.95}\approx 1.67<T$ and we reject $H_{0}.$
+  ```{r}
+  qt(0.95, df = 62)
+  ```
+
+- The two-sided $p$-value:
+  ```{r}
+  2 * pt(-abs(T_stat), df = 62)
+  ```
+  The $p$-value is $\approx 0.053.$
+
+- For $\alpha \leq 0.053$ we will accept $H_{0}$ and for $\alpha >0.053$ we will reject $H_{0}.$
+
+## Confidence intervals and hypothesis testing
+
+- There is a one-to-one correspondence between confidence intervals and hypothesis testing.
+
+- We cannot reject $H_{0}:\beta _{1}=\beta _{1,0}$ against a two-sided alternative if $\left\vert T\right\vert \leq t_{n-2,1-\alpha /2}$, i.e., if and only if:
+  \begin{align*}
+  &-t_{n-2,1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}\leq t_{n-2,1-\alpha /2} \\
+  &\Longleftrightarrow \\
+  &\hat{\beta}_{1}-t_{n-2,1-\alpha /2} \times \se{\hat{\beta}_{1}} \\
+  &\qquad \leq \beta _{1,0}\leq \hat{\beta}_{1}+t_{n-2,1-\alpha /2} \times \se{\hat{\beta}_{1}} \\
+  &\Longleftrightarrow \\
+  &\beta _{1,0}\in CI_{1-\alpha }.
+  \end{align*}
+
+- Thus, for any $\beta _{1,0}\in CI_{1-\alpha },$ we **cannot reject** $H_{0}:\beta _{1}=\beta _{1,0}$ against $H_{1}:\beta _{1}\neq \beta _{1,0}$ at significance level $\alpha .$
+
+## Example
+
+- The 95% confidence interval for the coefficient of AvgInc:
+  ```{r}
+  confint(reg, "avginc", level = 0.95)
+  ```
+
+- A significance level 5% test of $H_{0}:\beta _{1}=\beta _{1,0}$ against $H_{1}:\beta _{1}\neq \beta _{1,0}$ will not reject $H_{0}$ if $\beta _{1,0}$ is in the 95% confidence interval.
+
+## One-sided tests
+
+- Consider testing $H_{0}:\beta _{1}\leq \beta _{1,0}$ against $H_{1}:\beta _{1}>\beta _{1,0}.$
+
+- It is reasonable to reject $H_{0}$ when $\hat{\beta}_{1}-\beta _{1,0}$ is large and positive or when
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}>c_{1-\alpha }
+  $$
+  where $c_{1-\alpha}$ is a positive constant.
+
+- The null hypothesis $H_{0}$ is **composite**. The probability of rejection under $H_{0}$ depends on $\beta _{1}.$
+
+- We pick the critical value $c_{1-\alpha}$ so that
+  $$
+  P\left( \frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \leq \alpha
+  $$
+  for all $\beta _{1}\leq \beta _{1,0}.$
+
+## One-sided tests
+
+- For **all** $\beta _{1}\leq \beta _{1,0},$
+  $$
+  \frac{\beta _{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}\leq 0,
+  $$
+  and
+  \begin{align*}
+  &P\left( \frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \\
+  &=P\left( \frac{\hat{\beta}_{1}-\beta _{1}}{\se{\hat{\beta}_{1}}}+\frac{\beta _{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \\
+  &\leq P\left( \frac{\hat{\beta}_{1}-\beta _{1}}{\se{\hat{\beta}_{1}}}>c_{1-\alpha }|\beta _{1}\leq \beta _{1,0}\right) \\
+  &=\alpha \text{ if }c_{1-\alpha }=t_{n-2,1-\alpha }.
+  \end{align*}
+
+## One-sided tests
+
+- For size $\alpha$ test, we reject $H_{0}:\beta _{1}\leq \beta _{1,0}$ against $H_{1}:\beta _{1}>\beta _{1,0}$ when
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}>t_{n-2,1-\alpha },
+  $$
+  where $t_{n-2,1-\alpha}$ is the critical value corresponding to the $t$-distribution with $n-2$ degrees of freedom.
+
+  - Note that we use $1-\alpha$ and not $1-\alpha /2$ for choosing critical values in the case of one-sided testing.
+
+- For size $\alpha$ test, we reject $H_{0}:\beta _{1}\geq \beta _{1,0}$ against $H_{1}:\beta _{1}<\beta _{1,0}$ when
+  $$
+  T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\se{\hat{\beta}_{1}}}<-t_{n-2,1-\alpha }.
+  $$
+
+## One-sided tests
+
+- One-sided $p$-values for $H_{0}:\beta _{1}\leq \beta _{1,0}$ against $H_{1}:\beta _{1}>\beta _{1,0}$:
+
+  1. Compute $T$.
+
+  2. The $p$-value $= P(t_{n-2} \geq T) = 1 - P(t_{n-2} \leq T).$
+
+  3. In R: `1 - pt(T, df = n - 2)`.

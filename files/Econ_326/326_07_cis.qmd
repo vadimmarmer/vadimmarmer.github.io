@@ -1,6 +1,6 @@
 ---
 title: "Lecture 7: Confidence intervals"
-subtitle: "Economics 326 — Econometrics II"
+subtitle: "Economics 326 — Methods of Empirical Research in Economics"
 author:
   - name: "Vadim Marmer, UBC"
 format:
@@ -23,7 +23,7 @@ format:
     classoption: fleqn
     include-in-header:
       text: |
-        \newcommand{\fragment}[2]{#2}
+        \newcommand{\fragment}[1]{#1}
   revealjs:
     output-file: 326_07_cis_slides.html
     theme: solarized
@@ -32,42 +32,51 @@ format:
     slide-number: c/t
     incremental: true
     html-math-method: mathjax
+    mathjax: 3
     scrollable: true
     chalkboard: false
     self-contained: true
     transition: none
+    include-after-body: reveal_mathjax_fragments.html
 ---
 
-## Point estimation
+## Point vs interval estimators
 
 ::: {.hidden}
+$
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+$
 :::
 
 ```{=html}
-<span style="display:none">\(\newcommand{\fragment}[2]{\class{fragment}{#2}}\)</span>
+<span style="display:none">\(\newcommand{\fragment}[1]{\class{mjxfrag}{#1}}\)</span>
 ```
 
-
-- Our model:
+- Recall our model:
 
   1. $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.$
-
   2. $\E{U_{i}\mid \mathbf{X}} =0$ for all $i$'s.
-
   3. $\E{U_{i}^{2}\mid \mathbf{X}} =\sigma ^{2}$ for all $i$'s.
-
   4. $\E{U_{i}U_{j}\mid \mathbf{X}} =0$ for all $i\neq j$.
 
-  5. $U$'s are jointly normally distributed conditional on $\mathbf{X}$.
+- So far we have established that conditionally on $\mathbf{X}$:
+  - $\E{\hat{\beta}_{1} \mid \mathbf{X}} = \beta_{1}$ (unbiasedness),
+  - $\Var{\hat{\beta}_{1} \mid \mathbf{X}} = \dfrac{\sigma^{2}}{\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}}$.
 
-- The OLS estimator $\hat{\beta}_{1}$ is a **point estimator** of $\beta _{1}.$
+- If the $U_i$'s are continuously distributed, then with probability **one**, $\hat{\beta}_{1}\neq \beta _{1}$:
+  $$
+  \hat{\beta}_{1} = \beta_{1} + \frac{\sum_{i=1}^{n}(X_{i}-\bar{X})U_{i}}{\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}}.
+  $$
 
-- With probability **one**, we have that $\hat{\beta}_{1}\neq \beta _{1}.$
+- An **interval estimator** is a random interval $[LB, UB]$ that contains the true parameter value with a pre-specified probability.
 
-- To construct interval estimators, we need to know the distribution of $\hat{\beta}_{1}$.
+- To construct an interval estimator for $\beta_{1}$, we need to know the **distribution** of $\hat{\beta}_{1}$.
+
+- This requires an additional assumption about the distribution of $U_i$'s. Let's first review the normal distribution.
 
 ## Normal distribution
 
@@ -84,7 +93,7 @@ format:
 
 ## Standard normal distribution
 
-- Standard normal rv has $\mu = 0$ and $\sigma^2 = 1$. Its PDF is $\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$.
+- A standard normal rv has $\mu = 0$ and $\sigma^2 = 1$. Its PDF is $\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$.
 
 - Symmetric around zero (mean): if $Z \sim N(0, 1)$, 
   \begin{align*}
@@ -102,26 +111,28 @@ format:
   $$
   f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
   $$
-  where $Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}$,
-
-  $\mu_X = \E{X}, \mu_Y = \E{Y}, \sigma_X^2 = \Var{X}, \sigma_Y^2 = \Var{Y}$, and $\rho = \mathrm{Corr}(X, Y)$.
+  where
+  \begin{align*}
+  Q &= \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} \\
+  &\quad - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y},
+  \end{align*}
+  $\mu_X = \E{X}$, $\mu_Y = \E{Y}$, $\sigma_X^2 = \Var{X}$, $\sigma_Y^2 = \Var{Y}$, and $\rho = \mathrm{Corr}(X, Y)$.
 
 ## Properties of bivariate normal
 
-If $X$ and $Y$ have a bivariate normal distribution:
-
-- $a + bX + cY \sim N(\mu^*, (\sigma^*)^2)$, where
-  $$
-  \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
-  $$
+- If $X$ and $Y$ have a bivariate normal distribution, then $a + bX + cY \sim N(\mu^*, (\sigma^*)^2)$, where
+  \begin{align*}
+  \mu^* &= a + b\mu_X + c\mu_Y, \\
+  (\sigma^*)^2 &= b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
+  \end{align*}
 
 - $\Cov{X, Y} = 0 \Longrightarrow X$ and $Y$ are independent.
 
-- Can be generalized to more than 2 variables (multivariate normal).
+- This can be generalized to more than 2 variables (multivariate normal).
 
 ## Normality of the OLS estimator
 
-- Assume that $U_{i}$'s are jointly normally distributed conditional on $\mathbf{X}$ (Assumption 5).
+- **Assumption 5:** $U$'s are jointly normally distributed conditional on $\mathbf{X}$.
 
 - Then $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$ are also jointly normally distributed conditional on $\mathbf{X}$.
 
@@ -164,7 +175,7 @@ If $X$ and $Y$ have a bivariate normal distribution:
 
 - The problem is choosing $c_{1-\alpha }$ such that $P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .$
 
-- In choosing $c_{1-\alpha }$ we will be relying on the fact that given our assumptions and conditionally on $\mathbf{X}$:
+- In choosing $c_{1-\alpha }$, we will be relying on the fact that, given our assumptions and conditionally on $\mathbf{X}$:
   \begin{align*}
   &\hat{\beta}_{1} \mid \mathbf{X} \sim N\left( \beta _{1},\Var{\hat{\beta}_{1} \mid \mathbf{X}}\right), \\
   &\Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
@@ -199,67 +210,55 @@ If $X$ and $Y$ have a bivariate normal distribution:
   &\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }\Big] .
   \end{align*}
 
-- For example, if $1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96$, and
+- For example, if $1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96$, and $CI_{0.95}$ is
   \begin{align*}
-  CI_{0.95} = \Big[ &\hat{\beta}_{1}-1.96\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }, \\
-  &\hat{\beta}_{1}+1.96\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }\Big] .
+  \hat{\beta}_{1} \pm 1.96\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} } .
   \end{align*}
 
 ## Infeasible CI validity ($\sigma^2$ known)
 
 ::: {.nonincremental}
 
-::: {.fragment}
-- We need to show that
-  $$
-  P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha .
-  $$
-:::
+- **Goal:** show that $P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha$.
 
-::: {.fragment}
-- Next, let $\sigma_{\hat{\beta}_{1}} = \sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}}}$. Then:
-  $$
-  \begin{aligned}
-  &\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-  &\fragment{1}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
-  &\fragment{2}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
-  &\fragment{3}{{}\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}}
-  \end{aligned}
-  $$
-:::
+- **Notation:** $\sigma_{\hat{\beta}_{1}} = \sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}}}$.
 
-::: {.fragment}
-- We have that $\beta _{1}\in CI_{1-\alpha}$
-  $$
-  \Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}.
-  $$
-:::
-
-::: {.fragment}
-- Let $Z=\dfrac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\sim N\left( 0,1\right)$ conditionally on $\mathbf{X}$.
-  $$
-  \begin{aligned}
-  &P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
-  &\fragment{1}{{}=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
-  &\fragment{2}{{}=1-\alpha /2-\alpha /2=1-\alpha .}
-  \end{aligned}
-  $$
-:::
+- **Key fact:** $Z=\dfrac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\sim N(0,1)$ conditionally on $\mathbf{X}$.
 
 :::
+
+$$
+\begin{aligned}
+&P\left(\beta _{1} \in CI_{1-\alpha} \mid \mathbf{X}\right) \\
+&\fragment{{}= P\left(\hat{\beta}_{1} - z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1} \leq \hat{\beta}_{1} + z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \mid \mathbf{X}\right)} \\
+&\fragment{{}= P\left(-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1} - \hat{\beta}_{1} \leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \mid \mathbf{X}\right)} \\
+&\fragment{{}= P\left(-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1} - \beta _{1} \leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \mid \mathbf{X}\right)} \\
+&\fragment{{}= P\left(-z_{1-\alpha /2} \leq \frac{\hat{\beta}_{1} - \beta _{1}}{\sigma_{\hat{\beta}_{1}}} \leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&\fragment{{}= P\left(-z_{1-\alpha /2} \leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&\fragment{{}= P\left(Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) - P\left(Z \leq -z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&\fragment{{}= \left(1-\alpha /2\right) - \alpha /2} \\
+&\fragment{{}= 1-\alpha .}
+\end{aligned}
+$$
 
 ## Feasible CIs ($\sigma^2$ unknown)
 
 - Since $\sigma ^{2}$ is unknown, we must estimate it from the data:
-  $$
-  s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
-  $$
-
-- We can replace $\sigma ^{2}$ by $s^{2}$; however, the result does not have a normal distribution anymore:
   \begin{align*}
-  &\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2}, \\
-  &\text{where } \widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
+  s^{2} &= \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \\
+  &= \frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
   \end{align*}
+
+- The **standard error** of $\hat{\beta}_{1}$ is defined as
+  \begin{align*}
+  \se{\hat{\beta}_{1}} &= \sqrt{\Vhat{\hat{\beta}_{1}}} \\
+  &= \sqrt{\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}}.
+  \end{align*}
+
+- Replacing $\sigma$ by its estimate does not give a normal distribution anymore:
+  $$
+  \frac{\hat{\beta}_{1}-\beta _{1}}{\se{\hat{\beta}_{1}}}\mid \mathbf{X}\sim t_{n-2}.
+  $$
   Here $t_{n-2}$ denotes the $t$-distribution with $n-2$ degrees of freedom.
 
 - The degrees of freedom depend on
@@ -277,12 +276,10 @@ If $X$ and $Y$ have a bivariate normal distribution:
 
 - Similarly to the normal distribution, the $t$-distribution is centered at zero and is symmetric around zero: $t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.$
 
-- We can now construct a feasible confidence interval with $1-\alpha$ coverage as:
-  \begin{align*}
-  CI_{1-\alpha } = \Big[ &\hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }, \\
-  &\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\Big], \\
-  \text{where } &\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-  \end{align*}
+- We can now construct a feasible $CI_{1-\alpha }$ as
+  $$
+  \hat{\beta}_{1}\pm t_{n-2,1-\alpha /2} \times \se{\hat{\beta}_{1}}.
+  $$
 
 ## Example
 
@@ -309,7 +306,7 @@ If $X$ and $Y$ have a bivariate normal distribution:
   ```
 
 
-- 90% CI for the slope coefficient
+- 90% CI for the slope coefficient:
   ```{r}
   confint(reg, "avginc", level = 0.90)
   ```
