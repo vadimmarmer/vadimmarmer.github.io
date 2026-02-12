@@ -12,7 +12,7 @@ format:
     toc-title: "Table of Contents"
     theme: cosmo
     smooth-scroll: true
-    html-math-method: katex
+    html-math-method: mathjax
   pdf:
     output-file: 326_07_cis.pdf
     pdf-engine: xelatex
@@ -21,6 +21,9 @@ format:
     number-sections: false
     toc: false
     classoption: fleqn
+    include-in-header:
+      text: |
+        \newcommand{\fragment}[2]{#2}
   revealjs:
     output-file: 326_07_cis_slides.html
     theme: solarized
@@ -28,7 +31,7 @@ format:
     smaller: true
     slide-number: c/t
     incremental: true
-    html-math-method: katex
+    html-math-method: mathjax
     scrollable: true
     chalkboard: false
     self-contained: true
@@ -42,6 +45,11 @@ format:
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
 :::
+
+```{=html}
+<span style="display:none">\(\newcommand{\fragment}[2]{\class{fragment}{#2}}\)</span>
+```
+
 
 - Our model:
 
@@ -78,7 +86,11 @@ format:
 
 - Standard normal rv has $\mu = 0$ and $\sigma^2 = 1$. Its PDF is $\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$.
 
-- Symmetric around zero (mean): if $Z \sim N(0, 1)$, $P(Z > z) = P(Z < -z)$.
+- Symmetric around zero (mean): if $Z \sim N(0, 1)$, 
+  \begin{align*}
+  P(Z > 0) &= P(Z < 0)=0.5,\\
+  P(Z > z) &= P(Z < -z) \text{ for any } z.
+  \end{align*}
 
 - Thin tails: $P(-1.96 \leq Z \leq 1.96) = 0.95$.
 
@@ -195,33 +207,46 @@ If $X$ and $Y$ have a bivariate normal distribution:
 
 ## Infeasible CI validity ($\sigma^2$ known)
 
+::: {.nonincremental}
+
+::: {.fragment}
 - We need to show that
   $$
   P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha .
   $$
+:::
 
+::: {.fragment}
 - Next, let $\sigma_{\hat{\beta}_{1}} = \sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}}}$. Then:
-  \begin{align*}
+  $$
+  \begin{aligned}
   &\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}
-  \end{align*}
+  &\fragment{1}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
+  &\fragment{2}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
+  &\fragment{3}{{}\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}}
+  \end{aligned}
+  $$
+:::
 
-## Infeasible CI validity ($\sigma^2$ known)
+::: {.fragment}
+- We have that $\beta _{1}\in CI_{1-\alpha}$
+  $$
+  \Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}.
+  $$
+:::
 
-- We have that
-  \begin{align*}
-  &\beta _{1}\in CI_{1-\alpha} \\
-  &\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}\leq z_{1-\alpha /2}.
-  \end{align*}
-
-- Let $Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\Var{\hat{\beta}_{1} \mid \mathbf{X}} }}\sim N\left( 0,1\right)$ conditionally on $\mathbf{X}$.
-  \begin{align*}
+::: {.fragment}
+- Let $Z=\dfrac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\sim N\left( 0,1\right)$ conditionally on $\mathbf{X}$.
+  $$
+  \begin{aligned}
   &P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
-  &=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
-  &=1-\alpha /2-\alpha /2=1-\alpha .
-  \end{align*}
+  &\fragment{1}{{}=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+  &\fragment{2}{{}=1-\alpha /2-\alpha /2=1-\alpha .}
+  \end{aligned}
+  $$
+:::
+
+:::
 
 ## Feasible CIs ($\sigma^2$ unknown)
 
@@ -259,84 +284,36 @@ If $X$ and $Y$ have a bivariate normal distribution:
   \text{where } &\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
   \end{align*}
 
-## Example: Data
+## Example
 
 - Data: `rental` from the `wooldridge` R package. 64 US cities in 1990.
   - `rent`: average monthly rent (\$)
   - `avginc`: per capita income (\$)
 
 - Model: Rent$_{i}=\beta _{0}+\beta _{1}$AvgInc$_{i}+U_{i}.$
+- R implementation:
+  ```{r}
+  # Load data and run OLS regression
+  library(wooldridge)
+  data("rental")
+  rental90 <- subset(rental, y90 == 1)
+  reg <- lm(rent ~ avginc, data = rental90)
+  summary(reg)
+  ```
 
-```{r}
-library(wooldridge)
-data("rental")
-rental90 <- subset(rental, y90 == 1)
-head(rental90[, c("city", "rent", "avginc")])
-```
 
-## Example: OLS regression
 
-```{r}
-reg <- lm(rent ~ avginc, data = rental90)
-summary(reg)
-```
+- 95% CI for the slope coefficient:
+  ```{r}
+  confint(reg, "avginc", level = 0.95)
+  ```
 
-## Example: Extracting key values
 
-```{r}
-# Estimated slope and its standard error
-beta1_hat <- coef(reg)["avginc"]
-se_beta1  <- summary(reg)$coefficients["avginc", "Std. Error"]
-cat("beta_1_hat =", round(beta1_hat, 4), "\n")
-cat("SE(beta_1_hat) =", round(se_beta1, 4), "\n")
-```
+- 90% CI for the slope coefficient
+  ```{r}
+  confint(reg, "avginc", level = 0.90)
+  ```
 
-```{r}
-# Degrees of freedom: n - 2
-n  <- nrow(rental90)
-df <- n - 2
-cat("n =", n, ",  df =", df, "\n")
-```
-
-## Example: 95% confidence interval
-
-```{r}
-# Critical value
-t_95 <- qt(0.975, df)
-cat("t_{62, 0.975} =", round(t_95, 3), "\n")
-```
-
-```{r}
-# 95% CI: beta_1_hat +/- t * SE
-CI_95 <- c(beta1_hat - t_95 * se_beta1,
-           beta1_hat + t_95 * se_beta1)
-round(CI_95, 4)
-```
-
-```{r}
-# Check with confint()
-confint(reg, "avginc", level = 0.95)
-```
-
-## Example: 90% confidence interval
-
-```{r}
-# Critical value
-t_90 <- qt(0.95, df)
-cat("t_{62, 0.95} =", round(t_90, 3), "\n")
-```
-
-```{r}
-# 90% CI: beta_1_hat +/- t * SE
-CI_90 <- c(beta1_hat - t_90 * se_beta1,
-           beta1_hat + t_90 * se_beta1)
-round(CI_90, 4)
-```
-
-```{r}
-# Check with confint()
-confint(reg, "avginc", level = 0.90)
-```
 
 ## The effect of estimating $\sigma^2$
 
@@ -345,6 +322,18 @@ confint(reg, "avginc", level = 0.90)
 - $t_{df,1-\alpha /2}>z_{1-\alpha /2}$, but as $df$ increases $t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.$
 
 - When the sample size $n$ is large, $t_{n-2,1-\alpha /2}$ can be replaced with $z_{1-\alpha /2}.$
+
+- In R, use `qt()` for $t$-quantiles and `qnorm()` for $z$-quantiles:
+  ```{r}
+  # z critical value for 95% CI
+  qnorm(0.975)
+
+  # t critical values for 95% CI with different df
+  qt(0.975, df = 30)
+  qt(0.975, df = 100)
+  qt(0.975, df = 1000)
+  qt(0.975, df = 10000)
+  ```
 
 ## Interpretation of confidence intervals
 

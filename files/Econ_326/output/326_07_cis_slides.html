@@ -562,59 +562,6 @@ code span.wa { color: #5e5e5e; font-style: italic; }
 text-transform: none !important;
 }
 </style>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var head = document.getElementsByTagName("head")[0];
-      var link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css";
-      head.appendChild(link);
-      
-      function renderMathElements() {
-        var mathElements = document.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            if (window.katex) {
-              window.katex.render(texText.data, mathElements[i], {
-                displayMode: mathElements[i].classList.contains('display'),
-                throwOnError: false,
-                macros: macros,
-                fleqn: false
-              });
-            } else {
-              console.error("KaTeX has not been loaded correctly, as not found globally.");
-            }
-          }
-        }
-      }
-
-      var script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js";
-      script.onload = renderMathElements;
-      
-      // Check for RequireJS and AMD detection as it conflicts with KaTeX loading.
-      if (typeof require === 'function' && typeof define === 'function' && define.amd) {
-        // Disable require.js AMD detection temporarily, as it conflicts with KaTeX loading using CommonJS
-        var disableAmdScript = document.createElement("script");
-        disableAmdScript.textContent = 'window._amd_backup = window.define.amd; window.define.amd = false;';
-        head.appendChild(disableAmdScript);
-        
-        // overwrite onload to restore Require.js AMD detection
-        script.onload = function() {
-          // Restore Require.js AMD detection
-          window.define.amd = window._amd_backup;
-          delete window._amd_backup;
-          renderMathElements();
-        };
-      }
-
-      head.appendChild(script);
-    });
-  </script>
-  
   <style type="text/css">.reveal
 div.sourceCode
 pre
@@ -1132,221 +1079,223 @@ Vadim Marmer, UBC
 <div class="hidden">
 
 </div>
+<span style="display:none">\(\newcommand{\fragment}[2]{\class{fragment}{#2}}\)</span>
 <ul>
 <li class="fragment"><p>Our model:</p>
 <ol type="1">
-<li class="fragment"><p><span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.</span></p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i}\mid \mathbf{X}\right] =0</span> for all <span class="math inline">i</span>’s.</p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i}^{2}\mid \mathbf{X}\right] =\sigma ^{2}</span> for all <span class="math inline">i</span>’s.</p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i}U_{j}\mid \mathbf{X}\right] =0</span> for all <span class="math inline">i\neq j</span>.</p></li>
-<li class="fragment"><p><span class="math inline">U</span>’s are jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\(Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},\qquad i=1,\ldots ,n.\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\mathrm{E}\left[U_{i}\mid \mathbf{X}\right] =0\)</span> for all <span class="math inline">\(i\)</span>’s.</p></li>
+<li class="fragment"><p><span class="math inline">\(\mathrm{E}\left[U_{i}^{2}\mid \mathbf{X}\right] =\sigma ^{2}\)</span> for all <span class="math inline">\(i\)</span>’s.</p></li>
+<li class="fragment"><p><span class="math inline">\(\mathrm{E}\left[U_{i}U_{j}\mid \mathbf{X}\right] =0\)</span> for all <span class="math inline">\(i\neq j\)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\(U\)</span>’s are jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
 </ol></li>
-<li class="fragment"><p>The OLS estimator <span class="math inline">\hat{\beta}_{1}</span> is a <strong>point estimator</strong> of <span class="math inline">\beta _{1}.</span></p></li>
-<li class="fragment"><p>With probability <strong>one</strong>, we have that <span class="math inline">\hat{\beta}_{1}\neq \beta _{1}.</span></p></li>
-<li class="fragment"><p>To construct interval estimators, we need to know the distribution of <span class="math inline">\hat{\beta}_{1}</span>.</p></li>
+<li class="fragment"><p>The OLS estimator <span class="math inline">\(\hat{\beta}_{1}\)</span> is a <strong>point estimator</strong> of <span class="math inline">\(\beta _{1}.\)</span></p></li>
+<li class="fragment"><p>With probability <strong>one</strong>, we have that <span class="math inline">\(\hat{\beta}_{1}\neq \beta _{1}.\)</span></p></li>
+<li class="fragment"><p>To construct interval estimators, we need to know the distribution of <span class="math inline">\(\hat{\beta}_{1}\)</span>.</p></li>
 </ul>
 </section>
 <section id="normal-distribution" class="slide level2">
 <h2>Normal distribution</h2>
 <ul>
-<li class="fragment"><p>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv <span class="math inline">X</span> is <span class="math display">
+<li class="fragment"><p>A normal rv is a continuous rv that can take on any value. The PDF of a normal rv <span class="math inline">\(X\)</span> is <span class="math display">\[
 f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \text{ where}
-</span> <span class="math display">
+\]</span> <span class="math display">\[
 \mu = \mathrm{E}\left[X\right] \text{ and } \sigma^2 = \mathrm{Var}\left(X\right).
-</span> We usually write <span class="math inline">X \sim N(\mu, \sigma^2)</span>.</p></li>
-<li class="fragment"><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">a + bX \sim N(a + b\mu, b^2\sigma^2)</span>.</p></li>
+\]</span> We usually write <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, then <span class="math inline">\(a + bX \sim N(a + b\mu, b^2\sigma^2)\)</span>.</p></li>
 </ul>
 </section>
 <section id="standard-normal-distribution" class="slide level2">
 <h2>Standard normal distribution</h2>
 <ul>
-<li class="fragment"><p>Standard normal rv has <span class="math inline">\mu = 0</span> and <span class="math inline">\sigma^2 = 1</span>. Its PDF is <span class="math inline">\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)</span>.</p></li>
-<li class="fragment"><p>Symmetric around zero (mean): if <span class="math inline">Z \sim N(0, 1)</span>, <span class="math inline">P(Z &gt; z) = P(Z &lt; -z)</span>.</p></li>
-<li class="fragment"><p>Thin tails: <span class="math inline">P(-1.96 \leq Z \leq 1.96) = 0.95</span>.</p></li>
-<li class="fragment"><p>If <span class="math inline">X \sim N(\mu, \sigma^2)</span>, then <span class="math inline">(X - \mu)/\sigma \sim N(0, 1)</span>.</p></li>
+<li class="fragment"><p>Standard normal rv has <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma^2 = 1\)</span>. Its PDF is <span class="math inline">\(\phi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)\)</span>.</p></li>
+<li class="fragment"><p>Symmetric around zero (mean): if <span class="math inline">\(Z \sim N(0, 1)\)</span>, <span class="math display">\[\begin{align*}
+P(Z &gt; 0) &amp;= P(Z &lt; 0)=0.5,\\
+P(Z &gt; z) &amp;= P(Z &lt; -z) \text{ for any } z.
+\end{align*}\]</span></p></li>
+<li class="fragment"><p>Thin tails: <span class="math inline">\(P(-1.96 \leq Z \leq 1.96) = 0.95\)</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, then <span class="math inline">\((X - \mu)/\sigma \sim N(0, 1)\)</span>.</p></li>
 </ul>
 </section>
 <section id="bivariate-normal-distribution" class="slide level2">
 <h2>Bivariate normal distribution</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">
+<li class="fragment"><p><span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">\[
 f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
-</span> where <span class="math inline">Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}</span>,</p>
-<p><span class="math inline">\mu_X = \mathrm{E}\left[X\right], \mu_Y = \mathrm{E}\left[Y\right], \sigma_X^2 = \mathrm{Var}\left(X\right), \sigma_Y^2 = \mathrm{Var}\left(Y\right)</span>, and <span class="math inline">\rho = \mathrm{Corr}(X, Y)</span>.</p></li>
+\]</span> where <span class="math inline">\(Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}\)</span>,</p>
+<p><span class="math inline">\(\mu_X = \mathrm{E}\left[X\right], \mu_Y = \mathrm{E}\left[Y\right], \sigma_X^2 = \mathrm{Var}\left(X\right), \sigma_Y^2 = \mathrm{Var}\left(Y\right)\)</span>, and <span class="math inline">\(\rho = \mathrm{Corr}(X, Y)\)</span>.</p></li>
 </ul>
 </section>
 <section id="properties-of-bivariate-normal" class="slide level2">
 <h2>Properties of bivariate normal</h2>
-<p>If <span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution:</p>
+<p>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have a bivariate normal distribution:</p>
 <ul>
-<li class="fragment"><p><span class="math inline">a + bX + cY \sim N(\mu^*, (\sigma^*)^2)</span>, where <span class="math display">
+<li class="fragment"><p><span class="math inline">\(a + bX + cY \sim N(\mu^*, (\sigma^*)^2)\)</span>, where <span class="math display">\[
 \mu^* = a + b\mu_X + c\mu_Y, \quad (\sigma^*)^2 = b^2\sigma_X^2 + c^2\sigma_Y^2 + 2bc\rho\sigma_X\sigma_Y.
-</span></p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{Cov}\left(X, Y\right) = 0 \Longrightarrow X</span> and <span class="math inline">Y</span> are independent.</p></li>
+\]</span></p></li>
+<li class="fragment"><p><span class="math inline">\(\mathrm{Cov}\left(X, Y\right) = 0 \Longrightarrow X\)</span> and <span class="math inline">\(Y\)</span> are independent.</p></li>
 <li class="fragment"><p>Can be generalized to more than 2 variables (multivariate normal).</p></li>
 </ul>
 </section>
 <section id="normality-of-the-ols-estimator" class="slide level2">
 <h2>Normality of the OLS estimator</h2>
 <ul>
-<li class="fragment"><p>Assume that <span class="math inline">U_{i}</span>’s are jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span> (Assumption 5).</p></li>
-<li class="fragment"><p>Then <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span> are also jointly normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
-<li class="fragment"><p>Since <span class="math inline">\hat{\beta}_{1}=\sum_{i=1}^{n}w_{i}Y_{i}</span>, where <span class="math inline">w_{i}=\frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}</span> depend only on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\hat{\beta}_{1}</span> is also normally distributed conditional on <span class="math inline">\mathbf{X}</span>.</p></li>
-<li class="fragment"><p>Conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
+<li class="fragment"><p>Assume that <span class="math inline">\(U_{i}\)</span>’s are jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span> (Assumption 5).</p></li>
+<li class="fragment"><p>Then <span class="math inline">\(Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}\)</span> are also jointly normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
+<li class="fragment"><p>Since <span class="math inline">\(\hat{\beta}_{1}=\sum_{i=1}^{n}w_{i}Y_{i}\)</span>, where <span class="math inline">\(w_{i}=\frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}\)</span> depend only on <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\hat{\beta}_{1}\)</span> is also normally distributed conditional on <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
+<li class="fragment"><p>Conditionally on <span class="math inline">\(\mathbf{X}\)</span>: <span class="math display">\[\begin{align*}
 &amp;\hat{\beta}_{1} \mid \mathbf{X} \sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) \right), \\
 &amp;\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}</span></p></li>
+\end{align*}\]</span></p></li>
 </ul>
 </section>
 <section id="interval-estimation-problem" class="slide level2">
 <h2>Interval estimation problem</h2>
 <ul>
-<li class="fragment"><p>We want to construct an <strong>interval estimator</strong> for <span class="math inline">\beta _{1}</span>:</p>
+<li class="fragment"><p>We want to construct an <strong>interval estimator</strong> for <span class="math inline">\(\beta _{1}\)</span>:</p>
 <ul>
 <li class="fragment"><p>The interval estimator is called a <strong>confidence interval</strong> (CI).</p></li>
-<li class="fragment"><p>A CI contains the <strong>true</strong> value <span class="math inline">\beta _{1}</span> <strong>with some pre-specified probability</strong> <span class="math inline">1-\alpha</span>, where <span class="math inline">\alpha</span> is a small probability of error.</p></li>
-<li class="fragment"><p>For example, if <span class="math inline">\alpha =0.05</span>, then the random CI will contain <span class="math inline">\beta _{1}</span> with probability 0.95.</p></li>
+<li class="fragment"><p>A CI contains the <strong>true</strong> value <span class="math inline">\(\beta _{1}\)</span> <strong>with some pre-specified probability</strong> <span class="math inline">\(1-\alpha\)</span>, where <span class="math inline">\(\alpha\)</span> is a small probability of error.</p></li>
+<li class="fragment"><p>For example, if <span class="math inline">\(\alpha =0.05\)</span>, then the random CI will contain <span class="math inline">\(\beta _{1}\)</span> with probability 0.95.</p></li>
 </ul></li>
-<li class="fragment"><p><span class="math inline">1-\alpha</span> is called the <strong>coverage probability</strong>.</p></li>
-<li class="fragment"><p>Confidence interval: <span class="math inline">CI_{1-\alpha }=[LB_{1-\alpha },UB_{1-\alpha }].</span> The lower bound (LB) and upper bound (UB) should depend on the coverage probability <span class="math inline">1-\alpha.</span></p></li>
-<li class="fragment"><p>The formal definition of CI: It is a <strong>random interval</strong> <span class="math inline">CI_{1-\alpha}</span> such that conditionally on <span class="math inline">\mathbf{X}</span>, <span class="math display">
+<li class="fragment"><p><span class="math inline">\(1-\alpha\)</span> is called the <strong>coverage probability</strong>.</p></li>
+<li class="fragment"><p>Confidence interval: <span class="math inline">\(CI_{1-\alpha }=[LB_{1-\alpha },UB_{1-\alpha }].\)</span> The lower bound (LB) and upper bound (UB) should depend on the coverage probability <span class="math inline">\(1-\alpha.\)</span></p></li>
+<li class="fragment"><p>The formal definition of CI: It is a <strong>random interval</strong> <span class="math inline">\(CI_{1-\alpha}\)</span> such that conditionally on <span class="math inline">\(\mathbf{X}\)</span>, <span class="math display">\[
 P\left( \beta _{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .
-</span> Note that the random element is <span class="math inline">CI_{1-\alpha}</span>.</p></li>
-<li class="fragment"><p>Sometimes, a CI is defined as <span class="math inline">P\left( \beta _{1}\in CI_{1-\alpha}\right) \geq 1-\alpha .</span></p></li>
+\]</span> Note that the random element is <span class="math inline">\(CI_{1-\alpha}\)</span>.</p></li>
+<li class="fragment"><p>Sometimes, a CI is defined as <span class="math inline">\(P\left( \beta _{1}\in CI_{1-\alpha}\right) \geq 1-\alpha .\)</span></p></li>
 </ul>
 </section>
 <section id="symmetric-cis" class="slide level2">
 <h2>Symmetric CIs</h2>
 <ul>
-<li class="fragment"><p>One approach to constructing CIs is to consider a <strong>symmetric</strong> interval around the estimator <span class="math inline">\hat{\beta}_{1}</span>: <span class="math display">
+<li class="fragment"><p>One approach to constructing CIs is to consider a <strong>symmetric</strong> interval around the estimator <span class="math inline">\(\hat{\beta}_{1}\)</span>: <span class="math display">\[
 CI_{1-\alpha }=\left[ \hat{\beta}_{1}-c_{1-\alpha },\hat{\beta}_{1}+c_{1-\alpha }\right]
-</span></p></li>
-<li class="fragment"><p>The problem is choosing <span class="math inline">c_{1-\alpha }</span> such that <span class="math inline">P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .</span></p></li>
-<li class="fragment"><p>In choosing <span class="math inline">c_{1-\alpha }</span> we will be relying on the fact that given our assumptions and conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">\begin{align*}
+\]</span></p></li>
+<li class="fragment"><p>The problem is choosing <span class="math inline">\(c_{1-\alpha }\)</span> such that <span class="math inline">\(P\left( \beta_{1}\in CI_{1-\alpha } \mid \mathbf{X}\right) =1-\alpha .\)</span></p></li>
+<li class="fragment"><p>In choosing <span class="math inline">\(c_{1-\alpha }\)</span> we will be relying on the fact that given our assumptions and conditionally on <span class="math inline">\(\mathbf{X}\)</span>: <span class="math display">\[\begin{align*}
 &amp;\hat{\beta}_{1} \mid \mathbf{X} \sim N\left( \beta _{1},\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)\right), \\
 &amp;\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}</span></p></li>
-<li class="fragment"><p>Note that conditionally on <span class="math inline">\mathbf{X}</span>: <span class="math display">
+\end{align*}\]</span></p></li>
+<li class="fragment"><p>Note that conditionally on <span class="math inline">\(\mathbf{X}\)</span>: <span class="math display">\[
 \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }}\sim N\left( 0,1\right) .
-</span></p></li>
+\]</span></p></li>
 </ul>
 </section>
 <section id="standard-normal-quantiles" class="slide level2">
 <h2>Standard normal quantiles</h2>
 <ul>
-<li class="fragment"><p>Let <span class="math inline">Z\sim N\left( 0,1\right) .</span> The <span class="math inline">\tau</span>-th <strong>quantile</strong> (percentile) of the standard normal distribution is <span class="math inline">z_{\tau }</span> such that <span class="math display">
+<li class="fragment"><p>Let <span class="math inline">\(Z\sim N\left( 0,1\right) .\)</span> The <span class="math inline">\(\tau\)</span>-th <strong>quantile</strong> (percentile) of the standard normal distribution is <span class="math inline">\(z_{\tau }\)</span> such that <span class="math display">\[
 P\left( Z\leq z_{\tau }\right) =\tau .
-</span></p></li>
-<li class="fragment"><p><strong>Median</strong>: <span class="math inline">\tau =0.5</span> and <span class="math inline">z_{0.5}=0.</span> (<span class="math inline">P\left( Z\leq 0\right) =0.5</span>).</p></li>
-<li class="fragment"><p>If <span class="math inline">\tau =0.975</span> then <span class="math inline">z_{0.975}=1.96</span>. Due to symmetry, if <span class="math inline">\tau =0.025</span> then <span class="math inline">z_{0.025}=-1.96.</span></p></li>
+\]</span></p></li>
+<li class="fragment"><p><strong>Median</strong>: <span class="math inline">\(\tau =0.5\)</span> and <span class="math inline">\(z_{0.5}=0.\)</span> (<span class="math inline">\(P\left( Z\leq 0\right) =0.5\)</span>).</p></li>
+<li class="fragment"><p>If <span class="math inline">\(\tau =0.975\)</span> then <span class="math inline">\(z_{0.975}=1.96\)</span>. Due to symmetry, if <span class="math inline">\(\tau =0.025\)</span> then <span class="math inline">\(z_{0.025}=-1.96.\)</span></p></li>
 </ul>
 </section>
 <section id="sigma2-is-known-infeasible-cis" class="slide level2">
-<h2><span class="math inline">\sigma^2</span> is known (infeasible CIs)</h2>
+<h2><span class="math inline">\(\sigma^2\)</span> is known (infeasible CIs)</h2>
 <ul>
-<li class="fragment"><p><strong>Suppose</strong> (for a moment) that <span class="math inline">\sigma ^{2}</span> is known, and we can compute exactly the variance of <span class="math inline">\hat{\beta}_{1}</span>: <span class="math display">
+<li class="fragment"><p><strong>Suppose</strong> (for a moment) that <span class="math inline">\(\sigma ^{2}\)</span> is known, and we can compute exactly the variance of <span class="math inline">\(\hat{\beta}_{1}\)</span>: <span class="math display">\[
 \mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-</span></p></li>
-<li class="fragment"><p>Consider the following CI: <span class="math display">\begin{align*}
+\]</span></p></li>
+<li class="fragment"><p>Consider the following CI: <span class="math display">\[\begin{align*}
 CI_{1-\alpha } = \Big[ &amp;\hat{\beta}_{1}-z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }, \\
 &amp;\hat{\beta}_{1}+z_{1-\alpha /2}\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }\Big] .
-\end{align*}</span></p></li>
-<li class="fragment"><p>For example, if <span class="math inline">1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96</span>, and <span class="math display">\begin{align*}
+\end{align*}\]</span></p></li>
+<li class="fragment"><p>For example, if <span class="math inline">\(1-\alpha =0.95 \Longleftrightarrow \alpha =0.05 \Longleftrightarrow z_{1-\alpha/2}=z_{0.975}=1.96\)</span>, and <span class="math display">\[\begin{align*}
 CI_{0.95} = \Big[ &amp;\hat{\beta}_{1}-1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }, \\
 &amp;\hat{\beta}_{1}+1.96\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }\Big] .
-\end{align*}</span></p></li>
+\end{align*}\]</span></p></li>
 </ul>
 </section>
 <section id="infeasible-ci-validity-sigma2-known" class="slide level2">
-<h2>Infeasible CI validity (<span class="math inline">\sigma^2</span> known)</h2>
+<h2>Infeasible CI validity (<span class="math inline">\(\sigma^2\)</span> known)</h2>
+<div class="fragment">
 <ul>
-<li class="fragment"><p>We need to show that <span class="math display">
+<li>We need to show that <span class="math display">\[
 P\left( \beta _{1}\in CI_{1-\alpha} \mid \mathbf{X}\right) =1-\alpha .
-</span></p></li>
-<li class="fragment"><p>Next, let <span class="math inline">\sigma_{\hat{\beta}_{1}} = \sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)}</span>. Then: <span class="math display">\begin{align*}
-&amp;\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}
-\end{align*}</span></p></li>
+\]</span></li>
 </ul>
-</section>
-<section id="infeasible-ci-validity-sigma2-known-1" class="slide level2">
-<h2>Infeasible CI validity (<span class="math inline">\sigma^2</span> known)</h2>
+</div>
+<div class="fragment">
 <ul>
-<li class="fragment"><p>We have that <span class="math display">\begin{align*}
-&amp;\beta _{1}\in CI_{1-\alpha} \\
-&amp;\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }}\leq z_{1-\alpha /2}.
-\end{align*}</span></p></li>
-<li class="fragment"><p>Let <span class="math inline">Z=\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) }}\sim N\left( 0,1\right)</span> conditionally on <span class="math inline">\mathbf{X}</span>. <span class="math display">\begin{align*}
-&amp;P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
-&amp;=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
-&amp;=1-\alpha /2-\alpha /2=1-\alpha .
-\end{align*}</span></p></li>
+<li>Next, let <span class="math inline">\(\sigma_{\hat{\beta}_{1}} = \sqrt{\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)}\)</span>. Then: <span class="math display">\[
+\begin{aligned}
+&amp;\hat{\beta}_{1}-z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}\leq \hat{\beta}_{1}+z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \\
+&amp;\fragment{1}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \beta _{1}-\hat{\beta}_{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
+&amp;\fragment{2}{{}\Longleftrightarrow -z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}} \leq \hat{\beta}_{1}-\beta _{1}\leq z_{1-\alpha /2}\,\sigma_{\hat{\beta}_{1}}} \\
+&amp;\fragment{3}{{}\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}}
+\end{aligned}
+\]</span></li>
 </ul>
+</div>
+<div class="fragment">
+<ul>
+<li>We have that <span class="math inline">\(\beta _{1}\in CI_{1-\alpha}\)</span> <span class="math display">\[
+\Longleftrightarrow -z_{1-\alpha /2}\leq \frac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\leq z_{1-\alpha /2}.
+\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Let <span class="math inline">\(Z=\dfrac{\hat{\beta}_{1}-\beta _{1}}{\sigma_{\hat{\beta}_{1}}}\sim N\left( 0,1\right)\)</span> conditionally on <span class="math inline">\(\mathbf{X}\)</span>. <span class="math display">\[
+\begin{aligned}
+&amp;P\left( -z_{1-\alpha /2}\leq Z \leq z_{1-\alpha /2} \mid \mathbf{X}\right) \\
+&amp;\fragment{1}{{}=P\left( z_{\alpha /2}\leq Z\leq z_{1-\alpha /2} \mid \mathbf{X}\right)} \\
+&amp;\fragment{2}{{}=1-\alpha /2-\alpha /2=1-\alpha .}
+\end{aligned}
+\]</span></li>
+</ul>
+</div>
 </section>
 <section id="feasible-cis-sigma2-unknown" class="slide level2">
-<h2>Feasible CIs (<span class="math inline">\sigma^2</span> unknown)</h2>
+<h2>Feasible CIs (<span class="math inline">\(\sigma^2\)</span> unknown)</h2>
 <ul>
-<li class="fragment"><p>Since <span class="math inline">\sigma ^{2}</span> is unknown, we must estimate it from the data: <span class="math display">
+<li class="fragment"><p>Since <span class="math inline">\(\sigma ^{2}\)</span> is unknown, we must estimate it from the data: <span class="math display">\[
 s^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{i}\right) ^{2}.
-</span></p></li>
-<li class="fragment"><p>We can replace <span class="math inline">\sigma ^{2}</span> by <span class="math inline">s^{2}</span>; however, the result does not have a normal distribution anymore: <span class="math display">\begin{align*}
+\]</span></p></li>
+<li class="fragment"><p>We can replace <span class="math inline">\(\sigma ^{2}\)</span> by <span class="math inline">\(s^{2}\)</span>; however, the result does not have a normal distribution anymore: <span class="math display">\[\begin{align*}
 &amp;\frac{\hat{\beta}_{1}-\beta _{1}}{\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }}\sim t_{n-2}, \\
 &amp;\text{where } \widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}</span> Here <span class="math inline">t_{n-2}</span> denotes the <span class="math inline">t</span>-distribution with <span class="math inline">n-2</span> degrees of freedom.</p></li>
+\end{align*}\]</span> Here <span class="math inline">\(t_{n-2}\)</span> denotes the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p></li>
 <li class="fragment"><p>The degrees of freedom depend on</p>
 <ul>
-<li class="fragment"><p>the sample size (<span class="math inline">n</span>),</p></li>
-<li class="fragment"><p>and the number of parameters one has to estimate to compute <span class="math inline">s^{2}</span> (two in this case, <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>).</p></li>
+<li class="fragment"><p>the sample size (<span class="math inline">\(n\)</span>),</p></li>
+<li class="fragment"><p>and the number of parameters one has to estimate to compute <span class="math inline">\(s^{2}\)</span> (two in this case, <span class="math inline">\(\beta _{0}\)</span> and <span class="math inline">\(\beta _{1}\)</span>).</p></li>
 </ul></li>
 </ul>
 </section>
 <section id="feasible-cis-sigma2-unknown-1" class="slide level2">
-<h2>Feasible CIs (<span class="math inline">\sigma^2</span> unknown)</h2>
+<h2>Feasible CIs (<span class="math inline">\(\sigma^2\)</span> unknown)</h2>
 <ul>
-<li class="fragment"><p>Let <span class="math inline">t_{df,\tau }</span> be the <span class="math inline">\tau</span>-th quantile of the <span class="math inline">t</span>-distribution with the number of degrees of freedom <span class="math inline">df</span>: If <span class="math inline">T\sim t_{df}</span> then <span class="math display">
+<li class="fragment"><p>Let <span class="math inline">\(t_{df,\tau }\)</span> be the <span class="math inline">\(\tau\)</span>-th quantile of the <span class="math inline">\(t\)</span>-distribution with the number of degrees of freedom <span class="math inline">\(df\)</span>: If <span class="math inline">\(T\sim t_{df}\)</span> then <span class="math display">\[
 P\left( T\leq t_{df,\tau }\right) =\tau .
-</span></p></li>
-<li class="fragment"><p>Similarly to the normal distribution, the <span class="math inline">t</span>-distribution is centered at zero and is symmetric around zero: <span class="math inline">t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.</span></p></li>
-<li class="fragment"><p>We can now construct a feasible confidence interval with <span class="math inline">1-\alpha</span> coverage as: <span class="math display">\begin{align*}
+\]</span></p></li>
+<li class="fragment"><p>Similarly to the normal distribution, the <span class="math inline">\(t\)</span>-distribution is centered at zero and is symmetric around zero: <span class="math inline">\(t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.\)</span></p></li>
+<li class="fragment"><p>We can now construct a feasible confidence interval with <span class="math inline">\(1-\alpha\)</span> coverage as: <span class="math display">\[\begin{align*}
 CI_{1-\alpha } = \Big[ &amp;\hat{\beta}_{1}-t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }, \\
 &amp;\hat{\beta}_{1}+t_{n-2,1-\alpha /2}\sqrt{\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) }\Big], \\
 \text{where } &amp;\widehat{\mathrm{Var}}\left( \hat{\beta}_{1}\right) =\frac{s^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
-\end{align*}</span></p></li>
+\end{align*}\]</span></p></li>
 </ul>
 </section>
-<section id="example-data" class="slide level2">
-<h2>Example: Data</h2>
+<section id="example" class="slide level2">
+<h2>Example</h2>
 <ul>
-<li class="fragment">Data: <code>rental</code> from the <code>wooldridge</code> R package. 64 US cities in 1990.
+<li class="fragment"><p>Data: <code>rental</code> from the <code>wooldridge</code> R package. 64 US cities in 1990.</p>
 <ul>
 <li class="fragment"><code>rent</code>: average monthly rent ($)</li>
 <li class="fragment"><code>avginc</code>: per capita income ($)</li>
 </ul></li>
-<li class="fragment">Model: Rent<span class="math inline">_{i}=\beta _{0}+\beta _{1}</span>AvgInc<span class="math inline">_{i}+U_{i}.</span></li>
-</ul>
+<li class="fragment"><p>Model: Rent<span class="math inline">\(_{i}=\beta _{0}+\beta _{1}\)</span>AvgInc<span class="math inline">\(_{i}+U_{i}.\)</span></p></li>
+<li class="fragment"><p>R implementation:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb1-2"><a href></a><span class="fu">data</span>(<span class="st">&quot;rental&quot;</span>)</span>
-<span id="cb1-3"><a href></a>rental90 <span class="ot">&lt;-</span> <span class="fu">subset</span>(rental, y90 <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb1-4"><a href></a><span class="fu">head</span>(rental90[, <span class="fu">c</span>(<span class="st">&quot;city&quot;</span>, <span class="st">&quot;rent&quot;</span>, <span class="st">&quot;avginc&quot;</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   city rent avginc
-2     1  342  19568
-4     2  496  31885
-6     3  351  21202
-8     4  588  29044
-10    5  925  56307
-12    6  630  35103</code></pre>
-</div>
-</div>
-</section>
-<section id="example-ols-regression" class="slide level2">
-<h2>Example: OLS regression</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(rent <span class="sc">~</span> avginc, <span class="at">data =</span> rental90)</span>
-<span id="cb3-2"><a href></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a><span class="co"># Load data and run OLS regression</span></span>
+<span id="cb1-2"><a href></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb1-3"><a href></a><span class="fu">data</span>(<span class="st">&quot;rental&quot;</span>)</span>
+<span id="cb1-4"><a href></a>rental90 <span class="ot">&lt;-</span> <span class="fu">subset</span>(rental, y90 <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb1-5"><a href></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(rent <span class="sc">~</span> avginc, <span class="at">data =</span> rental90)</span>
+<span id="cb1-6"><a href></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1364,108 +1313,67 @@ avginc      1.158e-02  1.308e-03   8.851 1.34e-12 ***
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Residual standard error: 66.56 on 62 degrees of freedom
-Multiple R-squared:  0.5582,    Adjusted R-squared:  0.5511 
+Multiple R-squared:  0.5582,  Adjusted R-squared:  0.5511 
 F-statistic: 78.34 on 1 and 62 DF,  p-value: 1.341e-12</code></pre>
 </div>
-</div>
-</section>
-<section id="example-extracting-key-values" class="slide level2">
-<h2>Example: Extracting key values</h2>
+</div></li>
+<li class="fragment"><p>95% CI for the slope coefficient:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a><span class="co"># Estimated slope and its standard error</span></span>
-<span id="cb5-2"><a href></a>beta1_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg)[<span class="st">&quot;avginc&quot;</span>]</span>
-<span id="cb5-3"><a href></a>se_beta1  <span class="ot">&lt;-</span> <span class="fu">summary</span>(reg)<span class="sc">$</span>coefficients[<span class="st">&quot;avginc&quot;</span>, <span class="st">&quot;Std. Error&quot;</span>]</span>
-<span id="cb5-4"><a href></a><span class="fu">cat</span>(<span class="st">&quot;beta_1_hat =&quot;</span>, <span class="fu">round</span>(beta1_hat, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>beta_1_hat = 0.0116 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href></a><span class="fu">cat</span>(<span class="st">&quot;SE(beta_1_hat) =&quot;</span>, <span class="fu">round</span>(se_beta1, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>SE(beta_1_hat) = 0.0013 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href></a><span class="co"># Degrees of freedom: n - 2</span></span>
-<span id="cb9-2"><a href></a>n  <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rental90)</span>
-<span id="cb9-3"><a href></a>df <span class="ot">&lt;-</span> n <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb9-4"><a href></a><span class="fu">cat</span>(<span class="st">&quot;n =&quot;</span>, n, <span class="st">&quot;,  df =&quot;</span>, df, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>n = 64 ,  df = 62 </code></pre>
-</div>
-</div>
-</section>
-<section id="example-95-confidence-interval" class="slide level2">
-<h2>Example: 95% confidence interval</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href></a><span class="co"># Critical value</span></span>
-<span id="cb11-2"><a href></a>t_95 <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, df)</span>
-<span id="cb11-3"><a href></a><span class="fu">cat</span>(<span class="st">&quot;t_{62, 0.975} =&quot;</span>, <span class="fu">round</span>(t_95, <span class="dv">3</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>t_{62, 0.975} = 1.999 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href></a><span class="co"># 95% CI: beta_1_hat +/- t * SE</span></span>
-<span id="cb13-2"><a href></a>CI_95 <span class="ot">&lt;-</span> <span class="fu">c</span>(beta1_hat <span class="sc">-</span> t_95 <span class="sc">*</span> se_beta1,</span>
-<span id="cb13-3"><a href></a>           beta1_hat <span class="sc">+</span> t_95 <span class="sc">*</span> se_beta1)</span>
-<span id="cb13-4"><a href></a><span class="fu">round</span>(CI_95, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>avginc avginc 
-0.0090 0.0142 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href></a><span class="co"># Check with confint()</span></span>
-<span id="cb15-2"><a href></a><span class="fu">confint</span>(reg, <span class="st">&quot;avginc&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href></a><span class="fu">confint</span>(reg, <span class="st">&quot;avginc&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             2.5 %     97.5 %
 avginc 0.008964625 0.01419539</code></pre>
 </div>
-</div>
-</section>
-<section id="example-90-confidence-interval" class="slide level2">
-<h2>Example: 90% confidence interval</h2>
+</div></li>
+<li class="fragment"><p>90% CI for the slope coefficient</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href></a><span class="co"># Critical value</span></span>
-<span id="cb17-2"><a href></a>t_90 <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.95</span>, df)</span>
-<span id="cb17-3"><a href></a><span class="fu">cat</span>(<span class="st">&quot;t_{62, 0.95} =&quot;</span>, <span class="fu">round</span>(t_90, <span class="dv">3</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>t_{62, 0.95} = 1.67 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href></a><span class="co"># 90% CI: beta_1_hat +/- t * SE</span></span>
-<span id="cb19-2"><a href></a>CI_90 <span class="ot">&lt;-</span> <span class="fu">c</span>(beta1_hat <span class="sc">-</span> t_90 <span class="sc">*</span> se_beta1,</span>
-<span id="cb19-3"><a href></a>           beta1_hat <span class="sc">+</span> t_90 <span class="sc">*</span> se_beta1)</span>
-<span id="cb19-4"><a href></a><span class="fu">round</span>(CI_90, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>avginc avginc 
-0.0094 0.0138 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href></a><span class="co"># Check with confint()</span></span>
-<span id="cb21-2"><a href></a><span class="fu">confint</span>(reg, <span class="st">&quot;avginc&quot;</span>, <span class="at">level =</span> <span class="fl">0.90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a><span class="fu">confint</span>(reg, <span class="st">&quot;avginc&quot;</span>, <span class="at">level =</span> <span class="fl">0.90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               5 %       95 %
 avginc 0.009395296 0.01376472</code></pre>
 </div>
-</div>
+</div></li>
+</ul>
 </section>
 <section id="the-effect-of-estimating-sigma2" class="slide level2">
-<h2>The effect of estimating <span class="math inline">\sigma^2</span></h2>
+<h2>The effect of estimating <span class="math inline">\(\sigma^2\)</span></h2>
 <ul>
-<li class="fragment"><p>The <span class="math inline">t</span>-distribution has heavier tails than the normal.</p></li>
-<li class="fragment"><p><span class="math inline">t_{df,1-\alpha /2}&gt;z_{1-\alpha /2}</span>, but as <span class="math inline">df</span> increases <span class="math inline">t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.</span></p></li>
-<li class="fragment"><p>When the sample size <span class="math inline">n</span> is large, <span class="math inline">t_{n-2,1-\alpha /2}</span> can be replaced with <span class="math inline">z_{1-\alpha /2}.</span></p></li>
+<li class="fragment"><p>The <span class="math inline">\(t\)</span>-distribution has heavier tails than the normal.</p></li>
+<li class="fragment"><p><span class="math inline">\(t_{df,1-\alpha /2}&gt;z_{1-\alpha /2}\)</span>, but as <span class="math inline">\(df\)</span> increases <span class="math inline">\(t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.\)</span></p></li>
+<li class="fragment"><p>When the sample size <span class="math inline">\(n\)</span> is large, <span class="math inline">\(t_{n-2,1-\alpha /2}\)</span> can be replaced with <span class="math inline">\(z_{1-\alpha /2}.\)</span></p></li>
+<li class="fragment"><p>In R, use <code>qt()</code> for <span class="math inline">\(t\)</span>-quantiles and <code>qnorm()</code> for <span class="math inline">\(z\)</span>-quantiles:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href></a><span class="co"># z critical value for 95% CI</span></span>
+<span id="cb7-2"><a href></a><span class="fu">qnorm</span>(<span class="fl">0.975</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.959964</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href></a><span class="co"># t critical values for 95% CI with different df</span></span>
+<span id="cb9-2"><a href></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.042272</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.983972</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.962339</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.960201</code></pre>
+</div>
+</div></li>
 </ul>
 </section>
 <section id="interpretation-of-confidence-intervals" class="slide level2">
 <h2>Interpretation of confidence intervals</h2>
 <ul>
-<li class="fragment"><p>The confidence interval <span class="math inline">CI_{1-\alpha }</span> is a function of the <strong>sample</strong> <span class="math inline">\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}</span>, and therefore is <strong>random</strong>. This allows us to talk about the probability of <span class="math inline">CI_{1-\alpha }</span> containing the true value of <span class="math inline">\beta _{1}.</span></p></li>
-<li class="fragment"><p>Once the confidence interval is computed given the data, we have its <strong>one realization</strong>. The realization of <span class="math inline">CI_{1-\alpha }</span> (the computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true <span class="math inline">\beta _{1}.</span></p></li>
-<li class="fragment"><p><strong>Once the confidence interval is computed, it either contains the true value <span class="math inline">\beta _{1}</span> or it does not</strong>.</p></li>
+<li class="fragment"><p>The confidence interval <span class="math inline">\(CI_{1-\alpha }\)</span> is a function of the <strong>sample</strong> <span class="math inline">\(\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}\)</span>, and therefore is <strong>random</strong>. This allows us to talk about the probability of <span class="math inline">\(CI_{1-\alpha }\)</span> containing the true value of <span class="math inline">\(\beta _{1}.\)</span></p></li>
+<li class="fragment"><p>Once the confidence interval is computed given the data, we have its <strong>one realization</strong>. The realization of <span class="math inline">\(CI_{1-\alpha }\)</span> (the computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true <span class="math inline">\(\beta _{1}.\)</span></p></li>
+<li class="fragment"><p><strong>Once the confidence interval is computed, it either contains the true value <span class="math inline">\(\beta _{1}\)</span> or it does not</strong>.</p></li>
 </ul>
 
 </section>
@@ -2449,6 +2357,8 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
+  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
+</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2616,9 +2526,27 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
+          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom
