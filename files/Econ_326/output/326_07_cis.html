@@ -124,7 +124,6 @@ window.Quarto = {
   <li><a href="#sigma2-is-known-infeasible-cis" id="toc-sigma2-is-known-infeasible-cis" class="nav-link" data-scroll-target="#sigma2-is-known-infeasible-cis"><span class="math inline">\(\sigma^2\)</span> is known (infeasible CIs)</a></li>
   <li><a href="#infeasible-ci-validity-sigma2-known" id="toc-infeasible-ci-validity-sigma2-known" class="nav-link" data-scroll-target="#infeasible-ci-validity-sigma2-known">Infeasible CI validity (<span class="math inline">\(\sigma^2\)</span> known)</a></li>
   <li><a href="#feasible-cis-sigma2-unknown" id="toc-feasible-cis-sigma2-unknown" class="nav-link" data-scroll-target="#feasible-cis-sigma2-unknown">Feasible CIs (<span class="math inline">\(\sigma^2\)</span> unknown)</a></li>
-  <li><a href="#feasible-cis-sigma2-unknown-1" id="toc-feasible-cis-sigma2-unknown-1" class="nav-link" data-scroll-target="#feasible-cis-sigma2-unknown-1">Feasible CIs (<span class="math inline">\(\sigma^2\)</span> unknown)</a></li>
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
   <li><a href="#the-effect-of-estimating-sigma2" id="toc-the-effect-of-estimating-sigma2" class="nav-link" data-scroll-target="#the-effect-of-estimating-sigma2">The effect of estimating <span class="math inline">\(\sigma^2\)</span></a></li>
   <li><a href="#interpretation-of-confidence-intervals" id="toc-interpretation-of-confidence-intervals" class="nav-link" data-scroll-target="#interpretation-of-confidence-intervals">Interpretation of confidence intervals</a></li>
@@ -344,11 +343,6 @@ s^{2} &amp;= \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \\
 <li><p>the sample size (<span class="math inline">\(n\)</span>),</p></li>
 <li><p>and the number of parameters one has to estimate to compute <span class="math inline">\(s^{2}\)</span> (two in this case, <span class="math inline">\(\beta _{0}\)</span> and <span class="math inline">\(\beta _{1}\)</span>).</p></li>
 </ul></li>
-</ul>
-</section>
-<section id="feasible-cis-sigma2-unknown-1" class="level2">
-<h2 class="anchored" data-anchor-id="feasible-cis-sigma2-unknown-1">Feasible CIs (<span class="math inline">\(\sigma^2\)</span> unknown)</h2>
-<ul>
 <li><p>Let <span class="math inline">\(t_{df,\tau }\)</span> be the <span class="math inline">\(\tau\)</span>-th quantile of the <span class="math inline">\(t\)</span>-distribution with the number of degrees of freedom <span class="math inline">\(df\)</span>: If <span class="math inline">\(T\sim t_{df}\)</span> then <span class="math display">\[
 P\left( T\leq t_{df,\tau }\right) =\tau .
 \]</span></p></li>
@@ -1179,78 +1173,76 @@ avginc 0.009395296 0.01376472</code></pre>
 <span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>and the number of parameters one has to estimate to compute $s^{2}$ (two in this case, $\beta _{0}$ and $\beta _{1}$).</span>
 <span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feasible CIs ($\sigma^2$ unknown)</span></span>
-<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $t_{df,\tau }$ be the $\tau$-th quantile of the $t$-distribution with the number of degrees of freedom $df$: If $T\sim t_{df}$ then</span>
+<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $t_{df,\tau }$ be the $\tau$-th quantile of the $t$-distribution with the number of degrees of freedom $df$: If $T\sim t_{df}$ then</span>
+<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a>  P\left( T\leq t_{df,\tau }\right) =\tau .</span>
 <span id="cb17-273"><a href="#cb17-273" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a>  P\left( T\leq t_{df,\tau }\right) =\tau .</span>
-<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Similarly to the normal distribution, the $t$-distribution is centered at zero and is symmetric around zero: $t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.$</span>
 <span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Similarly to the normal distribution, the $t$-distribution is centered at zero and is symmetric around zero: $t_{n-2,1-\alpha /2}=-t_{n-2,\alpha/2}.$</span>
-<span id="cb17-278"><a href="#cb17-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can now construct a feasible $CI_{1-\alpha }$ as</span>
+<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can now construct a feasible $CI_{1-\alpha }$ as</span>
+<span id="cb17-278"><a href="#cb17-278" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1}\pm t_{n-2,1-\alpha /2} \times \se{\hat{\beta}_{1}}.</span>
 <span id="cb17-280"><a href="#cb17-280" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1}\pm t_{n-2,1-\alpha /2} \times \se{\hat{\beta}_{1}}.</span>
-<span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
 <span id="cb17-283"><a href="#cb17-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-284"><a href="#cb17-284" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
-<span id="cb17-285"><a href="#cb17-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-286"><a href="#cb17-286" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Data: <span class="in">`rental`</span> from the <span class="in">`wooldridge`</span> R package. 64 US cities in 1990.</span>
-<span id="cb17-287"><a href="#cb17-287" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span><span class="in">`rent`</span>: average monthly rent (\$)</span>
-<span id="cb17-288"><a href="#cb17-288" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span><span class="in">`avginc`</span>: per capita income (\$)</span>
-<span id="cb17-289"><a href="#cb17-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-290"><a href="#cb17-290" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Model: Rent$_{i}=\beta _{0}+\beta _{1}$AvgInc$_{i}+U_{i}.$</span>
-<span id="cb17-291"><a href="#cb17-291" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>R implementation:</span>
-<span id="cb17-292"><a href="#cb17-292" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb17-293"><a href="#cb17-293" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load data and run OLS regression</span></span>
-<span id="cb17-294"><a href="#cb17-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
-<span id="cb17-295"><a href="#cb17-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="st">"rental"</span>)</span>
-<span id="cb17-296"><a href="#cb17-296" aria-hidden="true" tabindex="-1"></a>  rental90 <span class="ot">&lt;-</span> <span class="fu">subset</span>(rental, y90 <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb17-297"><a href="#cb17-297" aria-hidden="true" tabindex="-1"></a>  reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(rent <span class="sc">~</span> avginc, <span class="at">data =</span> rental90)</span>
-<span id="cb17-298"><a href="#cb17-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg)</span>
-<span id="cb17-299"><a href="#cb17-299" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb17-284"><a href="#cb17-284" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Data: <span class="in">`rental`</span> from the <span class="in">`wooldridge`</span> R package. 64 US cities in 1990.</span>
+<span id="cb17-285"><a href="#cb17-285" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span><span class="in">`rent`</span>: average monthly rent (\$)</span>
+<span id="cb17-286"><a href="#cb17-286" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span><span class="in">`avginc`</span>: per capita income (\$)</span>
+<span id="cb17-287"><a href="#cb17-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-288"><a href="#cb17-288" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Model: Rent$_{i}=\beta _{0}+\beta _{1}$AvgInc$_{i}+U_{i}.$</span>
+<span id="cb17-289"><a href="#cb17-289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>R implementation:</span>
+<span id="cb17-290"><a href="#cb17-290" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb17-291"><a href="#cb17-291" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load data and run OLS regression</span></span>
+<span id="cb17-292"><a href="#cb17-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
+<span id="cb17-293"><a href="#cb17-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="st">"rental"</span>)</span>
+<span id="cb17-294"><a href="#cb17-294" aria-hidden="true" tabindex="-1"></a>  rental90 <span class="ot">&lt;-</span> <span class="fu">subset</span>(rental, y90 <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb17-295"><a href="#cb17-295" aria-hidden="true" tabindex="-1"></a>  reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(rent <span class="sc">~</span> avginc, <span class="at">data =</span> rental90)</span>
+<span id="cb17-296"><a href="#cb17-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg)</span>
+<span id="cb17-297"><a href="#cb17-297" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb17-298"><a href="#cb17-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-299"><a href="#cb17-299" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-300"><a href="#cb17-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-301"><a href="#cb17-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-302"><a href="#cb17-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-303"><a href="#cb17-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>95% CI for the slope coefficient:</span>
-<span id="cb17-304"><a href="#cb17-304" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb17-305"><a href="#cb17-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">confint</span>(reg, <span class="st">"avginc"</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb17-306"><a href="#cb17-306" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb17-307"><a href="#cb17-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-308"><a href="#cb17-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-309"><a href="#cb17-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>90% CI for the slope coefficient:</span>
-<span id="cb17-310"><a href="#cb17-310" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb17-311"><a href="#cb17-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">confint</span>(reg, <span class="st">"avginc"</span>, <span class="at">level =</span> <span class="fl">0.90</span>)</span>
-<span id="cb17-312"><a href="#cb17-312" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb17-313"><a href="#cb17-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-301"><a href="#cb17-301" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>95% CI for the slope coefficient:</span>
+<span id="cb17-302"><a href="#cb17-302" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb17-303"><a href="#cb17-303" aria-hidden="true" tabindex="-1"></a>  <span class="fu">confint</span>(reg, <span class="st">"avginc"</span>, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb17-304"><a href="#cb17-304" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb17-305"><a href="#cb17-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-306"><a href="#cb17-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-307"><a href="#cb17-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>90% CI for the slope coefficient:</span>
+<span id="cb17-308"><a href="#cb17-308" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb17-309"><a href="#cb17-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">confint</span>(reg, <span class="st">"avginc"</span>, <span class="at">level =</span> <span class="fl">0.90</span>)</span>
+<span id="cb17-310"><a href="#cb17-310" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb17-311"><a href="#cb17-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-312"><a href="#cb17-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-313"><a href="#cb17-313" aria-hidden="true" tabindex="-1"></a><span class="fu">## The effect of estimating $\sigma^2$</span></span>
 <span id="cb17-314"><a href="#cb17-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-315"><a href="#cb17-315" aria-hidden="true" tabindex="-1"></a><span class="fu">## The effect of estimating $\sigma^2$</span></span>
+<span id="cb17-315"><a href="#cb17-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The $t$-distribution has heavier tails than the normal.</span>
 <span id="cb17-316"><a href="#cb17-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-317"><a href="#cb17-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The $t$-distribution has heavier tails than the normal.</span>
+<span id="cb17-317"><a href="#cb17-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$t_{df,1-\alpha /2}&gt;z_{1-\alpha /2}$, but as $df$ increases $t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.$</span>
 <span id="cb17-318"><a href="#cb17-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-319"><a href="#cb17-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$t_{df,1-\alpha /2}&gt;z_{1-\alpha /2}$, but as $df$ increases $t_{df,1-\alpha /2}\rightarrow z_{1-\alpha /2}.$</span>
+<span id="cb17-319"><a href="#cb17-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When the sample size $n$ is large, $t_{n-2,1-\alpha /2}$ can be replaced with $z_{1-\alpha /2}.$</span>
 <span id="cb17-320"><a href="#cb17-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-321"><a href="#cb17-321" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When the sample size $n$ is large, $t_{n-2,1-\alpha /2}$ can be replaced with $z_{1-\alpha /2}.$</span>
-<span id="cb17-322"><a href="#cb17-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-323"><a href="#cb17-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In R, use <span class="in">`qt()`</span> for $t$-quantiles and <span class="in">`qnorm()`</span> for $z$-quantiles:</span>
-<span id="cb17-324"><a href="#cb17-324" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb17-325"><a href="#cb17-325" aria-hidden="true" tabindex="-1"></a>  <span class="co"># z critical value for 95% CI</span></span>
-<span id="cb17-326"><a href="#cb17-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qnorm</span>(<span class="fl">0.975</span>)</span>
-<span id="cb17-327"><a href="#cb17-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-328"><a href="#cb17-328" aria-hidden="true" tabindex="-1"></a>  <span class="co"># t critical values for 95% CI with different df</span></span>
-<span id="cb17-329"><a href="#cb17-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">30</span>)</span>
-<span id="cb17-330"><a href="#cb17-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">100</span>)</span>
-<span id="cb17-331"><a href="#cb17-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">1000</span>)</span>
-<span id="cb17-332"><a href="#cb17-332" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">10000</span>)</span>
-<span id="cb17-333"><a href="#cb17-333" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb17-321"><a href="#cb17-321" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In R, use <span class="in">`qt()`</span> for $t$-quantiles and <span class="in">`qnorm()`</span> for $z$-quantiles:</span>
+<span id="cb17-322"><a href="#cb17-322" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb17-323"><a href="#cb17-323" aria-hidden="true" tabindex="-1"></a>  <span class="co"># z critical value for 95% CI</span></span>
+<span id="cb17-324"><a href="#cb17-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qnorm</span>(<span class="fl">0.975</span>)</span>
+<span id="cb17-325"><a href="#cb17-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-326"><a href="#cb17-326" aria-hidden="true" tabindex="-1"></a>  <span class="co"># t critical values for 95% CI with different df</span></span>
+<span id="cb17-327"><a href="#cb17-327" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">30</span>)</span>
+<span id="cb17-328"><a href="#cb17-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">100</span>)</span>
+<span id="cb17-329"><a href="#cb17-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">1000</span>)</span>
+<span id="cb17-330"><a href="#cb17-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">10000</span>)</span>
+<span id="cb17-331"><a href="#cb17-331" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb17-332"><a href="#cb17-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-333"><a href="#cb17-333" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interpretation of confidence intervals</span></span>
 <span id="cb17-334"><a href="#cb17-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-335"><a href="#cb17-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interpretation of confidence intervals</span></span>
+<span id="cb17-335"><a href="#cb17-335" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The confidence interval $CI_{1-\alpha }$ is a function of the **sample** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}$, and therefore is **random**. This allows us to talk about the probability of $CI_{1-\alpha }$ containing the true value of $\beta _{1}.$</span>
 <span id="cb17-336"><a href="#cb17-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-337"><a href="#cb17-337" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The confidence interval $CI_{1-\alpha }$ is a function of the **sample** $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}$, and therefore is **random**. This allows us to talk about the probability of $CI_{1-\alpha }$ containing the true value of $\beta _{1}.$</span>
+<span id="cb17-337"><a href="#cb17-337" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Once the confidence interval is computed given the data, we have its **one realization**. The realization of $CI_{1-\alpha }$ (the computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true $\beta _{1}.$</span>
 <span id="cb17-338"><a href="#cb17-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-339"><a href="#cb17-339" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Once the confidence interval is computed given the data, we have its **one realization**. The realization of $CI_{1-\alpha }$ (the computed confidence interval) is not random, and it does not make sense anymore to talk about the probability that it includes the true $\beta _{1}.$</span>
-<span id="cb17-340"><a href="#cb17-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-341"><a href="#cb17-341" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Once the confidence interval is computed, it either contains the true value $\beta _{1}$ or it does not**.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb17-339"><a href="#cb17-339" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Once the confidence interval is computed, it either contains the true value $\beta _{1}$ or it does not**.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

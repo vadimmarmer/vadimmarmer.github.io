@@ -267,8 +267,6 @@ $$
 
   - and the number of parameters one has to estimate to compute $s^{2}$ (two in this case, $\beta _{0}$ and $\beta _{1}$).
 
-## Feasible CIs ($\sigma^2$ unknown)
-
 - Let $t_{df,\tau }$ be the $\tau$-th quantile of the $t$-distribution with the number of degrees of freedom $df$: If $T\sim t_{df}$ then
   $$
   P\left( T\leq t_{df,\tau }\right) =\tau .
