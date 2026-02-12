@@ -495,6 +495,20 @@ margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 .reveal section h6 {
 text-transform: none !important;
 }
+
+.reveal .slides section mjx-container .fragment:not(.visible) {
+opacity: 0 !important;
+visibility: hidden !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible {
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible * {
+visibility: inherit !important;
+}
 </style>
   
   <script>
@@ -1050,7 +1064,7 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Lecture 5: Gauss-Markov Theorem</h1>
-  <p class="subtitle">Economics 326 — Methods of Empirical Research in Economics</p>
+  <p class="subtitle">Economics 326 — Introduction to Econometrics II</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">

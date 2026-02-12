@@ -495,6 +495,20 @@ margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 .reveal section h6 {
 text-transform: none !important;
 }
+
+.reveal .slides section mjx-container .fragment:not(.visible) {
+opacity: 0 !important;
+visibility: hidden !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible {
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible * {
+visibility: inherit !important;
+}
 </style>
   
   <script>
@@ -1063,6 +1077,10 @@ Vadim Marmer, UBC
 </section>
 <section id="what-is-econometrics" class="slide level2">
 <h2>What is econometrics?</h2>
+<div class="hidden">
+$
+<p>$</p>
+</div>
 <p>Econometrics develops <strong>statistical methods</strong> for:</p>
 <ul>
 <li class="fragment"><strong>Estimating</strong> economic relationships</li>

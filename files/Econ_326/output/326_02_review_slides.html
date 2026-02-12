@@ -495,6 +495,20 @@ margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 .reveal section h6 {
 text-transform: none !important;
 }
+
+.reveal .slides section mjx-container .fragment:not(.visible) {
+opacity: 0 !important;
+visibility: hidden !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible {
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible * {
+visibility: inherit !important;
+}
 </style>
   
   <script>
@@ -1246,7 +1260,7 @@ F(x) = \begin{cases} 0 &amp; \text{if } x &lt; 0 \\ 1-p &amp; \text{if } 0 \leq 
 <section id="continuous-random-variable" class="slide level2">
 <h2>Continuous random variable</h2>
 <ul>
-<li class="fragment"><p>A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).</p></li>
+<li class="fragment"><p>A random variable is continuously distributed if the range of possible values it can take is uncountably infinite (for example, a real line).</p></li>
 <li class="fragment"><p>A continuous random variable takes on any real value with <strong>zero</strong> probability.</p></li>
 <li class="fragment"><p>For continuous random variables, the CDF is continuous and differentiable.</p></li>
 <li class="fragment"><p>The derivative of the CDF is called the <strong>Probability Density Function (PDF)</strong>: <span class="math display">
@@ -1439,9 +1453,9 @@ f_{X,Y}(x, y) = f_X(x) f_Y(y).
 \mathrm{Var}\left(c\right) = \mathrm{E}\left[(c - \mathrm{E}\left[c\right])^2\right] = (c - c)^2 = 0.
 </span></p></li>
 <li class="fragment"><p><span class="math inline">\mathrm{Var}\left(a + bX\right) = b^2 \mathrm{Var}\left(X\right)</span> <span class="math display">\begin{align*}
-\mathrm{Var}\left(a + bX\right) &amp;= \mathrm{E}\left[(a + bX) - \mathrm{E}\left[a + bX\right]\right]^2\\
-&amp; = \mathrm{E}\left[a + bX - a - b\mathrm{E}\left[X\right]\right]^2 \\
-&amp;= \mathrm{E}\left[bX - b\mathrm{E}\left[X\right]\right]^2 = \mathrm{E}\left[b^2(X - \mathrm{E}\left[X\right])^2\right] \\
+\mathrm{Var}\left(a + bX\right) &amp;= \mathrm{E}\left[((a + bX) - \mathrm{E}\left[a + bX\right])^2\right]\\
+&amp; = \mathrm{E}\left[(a + bX - a - b\mathrm{E}\left[X\right])^2\right] \\
+&amp;= \mathrm{E}\left[(bX - b\mathrm{E}\left[X\right])^2\right] = \mathrm{E}\left[b^2(X - \mathrm{E}\left[X\right])^2\right] \\
 &amp;= b^2 \mathrm{E}\left[(X - \mathrm{E}\left[X\right])^2\right] \\
 &amp;= b^2 \mathrm{Var}\left(X\right).
 \end{align*}</span></p></li>
@@ -1536,7 +1550,7 @@ f_{X,Y}(x, y) = f_X(x) f_Y(y).
 <section id="properties-of-conditional-expectation" class="slide level2">
 <h2>Properties of conditional expectation</h2>
 <ul>
-<li class="fragment"><p>Conditional expectations satisfies all properties of unconditional expectation.</p></li>
+<li class="fragment"><p>Conditional expectation satisfies all properties of unconditional expectation.</p></li>
 <li class="fragment"><p>Once you condition on <span class="math inline">X</span>, you can treat any function of <span class="math inline">X</span> as a constant: <span class="math display">
 \mathrm{E}\left[h_1(X) + h_2(X) Y | X\right] = h_1(X) + h_2(X) \mathrm{E}\left[Y | X\right],
 </span> for any functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span>.</p></li>
@@ -1680,7 +1694,7 @@ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\ri
 <h2>Bivariate Normal distribution</h2>
 <ul>
 <li class="fragment"><p><span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">
-f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho)^2}\right],
+f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
 </span> where <span class="math inline">Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}</span>,</p>
 <p><span class="math inline">\mu_X = \mathrm{E}\left[X\right], \mu_Y = \mathrm{E}\left[Y\right], \sigma_X^2 = \mathrm{Var}\left(X\right), \sigma_Y^2 = \mathrm{Var}\left(Y\right)</span>, and <span class="math inline">\rho = \mathrm{Corr}(X, Y)</span>.</p></li>
 </ul>

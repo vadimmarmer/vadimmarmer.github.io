@@ -1,6 +1,6 @@
 ---
 title: "Lecture 5: Gauss-Markov Theorem"
-subtitle: "Economics 326 — Econometrics II"
+subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:

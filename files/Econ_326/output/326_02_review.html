@@ -382,7 +382,7 @@ F(x) = \begin{cases} 0 &amp; \text{if } x &lt; 0 \\ 1-p &amp; \text{if } 0 \leq 
 <section id="continuous-random-variable" class="level2">
 <h2 class="anchored" data-anchor-id="continuous-random-variable">Continuous random variable</h2>
 <ul>
-<li><p>A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).</p></li>
+<li><p>A random variable is continuously distributed if the range of possible values it can take is uncountably infinite (for example, a real line).</p></li>
 <li><p>A continuous random variable takes on any real value with <strong>zero</strong> probability.</p></li>
 <li><p>For continuous random variables, the CDF is continuous and differentiable.</p></li>
 <li><p>The derivative of the CDF is called the <strong>Probability Density Function (PDF)</strong>: <span class="math display">
@@ -577,9 +577,9 @@ f_{X,Y}(x, y) = f_X(x) f_Y(y).
 \mathrm{Var}\left(c\right) = \mathrm{E}\left[(c - \mathrm{E}\left[c\right])^2\right] = (c - c)^2 = 0.
 </span></p></li>
 <li><p><span class="math inline">\mathrm{Var}\left(a + bX\right) = b^2 \mathrm{Var}\left(X\right)</span> <span class="math display">\begin{align*}
-\mathrm{Var}\left(a + bX\right) &amp;= \mathrm{E}\left[(a + bX) - \mathrm{E}\left[a + bX\right]\right]^2\\
-&amp; = \mathrm{E}\left[a + bX - a - b\mathrm{E}\left[X\right]\right]^2 \\
-&amp;= \mathrm{E}\left[bX - b\mathrm{E}\left[X\right]\right]^2 = \mathrm{E}\left[b^2(X - \mathrm{E}\left[X\right])^2\right] \\
+\mathrm{Var}\left(a + bX\right) &amp;= \mathrm{E}\left[((a + bX) - \mathrm{E}\left[a + bX\right])^2\right]\\
+&amp; = \mathrm{E}\left[(a + bX - a - b\mathrm{E}\left[X\right])^2\right] \\
+&amp;= \mathrm{E}\left[(bX - b\mathrm{E}\left[X\right])^2\right] = \mathrm{E}\left[b^2(X - \mathrm{E}\left[X\right])^2\right] \\
 &amp;= b^2 \mathrm{E}\left[(X - \mathrm{E}\left[X\right])^2\right] \\
 &amp;= b^2 \mathrm{Var}\left(X\right).
 \end{align*}</span></p></li>
@@ -674,7 +674,7 @@ f_{X,Y}(x, y) = f_X(x) f_Y(y).
 <section id="properties-of-conditional-expectation" class="level2">
 <h2 class="anchored" data-anchor-id="properties-of-conditional-expectation">Properties of conditional expectation</h2>
 <ul>
-<li><p>Conditional expectations satisfies all properties of unconditional expectation.</p></li>
+<li><p>Conditional expectation satisfies all properties of unconditional expectation.</p></li>
 <li><p>Once you condition on <span class="math inline">X</span>, you can treat any function of <span class="math inline">X</span> as a constant: <span class="math display">
 \mathrm{E}\left[h_1(X) + h_2(X) Y | X\right] = h_1(X) + h_2(X) \mathrm{E}\left[Y | X\right],
 </span> for any functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span>.</p></li>
@@ -820,7 +820,7 @@ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\ri
 <h2 class="anchored" data-anchor-id="bivariate-normal-distribution">Bivariate Normal distribution</h2>
 <ul>
 <li><p><span class="math inline">X</span> and <span class="math inline">Y</span> have a bivariate normal distribution if their joint PDF is given by: <span class="math display">
-f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho)^2}\right],
+f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left[-\frac{Q}{2(1-\rho^2)}\right],
 </span> where <span class="math inline">Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}</span>,</p>
 <p><span class="math inline">\mu_X = \mathrm{E}\left[X\right], \mu_Y = \mathrm{E}\left[Y\right], \sigma_X^2 = \mathrm{Var}\left(X\right), \sigma_Y^2 = \mathrm{Var}\left(Y\right)</span>, and <span class="math inline">\rho = \mathrm{Corr}(X, Y)</span>.</p></li>
 </ul>
@@ -1522,7 +1522,7 @@ U = Y - \beta X,
 <span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## Continuous random variable</span></span>
 <span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A random variable is continuously distributed if the range of possible values it can take is uncountable infinite (for example, a real line).</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A random variable is continuously distributed if the range of possible values it can take is uncountably infinite (for example, a real line).</span>
 <span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A continuous random variable takes on any real value with **zero** probability.</span>
 <span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
@@ -1716,9 +1716,9 @@ U = Y - \beta X,
 <span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Var{a + bX} = b^2 \Var{X}$</span>
 <span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>  \Var{a + bX} &amp;= \E{(a + bX) - \E{a + bX}}^2<span class="sc">\\</span></span>
-<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>  &amp; = \E{a + bX - a - b\E{X}}^2 <span class="sc">\\</span></span>
-<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{bX - b\E{X}}^2 = \E{b^2(X - \E{X})^2} <span class="sc">\\</span></span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>  \Var{a + bX} &amp;= \E{((a + bX) - \E{a + bX})^2}<span class="sc">\\</span></span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>  &amp; = \E{(a + bX - a - b\E{X})^2} <span class="sc">\\</span></span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{(bX - b\E{X})^2} = \E{b^2(X - \E{X})^2} <span class="sc">\\</span></span>
 <span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a>  &amp;= b^2 \E{(X - \E{X})^2} <span class="sc">\\</span></span>
 <span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a>  &amp;= b^2 \Var{X}.</span>
 <span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
@@ -1833,7 +1833,7 @@ U = Y - \beta X,
 <span id="cb1-509"><a href="#cb1-509" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-510"><a href="#cb1-510" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of conditional expectation</span></span>
 <span id="cb1-511"><a href="#cb1-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional expectations satisfies all properties of unconditional expectation.</span>
+<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Conditional expectation satisfies all properties of unconditional expectation.</span>
 <span id="cb1-513"><a href="#cb1-513" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-514"><a href="#cb1-514" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Once you condition on $X$, you can treat any function of $X$ as a constant:</span>
 <span id="cb1-515"><a href="#cb1-515" aria-hidden="true" tabindex="-1"></a>$$</span>
@@ -1960,7 +1960,7 @@ U = Y - \beta X,
 <span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$X$ and $Y$ have a bivariate normal distribution if their joint PDF is given by:</span>
 <span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a>  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho)^2 \sigma_X^2 \sigma_Y^2}} \exp\left<span class="co">[</span><span class="ot">-\frac{Q}{2(1-\rho)^2}\right</span><span class="co">]</span>,</span>
+<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a>  f(x, y) = \frac{1}{2\pi\sqrt{(1-\rho^2) \sigma_X^2 \sigma_Y^2}} \exp\left<span class="co">[</span><span class="ot">-\frac{Q}{2(1-\rho^2)}\right</span><span class="co">]</span>,</span>
 <span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a>  where $Q = \frac{(x-\mu_X)^2}{\sigma_X^2} + \frac{(y-\mu_Y)^2}{\sigma_Y^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}$,</span>
 <span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a></span>

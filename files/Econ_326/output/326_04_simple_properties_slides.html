@@ -495,6 +495,20 @@ margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 .reveal section h6 {
 text-transform: none !important;
 }
+
+.reveal .slides section mjx-container .fragment:not(.visible) {
+opacity: 0 !important;
+visibility: hidden !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible {
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible * {
+visibility: inherit !important;
+}
 </style>
   
   <script>
@@ -1072,18 +1086,16 @@ Vadim Marmer, UBC
 </section>
 <section id="properties-of-estimators" class="slide level2 scrollable">
 <h2>Properties of Estimators</h2>
+<div class="hidden">
+$
+<p>$</p>
+</div>
 <ol type="1">
 <li class="fragment">Random</li>
 <li class="fragment">Mean</li>
 <li class="fragment">Variance</li>
 <li class="fragment">Distribution</li>
 </ol>
-<div class="hidden">
-<p><span class="math display">
-\gdef\E#1{\mathrm{E}\left[#1\right]}
-\gdef\Var#1{\mathrm{Var}\left(#1\right)}
-</span></p>
-</div>
 </section>
 <section id="ols-estimators-as-random-variables" class="slide level2">
 <h2>OLS Estimators as Random Variables</h2>
@@ -1091,12 +1103,12 @@ Vadim Marmer, UBC
 <li class="fragment">The model <span class="math display">
 \begin{aligned}
 &amp;Y_{i} = \alpha + \beta X_{i} + U_{i}, \\
-&amp;\E{U_{i} \mid X_1, \ldots, X_n} = 0.
+&amp;\mathrm{E}\left[U_{i} \mid X_1, \ldots, X_n\right] = 0.
 \end{aligned}
 </span> Conditioning on <span class="math inline">X_1, \ldots, X_n</span> allows us to treat all the <span class="math inline">X_i</span>’s as fixed, but <span class="math inline">Y_i</span> is still random.</li>
 <li class="fragment">To save on writing, we will use the notation <span class="math display">
-\E{\cdot \mid \mathbf{X}} = \E{\cdot \mid X_1, \ldots, X_n}.
-</span> That is, <span class="math inline">\mathbf{X}=(X_1, \ldots, X_n)</span></li>
+\mathrm{E}\left[\cdot \mid \mathbf{X}\right] = \mathrm{E}\left[\cdot \mid X_1, \ldots, X_n\right].
+</span> That is, <span class="math inline">\mathbf{X}=(X_1, \ldots, X_n)</span>.</li>
 <li class="fragment">The estimators <span class="math display">
 \hat{\beta} = \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) Y_{i}}{
 \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \text{ and }
@@ -1132,13 +1144,13 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 <section id="definition-and-claim" class="slide level2">
 <h2>Definition and Claim</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\hat{\beta}</span> is called an unbiased estimator if <span class="math inline">\E{\hat{\beta}} = \beta</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat{\beta}</span> is called an unbiased estimator if <span class="math inline">\mathrm{E}\left[\hat{\beta}\right] = \beta</span>.</p></li>
 <li class="fragment"><p>Claim: Suppose that</p>
 <ul>
 <li class="fragment"><span class="math inline">Y_{i}=\alpha +\beta X_{i}+U_{i}</span>,</li>
-<li class="fragment"><span class="math inline">\E{U_{i} \mid \mathbf{X}} = 0</span>.</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right] = 0</span>.</li>
 <li class="fragment">Then <span class="math display">
-\E{\hat{\beta}}=\beta.
+\mathrm{E}\left[\hat{\beta}\right]=\beta.
 </span></li>
 </ul></li>
 </ul>
@@ -1195,14 +1207,14 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 </span> can be treated as fixed.</li>
 <li class="fragment">Thus, <span class="math display">
 \begin{aligned}
-\E{\hat{\beta} \mid \mathbf{X}} &amp; =
-\E{\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
-\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \mid \mathbf{X}} \\
+\mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right] &amp; =
+\mathrm{E}\left[\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \mid \mathbf{X}\right] \\
 &amp;= \beta +
-\E{\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
-\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \mid \mathbf{X}} \\
+\mathrm{E}\left[\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \mid \mathbf{X}\right] \\
 &amp;= \beta +
-\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \E{U_{i} \mid \mathbf{X}} }{
+\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \mathrm{E}\left[U_{i} \mid \mathbf{X}\right] }{
 \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 \end{aligned}
 </span></li>
@@ -1211,28 +1223,28 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 <section id="proof-step-3" class="slide level2">
 <h2>Proof Step 3</h2>
 <ul>
-<li class="fragment">Thus, with <span class="math inline">\E{U_{i} \mid \mathbf{X}} = 0</span>, we have <span class="math display">
+<li class="fragment">Thus, with <span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right] = 0</span>, we have <span class="math display">
 \begin{aligned}
-\E{\hat{\beta} \mid \mathbf{X}} &amp;=
-\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \E{U_{i} \mid \mathbf{X}}}{
+\mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right] &amp;=
+\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \mathrm{E}\left[U_{i} \mid \mathbf{X}\right]}{
 \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} \\
 &amp;= \beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) \cdot 0}{
 \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}} = \beta.
 \end{aligned}
 </span></li>
-<li class="fragment">By the LIE, <span class="math inline">\E{\hat{\beta}} = \E{\E{\hat{\beta} \mid \mathbf{X}}}
-= \E{\beta} = \beta</span>.</li>
+<li class="fragment">By the LIE, <span class="math inline">\mathrm{E}\left[\hat{\beta}\right] = \mathrm{E}\left[\mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right]\right]
+= \mathrm{E}\left[\beta\right] = \beta</span>.</li>
 </ul>
 </section>
 <section id="strong-exogeneity-of-regressors" class="slide level2">
 <h2>Strong Exogeneity of Regressors</h2>
 <ul>
-<li class="fragment"><span class="math inline">\mathbf{X}=(X_1,\ldots,X_n)</span> are strongly exogenous if <span class="math inline">\E{U_{i} \mid \mathbf{X}} = 0</span>.</li>
-<li class="fragment">Alternatively, we can assume that <span class="math inline">\E{U_{i} \mid X_{i}} = 0</span> and all observations are independent: <span class="math display">
+<li class="fragment"><span class="math inline">\mathbf{X}=(X_1,\ldots,X_n)</span> are strongly exogenous if <span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right] = 0</span>.</li>
+<li class="fragment">Alternatively, we can assume that <span class="math inline">\mathrm{E}\left[U_{i} \mid X_{i}\right] = 0</span> and all observations are independent: <span class="math display">
 \begin{aligned}
-\E{U_{1} \mid \mathbf{X}} &amp;= \E{U_{1} \mid X_{1}}, \\
-\E{U_{2} \mid \mathbf{X}} &amp;= \E{U_{2} \mid X_{2}}
-\text{ and etc.}
+\mathrm{E}\left[U_{1} \mid \mathbf{X}\right] &amp;= \mathrm{E}\left[U_{1} \mid X_{1}\right], \\
+\mathrm{E}\left[U_{2} \mid \mathbf{X}\right] &amp;= \mathrm{E}\left[U_{2} \mid X_{2}\right]
+\text{ etc.}
 \end{aligned}
 </span></li>
 <li class="fragment">The OLS estimator is in general biased if the strong exogeneity assumption is violated.</li>
@@ -1246,26 +1258,26 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 <section id="variance-formula-and-homoskedasticity" class="slide level2">
 <h2>Variance Formula and Homoskedasticity</h2>
 <ul>
-<li class="fragment">If <span class="math inline">Y_{i}=\alpha +\beta X_{i}+U_{i}</span>, <span class="math inline">\E{U_{i} \mid \mathbf{X}} = 0</span>, and <span class="math display">
-\E{U_{i}^{2} \mid \mathbf{X}} = \sigma^{2} = \text{constant},
+<li class="fragment">If <span class="math inline">Y_{i}=\alpha +\beta X_{i}+U_{i}</span>, <span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right] = 0</span>, and <span class="math display">
+\mathrm{E}\left[U_{i}^{2} \mid \mathbf{X}\right] = \sigma^{2} = \text{constant},
 </span> and for <span class="math inline">i \neq j</span> <span class="math display">
-\E{U_{i}U_{j} \mid \mathbf{X}} = 0,
+\mathrm{E}\left[U_{i}U_{j} \mid \mathbf{X}\right] = 0,
 </span> then <span class="math display">
-\Var{\hat{\beta} \mid \mathbf{X}} =
+\mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) =
 \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 </span></li>
-<li class="fragment">The assumption <span class="math inline">\E{U_{i}^{2} \mid \mathbf{X}} = \sigma^{2} = \text{constant}</span> is called (conditional) homoskedasticity.</li>
-<li class="fragment">The assumption <span class="math inline">\E{U_{i}U_{j} \mid \mathbf{X}} = 0</span> for <span class="math inline">i \neq j</span> can be replaced by the assumption that the observations are independent.</li>
+<li class="fragment">The assumption <span class="math inline">\mathrm{E}\left[U_{i}^{2} \mid \mathbf{X}\right] = \sigma^{2} = \text{constant}</span> is called (conditional) homoskedasticity.</li>
+<li class="fragment">The assumption <span class="math inline">\mathrm{E}\left[U_{i}U_{j} \mid \mathbf{X}\right] = 0</span> for <span class="math inline">i \neq j</span> can be replaced by the assumption that the observations are independent.</li>
 </ul>
 </section>
 <section id="determinants-of-variance" class="slide level2">
 <h2>Determinants of Variance</h2>
 <p><span class="math display">
-\Var{\hat{\beta} \mid \mathbf{X}} =
+\mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) =
 \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}.
 </span></p>
 <ul>
-<li class="fragment">The variance of <span class="math inline">\hat{\beta}</span> is positively related to the variance of the errors <span class="math inline">\sigma^{2} = \Var{U_{i}}</span>.</li>
+<li class="fragment">The variance of <span class="math inline">\hat{\beta}</span> is positively related to the variance of the errors <span class="math inline">\sigma^{2} = \mathrm{Var}\left(U_{i}\right)</span>.</li>
 <li class="fragment">The variance of <span class="math inline">\hat{\beta}</span> is smaller when the <span class="math inline">X_i</span>’s are more dispersed.</li>
 </ul>
 </section>
@@ -1273,14 +1285,14 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 <h2>Derivation of Variance</h2>
 <ul>
 <li class="fragment"><p>We have <span class="math inline">\hat{\beta}=\beta +\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}
-\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}</span> and <span class="math inline">\E{\hat{\beta} \mid \mathbf{X}}=\beta</span>. <span class="math display">
+\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}</span> and <span class="math inline">\mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right]=\beta</span>. <span class="math display">
 \begin{aligned}
-\Var{\hat{\beta} \mid \mathbf{X}} &amp; =
-\E{\left( \hat{\beta}-\E{\hat{\beta} \mid \mathbf{X}}\right) ^{2} \mid \mathbf{X}} \\
-&amp;= \E{\left( \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
-\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2} \mid \mathbf{X}} \\
+\mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) &amp; =
+\mathrm{E}\left[\left( \hat{\beta}-\mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right]\right) ^{2} \mid \mathbf{X}\right] \\
+&amp;= \mathrm{E}\left[\left( \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}}{
+\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2} \mid \mathbf{X}\right] \\
 &amp;= \left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}
-\E{\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}}.
+\mathrm{E}\left[\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}\right].
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Expanding the square, <span class="math display">
@@ -1293,24 +1305,24 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 \left( X_{j}-\bar{X}\right) U_{i}U_{j}.
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Since <span class="math inline">\E{U_{i}U_{j} \mid \mathbf{X}} = 0</span> for <span class="math inline">i \neq j</span>, <span class="math display">
+<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[U_{i}U_{j} \mid \mathbf{X}\right] = 0</span> for <span class="math inline">i \neq j</span>, <span class="math display">
 \begin{aligned}
-\E{\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}}
-&amp;= \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\E{U_{i}^{2} \mid \mathbf{X}} + 0 \\
+\mathrm{E}\left[\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}\right]
+&amp;= \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\mathrm{E}\left[U_{i}^{2} \mid \mathbf{X}\right] + 0 \\
 &amp;= \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}\sigma^{2}.
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>We have <span class="math display">
 \begin{aligned}
-&amp;\Var{\hat{\beta} \mid \mathbf{X}} =
+&amp;\mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) =
 \left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}
-\E{\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}}, \\
-&amp;\E{\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}}
+\mathrm{E}\left[\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}\right], \\
+&amp;\mathrm{E}\left[\left( \sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) U_{i}\right) ^{2} \mid \mathbf{X}\right]
 = \sigma^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2},
 \end{aligned}
 </span> and therefore, <span class="math display">
 \begin{aligned}
-\Var{\hat{\beta} \mid \mathbf{X}} &amp;=
+\mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) &amp;=
 \left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right) ^{2}
 \sigma^{2}\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2} \\
 &amp;= \left( \frac{1}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right)
@@ -1332,7 +1344,7 @@ w_{i} = \frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}.
 <li class="fragment">Since <span class="math inline">\hat{\beta}=\sum_{i=1}^{n}w_{i}Y_{i}</span>, where <span class="math inline">w_{i}=\frac{X_{i}-\bar{X}}{\sum_{l=1}^{n}\left( X_{l}-\bar{X}\right) ^{2}}</span> depend only on the <span class="math inline">X_i</span>’s, <span class="math inline">\hat{\beta}</span> is also normally distributed conditional on the <span class="math inline">X_i</span>’s.</li>
 <li class="fragment">Conditional on <span class="math inline">\mathbf{X}</span> <span class="math display">
 \begin{aligned}
-\hat{\beta} \mid \mathbf{X}&amp;\sim N\left( \E{\hat{\beta} \mid \mathbf{X}}, \Var{\hat{\beta} \mid \mathbf{X}} \right) \\
+\hat{\beta} \mid \mathbf{X}&amp;\sim N\left( \mathrm{E}\left[\hat{\beta} \mid \mathbf{X}\right], \mathrm{Var}\left(\hat{\beta} \mid \mathbf{X}\right) \right) \\
 &amp;\sim N\left( \beta, \frac{\sigma^{2}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}}\right).
 \end{aligned}
 </span></li>

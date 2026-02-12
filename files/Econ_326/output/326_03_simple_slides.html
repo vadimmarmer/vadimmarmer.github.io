@@ -495,6 +495,20 @@ margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 .reveal section h6 {
 text-transform: none !important;
 }
+
+.reveal .slides section mjx-container .fragment:not(.visible) {
+opacity: 0 !important;
+visibility: hidden !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible {
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+.reveal .slides section mjx-container .fragment.visible * {
+visibility: inherit !important;
+}
 </style>
   
   <script>
@@ -1119,7 +1133,7 @@ $
 <ul>
 <li class="fragment">The <strong>simple linear regression model</strong> is used to study the relationship between <strong>two variables</strong>.</li>
 <li class="fragment">It has many limitations, but nevertheless there are examples in the literature where the simple linear regression is applied (e.g., stock returns predictability).</li>
-<li class="fragment">It is also a good starting point to learning the regression technique.</li>
+<li class="fragment">It is also a good starting point for learning the regression technique.</li>
 </ul>
 </section>
 <section id="key-definitions" class="slide level2">
@@ -1192,7 +1206,7 @@ $
 </tbody>
 </table></li>
 <li class="fragment"><p>A pair <span class="math inline">X_{i}, Y_{i}</span> is called an observation.</p></li>
-<li class="fragment"><p><strong>Sample</strong>: <span class="math inline">\left\{ \left( X_{i},Y_{i}\right) : i=1,…,n\right\}</span>.</p></li>
+<li class="fragment"><p><strong>Sample</strong>: <span class="math inline">\left\{ \left( X_{i},Y_{i}\right) : i=1,\ldots,n\right\}</span>.</p></li>
 <li class="fragment"><p>The population is the <strong>joint distribution</strong> of the sample.</p></li>
 </ul>
 </section></section>
