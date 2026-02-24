@@ -102,7 +102,7 @@ $
 
 - **Power** of a test:
   $$
-  1-P\left( \text{Type II error}\right) =1-P\left( \text{Accept }H_{0}|H_{0}\text{ is false}\right) .
+  1-P\left( \text{Type II error}\right) =1-P\left( \text{Do not reject }H_{0}|H_{0}\text{ is false}\right) .
   $$
 
 ## Errors
@@ -111,7 +111,7 @@ $
 
 - The real line is split into two regions: **acceptance region** and **rejection region** (critical region).
 
-- When $T$ is in the acceptance region, we accept $H_{0}$ (and risk making a Type II error).
+- When $T$ is in the acceptance region, we do not reject $H_{0}$ (and risk making a Type II error).
 
 - When $T$ is in the rejection (critical) region, we reject $H_{0}$ (and risk making a Type I error).
 
@@ -376,7 +376,7 @@ text(3, 0.03, expression(alpha / 2), cex = 1.2)
 
 ## The two-sided $p$-value
 
-- The decision to accept or reject $H_{0}$ depends on the critical value $t_{n-2,1-\alpha /2}.$
+- The decision to reject or not reject $H_{0}$ depends on the critical value $t_{n-2,1-\alpha /2}.$
 
 - If $\alpha _{1}>\alpha _{2}$ then $t_{n-2,1-\alpha _{1}/2}<t_{n-2,1-\alpha _{2}/2}.$
 
@@ -404,7 +404,7 @@ text(3, 0.03, expression(alpha / 2), cex = 1.2)
   $$
   \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}\leq t_{n-2,1-\alpha /2}
   $$
-  and we will accept $H_{0}$.
+  and we will not reject $H_{0}$.
 
 ## Example of $p$-value calculation
 
@@ -497,7 +497,7 @@ text(3, 0.03, expression(alpha / 2), cex = 1.2)
   T_stat
   ```
 
-- At 5% significance level, $t_{62,0.975}\approx 1.999>T$ and we accept $H_{0}.$
+- At 5% significance level, $t_{62,0.975}\approx 1.999>T$ and we do not reject $H_{0}.$
   ```{r}
   qt(0.975, df = 62)
   ```
@@ -513,7 +513,7 @@ text(3, 0.03, expression(alpha / 2), cex = 1.2)
   ```
   The $p$-value is $\approx 0.053.$
 
-- For $\alpha \leq 0.053$ we will accept $H_{0}$ and for $\alpha >0.053$ we will reject $H_{0}.$
+- For $\alpha \leq 0.053$ we will not reject $H_{0}$ and for $\alpha >0.053$ we will reject $H_{0}.$
 
 ## Confidence intervals and hypothesis testing
 
