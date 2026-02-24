@@ -251,7 +251,7 @@ P\left( \text{Type I error}\right) =P\left( \text{reject }H_{0}|H_{0}\text{ is t
 </span></p></li>
 <li><p><strong>Type II error</strong> is the error of not rejecting <span class="math inline">H_{0}</span> when <span class="math inline">H_{1}</span> is true.</p></li>
 <li><p><strong>Power</strong> of a test: <span class="math display">
-1-P\left( \text{Type II error}\right) =1-P\left( \text{Accept }H_{0}|H_{0}\text{ is false}\right) .
+1-P\left( \text{Type II error}\right) =1-P\left( \text{Do not reject }H_{0}|H_{0}\text{ is false}\right) .
 </span></p></li>
 </ul>
 </section>
@@ -260,7 +260,7 @@ P\left( \text{Type I error}\right) =P\left( \text{reject }H_{0}|H_{0}\text{ is t
 <ul>
 <li><p>The decision rule depends on a <strong>test statistic</strong> <span class="math inline">T.</span></p></li>
 <li><p>The real line is split into two regions: <strong>acceptance region</strong> and <strong>rejection region</strong> (critical region).</p></li>
-<li><p>When <span class="math inline">T</span> is in the acceptance region, we accept <span class="math inline">H_{0}</span> (and risk making a Type II error).</p></li>
+<li><p>When <span class="math inline">T</span> is in the acceptance region, we do not reject <span class="math inline">H_{0}</span> (and risk making a Type II error).</p></li>
 <li><p>When <span class="math inline">T</span> is in the rejection (critical) region, we reject <span class="math inline">H_{0}</span> (and risk making a Type I error).</p></li>
 <li><p>Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error <span class="math inline">\alpha ,</span> one makes the critical region smaller, which increases the probability of the Type II error. Thus, it is impossible to make both errors arbitrarily small.</p></li>
 <li><p>By convention, <span class="math inline">\alpha</span> is chosen to be a small number, for example, <span class="math inline">\alpha =0.01,0.05,</span> or <span class="math inline">0.10.</span> (This is in agreement with the econometrician carrying the burden of proof).</p></li>
@@ -416,7 +416,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}.
 <section id="the-two-sided-p-value" class="level2">
 <h2 class="anchored" data-anchor-id="the-two-sided-p-value">The two-sided <span class="math inline">p</span>-value</h2>
 <ul>
-<li><p>The decision to accept or reject <span class="math inline">H_{0}</span> depends on the critical value <span class="math inline">t_{n-2,1-\alpha /2}.</span></p></li>
+<li><p>The decision to reject or not reject <span class="math inline">H_{0}</span> depends on the critical value <span class="math inline">t_{n-2,1-\alpha /2}.</span></p></li>
 <li><p>If <span class="math inline">\alpha _{1}&gt;\alpha _{2}</span> then <span class="math inline">t_{n-2,1-\alpha _{1}/2}&lt;t_{n-2,1-\alpha _{2}/2}.</span></p></li>
 <li><p>Thus, it is easier to reject <span class="math inline">H_{0}</span> with the significance level <span class="math inline">\alpha _{1}</span> since it corresponds to a smaller acceptance region.</p></li>
 <li><p><span class="math inline">p</span>-value is the <strong>smallest</strong> significance level <span class="math inline">\alpha</span> for which we can reject <span class="math inline">H_{0}.</span></p></li>
@@ -436,7 +436,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}.
 </span> and we will reject <span class="math inline">H_{0}.</span></p></li>
 <li><p>For all <span class="math inline">\alpha \leq p</span>-value, <span class="math display">
 \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}\leq t_{n-2,1-\alpha /2}
-</span> and we will accept <span class="math inline">H_{0}</span>.</p></li>
+</span> and we will not reject <span class="math inline">H_{0}</span>.</p></li>
 </ul>
 </section>
 <section id="example-of-p-value-calculation" class="level2">
@@ -549,7 +549,7 @@ avginc        0.01158001  0.001308365 8.850748 1.340614e-12</code></pre>
 <pre><code>[1] 1.971874</code></pre>
 </div>
 </div></li>
-<li><p>At 5% significance level, <span class="math inline">t_{62,0.975}\approx 1.999&gt;T</span> and we accept <span class="math inline">H_{0}.</span></p>
+<li><p>At 5% significance level, <span class="math inline">t_{62,0.975}\approx 1.999&gt;T</span> and we do not reject <span class="math inline">H_{0}.</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">62</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -571,7 +571,7 @@ avginc        0.01158001  0.001308365 8.850748 1.340614e-12</code></pre>
 </div>
 </div>
 <p>The <span class="math inline">p</span>-value is <span class="math inline">\approx 0.053.</span></p></li>
-<li><p>For <span class="math inline">\alpha \leq 0.053</span> we will accept <span class="math inline">H_{0}</span> and for <span class="math inline">\alpha &gt;0.053</span> we will reject <span class="math inline">H_{0}.</span></p></li>
+<li><p>For <span class="math inline">\alpha \leq 0.053</span> we will not reject <span class="math inline">H_{0}</span> and for <span class="math inline">\alpha &gt;0.053</span> we will reject <span class="math inline">H_{0}.</span></p></li>
 </ul>
 </section>
 <section id="confidence-intervals-and-hypothesis-testing" class="level2">
@@ -1213,7 +1213,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}&l
 <span id="cb26-102"><a href="#cb26-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-103"><a href="#cb26-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Power** of a test:</span>
 <span id="cb26-104"><a href="#cb26-104" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb26-105"><a href="#cb26-105" aria-hidden="true" tabindex="-1"></a>  1-P\left( \text{Type II error}\right) =1-P\left( \text{Accept }H_{0}|H_{0}\text{ is false}\right) .</span>
+<span id="cb26-105"><a href="#cb26-105" aria-hidden="true" tabindex="-1"></a>  1-P\left( \text{Type II error}\right) =1-P\left( \text{Do not reject }H_{0}|H_{0}\text{ is false}\right) .</span>
 <span id="cb26-106"><a href="#cb26-106" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb26-107"><a href="#cb26-107" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-108"><a href="#cb26-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## Errors</span></span>
@@ -1222,7 +1222,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}&l
 <span id="cb26-111"><a href="#cb26-111" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-112"><a href="#cb26-112" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The real line is split into two regions: **acceptance region** and **rejection region** (critical region).</span>
 <span id="cb26-113"><a href="#cb26-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-114"><a href="#cb26-114" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When $T$ is in the acceptance region, we accept $H_{0}$ (and risk making a Type II error).</span>
+<span id="cb26-114"><a href="#cb26-114" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When $T$ is in the acceptance region, we do not reject $H_{0}$ (and risk making a Type II error).</span>
 <span id="cb26-115"><a href="#cb26-115" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-116"><a href="#cb26-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When $T$ is in the rejection (critical) region, we reject $H_{0}$ (and risk making a Type I error).</span>
 <span id="cb26-117"><a href="#cb26-117" aria-hidden="true" tabindex="-1"></a></span>
@@ -1487,7 +1487,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}&l
 <span id="cb26-378"><a href="#cb26-378" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-379"><a href="#cb26-379" aria-hidden="true" tabindex="-1"></a><span class="fu">## The two-sided $p$-value</span></span>
 <span id="cb26-380"><a href="#cb26-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-381"><a href="#cb26-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The decision to accept or reject $H_{0}$ depends on the critical value $t_{n-2,1-\alpha /2}.$</span>
+<span id="cb26-381"><a href="#cb26-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The decision to reject or not reject $H_{0}$ depends on the critical value $t_{n-2,1-\alpha /2}.$</span>
 <span id="cb26-382"><a href="#cb26-382" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-383"><a href="#cb26-383" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\alpha _{1}&gt;\alpha _{2}$ then $t_{n-2,1-\alpha _{1}/2}&lt;t_{n-2,1-\alpha _{2}/2}.$</span>
 <span id="cb26-384"><a href="#cb26-384" aria-hidden="true" tabindex="-1"></a></span>
@@ -1515,7 +1515,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}&l
 <span id="cb26-406"><a href="#cb26-406" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb26-407"><a href="#cb26-407" aria-hidden="true" tabindex="-1"></a>  \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}\leq t_{n-2,1-\alpha /2}</span>
 <span id="cb26-408"><a href="#cb26-408" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb26-409"><a href="#cb26-409" aria-hidden="true" tabindex="-1"></a>  and we will accept $H_{0}$.</span>
+<span id="cb26-409"><a href="#cb26-409" aria-hidden="true" tabindex="-1"></a>  and we will not reject $H_{0}$.</span>
 <span id="cb26-410"><a href="#cb26-410" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-411"><a href="#cb26-411" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example of $p$-value calculation</span></span>
 <span id="cb26-412"><a href="#cb26-412" aria-hidden="true" tabindex="-1"></a></span>
@@ -1608,7 +1608,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}&l
 <span id="cb26-499"><a href="#cb26-499" aria-hidden="true" tabindex="-1"></a>  T_stat</span>
 <span id="cb26-500"><a href="#cb26-500" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb26-501"><a href="#cb26-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-502"><a href="#cb26-502" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>At 5% significance level, $t_{62,0.975}\approx 1.999&gt;T$ and we accept $H_{0}.$</span>
+<span id="cb26-502"><a href="#cb26-502" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>At 5% significance level, $t_{62,0.975}\approx 1.999&gt;T$ and we do not reject $H_{0}.$</span>
 <span id="cb26-503"><a href="#cb26-503" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb26-504"><a href="#cb26-504" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">62</span>)</span>
 <span id="cb26-505"><a href="#cb26-505" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
@@ -1624,7 +1624,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}&l
 <span id="cb26-515"><a href="#cb26-515" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb26-516"><a href="#cb26-516" aria-hidden="true" tabindex="-1"></a>  The $p$-value is $\approx 0.053.$</span>
 <span id="cb26-517"><a href="#cb26-517" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-518"><a href="#cb26-518" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For $\alpha \leq 0.053$ we will accept $H_{0}$ and for $\alpha &gt;0.053$ we will reject $H_{0}.$</span>
+<span id="cb26-518"><a href="#cb26-518" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For $\alpha \leq 0.053$ we will not reject $H_{0}$ and for $\alpha &gt;0.053$ we will reject $H_{0}.$</span>
 <span id="cb26-519"><a href="#cb26-519" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-520"><a href="#cb26-520" aria-hidden="true" tabindex="-1"></a><span class="fu">## Confidence intervals and hypothesis testing</span></span>
 <span id="cb26-521"><a href="#cb26-521" aria-hidden="true" tabindex="-1"></a></span>

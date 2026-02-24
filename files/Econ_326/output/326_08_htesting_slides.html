@@ -1207,7 +1207,7 @@ P\left( \text{Type I error}\right) =P\left( \text{reject }H_{0}|H_{0}\text{ is t
 </span></p></li>
 <li class="fragment"><p><strong>Type II error</strong> is the error of not rejecting <span class="math inline">H_{0}</span> when <span class="math inline">H_{1}</span> is true.</p></li>
 <li class="fragment"><p><strong>Power</strong> of a test: <span class="math display">
-1-P\left( \text{Type II error}\right) =1-P\left( \text{Accept }H_{0}|H_{0}\text{ is false}\right) .
+1-P\left( \text{Type II error}\right) =1-P\left( \text{Do not reject }H_{0}|H_{0}\text{ is false}\right) .
 </span></p></li>
 </ul>
 </section>
@@ -1216,7 +1216,7 @@ P\left( \text{Type I error}\right) =P\left( \text{reject }H_{0}|H_{0}\text{ is t
 <ul>
 <li class="fragment"><p>The decision rule depends on a <strong>test statistic</strong> <span class="math inline">T.</span></p></li>
 <li class="fragment"><p>The real line is split into two regions: <strong>acceptance region</strong> and <strong>rejection region</strong> (critical region).</p></li>
-<li class="fragment"><p>When <span class="math inline">T</span> is in the acceptance region, we accept <span class="math inline">H_{0}</span> (and risk making a Type II error).</p></li>
+<li class="fragment"><p>When <span class="math inline">T</span> is in the acceptance region, we do not reject <span class="math inline">H_{0}</span> (and risk making a Type II error).</p></li>
 <li class="fragment"><p>When <span class="math inline">T</span> is in the rejection (critical) region, we reject <span class="math inline">H_{0}</span> (and risk making a Type I error).</p></li>
 <li class="fragment"><p>Unfortunately, the probabilities of Type I and II errors are inversely related. By decreasing the probability of Type I error <span class="math inline">\alpha ,</span> one makes the critical region smaller, which increases the probability of the Type II error. Thus, it is impossible to make both errors arbitrarily small.</p></li>
 <li class="fragment"><p>By convention, <span class="math inline">\alpha</span> is chosen to be a small number, for example, <span class="math inline">\alpha =0.01,0.05,</span> or <span class="math inline">0.10.</span> (This is in agreement with the econometrician carrying the burden of proof).</p></li>
@@ -1364,7 +1364,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}.
 <section id="the-two-sided-p-value" class="slide level2">
 <h2>The two-sided <span class="math inline">p</span>-value</h2>
 <ul>
-<li class="fragment"><p>The decision to accept or reject <span class="math inline">H_{0}</span> depends on the critical value <span class="math inline">t_{n-2,1-\alpha /2}.</span></p></li>
+<li class="fragment"><p>The decision to reject or not reject <span class="math inline">H_{0}</span> depends on the critical value <span class="math inline">t_{n-2,1-\alpha /2}.</span></p></li>
 <li class="fragment"><p>If <span class="math inline">\alpha _{1}&gt;\alpha _{2}</span> then <span class="math inline">t_{n-2,1-\alpha _{1}/2}&lt;t_{n-2,1-\alpha _{2}/2}.</span></p></li>
 <li class="fragment"><p>Thus, it is easier to reject <span class="math inline">H_{0}</span> with the significance level <span class="math inline">\alpha _{1}</span> since it corresponds to a smaller acceptance region.</p></li>
 <li class="fragment"><p><span class="math inline">p</span>-value is the <strong>smallest</strong> significance level <span class="math inline">\alpha</span> for which we can reject <span class="math inline">H_{0}.</span></p></li>
@@ -1384,7 +1384,7 @@ T=\frac{\hat{\beta}_{1}-\beta _{1,0}}{\mathrm{se}\left(\hat{\beta}_{1}\right)}.
 </span> and we will reject <span class="math inline">H_{0}.</span></p></li>
 <li class="fragment"><p>For all <span class="math inline">\alpha \leq p</span>-value, <span class="math display">
 \left\vert T\right\vert =t_{n-2,1-\left( p\text{-value}\right) /2}\leq t_{n-2,1-\alpha /2}
-</span> and we will accept <span class="math inline">H_{0}</span>.</p></li>
+</span> and we will not reject <span class="math inline">H_{0}</span>.</p></li>
 </ul>
 </section>
 <section id="example-of-p-value-calculation" class="slide level2">
@@ -1497,7 +1497,7 @@ avginc        0.01158001  0.001308365 8.850748 1.340614e-12</code></pre>
 <pre><code>[1] 1.971874</code></pre>
 </div>
 </div></li>
-<li class="fragment"><p>At 5% significance level, <span class="math inline">t_{62,0.975}\approx 1.999&gt;T</span> and we accept <span class="math inline">H_{0}.</span></p>
+<li class="fragment"><p>At 5% significance level, <span class="math inline">t_{62,0.975}\approx 1.999&gt;T</span> and we do not reject <span class="math inline">H_{0}.</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">62</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1519,7 +1519,7 @@ avginc        0.01158001  0.001308365 8.850748 1.340614e-12</code></pre>
 </div>
 </div>
 <p>The <span class="math inline">p</span>-value is <span class="math inline">\approx 0.053.</span></p></li>
-<li class="fragment"><p>For <span class="math inline">\alpha \leq 0.053</span> we will accept <span class="math inline">H_{0}</span> and for <span class="math inline">\alpha &gt;0.053</span> we will reject <span class="math inline">H_{0}.</span></p></li>
+<li class="fragment"><p>For <span class="math inline">\alpha \leq 0.053</span> we will not reject <span class="math inline">H_{0}</span> and for <span class="math inline">\alpha &gt;0.053</span> we will reject <span class="math inline">H_{0}.</span></p></li>
 </ul>
 </section>
 <section id="confidence-intervals-and-hypothesis-testing" class="slide level2">
