@@ -1,0 +1,351 @@
+---
+title: "Lecture 9: Multiple regression"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_09_mreg.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_09_mreg.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_09_mreg_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Why we need a multiple regression model
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- There are many factors affecting the outcome variable $Y.$
+
+- If we want to estimate the **marginal effect** of one of the factors (regressors), we need to **control** for other factors.
+
+- Suppose that we are interested in the effect of $X_{1}$ on $Y,$ but $Y$ is affected by both $X_{1}$ and $X_{2}$:
+
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}.
+  $$
+
+- Suppose we regress $Y$ **only on $X_{1}$**:
+
+  $$
+  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}.
+  $$
+
+
+- Since $Y$ depends on $X_{2}$ as well,
+
+  $$\begin{aligned}
+  \hat{\beta}_{1} &=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) \left( \beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}\right) }{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}} \\
+  &=\beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}+\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}.
+  \end{aligned}$$
+
+- Assume that $\E{U_{i} \mid \mathbf{X}} = 0,$ where $\mathbf{X} = \{(X_{1,i}, X_{2,i}): i = 1, \ldots, n\}.$ Then:
+
+  $$
+  \E{\hat{\beta}_{1} \mid \mathbf{X}} =\beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}\neq \beta _{1}.
+  $$
+
+- This bias is called **omitted variable bias** because it arises from omitting $X_{2}$ from the regression.
+
+- The exception (no omitted variable bias) is when $X_1$ and $X_2$ are "orthogonal"
+
+  $$
+  \sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) X_{2,i}=0.
+  $$
+
+
+## Omitted variable bias
+
+- When the true model is
+
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i},
+  $$
+
+  but we regress $Y$ only on $X_{1},$
+
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+V_{i},
+  $$
+
+  where $V_{i}$ is the **new error term**:
+
+  $$
+  V_{i}=\beta _{2}X_{2,i}+U_{i}.
+  $$
+
+- If $X_{1}$ and $X_{2}$ are related, we can no longer say that $\E{V_{i} \mid X_{1,i}} = 0.$
+
+- When $X_{1}$ changes, $X_{2}$ changes as well, which contaminates estimation of the effect of $X_{1}$ on $Y.$
+
+- As a result, $\hat{\beta}_{1}$ from the regression of $Y$ on $X_{1}$ alone is **biased**.
+
+## Multiple linear regression model
+
+- The econometrician observes the data: $\left\{ \left( Y_{i},X_{1,i},X_{2,i},\ldots ,X_{k,i}\right) :i=1,\ldots ,n\right\} .$
+
+- The model:
+
+  $$\begin{aligned}
+  &Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U_{i}, \\
+  &\E{U_{i} \mid \mathbf{X}} = 0.
+  \end{aligned}$$
+
+- In the general model, $\mathbf{X}$ denotes the full collection of regressors $\{X_{j,i}: j=1,\ldots,k;\; i=1,\ldots,n\}$.
+
+- We also assume **no multicollinearity**: None of the regressors is constant, and there are no exact **linear** relationships among the regressors.
+
+## Interpretation of the coefficients
+
+$$
+Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U_{i}.
+$$
+
+- $\beta _{j}$ is a **partial (marginal) effect** of $X_{j}$ on $Y$:
+
+  $$
+  \beta _{j}=\frac{\partial Y_{i}}{\partial X_{j,i}}.
+  $$
+
+- For example, $\beta _{1}$ is the effect of $X_{1}$ on $Y$ while **holding the other regressors constant** (or controlling for $X_{2},\ldots ,X_{k}$).
+
+  $$
+  \Delta Y=\beta _{0}+\beta _{1}\Delta X_{1}+\beta _{2}X_{2}+\ldots +\beta _{k}X_{k}+U.
+  $$
+
+- In data, the values of all regressors usually change from observation to observation. If we do not control for other factors, we **cannot identify** the effect of $X_{1}.$
+
+## Changing more than one regressor simultaneously
+
+- There are cases when we **want** to change more than one regressor at the same time to find an effect on $Y.$
+
+- Chandra et al., *Pediatrics*, 2008. The effect of exposure to sexual content on television on likelihood of teen pregnancy.
+
+  $$\begin{aligned}
+  \text{Teen Pregnancy} &= \beta _{0}+\beta _{1}\times \text{Exposure to Sex on TV} \\
+  &\quad +\beta _{2}\times \text{Total TV}+U.
+  \end{aligned}$$
+
+- If we want to see the effect of Exposure, we have to increase the Total TV variable by the same amount as well.
+
+- Otherwise, it is an effect of increasing sexual content and **decreasing** non-sexual content at the same time.
+
+- According to their estimates, $\beta _{1}$ and $\beta _{2}$ are of equal magnitude and **opposite** signs ($\beta _{1}>0$ and $\beta _{2}<0$).
+
+- Alternative explanation: TV with no sexual content (cartoons, etc.) is **negatively** associated with teen pregnancy.
+
+## Modelling nonlinear effects
+
+- Recall that in $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, the effect of $X_{i}$ on $Y_{i}$ is **linear**: $dY_{i}/dX_{i}=\beta _{1}$, which is **constant** for all values of $X_{i}$.
+
+- Multiple regression can be used to model **nonlinear effects** of regressors.
+
+- To model nonlinear returns to education, consider the following equation:
+
+  $$
+  \log \text{Wage}_{i}=\beta _{0}+\beta _{1}\text{Education}_{i}+\beta _{2}\text{Education}_{i}^{2}+U_{i},
+  $$
+
+  where Education$_{i}$ = years of education of individual $i$.
+
+- In this case, the return to education is:
+
+  $$
+  \frac{d\log \text{Wage}_{i}}{d\text{Education}_{i}}=\beta _{1}+2\beta _{2}\text{Education}_{i}.
+  $$
+
+- Now, the return to education depends on the years of education.
+
+- For example, diminishing returns to education correspond to $\beta _{2}<0$.
+
+## OLS estimation
+
+- The OLS estimators $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are the values that minimize the sum of squared errors:
+
+  $$\begin{aligned}
+  &\min_{b_{0},b_{1},\ldots ,b_{k}}Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) ,\text{ where} \\
+  &Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) =\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right) ^{2}.
+  \end{aligned}$$
+
+- The partial derivative with respect to $b_{0}$ is
+
+  $$
+  \frac{\partial Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) }{\partial b_{0}}=-2\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right).
+  $$
+
+- The partial derivative with respect to $b_{j}$, $j=1,\ldots ,k$ is
+
+  $$
+  \frac{\partial Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) }{\partial b_{j}}=-2\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right) X_{j,i}.
+  $$
+
+## Normal equations (first-order conditions for OLS)
+
+- The OLS estimators $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are obtained by solving the following system of **normal equations**:
+
+  $$\begin{aligned}
+  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) &= 0, \\
+  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) X_{1,i} &= 0, \\
+  \vdots \quad &= \quad \vdots \\
+  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) X_{k,i} &= 0.
+  \end{aligned}$$
+
+## Normal equations (first-order conditions for OLS)
+
+- Since the fitted residuals are
+
+  $$
+  \hat{U}_{i}=Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i},
+  $$
+
+  the normal equations can be written as
+
+  $$\begin{aligned}
+  \sum_{i=1}^{n}\hat{U}_{i} &= 0, \\
+  \sum_{i=1}^{n}\hat{U}_{i}X_{1,i} &= 0, \\
+  \vdots \quad &= \quad \vdots \\
+  \sum_{i=1}^{n}\hat{U}_{i}X_{k,i} &= 0.
+  \end{aligned}$$
+
+- We choose $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ so that the $\hat{U}$'s and the regressors are **orthogonal** (uncorrelated in the sample).
+
+## Partitioned regression
+
+- A representation for **individual** $\hat{\beta}$'s can be obtained through the **partitioned regression** result. Suppose we want to find an expression for $\hat{\beta}_{1}.$
+
+  - First, consider regressing $X_{1,i}$ on the other regressors and a constant:
+
+    $$
+    X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},
+    $$
+
+    where $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients, and $\tilde{X}_{1,i}$ is the fitted OLS residual:
+
+    $$
+    \sum_{i=1}^{n}\tilde{X}_{1,i}=0,\text{ and }\sum_{i=1}^{n}\tilde{X}_{1,i}X_{j,i}=0\text{ for }j=2,\ldots ,k.
+    $$
+
+  - Then $\hat{\beta}_{1}$ can be written as
+
+    $$
+    \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+    $$
+
+## Proof of the partitioned regression result
+
+- We can write $Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},$ where $\sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.$
+
+- Now,
+
+  $$\begin{aligned}
+  &\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i}\right) }{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &=\hat{\beta}_{0}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\hat{\beta}_{1}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &\quad +\hat{\beta}_{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\ldots +\hat{\beta}_{k}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
+  \end{aligned}$$
+
+
+We will show that:
+
+1. $\sum_{i=1}^{n}\tilde{X}_{1,i}=0.$
+
+2. $\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.$
+
+3. $\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.$
+
+4. $\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}=0.$
+
+Then
+
+$$
+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\hat{\beta}_{1}.
+$$
+
+## Proof of the partitioned regression result (steps 1-2)
+
+- $\tilde{X}_{1,i}$ is the fitted OLS residual:
+
+  $$
+  X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},
+  $$
+
+  where $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients.
+
+- The normal equations for this regression are:
+
+  $$\begin{aligned}
+  \sum_{i=1}^{n}\tilde{X}_{1,i} &= 0, \\
+  \sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i} &= 0, \\
+  \vdots \quad &= \quad \vdots \\
+  \sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i} &= 0.
+  \end{aligned}$$
+
+## Proof of the partitioned regression result (step 3)
+
+Again, because the $\tilde{X}_{1,i}$ are the fitted OLS residuals from the regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$:
+
+$$\begin{aligned}
+&\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i} \\
+&=\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}\right) \\
+&=\hat{\gamma}_{0}\sum_{i=1}^{n}\tilde{X}_{1,i}+\hat{\gamma}_{2}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}+\ldots +\hat{\gamma}_{k}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}+\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{1,i} \\
+&=\hat{\gamma}_{0}\cdot 0+\hat{\gamma}_{2}\cdot 0+\ldots +\hat{\gamma}_{k}\cdot 0+\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}
+\end{aligned}$$
+
+(This follows from the **normal equations** for the $X_{1}$ regression.)
+
+## Proof of the partitioned regression result (step 4)
+
+Lastly, because the $\hat{U}_{i}$ are the fitted residuals from the regression of $Y$ on all the $X$'s:
+
+$$
+\sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.
+$$
+
+$$\begin{aligned}
+&\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i} \\
+&=\sum_{i=1}^{n}\left( X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}\right) \hat{U}_{i} \\
+&=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}-\hat{\gamma}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\hat{\gamma}_{2}\sum_{i=1}^{n}X_{2,i}\hat{U}_{i}-\ldots -\hat{\gamma}_{k}\sum_{i=1}^{n}X_{k,i}\hat{U}_{i} \\
+&=0-\hat{\gamma}_{0}\cdot 0-\hat{\gamma}_{2}\cdot 0-\ldots -\hat{\gamma}_{k}\cdot 0=0.
+\end{aligned}$$
+
+## "Partialling out"
+
+$$
+\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
+$$
+
+1. First, we regress $X_{1}$ on the remaining regressors (and a constant) and keep $\tilde{X}_{1}$, which is the "part" of $X_{1}$ that is **uncorrelated** with the other regressors (in the sample, or orthogonal to the other regressors).
+
+2. Then, to obtain $\hat{\beta}_{1},$ we regress $Y$ on $\tilde{X}_{1}$, which is "clean" of correlation with the other regressors (no intercept).
+
+$\hat{\beta}_{1}$ measures the effect of $X_{1}$ after the effects of $X_{2},\ldots ,X_{k}$ have been **partialled out** or **netted out**.
