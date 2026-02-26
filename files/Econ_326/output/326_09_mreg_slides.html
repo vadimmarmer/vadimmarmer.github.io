@@ -1245,8 +1245,8 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U
 <li class="fragment"><p>First, consider regressing <span class="math inline">X_{1,i}</span> on the other regressors and a constant:</p>
 <p><span class="math display">
 X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},
-</span></p>
-<p>where <span class="math inline">\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}</span> are the OLS coefficients, and <span class="math inline">\tilde{X}_{1,i}</span> is the fitted OLS residual:</p>
+</span></p></li>
+<li class="fragment"><p>Here, <span class="math inline">\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}</span> are the OLS coefficients, and <span class="math inline">\tilde{X}_{1,i}</span> is the fitted OLS residual:</p>
 <p><span class="math display">
 \sum_{i=1}^{n}\tilde{X}_{1,i}=0,\text{ and }\sum_{i=1}^{n}\tilde{X}_{1,i}X_{j,i}=0\text{ for }j=2,\ldots ,k.
 </span></p></li>
@@ -1268,18 +1268,18 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 &amp;=\hat{\beta}_{0}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\hat{\beta}_{1}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
 &amp;\quad +\hat{\beta}_{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\ldots +\hat{\beta}_{k}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
 \end{aligned}</span></p></li>
-</ul>
-<p>We will show that:</p>
+<li class="fragment"><p>We will show that:</p>
 <ol type="1">
 <li class="fragment"><p><span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}=0.</span></p></li>
 <li class="fragment"><p><span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.</span></p></li>
 <li class="fragment"><p><span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.</span></p></li>
 <li class="fragment"><p><span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}=0.</span></p></li>
-</ol>
-<p>Then</p>
+</ol></li>
+<li class="fragment"><p>Then</p>
 <p><span class="math display">
 \frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\hat{\beta}_{1}.
-</span></p>
+</span></p></li>
+</ul>
 </section>
 <section id="proof-of-the-partitioned-regression-result-steps-1-2" class="slide level2">
 <h2>Proof of the partitioned regression result (steps 1-2)</h2>
@@ -1300,38 +1300,46 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 </section>
 <section id="proof-of-the-partitioned-regression-result-step-3" class="slide level2">
 <h2>Proof of the partitioned regression result (step 3)</h2>
-<p>Again, because the <span class="math inline">\tilde{X}_{1,i}</span> are the fitted OLS residuals from the regression of <span class="math inline">X_{1}</span> on <span class="math inline">X_{2},\ldots ,X_{k}</span>:</p>
+<ul>
+<li class="fragment"><p>Again, because the <span class="math inline">\tilde{X}_{1,i}</span> are the fitted OLS residuals from the regression of <span class="math inline">X_{1}</span> on <span class="math inline">X_{2},\ldots ,X_{k}</span>:</p>
 <p><span class="math display">\begin{aligned}
 &amp;\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i} \\
 &amp;=\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}\right) \\
 &amp;=\hat{\gamma}_{0}\sum_{i=1}^{n}\tilde{X}_{1,i}+\hat{\gamma}_{2}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}+\ldots +\hat{\gamma}_{k}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}+\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{1,i} \\
 &amp;=\hat{\gamma}_{0}\cdot 0+\hat{\gamma}_{2}\cdot 0+\ldots +\hat{\gamma}_{k}\cdot 0+\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}
 \end{aligned}</span></p>
-<p>(This follows from the <strong>normal equations</strong> for the <span class="math inline">X_{1}</span> regression.)</p>
+<p>(This follows from the <strong>normal equations</strong> for the <span class="math inline">X_{1}</span> regression.)</p></li>
+</ul>
 </section>
 <section id="proof-of-the-partitioned-regression-result-step-4" class="slide level2">
 <h2>Proof of the partitioned regression result (step 4)</h2>
-<p>Lastly, because the <span class="math inline">\hat{U}_{i}</span> are the fitted residuals from the regression of <span class="math inline">Y</span> on all the <span class="math inline">X</span>’s:</p>
+<ul>
+<li class="fragment"><p>Lastly, because the <span class="math inline">\hat{U}_{i}</span> are the fitted residuals from the regression of <span class="math inline">Y</span> on all the <span class="math inline">X</span>’s:</p>
 <p><span class="math display">
 \sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.
-</span></p>
+</span></p></li>
+<li class="fragment"><p>Therefore,</p>
 <p><span class="math display">\begin{aligned}
 &amp;\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i} \\
 &amp;=\sum_{i=1}^{n}\left( X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}\right) \hat{U}_{i} \\
 &amp;=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}-\hat{\gamma}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\hat{\gamma}_{2}\sum_{i=1}^{n}X_{2,i}\hat{U}_{i}-\ldots -\hat{\gamma}_{k}\sum_{i=1}^{n}X_{k,i}\hat{U}_{i} \\
 &amp;=0-\hat{\gamma}_{0}\cdot 0-\hat{\gamma}_{2}\cdot 0-\ldots -\hat{\gamma}_{k}\cdot 0=0.
-\end{aligned}</span></p>
+\end{aligned}</span></p></li>
+</ul>
 </section>
 <section id="partialling-out" class="slide level2 scrollable">
 <h2>“Partialling out”</h2>
+<ul>
+<li class="fragment"><p>Recall:</p>
 <p><span class="math display">
 \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
 </span></p>
 <ol type="1">
 <li class="fragment"><p>First, we regress <span class="math inline">X_{1}</span> on the remaining regressors (and a constant) and keep <span class="math inline">\tilde{X}_{1}</span>, which is the “part” of <span class="math inline">X_{1}</span> that is <strong>uncorrelated</strong> with the other regressors (in the sample, or orthogonal to the other regressors).</p></li>
 <li class="fragment"><p>Then, to obtain <span class="math inline">\hat{\beta}_{1},</span> we regress <span class="math inline">Y</span> on <span class="math inline">\tilde{X}_{1}</span>, which is “clean” of correlation with the other regressors (no intercept).</p></li>
-</ol>
-<p><span class="math inline">\hat{\beta}_{1}</span> measures the effect of <span class="math inline">X_{1}</span> after the effects of <span class="math inline">X_{2},\ldots ,X_{k}</span> have been <strong>partialled out</strong> or <strong>netted out</strong>.</p>
+</ol></li>
+<li class="fragment"><p><span class="math inline">\hat{\beta}_{1}</span> measures the effect of <span class="math inline">X_{1}</span> after the effects of <span class="math inline">X_{2},\ldots ,X_{k}</span> have been <strong>partialled out</strong> or <strong>netted out</strong>.</p></li>
+</ul>
 
 </section>
     </div>

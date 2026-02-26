@@ -249,7 +249,7 @@ $$
     X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},
     $$
 
-    where $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients, and $\tilde{X}_{1,i}$ is the fitted OLS residual:
+  - Here, $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients, and $\tilde{X}_{1,i}$ is the fitted OLS residual:
 
     $$
     \sum_{i=1}^{n}\tilde{X}_{1,i}=0,\text{ and }\sum_{i=1}^{n}\tilde{X}_{1,i}X_{j,i}=0\text{ for }j=2,\ldots ,k.
@@ -274,22 +274,21 @@ $$
   &\quad +\hat{\beta}_{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\ldots +\hat{\beta}_{k}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
   \end{aligned}$$
 
+- We will show that:
 
-We will show that:
+  1. $\sum_{i=1}^{n}\tilde{X}_{1,i}=0.$
 
-1. $\sum_{i=1}^{n}\tilde{X}_{1,i}=0.$
+  2. $\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.$
 
-2. $\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.$
+  3. $\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.$
 
-3. $\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.$
+  4. $\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}=0.$
 
-4. $\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}=0.$
+- Then
 
-Then
-
-$$
-\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\hat{\beta}_{1}.
-$$
+  $$
+  \frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\hat{\beta}_{1}.
+  $$
 
 ## Proof of the partitioned regression result (steps 1-2)
 
@@ -312,40 +311,44 @@ $$
 
 ## Proof of the partitioned regression result (step 3)
 
-Again, because the $\tilde{X}_{1,i}$ are the fitted OLS residuals from the regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$:
+- Again, because the $\tilde{X}_{1,i}$ are the fitted OLS residuals from the regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$:
 
-$$\begin{aligned}
-&\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i} \\
-&=\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}\right) \\
-&=\hat{\gamma}_{0}\sum_{i=1}^{n}\tilde{X}_{1,i}+\hat{\gamma}_{2}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}+\ldots +\hat{\gamma}_{k}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}+\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{1,i} \\
-&=\hat{\gamma}_{0}\cdot 0+\hat{\gamma}_{2}\cdot 0+\ldots +\hat{\gamma}_{k}\cdot 0+\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}
-\end{aligned}$$
+  $$\begin{aligned}
+  &\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i} \\
+  &=\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}\right) \\
+  &=\hat{\gamma}_{0}\sum_{i=1}^{n}\tilde{X}_{1,i}+\hat{\gamma}_{2}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}+\ldots +\hat{\gamma}_{k}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}+\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{1,i} \\
+  &=\hat{\gamma}_{0}\cdot 0+\hat{\gamma}_{2}\cdot 0+\ldots +\hat{\gamma}_{k}\cdot 0+\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}
+  \end{aligned}$$
 
-(This follows from the **normal equations** for the $X_{1}$ regression.)
+  (This follows from the **normal equations** for the $X_{1}$ regression.)
 
 ## Proof of the partitioned regression result (step 4)
 
-Lastly, because the $\hat{U}_{i}$ are the fitted residuals from the regression of $Y$ on all the $X$'s:
+- Lastly, because the $\hat{U}_{i}$ are the fitted residuals from the regression of $Y$ on all the $X$'s:
 
-$$
-\sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.
-$$
+  $$
+  \sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.
+  $$
 
-$$\begin{aligned}
-&\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i} \\
-&=\sum_{i=1}^{n}\left( X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}\right) \hat{U}_{i} \\
-&=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}-\hat{\gamma}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\hat{\gamma}_{2}\sum_{i=1}^{n}X_{2,i}\hat{U}_{i}-\ldots -\hat{\gamma}_{k}\sum_{i=1}^{n}X_{k,i}\hat{U}_{i} \\
-&=0-\hat{\gamma}_{0}\cdot 0-\hat{\gamma}_{2}\cdot 0-\ldots -\hat{\gamma}_{k}\cdot 0=0.
-\end{aligned}$$
+- Therefore,
+
+  $$\begin{aligned}
+  &\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i} \\
+  &=\sum_{i=1}^{n}\left( X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}\right) \hat{U}_{i} \\
+  &=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}-\hat{\gamma}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\hat{\gamma}_{2}\sum_{i=1}^{n}X_{2,i}\hat{U}_{i}-\ldots -\hat{\gamma}_{k}\sum_{i=1}^{n}X_{k,i}\hat{U}_{i} \\
+  &=0-\hat{\gamma}_{0}\cdot 0-\hat{\gamma}_{2}\cdot 0-\ldots -\hat{\gamma}_{k}\cdot 0=0.
+  \end{aligned}$$
 
 ## "Partialling out"
 
-$$
-\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
-$$
+- Recall:
 
-1. First, we regress $X_{1}$ on the remaining regressors (and a constant) and keep $\tilde{X}_{1}$, which is the "part" of $X_{1}$ that is **uncorrelated** with the other regressors (in the sample, or orthogonal to the other regressors).
+  $$
+  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
+  $$
 
-2. Then, to obtain $\hat{\beta}_{1},$ we regress $Y$ on $\tilde{X}_{1}$, which is "clean" of correlation with the other regressors (no intercept).
+  1. First, we regress $X_{1}$ on the remaining regressors (and a constant) and keep $\tilde{X}_{1}$, which is the "part" of $X_{1}$ that is **uncorrelated** with the other regressors (in the sample, or orthogonal to the other regressors).
 
-$\hat{\beta}_{1}$ measures the effect of $X_{1}$ after the effects of $X_{2},\ldots ,X_{k}$ have been **partialled out** or **netted out**.
+  2. Then, to obtain $\hat{\beta}_{1},$ we regress $Y$ on $\tilde{X}_{1}$, which is "clean" of correlation with the other regressors (no intercept).
+
+- $\hat{\beta}_{1}$ measures the effect of $X_{1}$ after the effects of $X_{2},\ldots ,X_{k}$ have been **partialled out** or **netted out**.
