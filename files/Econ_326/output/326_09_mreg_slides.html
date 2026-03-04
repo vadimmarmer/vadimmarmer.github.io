@@ -1161,14 +1161,14 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U
 <h2>Changing more than one regressor simultaneously</h2>
 <ul>
 <li class="fragment"><p>There are cases when we <strong>want</strong> to change more than one regressor at the same time to find an effect on <span class="math inline">Y.</span></p></li>
-<li class="fragment"><p>Chandra et al., <em>Pediatrics</em>, 2008. The effect of exposure to sexual content on television on likelihood of teen pregnancy.</p>
+<li class="fragment"><p>Chandra et al., <em>Pediatrics</em>, 2008. “Does Watching Sex on Television Predict Teen Pregnancy?” National longitudinal survey of 718 youths (aged 12–17 at baseline).</p>
 <p><span class="math display">\begin{aligned}
 \text{Teen Pregnancy} &amp;= \beta _{0}+\beta _{1}\times \text{Exposure to Sex on TV} \\
 &amp;\quad +\beta _{2}\times \text{Total TV}+U.
 \end{aligned}</span></p></li>
 <li class="fragment"><p>If we want to see the effect of Exposure, we have to increase the Total TV variable by the same amount as well.</p></li>
 <li class="fragment"><p>Otherwise, it is an effect of increasing sexual content and <strong>decreasing</strong> non-sexual content at the same time.</p></li>
-<li class="fragment"><p>According to their estimates, <span class="math inline">\beta _{1}</span> and <span class="math inline">\beta _{2}</span> are of equal magnitude and <strong>opposite</strong> signs (<span class="math inline">\beta _{1}&gt;0</span> and <span class="math inline">\beta _{2}&lt;0</span>).</p></li>
+<li class="fragment"><p>Their estimates: <span class="math inline">\hat{\beta}_{1}</span> and <span class="math inline">\hat{\beta}_{2}</span> are of similar magnitude and <strong>opposite</strong> signs (<span class="math inline">\hat{\beta}_{1} = 0.44</span> and <span class="math inline">\hat{\beta}_{2} = -0.42</span>).</p></li>
 <li class="fragment"><p>Alternative explanation: TV with no sexual content (cartoons, etc.) is <strong>negatively</strong> associated with teen pregnancy.</p></li>
 </ul>
 </section>
@@ -1254,6 +1254,7 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 <p><span class="math display">
 \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
 </span></p></li>
+<li class="fragment"><p>This formula requires <span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.</span> Under perfect multicollinearity, <span class="math inline">X_{1}</span> is a linear combination of the other regressors, so all residuals <span class="math inline">\tilde{X}_{1,i}=0</span> and the OLS est-r does not exist.</p></li>
 </ul></li>
 </ul>
 </section>

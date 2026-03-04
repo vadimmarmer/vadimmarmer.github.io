@@ -149,7 +149,7 @@ $$
 
 - There are cases when we **want** to change more than one regressor at the same time to find an effect on $Y.$
 
-- Chandra et al., *Pediatrics*, 2008. The effect of exposure to sexual content on television on likelihood of teen pregnancy.
+- Chandra et al., *Pediatrics*, 2008. "Does Watching Sex on Television Predict Teen Pregnancy?" National longitudinal survey of 718 youths (aged 12–17 at baseline).
 
   $$\begin{aligned}
   \text{Teen Pregnancy} &= \beta _{0}+\beta _{1}\times \text{Exposure to Sex on TV} \\
@@ -160,7 +160,8 @@ $$
 
 - Otherwise, it is an effect of increasing sexual content and **decreasing** non-sexual content at the same time.
 
-- According to their estimates, $\beta _{1}$ and $\beta _{2}$ are of equal magnitude and **opposite** signs ($\beta _{1}>0$ and $\beta _{2}<0$).
+- Their estimates: $\hat{\beta}_{1}$ and $\hat{\beta}_{2}$ are of similar magnitude and **opposite** signs ($\hat{\beta}_{1} = 0.44$ and $\hat{\beta}_{2} = -0.42$).
+
 
 - Alternative explanation: TV with no sexual content (cartoons, etc.) is **negatively** associated with teen pregnancy.
 
@@ -260,6 +261,8 @@ $$
     $$
     \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
     $$
+
+  - This formula requires $\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.$ Under perfect multicollinearity, $X_{1}$ is a linear combination of the other regressors, so all residuals $\tilde{X}_{1,i}=0$ and the OLS est-r does not exist.
 
 ## Proof of the partitioned regression result
 

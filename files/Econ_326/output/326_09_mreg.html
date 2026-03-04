@@ -258,14 +258,14 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U
 <h2 class="anchored" data-anchor-id="changing-more-than-one-regressor-simultaneously">Changing more than one regressor simultaneously</h2>
 <ul>
 <li><p>There are cases when we <strong>want</strong> to change more than one regressor at the same time to find an effect on <span class="math inline">Y.</span></p></li>
-<li><p>Chandra et al., <em>Pediatrics</em>, 2008. The effect of exposure to sexual content on television on likelihood of teen pregnancy.</p>
+<li><p>Chandra et al., <em>Pediatrics</em>, 2008. “Does Watching Sex on Television Predict Teen Pregnancy?” National longitudinal survey of 718 youths (aged 12–17 at baseline).</p>
 <p><span class="math display">\begin{aligned}
 \text{Teen Pregnancy} &amp;= \beta _{0}+\beta _{1}\times \text{Exposure to Sex on TV} \\
 &amp;\quad +\beta _{2}\times \text{Total TV}+U.
 \end{aligned}</span></p></li>
 <li><p>If we want to see the effect of Exposure, we have to increase the Total TV variable by the same amount as well.</p></li>
 <li><p>Otherwise, it is an effect of increasing sexual content and <strong>decreasing</strong> non-sexual content at the same time.</p></li>
-<li><p>According to their estimates, <span class="math inline">\beta _{1}</span> and <span class="math inline">\beta _{2}</span> are of equal magnitude and <strong>opposite</strong> signs (<span class="math inline">\beta _{1}&gt;0</span> and <span class="math inline">\beta _{2}&lt;0</span>).</p></li>
+<li><p>Their estimates: <span class="math inline">\hat{\beta}_{1}</span> and <span class="math inline">\hat{\beta}_{2}</span> are of similar magnitude and <strong>opposite</strong> signs (<span class="math inline">\hat{\beta}_{1} = 0.44</span> and <span class="math inline">\hat{\beta}_{2} = -0.42</span>).</p></li>
 <li><p>Alternative explanation: TV with no sexual content (cartoons, etc.) is <strong>negatively</strong> associated with teen pregnancy.</p></li>
 </ul>
 </section>
@@ -351,6 +351,7 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 <p><span class="math display">
 \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
 </span></p></li>
+<li><p>This formula requires <span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.</span> Under perfect multicollinearity, <span class="math inline">X_{1}</span> is a linear combination of the other regressors, so all residuals <span class="math inline">\tilde{X}_{1,i}=0</span> and the OLS est-r does not exist.</p></li>
 </ul></li>
 </ul>
 </section>
@@ -1044,7 +1045,7 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 <span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>There are cases when we **want** to change more than one regressor at the same time to find an effect on $Y.$</span>
 <span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Chandra et al., *Pediatrics*, 2008. The effect of exposure to sexual content on television on likelihood of teen pregnancy.</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Chandra et al., *Pediatrics*, 2008. "Does Watching Sex on Television Predict Teen Pregnancy?" National longitudinal survey of 718 youths (aged 12–17 at baseline).</span>
 <span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
 <span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>  \text{Teen Pregnancy} &amp;= \beta _{0}+\beta _{1}\times \text{Exposure to Sex on TV} <span class="sc">\\</span></span>
@@ -1055,198 +1056,201 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 <span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Otherwise, it is an effect of increasing sexual content and **decreasing** non-sexual content at the same time.</span>
 <span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>According to their estimates, $\beta _{1}$ and $\beta _{2}$ are of equal magnitude and **opposite** signs ($\beta _{1}&gt;0$ and $\beta _{2}&lt;0$).</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Their estimates: $\hat{\beta}_{1}$ and $\hat{\beta}_{2}$ are of similar magnitude and **opposite** signs ($\hat{\beta}_{1} = 0.44$ and $\hat{\beta}_{2} = -0.42$).</span>
 <span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alternative explanation: TV with no sexual content (cartoons, etc.) is **negatively** associated with teen pregnancy.</span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelling nonlinear effects</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that in $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, the effect of $X_{i}$ on $Y_{i}$ is **linear**: $dY_{i}/dX_{i}=\beta _{1}$, which is **constant** for all values of $X_{i}$.</span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Multiple regression can be used to model **nonlinear effects** of regressors.</span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To model nonlinear returns to education, consider the following equation:</span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>  \log \text{Wage}_{i}=\beta _{0}+\beta _{1}\text{Education}_{i}+\beta _{2}\text{Education}_{i}^{2}+U_{i},</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>  where Education$_{i}$ = years of education of individual $i$.</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, the return to education is:</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>  \frac{d\log \text{Wage}_{i}}{d\text{Education}_{i}}=\beta _{1}+2\beta _{2}\text{Education}_{i}.</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Now, the return to education depends on the years of education.</span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For example, diminishing returns to education correspond to $\beta _{2}&lt;0$.</span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="fu">## OLS estimation</span></span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimators $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are the values that minimize the sum of squared errors:</span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>  &amp;\min_{b_{0},b_{1},\ldots ,b_{k}}Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) ,\text{ where} <span class="sc">\\</span></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>  &amp;Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) =\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right) ^{2}.</span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The partial derivative with respect to $b_{0}$ is</span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>  \frac{\partial Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) }{\partial b_{0}}=-2\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right).</span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The partial derivative with respect to $b_{j}$, $j=1,\ldots ,k$ is</span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>  \frac{\partial Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) }{\partial b_{j}}=-2\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right) X_{j,i}.</span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal equations (first-order conditions for OLS)</span></span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimators $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are obtained by solving the following system of **normal equations**:</span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) X_{1,i} &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>  \vdots \quad &amp;= \quad \vdots <span class="sc">\\</span></span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) X_{k,i} &amp;= 0.</span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal equations (first-order conditions for OLS)</span></span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since the fitted residuals are</span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>  \hat{U}_{i}=Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i},</span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>  the normal equations can be written as</span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i} &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i}X_{1,i} &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>  \vdots \quad &amp;= \quad \vdots <span class="sc">\\</span></span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i}X_{k,i} &amp;= 0.</span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We choose $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ so that the $\hat{U}$'s and the regressors are **orthogonal** (uncorrelated in the sample).</span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="fu">## Partitioned regression</span></span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A representation for **individual** $\hat{\beta}$'s can be obtained through the **partitioned regression** result. Suppose we want to find an expression for $\hat{\beta}_{1}.$</span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>First, consider regressing $X_{1,i}$ on the other regressors and a constant:</span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>    $$</span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>    X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},</span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>    $$</span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Here, $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients, and $\tilde{X}_{1,i}$ is the fitted OLS residual:</span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>    $$</span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>    \sum_{i=1}^{n}\tilde{X}_{1,i}=0,\text{ and }\sum_{i=1}^{n}\tilde{X}_{1,i}X_{j,i}=0\text{ for }j=2,\ldots ,k.</span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>    $$</span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Then $\hat{\beta}_{1}$ can be written as</span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>    $$</span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>    \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.</span>
-<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>    $$</span>
-<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result</span></span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can write $Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},$ where $\sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.$</span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Now,</span>
-<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>  &amp;\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} <span class="sc">\\</span></span>
-<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>  &amp;=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i}\right) }{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} <span class="sc">\\</span></span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>  &amp;=\hat{\beta}_{0}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\hat{\beta}_{1}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} <span class="sc">\\</span></span>
-<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\hat{\beta}_{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\ldots +\hat{\beta}_{k}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}</span>
-<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We will show that:</span>
-<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}=0.$</span>
-<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.$</span>
-<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a><span class="ss">  3. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.$</span>
-<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a><span class="ss">  4. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}=0.$</span>
-<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Then</span>
-<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>  \frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\hat{\beta}_{1}.</span>
-<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result (steps 1-2)</span></span>
-<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\tilde{X}_{1,i}$ is the fitted OLS residual:</span>
-<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>  X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},</span>
-<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>  where $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients.</span>
-<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The normal equations for this regression are:</span>
-<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\tilde{X}_{1,i} &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i} &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>  \vdots \quad &amp;= \quad \vdots <span class="sc">\\</span></span>
-<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i} &amp;= 0.</span>
-<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result (step 3)</span></span>
-<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Again, because the $\tilde{X}_{1,i}$ are the fitted OLS residuals from the regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$:</span>
-<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>  &amp;\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i} <span class="sc">\\</span></span>
-<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>  &amp;=\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}\right) <span class="sc">\\</span></span>
-<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>  &amp;=\hat{\gamma}_{0}\sum_{i=1}^{n}\tilde{X}_{1,i}+\hat{\gamma}_{2}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}+\ldots +\hat{\gamma}_{k}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}+\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{1,i} <span class="sc">\\</span></span>
-<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>  &amp;=\hat{\gamma}_{0}\cdot 0+\hat{\gamma}_{2}\cdot 0+\ldots +\hat{\gamma}_{k}\cdot 0+\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}</span>
-<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>  (This follows from the **normal equations** for the $X_{1}$ regression.)</span>
-<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result (step 4)</span></span>
-<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Lastly, because the $\hat{U}_{i}$ are the fitted residuals from the regression of $Y$ on all the $X$'s:</span>
-<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.</span>
-<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Therefore,</span>
-<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>  &amp;\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i} <span class="sc">\\</span></span>
-<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>  &amp;=\sum_{i=1}^{n}\left( X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}\right) \hat{U}_{i} <span class="sc">\\</span></span>
-<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>  &amp;=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}-\hat{\gamma}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\hat{\gamma}_{2}\sum_{i=1}^{n}X_{2,i}\hat{U}_{i}-\ldots -\hat{\gamma}_{k}\sum_{i=1}^{n}X_{k,i}\hat{U}_{i} <span class="sc">\\</span></span>
-<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>  &amp;=0-\hat{\gamma}_{0}\cdot 0-\hat{\gamma}_{2}\cdot 0-\ldots -\hat{\gamma}_{k}\cdot 0=0.</span>
-<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a><span class="fu">## "Partialling out"</span></span>
-<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall:</span>
-<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}</span>
-<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>First, we regress $X_{1}$ on the remaining regressors (and a constant) and keep $\tilde{X}_{1}$, which is the "part" of $X_{1}$ that is **uncorrelated** with the other regressors (in the sample, or orthogonal to the other regressors).</span>
-<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>Then, to obtain $\hat{\beta}_{1},$ we regress $Y$ on $\tilde{X}_{1}$, which is "clean" of correlation with the other regressors (no intercept).</span>
-<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\beta}_{1}$ measures the effect of $X_{1}$ after the effects of $X_{2},\ldots ,X_{k}$ have been **partialled out** or **netted out**.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alternative explanation: TV with no sexual content (cartoons, etc.) is **negatively** associated with teen pregnancy.</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelling nonlinear effects</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that in $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, the effect of $X_{i}$ on $Y_{i}$ is **linear**: $dY_{i}/dX_{i}=\beta _{1}$, which is **constant** for all values of $X_{i}$.</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Multiple regression can be used to model **nonlinear effects** of regressors.</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To model nonlinear returns to education, consider the following equation:</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  \log \text{Wage}_{i}=\beta _{0}+\beta _{1}\text{Education}_{i}+\beta _{2}\text{Education}_{i}^{2}+U_{i},</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>  where Education$_{i}$ = years of education of individual $i$.</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, the return to education is:</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>  \frac{d\log \text{Wage}_{i}}{d\text{Education}_{i}}=\beta _{1}+2\beta _{2}\text{Education}_{i}.</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Now, the return to education depends on the years of education.</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For example, diminishing returns to education correspond to $\beta _{2}&lt;0$.</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="fu">## OLS estimation</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimators $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are the values that minimize the sum of squared errors:</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>  &amp;\min_{b_{0},b_{1},\ldots ,b_{k}}Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) ,\text{ where} <span class="sc">\\</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>  &amp;Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) =\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right) ^{2}.</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The partial derivative with respect to $b_{0}$ is</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>  \frac{\partial Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) }{\partial b_{0}}=-2\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right).</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The partial derivative with respect to $b_{j}$, $j=1,\ldots ,k$ is</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>  \frac{\partial Q_{n}\left( b_{0},b_{1},\ldots ,b_{k}\right) }{\partial b_{j}}=-2\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-\ldots -b_{k}X_{k,i}\right) X_{j,i}.</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal equations (first-order conditions for OLS)</span></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimators $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are obtained by solving the following system of **normal equations**:</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) X_{1,i} &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>  \vdots \quad &amp;= \quad \vdots <span class="sc">\\</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\left( Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i}\right) X_{k,i} &amp;= 0.</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Normal equations (first-order conditions for OLS)</span></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since the fitted residuals are</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>  \hat{U}_{i}=Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\ldots -\hat{\beta}_{k}X_{k,i},</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>  the normal equations can be written as</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i} &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i}X_{1,i} &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>  \vdots \quad &amp;= \quad \vdots <span class="sc">\\</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i}X_{k,i} &amp;= 0.</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We choose $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ so that the $\hat{U}$'s and the regressors are **orthogonal** (uncorrelated in the sample).</span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="fu">## Partitioned regression</span></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A representation for **individual** $\hat{\beta}$'s can be obtained through the **partitioned regression** result. Suppose we want to find an expression for $\hat{\beta}_{1}.$</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>First, consider regressing $X_{1,i}$ on the other regressors and a constant:</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>    X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Here, $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients, and $\tilde{X}_{1,i}$ is the fitted OLS residual:</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>    \sum_{i=1}^{n}\tilde{X}_{1,i}=0,\text{ and }\sum_{i=1}^{n}\tilde{X}_{1,i}X_{j,i}=0\text{ for }j=2,\ldots ,k.</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Then $\hat{\beta}_{1}$ can be written as</span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>    \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>This formula requires $\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.$ Under perfect multicollinearity, $X_{1}$ is a linear combination of the other regressors, so all residuals $\tilde{X}_{1,i}=0$ and the OLS est-r does not exist.</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can write $Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},$ where $\sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.$</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Now,</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>  &amp;\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} <span class="sc">\\</span></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>  &amp;=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i}\right) }{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} <span class="sc">\\</span></span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>  &amp;=\hat{\beta}_{0}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\hat{\beta}_{1}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} <span class="sc">\\</span></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\hat{\beta}_{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\ldots +\hat{\beta}_{k}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We will show that:</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}=0.$</span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.$</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a><span class="ss">  3. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.$</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a><span class="ss">  4. </span>$\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i}=0.$</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Then</span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>  \frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\hat{\beta}_{1}.</span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result (steps 1-2)</span></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\tilde{X}_{1,i}$ is the fitted OLS residual:</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>  X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i},</span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>  where $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients.</span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The normal equations for this regression are:</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\tilde{X}_{1,i} &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i} &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>  \vdots \quad &amp;= \quad \vdots <span class="sc">\\</span></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i} &amp;= 0.</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result (step 3)</span></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Again, because the $\tilde{X}_{1,i}$ are the fitted OLS residuals from the regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$:</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>  &amp;\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i} <span class="sc">\\</span></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>  &amp;=\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}\right) <span class="sc">\\</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>  &amp;=\hat{\gamma}_{0}\sum_{i=1}^{n}\tilde{X}_{1,i}+\hat{\gamma}_{2}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}+\ldots +\hat{\gamma}_{k}\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}+\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{1,i} <span class="sc">\\</span></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>  &amp;=\hat{\gamma}_{0}\cdot 0+\hat{\gamma}_{2}\cdot 0+\ldots +\hat{\gamma}_{k}\cdot 0+\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}</span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>  (This follows from the **normal equations** for the $X_{1}$ regression.)</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the partitioned regression result (step 4)</span></span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Lastly, because the $\hat{U}_{i}$ are the fitted residuals from the regression of $Y$ on all the $X$'s:</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>  \sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}X_{1,i}=\ldots =\sum_{i=1}^{n}\hat{U}_{i}X_{k,i}=0.</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Therefore,</span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>  &amp;\sum_{i=1}^{n}\tilde{X}_{1,i}\hat{U}_{i} <span class="sc">\\</span></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  &amp;=\sum_{i=1}^{n}\left( X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}\right) \hat{U}_{i} <span class="sc">\\</span></span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>  &amp;=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}-\hat{\gamma}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\hat{\gamma}_{2}\sum_{i=1}^{n}X_{2,i}\hat{U}_{i}-\ldots -\hat{\gamma}_{k}\sum_{i=1}^{n}X_{k,i}\hat{U}_{i} <span class="sc">\\</span></span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>  &amp;=0-\hat{\gamma}_{0}\cdot 0-\hat{\gamma}_{2}\cdot 0-\ldots -\hat{\gamma}_{k}\cdot 0=0.</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a><span class="fu">## "Partialling out"</span></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall:</span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}</span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>First, we regress $X_{1}$ on the remaining regressors (and a constant) and keep $\tilde{X}_{1}$, which is the "part" of $X_{1}$ that is **uncorrelated** with the other regressors (in the sample, or orthogonal to the other regressors).</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>Then, to obtain $\hat{\beta}_{1},$ we regress $Y$ on $\tilde{X}_{1}$, which is "clean" of correlation with the other regressors (no intercept).</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\beta}_{1}$ measures the effect of $X_{1}$ after the effects of $X_{2},\ldots ,X_{k}$ have been **partialled out** or **netted out**.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
