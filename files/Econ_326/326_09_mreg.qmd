@@ -77,7 +77,7 @@ format:
 
 - This bias is called **omitted variable bias** because it arises from omitting $X_{2}$ from the regression.
 
-- The exception (no omitted variable bias) is when $X_1$ and $X_2$ are "orthogonal"
+- The exception (no omitted variable bias) is when $X_{1}$ and $X_{2}$ are "orthogonal":
 
   $$
   \sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) X_{2,i}=0.
@@ -262,7 +262,7 @@ $$
     \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
     $$
 
-  - This formula requires $\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.$ Under perfect multicollinearity, $X_{1}$ is a linear combination of the other regressors, so all residuals $\tilde{X}_{1,i}=0$ and the OLS est-r does not exist.
+  - This formula requires $\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.$ Under perfect multicollinearity, $X_{1}$ is a linear combination of the other regressors, so all residuals $\tilde{X}_{1,i}=0$ and the OLS estimator does not exist.
 
 ## Proof of the partitioned regression result
 
