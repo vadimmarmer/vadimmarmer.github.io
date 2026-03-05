@@ -1,0 +1,371 @@
+---
+title: "Lecture 11: Properties of OLS in multiple regression"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_11_mreg_properties.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_11_mreg_properties.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_11_mreg_properties_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Multiple regression and OLS
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- Consider the multiple regression model with $k$ regressors:
+
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U_{i}.
+  $$
+
+- Let $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ be the OLS estimators: if
+
+  $$
+  \hat{U}_{i}=Y_{i}-\hat{\beta}_{0}-\hat{\beta}_{1}X_{1,i}-\hat{\beta}_{2}X_{2,i}-\ldots -\hat{\beta}_{k}X_{k,i},
+  $$
+
+  then
+
+  $$
+  \sum_{i=1}^{n}\hat{U}_{i}=\sum_{i=1}^{n}X_{1,i}\hat{U}_{i}=\ldots =\sum_{i=1}^{n}X_{k,i}\hat{U}_{i}=0.
+  $$
+
+## Multiple regression and OLS
+
+- As in Lecture 9, we can write $\hat{\beta}_{1}$ as
+
+  $$
+  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}},\text{ where}
+  $$
+
+  - $\tilde{X}_{1,i}$ are the fitted OLS residuals: $\tilde{X}_{1,i}=X_{1,i}-\hat{\gamma}_{0}-\hat{\gamma}_{2}X_{2,i}-\ldots -\hat{\gamma}_{k}X_{k,i}.$
+
+  - $\hat{\gamma}_{0},\hat{\gamma}_{2},\ldots ,\hat{\gamma}_{k}$ are the OLS coefficients: $\sum_{i=1}^{n}\tilde{X}_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0.$
+
+- Similarly, we can write $\hat{\beta}_{2}$ as
+
+  $$
+  \hat{\beta}_{2}=\frac{\sum_{i=1}^{n}\tilde{X}_{2,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}},\text{ where}
+  $$
+
+  - $\tilde{X}_{2,i}$ are the fitted OLS residuals: $\tilde{X}_{2,i}=X_{2,i}-\hat{\delta}_{0}-\hat{\delta}_{1}X_{1,i}-\hat{\delta}_{3}X_{3,i}-\ldots -\hat{\delta}_{k}X_{k,i}.$
+
+  - $\hat{\delta}_{0},\hat{\delta}_{1},\hat{\delta}_{3},\ldots ,\hat{\delta}_{k}$ are the OLS coefficients: $\sum_{i=1}^{n}\tilde{X}_{2,i}=\sum_{i=1}^{n}\tilde{X}_{2,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{2,i}X_{3,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{2,i}X_{k,i}=0$.
+
+## The OLS estimators are linear
+
+- Consider $\hat{\beta}_{1}$:
+
+  $$
+  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\sum_{i=1}^{n}\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}Y_{i}=\sum_{i=1}^{n}w_{1,i}Y_{i},
+  $$
+
+  where
+
+  $$
+  w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
+  $$
+
+- Recall that $\tilde{X}_{1}$ are the residuals from a regression of $X_{1}$ against $X_{2},\ldots ,X_{k}$ and a constant, and therefore $w_{1,i}$ depends only on $\mathbf{X}$.
+
+## Unbiasedness
+
+- Suppose that
+
+  1. $Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U_{i}.$
+
+  2. **Conditional on $\mathbf{X}$**, $\E{U_{i} \mid \mathbf{X}} = 0$ for all $i$'s.
+
+  - Conditioning on $\mathbf{X}$ means that we condition on all regressors for all observations: $\mathbf{X} = \{(X_{1,i}, X_{2,i}, \ldots, X_{k,i}): i = 1, \ldots, n\}.$
+
+- Under the above assumptions, conditional on $\mathbf{X}$:
+
+  $$\begin{aligned}
+  \E{\hat{\beta}_{0} \mid \mathbf{X}} &= \beta _{0}, \\
+  \E{\hat{\beta}_{1} \mid \mathbf{X}} &= \beta _{1}, \\
+  &\;\;\vdots \\
+  \E{\hat{\beta}_{k} \mid \mathbf{X}} &= \beta _{k}.
+  \end{aligned}$$
+
+## Proof of unbiasedness
+
+- Substituting $Y_i$ and expanding:
+
+  $$\begin{aligned}
+  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
+  &=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U_{i}\right) }{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &=\beta _{0}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\beta _{1}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\beta _{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &\quad +\ldots +\beta _{k}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  \end{aligned}$$
+
+- Using the partitioned regression results from Lecture 9:
+
+  $$\begin{aligned}
+  &\sum_{i=1}^{n}\tilde{X}_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}X_{2,i}=\ldots =\sum_{i=1}^{n}\tilde{X}_{1,i}X_{k,i}=0, \\
+  &\sum_{i=1}^{n}\tilde{X}_{1,i}X_{1,i}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.
+  \end{aligned}$$
+
+- Therefore,
+
+  $$
+  \hat{\beta}_{1}=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  $$
+
+## Proof of unbiasedness
+
+- We have
+
+  $$
+  \hat{\beta}_{1}=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  $$
+
+- **Conditional on $\mathbf{X}$**,
+
+  $$
+  \E{U_{i} \mid \mathbf{X}} = 0.
+  $$
+
+- Therefore, **conditional on $\mathbf{X}$**,
+
+  $$\begin{aligned}
+  \E{\hat{\beta}_{1} \mid \mathbf{X}}
+  &= \E{\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}  \mid \mathbf{X}} \\
+  &=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\E{U_{i} \mid \mathbf{X}}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &=\beta _{1}.
+  \end{aligned}$$
+
+## Conditional variance of the OLS estimators
+
+- Suppose that:
+
+  1. $Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U_{i}.$
+
+  2. **Conditional on $\mathbf{X}$**, $\E{U_{i} \mid \mathbf{X}} = 0$ for all $i$'s.
+
+  3. **Conditional on $\mathbf{X}$**, $\E{U_{i}^{2} \mid \mathbf{X}} = \sigma ^{2}$ for all $i$'s.
+
+  4. **Conditional on $\mathbf{X}$**, $\E{U_{i}U_{j} \mid \mathbf{X}} = 0$ for all $i\neq j$.
+
+- The conditional variance of $\hat{\beta}_{1}$ given $\mathbf{X}$ is
+
+  $$
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  $$
+
+- **Gauss-Markov Theorem:** Under Assumptions 1--4, the OLS estimators are **BLUE**.
+
+## Derivation of the conditional variance
+
+- We have $\hat{\beta}_{1}=\beta _{1}+\dfrac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.$
+
+- Conditional on $\mathbf{X}$,
+
+  $$\begin{aligned}
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}}
+  &= \E{\left( \hat{\beta}_{1}-\E{\hat{\beta}_{1} \mid \mathbf{X}}\right) ^{2}  \mid \mathbf{X}} \\
+  &= \E{\left( \frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}\right) ^{2}  \mid \mathbf{X}} \\
+  &=\frac{1}{\left(\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\right) ^{2}}\E{\left( \sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}\right) ^{2}  \mid \mathbf{X}} \\
+  &=\frac{1}{\left(\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\right) ^{2}}\left( \sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sigma ^{2}+\sum_{i\neq j}\tilde{X}_{1,i}\tilde{X}_{1,j}\cdot 0\right) \\
+  &=\frac{\sigma ^{2}\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}{\left(\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\right)^{2}}
+  =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  \end{aligned}$$
+
+## Conditional covariance of the OLS estimators
+
+- Consider $\hat{\beta}_{1}$ and $\hat{\beta}_{2}$:
+
+  $$\begin{aligned}
+  \hat{\beta}_{1} &=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}, \\
+  \hat{\beta}_{2} &=\beta _{2}+\frac{\sum_{i=1}^{n}\tilde{X}_{2,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}},
+  \end{aligned}$$
+
+  where
+
+  - $\tilde{X}_{1}$ are the fitted residuals from the regression of $X_{1}$ against a constant and $X_{2},X_{3},\ldots ,X_{k}$.
+
+  - $\tilde{X}_{2}$ are the fitted residuals from the regression of $X_{2}$ against a constant and $X_{1},X_{3},\ldots ,X_{k}.$
+
+- We will show that given Assumptions 1--4, **conditional on $\mathbf{X}$**:
+
+  $$
+  \Cov{\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}} =\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}
+  $$
+
+## Conditional covariance of the OLS estimators
+
+Conditional on $\mathbf{X}$,
+
+$$\begin{aligned}
+&\Cov{\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}} \\
+&= \E{\left( \hat{\beta}_{1}-\E{\hat{\beta}_{1} \mid \mathbf{X}}\right) \left( \hat{\beta}_{2}-\E{\hat{\beta}_{2} \mid \mathbf{X}}\right)  \mid \mathbf{X}} \\
+&= \frac{1}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}
+\E{\left( \textstyle\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}\right) \left( \textstyle\sum_{i=1}^{n}\tilde{X}_{2,i}U_{i}\right)  \mid \mathbf{X}} \\
+&= \frac{1}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}
+\left(\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}\sigma^{2}+\sum_{i\neq j}\tilde{X}_{1,i}\tilde{X}_{2,j}\cdot 0\right) \\
+&=\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}.
+\end{aligned}$$
+
+## Normality of the OLS estimators
+
+- In addition to Assumptions 1--4, assume that **conditional on $\mathbf{X}$**, $U_{i}$'s are jointly normally distributed.
+
+- $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are linear estimators:
+
+  $$
+  \hat{\beta}_{j}=\sum_{i=1}^{n}w_{j,i}Y_{i}=\beta _{j}+\sum_{i=1}^{n}w_{j,i}U_{i},
+  $$
+
+  where
+
+  $$
+  w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
+  $$
+
+  and $\tilde{X}_{j,i}$ are the residuals from the regression of $X_{j}$ against the rest of the regressors.
+
+- It follows that $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are jointly normally distributed (conditional on $\mathbf{X}$).
+
+## Inclusion of irrelevant regressors
+
+- Suppose that the true model is $Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+U_{i}.$
+
+- We could estimate $\beta _{1}$ by
+
+  $$
+  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}.
+  $$
+
+- Suppose that instead we regress $Y$ against a constant, $X_{1}$ and additional $k-1$ regressors $X_{2},\ldots ,X_{k}$, i.e., we estimate $\beta _{1}$ by
+
+  $$
+  \tilde{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  $$
+
+- We have
+
+  $$\begin{aligned}
+  \tilde{\beta}_{1}
+  &=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\left( \beta _{0}+\beta _{1}X_{1,i}+U_{i}\right) }{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}} \\
+  &=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  \end{aligned}$$
+
+- Since conditional on $\mathbf{X}$, $\E{U_{i} \mid \mathbf{X}} = 0$, $\tilde{\beta}_{1}$ is **unbiased**!
+
+## Inclusion of irrelevant regressors
+
+- When $Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+U_{i},$
+
+  $$\begin{aligned}
+  \hat{\beta}_{1}&=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}} \quad \text{and} \\
+  \tilde{\beta}_{1}&=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
+  \end{aligned}$$
+
+  are both unbiased.
+
+- Conditional on $\mathbf{X}$,
+
+  $$\begin{aligned}
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}} \quad \text{and} \\
+  \Var{\tilde{\beta}_{1} \mid \mathbf{X}} &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+  \end{aligned}$$
+
+- Since the true model has only $X_{1},$ by the Gauss-Markov Theorem $\hat{\beta}_{1}$ is BLUE and
+
+  $$
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} \leq \Var{\tilde{\beta}_{1} \mid \mathbf{X}}.
+  $$
+
+- Without the Gauss-Markov Theorem, one can show directly that $\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}\geq \sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.$
+
+## Proof of the variance inequality
+
+- $\tilde{X}_{1,i}$ are the fitted residuals from regressing $X_{1,i}$ against a constant, $X_{2,i},\ldots ,X_{k,i}$:
+
+  $$
+  X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}.
+  $$
+
+- Consider the sums-of-squares for this regression:
+
+  $$\begin{aligned}
+  SST_{1} &=\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}, \\
+  SSE_{1} &=\sum_{i=1}^{n}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}-\bar{X}_{1}\right) ^{2}, \\
+  SSR_{1} &=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.
+  \end{aligned}$$
+
+- Thus,
+
+  $$
+  \sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}-\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=SST_{1}-SSR_{1}=SSE_{1}\geq 0.
+  $$
+
+## Variance and the number of regressors
+
+- In $Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},$ the variance of the OLS estimator $\hat{\beta}_{1}$ is
+
+  $$
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}},
+  $$
+
+  where $SSR_{1}$ is the residual sum-of-squares from the regression of $X_{1}$ against a constant and the rest of the regressors.
+
+- Since $SSR_{1}$ can only decrease when we add more regressors, $\Var{\hat{\beta}_{1} \mid \mathbf{X}}$ increases with $k,$ if the added regressors are irrelevant but correlated with the included regressors.
+
+- If the added regressors are uncorrelated with $X_{1},$ inclusion of such regressors will not affect $SSR_{1}$ (in large samples) or the variance of $\hat{\beta}_{1}.$
+
+- If the added regressors are uncorrelated with $X_{1}$ and affect $Y,$ their inclusion will reduce $\sigma ^{2}$ without affecting $SSR_{1}$ and will reduce the variance of $\hat{\beta}_{1}.$
+
+## Estimation of variances and covariances
+
+- In $Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},$
+
+  $$\begin{aligned}
+  \Var{\hat{\beta}_{1} \mid \mathbf{X}} &=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}, \\
+  \Cov{\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}} &=\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}.
+  \end{aligned}$$
+
+- Variances and covariances can be estimated by replacing $\sigma ^{2}$ with
+
+  $$
+  s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
+  $$
+
+- Estimated variance and covariance:
+
+  $$\begin{aligned}
+  \Vhat{\hat{\beta}_{1}} &=\frac{s^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}, \\
+  \widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right) &=s^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}.
+  \end{aligned}$$

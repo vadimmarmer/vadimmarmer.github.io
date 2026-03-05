@@ -1,5 +1,44 @@
 # Session Notes — Econ 326
 
+## 2026-03-05
+
+**File changes:**
+- Updated `326_10_r2.qmd` — revised R example slides to use `hprice1` dataset from `wooldridge` package
+
+**Key changes (326_10_r2.qmd):**
+- Replaced fabricated numeric example with real data: `lm(price ~ sqrft + bdrms + lotsize, data = hprice1)` (n=88, k=3, R²=0.6724, adj R²=0.6607, s=59.83)
+- Shows R code (`library(wooldridge)`, `lm()`, `summary()`) and relevant `summary()` output
+- Second slide recovers SSR, SST, SSE from s and R² (same algebraic approach as before)
+- All 3 output formats render successfully, 0 KaTeX errors
+
+## 2026-03-04
+
+**File changes:**
+- Created `326_10_r2.qmd` — Lecture 10: R-squared (converted from LaTeX `326_11_r2.tex`)
+- Created `326_11_mreg_properties.qmd` — Lecture 11: Properties of OLS in multiple regression (converted from LaTeX `326_12_mreg_properties.tex`)
+- Updated `/_teaching/2026-01-Econ-326.md` — added lectures 10 and 11
+
+**New content (326_10_r2.qmd, ~300 lines):**
+- 15 slides: Fitted values, Sum-of-Squares (SST/SSE/SSR), Proof of SST=SSE+SSR (2 slides), R², R² non-decreasing property, Proof (2 slides), Adjusted R², Estimation of σ², Unbiasedness of s², Stata example (4 slides)
+- Stata output recreated as code block with n=64, k=3, R²=0.5923, adj R²=0.5719
+
+**New content (326_11_mreg_properties.qmd, ~370 lines):**
+- 16 slides: Multiple regression and OLS (2 slides), OLS estimators are linear, Unbiasedness, Proof of unbiasedness (2 slides), Conditional variance, Derivation of conditional variance, Conditional covariance (2 slides), Normality, Inclusion of irrelevant regressors (2 slides), Proof of variance inequality, Variance and number of regressors, Estimation of variances and covariances
+- Defined `\mathbf{X} = \{(X_{1,i}, X_{2,i}, \ldots, X_{k,i}): i = 1, \ldots, n\}` for multiple regression
+- Cross-reference to "Lecture 9" (partitioned regression) updated from LaTeX "Lecture 10"
+
+**Key results:**
+- All conditioning uses `\E{\cdot \mid \mathbf{X}}`, `\Var{\cdot \mid \mathbf{X}}`, `\Cov{\cdot \mid \mathbf{X}}` macros throughout
+- Fixed LaTeX typos: "In n $Y_i$" → "In $Y_i$" (line 1371 of source), summation index in $w_{j,i}$ denominator corrected to use $l$ instead of $i$
+- Proofreading: grammar fixes ("i.e." → "i.e.,", removed filler "that"), long equations broken for RevealJS margin overflow, slide titles shortened
+- Reverted proofreader's `\begin{align*}` conversion back to `$$\begin{aligned}$$` for consistency with all other lectures
+- Both lectures: 0 KaTeX errors, all 3 output formats render successfully
+- Proofreading verified all mathematical derivations correct
+
+**Cross-references:**
+- LaTeX 11 → QMD 10 (R²), LaTeX 12 → QMD 11 (properties)
+- Course page updated with lectures 10–11
+
 ## 2026-02-26
 
 **File changes:**
