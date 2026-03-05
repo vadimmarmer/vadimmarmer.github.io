@@ -99,7 +99,7 @@ format:
   w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
   $$
 
-- Recall that $\tilde{X}_{1}$ are the residuals from a regression of $X_{1}$ against $X_{2},\ldots ,X_{k}$ and a constant, and therefore $w_{1,i}$ depends only on $\mathbf{X}$.
+- Recall that $\tilde{X}_{1}$ are the residuals from a regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$ and a constant, and therefore $w_{1,i}$ depends only on $\mathbf{X}$.
 
 ## Unbiasedness
 
@@ -214,9 +214,9 @@ format:
 
   where
 
-  - $\tilde{X}_{1}$ are the fitted residuals from the regression of $X_{1}$ against a constant and $X_{2},X_{3},\ldots ,X_{k}$.
+  - $\tilde{X}_{1}$ are the fitted residuals from the regression of $X_{1}$ on a constant and $X_{2},X_{3},\ldots ,X_{k}$.
 
-  - $\tilde{X}_{2}$ are the fitted residuals from the regression of $X_{2}$ against a constant and $X_{1},X_{3},\ldots ,X_{k}.$
+  - $\tilde{X}_{2}$ are the fitted residuals from the regression of $X_{2}$ on a constant and $X_{1},X_{3},\ldots ,X_{k}.$
 
 - We will show that given Assumptions 1--4, **conditional on $\mathbf{X}$**:
 
@@ -254,7 +254,7 @@ $$\begin{aligned}
   w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
   $$
 
-  and $\tilde{X}_{j,i}$ are the residuals from the regression of $X_{j}$ against the rest of the regressors.
+  and $\tilde{X}_{j,i}$ are the residuals from the regression of $X_{j}$ on the rest of the regressors.
 
 - It follows that $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are jointly normally distributed (conditional on $\mathbf{X}$).
 
@@ -268,7 +268,7 @@ $$\begin{aligned}
   \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}.
   $$
 
-- Suppose that instead we regress $Y$ against a constant, $X_{1}$ and additional $k-1$ regressors $X_{2},\ldots ,X_{k}$, i.e., we estimate $\beta _{1}$ by
+- Suppose that instead we regress $Y$ on a constant, $X_{1},$ and $k-1$ additional regressors $X_{2},\ldots ,X_{k}$, i.e., we estimate $\beta _{1}$ by
 
   $$
   \tilde{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
@@ -312,7 +312,7 @@ $$\begin{aligned}
 
 ## Proof of the variance inequality
 
-- $\tilde{X}_{1,i}$ are the fitted residuals from regressing $X_{1,i}$ against a constant, $X_{2,i},\ldots ,X_{k,i}$:
+- $\tilde{X}_{1,i}$ are the fitted residuals from regressing $X_{1,i}$ on a constant, $X_{2,i},\ldots ,X_{k,i}$:
 
   $$
   X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}.
@@ -340,9 +340,9 @@ $$\begin{aligned}
   \Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}},
   $$
 
-  where $SSR_{1}$ is the residual sum-of-squares from the regression of $X_{1}$ against a constant and the rest of the regressors.
+  where $SSR_{1}$ is the residual sum-of-squares from the regression of $X_{1}$ on a constant and the rest of the regressors.
 
-- Since $SSR_{1}$ can only decrease when we add more regressors, $\Var{\hat{\beta}_{1} \mid \mathbf{X}}$ increases with $k,$ if the added regressors are irrelevant but correlated with the included regressors.
+- Since $SSR_{1}$ can only decrease when we add more regressors, $\Var{\hat{\beta}_{1} \mid \mathbf{X}}$ increases with $k$ if the added regressors are irrelevant but correlated with the included regressors.
 
 - If the added regressors are uncorrelated with $X_{1},$ inclusion of such regressors will not affect $SSR_{1}$ (in large samples) or the variance of $\hat{\beta}_{1}.$
 

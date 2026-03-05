@@ -156,7 +156,7 @@ format:
   \sum_{i=1}^{n}\tilde{U}_{i}^{2}\geq \sum_{i=1}^{n}\hat{U}_{i}^{2}
   $$
 
-  and therefore $R^{2}$ that corresponds to the regression with one regressor is less than or equal to $R^{2}$ that corresponds to the regression with two regressors.
+  and therefore the $R^{2}$ from the regression with one regressor is less than or equal to the $R^{2}$ from the regression with two regressors.
 
 - This can be generalized to the case of $k$ and $k+1$ regressors.
 

@@ -225,7 +225,7 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+\ldots +\beta _{k}X_{k,i}+U
 <p><span class="math display">
 w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 </span></p></li>
-<li><p>Recall that <span class="math inline">\tilde{X}_{1}</span> are the residuals from a regression of <span class="math inline">X_{1}</span> against <span class="math inline">X_{2},\ldots ,X_{k}</span> and a constant, and therefore <span class="math inline">w_{1,i}</span> depends only on <span class="math inline">\mathbf{X}</span>.</p></li>
+<li><p>Recall that <span class="math inline">\tilde{X}_{1}</span> are the residuals from a regression of <span class="math inline">X_{1}</span> on <span class="math inline">X_{2},\ldots ,X_{k}</span> and a constant, and therefore <span class="math inline">w_{1,i}</span> depends only on <span class="math inline">\mathbf{X}</span>.</p></li>
 </ul>
 </section>
 <section id="unbiasedness" class="level2">
@@ -332,8 +332,8 @@ w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 \end{aligned}</span></p>
 <p>where</p>
 <ul>
-<li><p><span class="math inline">\tilde{X}_{1}</span> are the fitted residuals from the regression of <span class="math inline">X_{1}</span> against a constant and <span class="math inline">X_{2},X_{3},\ldots ,X_{k}</span>.</p></li>
-<li><p><span class="math inline">\tilde{X}_{2}</span> are the fitted residuals from the regression of <span class="math inline">X_{2}</span> against a constant and <span class="math inline">X_{1},X_{3},\ldots ,X_{k}.</span></p></li>
+<li><p><span class="math inline">\tilde{X}_{1}</span> are the fitted residuals from the regression of <span class="math inline">X_{1}</span> on a constant and <span class="math inline">X_{2},X_{3},\ldots ,X_{k}</span>.</p></li>
+<li><p><span class="math inline">\tilde{X}_{2}</span> are the fitted residuals from the regression of <span class="math inline">X_{2}</span> on a constant and <span class="math inline">X_{1},X_{3},\ldots ,X_{k}.</span></p></li>
 </ul></li>
 <li><p>We will show that given Assumptions 1–4, <strong>conditional on <span class="math inline">\mathbf{X}</span></strong>:</p>
 <p><span class="math display">
@@ -366,7 +366,7 @@ w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 <p><span class="math display">
 w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
 </span></p>
-<p>and <span class="math inline">\tilde{X}_{j,i}</span> are the residuals from the regression of <span class="math inline">X_{j}</span> against the rest of the regressors.</p></li>
+<p>and <span class="math inline">\tilde{X}_{j,i}</span> are the residuals from the regression of <span class="math inline">X_{j}</span> on the rest of the regressors.</p></li>
 <li><p>It follows that <span class="math inline">\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}</span> are jointly normally distributed (conditional on <span class="math inline">\mathbf{X}</span>).</p></li>
 </ul>
 </section>
@@ -378,7 +378,7 @@ w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
 <p><span class="math display">
 \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}.
 </span></p></li>
-<li><p>Suppose that instead we regress <span class="math inline">Y</span> against a constant, <span class="math inline">X_{1}</span> and additional <span class="math inline">k-1</span> regressors <span class="math inline">X_{2},\ldots ,X_{k}</span>, i.e., we estimate <span class="math inline">\beta _{1}</span> by</p>
+<li><p>Suppose that instead we regress <span class="math inline">Y</span> on a constant, <span class="math inline">X_{1},</span> and <span class="math inline">k-1</span> additional regressors <span class="math inline">X_{2},\ldots ,X_{k}</span>, i.e., we estimate <span class="math inline">\beta _{1}</span> by</p>
 <p><span class="math display">
 \tilde{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
 </span></p></li>
@@ -415,7 +415,7 @@ w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
 <section id="proof-of-the-variance-inequality" class="level2">
 <h2 class="anchored" data-anchor-id="proof-of-the-variance-inequality">Proof of the variance inequality</h2>
 <ul>
-<li><p><span class="math inline">\tilde{X}_{1,i}</span> are the fitted residuals from regressing <span class="math inline">X_{1,i}</span> against a constant, <span class="math inline">X_{2,i},\ldots ,X_{k,i}</span>:</p>
+<li><p><span class="math inline">\tilde{X}_{1,i}</span> are the fitted residuals from regressing <span class="math inline">X_{1,i}</span> on a constant, <span class="math inline">X_{2,i},\ldots ,X_{k,i}</span>:</p>
 <p><span class="math display">
 X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}.
 </span></p></li>
@@ -438,8 +438,8 @@ SSR_{1} &amp;=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.
 <p><span class="math display">
 \mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}},
 </span></p>
-<p>where <span class="math inline">SSR_{1}</span> is the residual sum-of-squares from the regression of <span class="math inline">X_{1}</span> against a constant and the rest of the regressors.</p></li>
-<li><p>Since <span class="math inline">SSR_{1}</span> can only decrease when we add more regressors, <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)</span> increases with <span class="math inline">k,</span> if the added regressors are irrelevant but correlated with the included regressors.</p></li>
+<p>where <span class="math inline">SSR_{1}</span> is the residual sum-of-squares from the regression of <span class="math inline">X_{1}</span> on a constant and the rest of the regressors.</p></li>
+<li><p>Since <span class="math inline">SSR_{1}</span> can only decrease when we add more regressors, <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)</span> increases with <span class="math inline">k</span> if the added regressors are irrelevant but correlated with the included regressors.</p></li>
 <li><p>If the added regressors are uncorrelated with <span class="math inline">X_{1},</span> inclusion of such regressors will not affect <span class="math inline">SSR_{1}</span> (in large samples) or the variance of <span class="math inline">\hat{\beta}_{1}.</span></p></li>
 <li><p>If the added regressors are uncorrelated with <span class="math inline">X_{1}</span> and affect <span class="math inline">Y,</span> their inclusion will reduce <span class="math inline">\sigma ^{2}</span> without affecting <span class="math inline">SSR_{1}</span> and will reduce the variance of <span class="math inline">\hat{\beta}_{1}.</span></p></li>
 </ul>
@@ -1019,7 +1019,7 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.</span>
 <span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that $\tilde{X}_{1}$ are the residuals from a regression of $X_{1}$ against $X_{2},\ldots ,X_{k}$ and a constant, and therefore $w_{1,i}$ depends only on $\mathbf{X}$.</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that $\tilde{X}_{1}$ are the residuals from a regression of $X_{1}$ on $X_{2},\ldots ,X_{k}$ and a constant, and therefore $w_{1,i}$ depends only on $\mathbf{X}$.</span>
 <span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Unbiasedness</span></span>
 <span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
@@ -1134,9 +1134,9 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  where</span>
 <span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\tilde{X}_{1}$ are the fitted residuals from the regression of $X_{1}$ against a constant and $X_{2},X_{3},\ldots ,X_{k}$.</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\tilde{X}_{1}$ are the fitted residuals from the regression of $X_{1}$ on a constant and $X_{2},X_{3},\ldots ,X_{k}$.</span>
 <span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\tilde{X}_{2}$ are the fitted residuals from the regression of $X_{2}$ against a constant and $X_{1},X_{3},\ldots ,X_{k}.$</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\tilde{X}_{2}$ are the fitted residuals from the regression of $X_{2}$ on a constant and $X_{1},X_{3},\ldots ,X_{k}.$</span>
 <span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We will show that given Assumptions 1--4, **conditional on $\mathbf{X}$**:</span>
 <span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
@@ -1174,7 +1174,7 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>  w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},</span>
 <span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  and $\tilde{X}_{j,i}$ are the residuals from the regression of $X_{j}$ against the rest of the regressors.</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  and $\tilde{X}_{j,i}$ are the residuals from the regression of $X_{j}$ on the rest of the regressors.</span>
 <span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It follows that $\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}$ are jointly normally distributed (conditional on $\mathbf{X}$).</span>
 <span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
@@ -1188,7 +1188,7 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}.</span>
 <span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that instead we regress $Y$ against a constant, $X_{1}$ and additional $k-1$ regressors $X_{2},\ldots ,X_{k}$, i.e., we estimate $\beta _{1}$ by</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that instead we regress $Y$ on a constant, $X_{1},$ and $k-1$ additional regressors $X_{2},\ldots ,X_{k}$, i.e., we estimate $\beta _{1}$ by</span>
 <span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.</span>
@@ -1232,7 +1232,7 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of the variance inequality</span></span>
 <span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\tilde{X}_{1,i}$ are the fitted residuals from regressing $X_{1,i}$ against a constant, $X_{2,i},\ldots ,X_{k,i}$:</span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\tilde{X}_{1,i}$ are the fitted residuals from regressing $X_{1,i}$ on a constant, $X_{2,i},\ldots ,X_{k,i}$:</span>
 <span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>  X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}.</span>
@@ -1260,9 +1260,9 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 <span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  \Var{\hat{\beta}_{1} \mid \mathbf{X}} =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}},</span>
 <span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>  where $SSR_{1}$ is the residual sum-of-squares from the regression of $X_{1}$ against a constant and the rest of the regressors.</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>  where $SSR_{1}$ is the residual sum-of-squares from the regression of $X_{1}$ on a constant and the rest of the regressors.</span>
 <span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $SSR_{1}$ can only decrease when we add more regressors, $\Var{\hat{\beta}_{1} \mid \mathbf{X}}$ increases with $k,$ if the added regressors are irrelevant but correlated with the included regressors.</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $SSR_{1}$ can only decrease when we add more regressors, $\Var{\hat{\beta}_{1} \mid \mathbf{X}}$ increases with $k$ if the added regressors are irrelevant but correlated with the included regressors.</span>
 <span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If the added regressors are uncorrelated with $X_{1},$ inclusion of such regressors will not affect $SSR_{1}$ (in large samples) or the variance of $\hat{\beta}_{1}.$</span>
 <span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a></span>
