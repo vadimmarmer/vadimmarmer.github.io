@@ -127,11 +127,9 @@ format:
 ## Overview of Simple Linear Regression
 
 ::: {.hidden}
-$
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
-$
 :::
 
 - The **simple linear regression model** is used to study the relationship between **two variables**.

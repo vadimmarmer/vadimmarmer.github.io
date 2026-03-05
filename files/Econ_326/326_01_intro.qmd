@@ -38,11 +38,9 @@ format:
 ## What is econometrics?
 
 ::: {.hidden}
-$
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
-$
 :::
 
 Econometrics develops **statistical methods** for:

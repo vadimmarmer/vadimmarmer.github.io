@@ -43,13 +43,11 @@ format:
 ## Point vs interval estimators
 
 ::: {.hidden}
-$
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
 \gdef\se#1{\mathrm{se}\left(#1\right)}
-$
 :::
 
 ```{=html}
