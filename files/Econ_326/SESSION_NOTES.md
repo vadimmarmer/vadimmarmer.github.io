@@ -3,13 +3,27 @@
 ## 2026-03-05
 
 **File changes:**
-- Updated `326_10_r2.qmd` — revised R example slides to use `hprice1` dataset from `wooldridge` package
+- Updated `326_10_r2.qmd` — R example, reveal order, proofreading
+- Updated `326_11_mreg_properties.qmd` — reveal order, proofreading
 
-**Key changes (326_10_r2.qmd):**
-- Replaced fabricated numeric example with real data: `lm(price ~ sqrft + bdrms + lotsize, data = hprice1)` (n=88, k=3, R²=0.6724, adj R²=0.6607, s=59.83)
+**R example (326_10_r2.qmd):**
+- Replaced fabricated numeric example with real data: `lm(price ~ sqrft + bdrms + lotsize, data = hprice1)` from `wooldridge` package (n=88, k=3, R²=0.6724, adj R²=0.6607, s=59.83)
 - Shows R code (`library(wooldridge)`, `lm()`, `summary()`) and relevant `summary()` output
-- Second slide recovers SSR, SST, SSE from s and R² (same algebraic approach as before)
+- Second slide recovers SSR, SST, SSE from s and R²
+
+**RevealJS reveal-order fixes (verified by 3 agents: opus, codex, gemini):**
+- Lecture 11, "Proof of unbiasedness" slide (line 123): converted 3 standalone blocks to bulleted steps for incremental reveal
+- Lecture 11, "Derivation of conditional variance" slide (line 190): indented aligned equation under its introducing bullet
+
+**Proofreading fixes (3-agent consensus: opus, codex, gemini):**
+- Lecture 11: replaced 7 instances of "regress against" with "regress on"
+- Lecture 10, line 159: added articles before $R^2$ ("the $R^2$ from...")
+- Lecture 11, line 271: added serial comma, reordered to "$k-1$ additional regressors"
+- Lecture 11, line 345: removed spurious comma before restrictive "if"
+
+**Deployment:**
 - All 3 output formats render successfully, 0 KaTeX errors
+- Pushed to GitHub, deployment verified
 
 ## 2026-03-04
 
