@@ -1443,7 +1443,15 @@ Multiple R-squared:  0.3942,  Adjusted R-squared:  0.393
 F-statistic: 324.4 on 2 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div></li>
-<li class="fragment"><p>The 95% confidence interval for the coefficient on <span class="math inline">\ln K</span> in the transformed model does not include 1, so we reject <span class="math inline">H_{0}.</span></p></li>
+<li class="fragment"><p>The 95% confidence interval for the coefficient on <span class="math inline">\ln K</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href></a><span class="fu">confint</span>(fit2, <span class="st">&quot;lnK&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        2.5 %   97.5 %
+lnK 0.7963561 0.932423</code></pre>
+</div>
+</div></li>
+<li class="fragment"><p>The interval does not include 1, so we reject <span class="math inline">H_{0}.</span></p></li>
 <li class="fragment"><p>In the original equation, <span class="math inline">\hat{\beta}_{1}+\hat{\beta}_{2}</span> equals the coefficient on <span class="math inline">\ln K</span> in the reparameterized regression, and <span class="math inline">\mathrm{se}\left(\hat{\beta}_{1}+\hat{\beta}_{2}\right)</span> equals its standard error.</p></li>
 </ul>
 </section>
@@ -1453,8 +1461,8 @@ F-statistic: 324.4 on 2 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li class="fragment"><p>The <code>car</code> package provides <code>linearHypothesis()</code>, which directly tests linear restrictions on regression coefficients.</p></li>
 <li class="fragment"><p>Testing for constant returns to scale (<span class="math inline">\beta_{1}+\beta_{2}=1</span>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href></a><span class="fu">library</span>(car)</span>
-<span id="cb28-2"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL + lnK = 1&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href></a><span class="fu">library</span>(car)</span>
+<span id="cb30-2"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL + lnK = 1&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Linear hypothesis test:
@@ -1474,7 +1482,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <li class="fragment"><p>For a single linear restriction, the F-test and the two-sided t-test are equivalent: <span class="math inline">F = T^{2}</span> and the p-values are identical.</p></li>
 <li class="fragment"><p>Testing for equal effects (<span class="math inline">\beta_{1}=\beta_{2}</span>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL = lnK&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL = lnK&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Linear hypothesis test:

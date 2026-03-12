@@ -309,7 +309,14 @@ format:
   summary(fit2)
   ```
 
-- The 95% confidence interval for the coefficient on $\ln K$ in the transformed model does not include 1, so we reject $H_{0}.$
+- The 95% confidence interval for the coefficient on $\ln K$:
+
+  ```{r}
+  #| echo: true
+  confint(fit2, "lnK")
+  ```
+
+- The interval does not include 1, so we reject $H_{0}.$
 
 - In the original equation, $\hat{\beta}_{1}+\hat{\beta}_{2}$ equals the coefficient on $\ln K$ in the reparameterized regression, and $\se{\hat{\beta}_{1}+\hat{\beta}_{2}}$ equals its standard error.
 
