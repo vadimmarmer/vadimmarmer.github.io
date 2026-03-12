@@ -280,7 +280,7 @@ format:
   cat("T (ignoring covariance) =", T_wrong, "\n")
   ```
 
-## An alternative approach
+## Re-parametrization approach
 
 - We want to test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$
 

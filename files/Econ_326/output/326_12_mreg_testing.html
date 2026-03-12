@@ -137,7 +137,7 @@ window.Quarto = {
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
   <li><a href="#example-regression-output" id="toc-example-regression-output" class="nav-link" data-scroll-target="#example-regression-output">Example: regression output</a></li>
   <li><a href="#example-manual-calculation" id="toc-example-manual-calculation" class="nav-link" data-scroll-target="#example-manual-calculation">Example: manual calculation</a></li>
-  <li><a href="#an-alternative-approach" id="toc-an-alternative-approach" class="nav-link" data-scroll-target="#an-alternative-approach">An alternative approach</a></li>
+  <li><a href="#re-parametrization-approach" id="toc-re-parametrization-approach" class="nav-link" data-scroll-target="#re-parametrization-approach">Re-parametrization approach</a></li>
   <li><a href="#example-reparameterization" id="toc-example-reparameterization" class="nav-link" data-scroll-target="#example-reparameterization">Example: reparameterization</a></li>
   <li><a href="#testing-with-linearhypothesis-in-r" id="toc-testing-with-linearhypothesis-in-r" class="nav-link" data-scroll-target="#testing-with-linearhypothesis-in-r">Testing with <code>linearHypothesis()</code> in R</a></li>
   </ul>
@@ -428,8 +428,8 @@ lnK         -4.491794e-05 -7.281792e-04  1.263649e-03</code></pre>
 </div></li>
 </ul>
 </section>
-<section id="an-alternative-approach" class="level2">
-<h2 class="anchored" data-anchor-id="an-alternative-approach">An alternative approach</h2>
+<section id="re-parametrization-approach" class="level2">
+<h2 class="anchored" data-anchor-id="re-parametrization-approach">Re-parametrization approach</h2>
 <ul>
 <li><p>We want to test <span class="math inline">\beta_{1}+\beta_{2}=1</span> in <span class="math inline">\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span></p></li>
 <li><p>Define <span class="math inline">\delta=\beta_{1}+\beta_{2}</span>, or <span class="math inline">\beta_{2}=\delta-\beta_{1},</span> so that</p>
@@ -1267,7 +1267,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb34-280"><a href="#cb34-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"T (ignoring covariance) ="</span>, T_wrong, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb34-281"><a href="#cb34-281" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb34-282"><a href="#cb34-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-283"><a href="#cb34-283" aria-hidden="true" tabindex="-1"></a><span class="fu">## An alternative approach</span></span>
+<span id="cb34-283"><a href="#cb34-283" aria-hidden="true" tabindex="-1"></a><span class="fu">## Re-parametrization approach</span></span>
 <span id="cb34-284"><a href="#cb34-284" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-285"><a href="#cb34-285" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We want to test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$</span>
 <span id="cb34-286"><a href="#cb34-286" aria-hidden="true" tabindex="-1"></a></span>
