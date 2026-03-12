@@ -1,0 +1,360 @@
+---
+title: "Lecture 12: Hypothesis testing in multiple regression"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_12_mreg_testing.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_12_mreg_testing.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_12_mreg_testing_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## The model
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- We consider the classical normal linear regression model:
+
+  1. $Y_{i}=\beta_{0}+\beta_{1}X_{1,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.$
+
+  2. Conditional on $\mathbf{X}$, $\E{U_{i} \mid \mathbf{X}}=0$ for all $i$'s.
+
+  3. Conditional on $\mathbf{X}$, $\E{U_{i}^{2} \mid \mathbf{X}}=\sigma^{2}$ for all $i$'s.
+
+  4. Conditional on $\mathbf{X}$, $\E{U_{i}U_{j} \mid \mathbf{X}}=0$ for all $i\neq j$.
+
+  5. Conditional on $\mathbf{X}$, $U_{i}$'s are jointly normally distributed.
+
+- We also continue to assume **no perfect multicollinearity**: the $k$ regressors and constant **do not** form a perfect linear combination, i.e., we **cannot** find constants $c_{1},\ldots,c_{k},c_{k+1}$ (not all equal to zero) such that for **all $i$'s**:
+
+  $$
+  c_{1}X_{1,i}+\ldots+c_{k}X_{k,i}+c_{k+1}=0.
+  $$
+
+## Testing a single coefficient
+
+- Take the $j$-th coefficient $\beta_{j}$, $j\in\left\{0,1,\ldots,k\right\}.$
+
+- Under our assumptions, conditional on $\mathbf{X}$, the OLS estimator $\hat{\beta}_{j}$ satisfies $\hat{\beta}_{j}\sim N\left(\beta_{j},\Var{\hat{\beta}_{j} \mid \mathbf{X}}\right),$ where $\Var{\hat{\beta}_{j} \mid \mathbf{X}}=\sigma^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}$ (see Lecture 11).
+
+- Therefore, $\left(\hat{\beta}_{j}-\beta_{j}\right)/\sqrt{\Var{\hat{\beta}_{j} \mid \mathbf{X}}}\sim N\left(0,1\right).$
+
+- The conditional variance $\Var{\hat{\beta}_{j} \mid \mathbf{X}}$ is unknown because $\sigma^{2}$ is unknown. The estimator for $\Var{\hat{\beta}_{j} \mid \mathbf{X}}$ is
+
+  $$
+  \Vhat{\hat{\beta}_{j}}=\frac{s^{2}}{\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}},
+  $$
+
+  where $s^{2}=\sum_{i=1}^{n}\hat{U}_{i}^{2}/\left(n-k-1\right)$ (see Lecture 10).
+
+## Testing a single coefficient
+
+- We have that conditional on $\mathbf{X}$,
+
+  $$
+  \frac{\hat{\beta}_{j}-\beta_{j}}{\sqrt{\Vhat{\hat{\beta}_{j}}}}\sim t_{n-k-1}.
+  $$
+
+- Standard error: $\se{\hat{\beta}_{j}}=\sqrt{\Vhat{\hat{\beta}_{j}}}=\sqrt{s^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}}$.
+
+## Testing a single coefficient: two-sided
+
+- Consider testing $H_{0}:\beta_{j}=\beta_{j,0}$ against $H_{1}:\beta_{j}\neq\beta_{j,0}$.
+
+- Under $H_{0},$ we have that
+
+  $$
+  T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\Vhat{\hat{\beta}_{j}}}}\sim t_{n-k-1}.
+  $$
+
+- Let $t_{df,\tau}$ be the $\tau$-th quantile of the $t_{df}$ distribution.
+
+- **Test:** Reject $H_{0}$ when $\left\vert T\right\vert>t_{n-k-1,1-\alpha/2}.$
+
+- **P-value:** Find $t_{n-k-1,1-\tau}$ such that $\left\vert T\right\vert=t_{n-k-1,1-\tau}.$ The p-value $=\tau\times 2.$
+
+## Testing a linear combination of coefficients
+
+- Let $c_{0},c_{1},\ldots,c_{k},r$ be some constants. Consider testing
+
+  $$\begin{aligned}
+  H_{0} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
+  H_{1} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
+  \end{aligned}$$
+
+- **Example 1:** Consider the model
+
+  $$
+  \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
+  $$
+
+  - We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$
+
+  - In this case: $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$
+
+## Testing a linear combination of coefficients
+
+- Let $c_{0},c_{1},\ldots,c_{k},r$ be some constants. Consider testing
+
+  $$\begin{aligned}
+  H_{0} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
+  H_{1} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
+  \end{aligned}$$
+
+- **Example 2:** Consider the model
+
+  $$\begin{aligned}
+  \ln\left(\mathit{Wage}_{i}\right) &= \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i} \\
+  &\quad +\beta_{3}X_{3,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.
+  \end{aligned}$$
+
+  - We want to test that $\mathit{Experience}$ and $\mathit{PrevExperience}$ have the same effect on wage: $H_{0}:\beta_{1}=\beta_{2}$ or $H_{0}:\beta_{1}-\beta_{2}=0.$
+
+  - In this case: $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
+
+## Testing a linear combination of coefficients
+
+- We have that under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$
+
+  $$\begin{aligned}
+  & \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} \\
+  &= \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-\left(c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\right)}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} \\
+  & \sim N\left(0,1\right).
+  \end{aligned}$$
+
+- The variance of the linear combination is
+
+  \begin{align*}
+  &\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}} \\
+  &= \sum_{j=0}^{k}c_{j}^{2}\Var{\hat{\beta}_{j} \mid \mathbf{X}} + \sum_{j=0}^{k}\sum_{l\neq j}c_{j}c_{l}\Cov{\hat{\beta}_{j},\hat{\beta}_{l} \mid \mathbf{X}}.
+  \end{align*}
+
+## Testing a linear combination of coefficients
+
+- Consider
+
+  $$
+  T=\frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Vhat{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}}}}.
+  $$
+
+- Under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$
+
+  $$
+  T\sim t_{n-k-1}.
+  $$
+
+- **Two-sided test:** Reject $H_{0}$ when $\left\vert T\right\vert>t_{n-k-1,1-\alpha/2}.$
+
+## CRS test: details
+
+- Consider the model $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$
+
+- We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$
+
+- The test statistic: $T=\dfrac{\hat{\beta}_{1}+\hat{\beta}_{2}-1}{\sqrt{\Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}}}.$
+
+- The estimated variance:
+
+  $$
+  \Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}=\Vhat{\hat{\beta}_{1}}+\Vhat{\hat{\beta}_{2}}+2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).
+  $$
+
+  - $\Vhat{\hat{\beta}_{1}}$ and $\Vhat{\hat{\beta}_{2}}$ can be computed from the corresponding standard errors reported by R.
+
+  - In R, $\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right)$ can be obtained (together with the variances) by using the command `vcov(fit)` after running a regression.
+
+- Reject $H_{0}:\beta_{1}+\beta_{2}=1$ if $\left\vert T\right\vert>t_{n-3,1-\alpha/2}.$
+
+## Example
+
+- 1000 observations were generated using the following model:
+
+  $$\begin{aligned}
+  &\left.\begin{array}{l}
+  L_{i}=e^{l_{i}} \\
+  K_{i}=e^{k_{i}}
+  \end{array}\right\} \text{ where } l_{i},k_{i} \text{ are iid } N\left(0,1\right), \Cov{l_{i},k_{i}}=0.5, \\
+  &U_{i}\sim \text{iid } N\left(0,1\right) \text{ is independent of } l_{i},k_{i}, \\
+  &Y_{i}=L_{i}^{0.35}K_{i}^{0.52}e^{U_{i}}.
+  \end{aligned}$$
+
+- The following equation was estimated:
+
+  $$
+  \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
+  $$
+
+- We test $H_{0}:\beta_{1}+\beta_{2}=1$ against $H_{1}:\beta_{1}+\beta_{2}\neq 1$ at the 5% significance level.
+
+  ```{r}
+  #| echo: true
+  set.seed(123)
+  n <- 1000
+  lnL <- rnorm(n)
+  lnK <- 0.5 * lnL + sqrt(1 - 0.5^2) * rnorm(n)
+  U <- rnorm(n)
+  lnY <- 0.35 * lnL + 0.52 * lnK + U
+  ```
+
+## Example: regression output
+
+- Regression output:
+
+  ```{r}
+  #| echo: true
+  fit <- lm(lnY ~ lnL + lnK)
+  summary(fit)
+  ```
+
+- The variance-covariance matrix of the coefficient estimates:
+
+  ```{r}
+  #| echo: true
+  vcov(fit)
+  ```
+
+- The critical value $t_{n-3,0.975}$:
+
+  ```{r}
+  #| echo: true
+  qt(1 - 0.025, df = fit$df.residual)
+  ```
+
+## Example: manual calculation
+
+- From the regression output:
+
+  ```{r}
+  #| echo: true
+  b1 <- coef(fit)["lnL"]
+  b2 <- coef(fit)["lnK"]
+  V <- vcov(fit)
+
+  cat("b1 =", b1, "\n")
+  cat("b2 =", b2, "\n")
+  cat("Var(b1) =", V["lnL", "lnL"], "\n")
+  cat("Var(b2) =", V["lnK", "lnK"], "\n")
+  cat("Cov(b1, b2) =", V["lnL", "lnK"], "\n")
+  ```
+
+- The standard error of $\hat{\beta}_{1}+\hat{\beta}_{2}$:
+
+  ```{r}
+  #| echo: true
+  se_sum <- sqrt(V["lnL", "lnL"] + V["lnK", "lnK"] + 2 * V["lnL", "lnK"])
+  cat("se(b1 + b2) =", se_sum, "\n")
+  ```
+
+- The test statistic:
+
+  ```{r}
+  #| echo: true
+  T_stat <- (b1 + b2 - 1) / se_sum
+  cat("T =", T_stat, "\n")
+  ```
+
+- The critical value:
+
+  ```{r}
+  #| echo: true
+  cv <- qt(1 - 0.025, df = fit$df.residual)
+  cat("|T| =", abs(T_stat), ", critical value =", cv, "\n")
+  ```
+
+- Since $\left\vert T\right\vert > t_{997,0.975}$, we reject $H_{0}.$
+
+- Ignoring the covariance leads to an incorrect result:
+
+  ```{r}
+  #| echo: true
+  se_wrong <- sqrt(V["lnL", "lnL"] + V["lnK", "lnK"])
+  T_wrong <- (b1 + b2 - 1) / se_wrong
+  cat("T (ignoring covariance) =", T_wrong, "\n")
+  ```
+
+## An alternative approach
+
+- We want to test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$
+
+- Define $\delta=\beta_{1}+\beta_{2}$, or $\beta_{2}=\delta-\beta_{1},$ so that
+
+  $$\begin{aligned}
+  \ln Y_{i} &= \beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i} \\
+  &= \beta_{0}+\beta_{1}\ln L_{i}+\left(\delta-\beta_{1}\right)\ln K_{i}+U_{i} \\
+  &= \beta_{0}+\beta_{1}\left(\ln L_{i}-\ln K_{i}\right)+\delta\ln K_{i}+U_{i}.
+  \end{aligned}$$
+
+- Generate a new variable $D_{i}=\ln L_{i}-\ln K_{i}.$
+
+- Estimate $\ln Y_{i}=\beta_{0}+\beta_{1}D_{i}+\delta\ln K_{i}+U_{i}$.
+
+- Test $H_{0}:\delta=1$ against $H_{1}:\delta\neq 1.$
+
+## Example: reparameterization
+
+- Reparameterized regression output:
+
+  ```{r}
+  #| echo: true
+  D <- lnL - lnK
+  fit2 <- lm(lnY ~ D + lnK)
+  summary(fit2)
+  ```
+
+- The 95% confidence interval for the coefficient on $\ln K$ in the transformed model does not include 1, so we reject $H_{0}.$
+
+- In the original equation, $\hat{\beta}_{1}+\hat{\beta}_{2}$ equals the coefficient on $\ln K$ in the reparameterized regression, and $\se{\hat{\beta}_{1}+\hat{\beta}_{2}}$ equals its standard error.
+
+## Testing with `linearHypothesis()` in R
+
+- The `car` package provides `linearHypothesis()`, which directly tests linear restrictions on regression coefficients.
+
+- Testing for constant returns to scale ($\beta_{1}+\beta_{2}=1$):
+
+  ```{r}
+  #| echo: true
+  #| message: false
+  library(car)
+  linearHypothesis(fit, "lnL + lnK = 1")
+  ```
+
+- Testing for equal effects ($\beta_{1}=\beta_{2}$):
+
+  ```{r}
+  #| echo: true
+  linearHypothesis(fit, "lnL = lnK")
+  ```
+
+- By default, `linearHypothesis()` reports an F-statistic. For a single restriction, $F = T^{2}$ and the p-values are identical to the two-sided t-test.

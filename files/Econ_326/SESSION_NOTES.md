@@ -1,5 +1,33 @@
 # Session Notes — Econ 326
 
+## 2026-03-12
+
+**File changes:**
+- Created `326_12_mreg_testing.qmd` — new lecture converted from LaTeX `326_13_mreg_testing.tex`
+
+**Conversion details (LaTeX lecture 13 → QMD lecture 12):**
+- Title: "Lecture 12: Hypothesis testing in multiple regression" (dropped "Part 1")
+- 15 slides covering: classical normal linear model assumptions, single coefficient tests (two-sided only), linear combination tests, CRS test example with manual calculation, reparameterization approach, and `linearHypothesis()` in R
+- All Stata code replaced with R equivalents: `lm()`, `summary()`, `vcov()`, `qt()`, `car::linearHypothesis()`
+- Simulated data generated with `set.seed(123)` for reproducibility
+- New slide added: "Testing with `linearHypothesis()` in R" showing `car::linearHypothesis()` for both CRS and equal-effects tests
+- Cross-references updated: "Lecture 12" → "Lecture 11", "Lecture 11" → "Lecture 10"
+- Excluded: entire one-sided alternatives slide (LaTeX lines 367–413) and one-sided bullet (lines 591–593)
+- Spelling fixed: "multicolinearity" → "multicollinearity"
+- Grammar fixed: "Let ... are some constants" → "Let ... be some constants"
+- Macros used throughout: `\E`, `\Var`, `\Cov`, `\Vhat`, `\se`
+- Conditioning on `\mathbf{X}` applied per project convention
+
+**Proofreading (proofread-326 agent):**
+- Grammar: "satisfies that conditional on" → fronted conditional clause
+- Margin overflow: variance formula split into `align*`; inline estimated variance moved to display math
+- RevealJS reveal order: 16 code blocks and 2 display math blocks indented under parent bullets
+
+**Verification:**
+- All 3 output formats render successfully, 0 KaTeX errors
+- 16 section tags (1 title + 15 content slides)
+- No one-sided test material remains
+
 ## 2026-03-05
 
 **File changes:**
