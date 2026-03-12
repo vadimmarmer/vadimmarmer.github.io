@@ -1194,7 +1194,7 @@ T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\bet
 </span></p></li>
 <li class="fragment"><p>Let <span class="math inline">t_{df,\tau}</span> be the <span class="math inline">\tau</span>-th quantile of the <span class="math inline">t_{df}</span> distribution.</p></li>
 <li class="fragment"><p><strong>Test:</strong> Reject <span class="math inline">H_{0}</span> when <span class="math inline">\left\vert T\right\vert&gt;t_{n-k-1,1-\alpha/2}.</span></p></li>
-<li class="fragment"><p><strong>P-value:</strong> Find <span class="math inline">t_{n-k-1,1-\tau}</span> such that <span class="math inline">\left\vert T\right\vert=t_{n-k-1,1-\tau}.</span> The p-value <span class="math inline">=\tau\times 2.</span></p></li>
+<li class="fragment"><p><strong>P-value:</strong> <span class="math inline">\text{p-value}=2\left(1-F_{t_{n-k-1}}\!\left(\left\vert T\right\vert\right)\right),</span> where <span class="math inline">F_{t_{n-k-1}}</span> is the CDF of the <span class="math inline">t_{n-k-1}</span> distribution.</p></li>
 </ul>
 </section>
 <section id="testing-a-linear-combination-of-coefficients" class="slide level2">
@@ -1205,36 +1205,12 @@ T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\bet
 H_{0} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
 H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
 \end{aligned}</span></p></li>
-<li class="fragment"><p><strong>Example 1:</strong> Consider the model</p>
-<p><span class="math display">
-\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
-</span></p>
-<ul>
-<li class="fragment"><p>We want to test for constant returns to scale: <span class="math inline">H_{0}:\beta_{1}+\beta_{2}=1.</span></p></li>
-<li class="fragment"><p>In this case: <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=1, r=1.</span></p></li>
-</ul></li>
+<li class="fragment"><p><strong>Example 1:</strong> Consider <span class="math inline">\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span> To test for constant returns to scale, <span class="math inline">H_{0}:\beta_{1}+\beta_{2}=1,</span> set <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=1, r=1.</span></p></li>
+<li class="fragment"><p><strong>Example 2:</strong> Consider <span class="math inline">\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.</span> To test that the two experience variables have the same effect on wage, <span class="math inline">H_{0}:\beta_{1}-\beta_{2}=0,</span> set <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.</span></p></li>
+<li class="fragment"><p><strong>Example 3:</strong> Consider <span class="math inline">\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.</span> The marginal effect of experience is <span class="math inline">\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.</span> If the wage-experience profile is concave (<span class="math inline">\beta_{2}&lt;0</span>), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at <span class="math inline">\mathit{Exper}=20</span>: <span class="math inline">H_{0}:\beta_{1}+40\beta_{2}=0,</span> with <span class="math inline">c_{1}=1, c_{2}=40, r=0.</span></p></li>
 </ul>
 </section>
 <section id="testing-a-linear-combination-of-coefficients-1" class="slide level2">
-<h2>Testing a linear combination of coefficients</h2>
-<ul>
-<li class="fragment"><p>Let <span class="math inline">c_{0},c_{1},\ldots,c_{k},r</span> be some constants. Consider testing</p>
-<p><span class="math display">\begin{aligned}
-H_{0} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
-H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
-\end{aligned}</span></p></li>
-<li class="fragment"><p><strong>Example 2:</strong> Consider the model</p>
-<p><span class="math display">\begin{aligned}
-\ln\left(\mathit{Wage}_{i}\right) &amp;= \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i} \\
-&amp;\quad +\beta_{3}X_{3,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.
-\end{aligned}</span></p>
-<ul>
-<li class="fragment"><p>We want to test that <span class="math inline">\mathit{Experience}</span> and <span class="math inline">\mathit{PrevExperience}</span> have the same effect on wage: <span class="math inline">H_{0}:\beta_{1}=\beta_{2}</span> or <span class="math inline">H_{0}:\beta_{1}-\beta_{2}=0.</span></p></li>
-<li class="fragment"><p>In this case: <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.</span></p></li>
-</ul></li>
-</ul>
-</section>
-<section id="testing-a-linear-combination-of-coefficients-2" class="slide level2">
 <h2>Testing a linear combination of coefficients</h2>
 <ul>
 <li class="fragment"><p>We have that under <span class="math inline">H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,</span></p>
@@ -1250,7 +1226,7 @@ H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
 \end{align*}</span></p></li>
 </ul>
 </section>
-<section id="testing-a-linear-combination-of-coefficients-3" class="slide level2">
+<section id="testing-a-linear-combination-of-coefficients-2" class="slide level2">
 <h2>Testing a linear combination of coefficients</h2>
 <ul>
 <li class="fragment"><p>Consider</p>
@@ -1494,6 +1470,8 @@ Model 2: lnY ~ lnL + lnK
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 </div></li>
+<li class="fragment"><p><code>linearHypothesis()</code> reports an F-statistic. If <span class="math inline">T \sim t_{n-k-1}</span>, then <span class="math inline">F = T^{2} \sim F_{1, n-k-1}</span>.</p></li>
+<li class="fragment"><p>For a single linear restriction, the F-test and the two-sided t-test are equivalent: <span class="math inline">F = T^{2}</span> and the p-values are identical.</p></li>
 <li class="fragment"><p>Testing for equal effects (<span class="math inline">\beta_{1}=\beta_{2}</span>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL = lnK&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1512,7 +1490,6 @@ Model 2: lnY ~ lnL + lnK
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 </div></li>
-<li class="fragment"><p>By default, <code>linearHypothesis()</code> reports an F-statistic. For a single restriction, <span class="math inline">F = T^{2}</span> and the p-values are identical to the two-sided t-test.</p></li>
 </ul>
 
 </section>

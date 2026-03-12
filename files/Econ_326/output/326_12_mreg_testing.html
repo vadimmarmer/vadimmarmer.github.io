@@ -133,7 +133,6 @@ window.Quarto = {
   <li><a href="#testing-a-linear-combination-of-coefficients" id="toc-testing-a-linear-combination-of-coefficients" class="nav-link" data-scroll-target="#testing-a-linear-combination-of-coefficients">Testing a linear combination of coefficients</a></li>
   <li><a href="#testing-a-linear-combination-of-coefficients-1" id="toc-testing-a-linear-combination-of-coefficients-1" class="nav-link" data-scroll-target="#testing-a-linear-combination-of-coefficients-1">Testing a linear combination of coefficients</a></li>
   <li><a href="#testing-a-linear-combination-of-coefficients-2" id="toc-testing-a-linear-combination-of-coefficients-2" class="nav-link" data-scroll-target="#testing-a-linear-combination-of-coefficients-2">Testing a linear combination of coefficients</a></li>
-  <li><a href="#testing-a-linear-combination-of-coefficients-3" id="toc-testing-a-linear-combination-of-coefficients-3" class="nav-link" data-scroll-target="#testing-a-linear-combination-of-coefficients-3">Testing a linear combination of coefficients</a></li>
   <li><a href="#crs-test-details" id="toc-crs-test-details" class="nav-link" data-scroll-target="#crs-test-details">CRS test: details</a></li>
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
   <li><a href="#example-regression-output" id="toc-example-regression-output" class="nav-link" data-scroll-target="#example-regression-output">Example: regression output</a></li>
@@ -225,7 +224,7 @@ T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\bet
 </span></p></li>
 <li><p>Let <span class="math inline">t_{df,\tau}</span> be the <span class="math inline">\tau</span>-th quantile of the <span class="math inline">t_{df}</span> distribution.</p></li>
 <li><p><strong>Test:</strong> Reject <span class="math inline">H_{0}</span> when <span class="math inline">\left\vert T\right\vert&gt;t_{n-k-1,1-\alpha/2}.</span></p></li>
-<li><p><strong>P-value:</strong> Find <span class="math inline">t_{n-k-1,1-\tau}</span> such that <span class="math inline">\left\vert T\right\vert=t_{n-k-1,1-\tau}.</span> The p-value <span class="math inline">=\tau\times 2.</span></p></li>
+<li><p><strong>P-value:</strong> <span class="math inline">\text{p-value}=2\left(1-F_{t_{n-k-1}}\!\left(\left\vert T\right\vert\right)\right),</span> where <span class="math inline">F_{t_{n-k-1}}</span> is the CDF of the <span class="math inline">t_{n-k-1}</span> distribution.</p></li>
 </ul>
 </section>
 <section id="testing-a-linear-combination-of-coefficients" class="level2">
@@ -236,37 +235,13 @@ T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\bet
 H_{0} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
 H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
 \end{aligned}</span></p></li>
-<li><p><strong>Example 1:</strong> Consider the model</p>
-<p><span class="math display">
-\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
-</span></p>
-<ul>
-<li><p>We want to test for constant returns to scale: <span class="math inline">H_{0}:\beta_{1}+\beta_{2}=1.</span></p></li>
-<li><p>In this case: <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=1, r=1.</span></p></li>
-</ul></li>
+<li><p><strong>Example 1:</strong> Consider <span class="math inline">\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span> To test for constant returns to scale, <span class="math inline">H_{0}:\beta_{1}+\beta_{2}=1,</span> set <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=1, r=1.</span></p></li>
+<li><p><strong>Example 2:</strong> Consider <span class="math inline">\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.</span> To test that the two experience variables have the same effect on wage, <span class="math inline">H_{0}:\beta_{1}-\beta_{2}=0,</span> set <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.</span></p></li>
+<li><p><strong>Example 3:</strong> Consider <span class="math inline">\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.</span> The marginal effect of experience is <span class="math inline">\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.</span> If the wage-experience profile is concave (<span class="math inline">\beta_{2}&lt;0</span>), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at <span class="math inline">\mathit{Exper}=20</span>: <span class="math inline">H_{0}:\beta_{1}+40\beta_{2}=0,</span> with <span class="math inline">c_{1}=1, c_{2}=40, r=0.</span></p></li>
 </ul>
 </section>
 <section id="testing-a-linear-combination-of-coefficients-1" class="level2">
 <h2 class="anchored" data-anchor-id="testing-a-linear-combination-of-coefficients-1">Testing a linear combination of coefficients</h2>
-<ul>
-<li><p>Let <span class="math inline">c_{0},c_{1},\ldots,c_{k},r</span> be some constants. Consider testing</p>
-<p><span class="math display">\begin{aligned}
-H_{0} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
-H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
-\end{aligned}</span></p></li>
-<li><p><strong>Example 2:</strong> Consider the model</p>
-<p><span class="math display">\begin{aligned}
-\ln\left(\mathit{Wage}_{i}\right) &amp;= \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i} \\
-&amp;\quad +\beta_{3}X_{3,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.
-\end{aligned}</span></p>
-<ul>
-<li><p>We want to test that <span class="math inline">\mathit{Experience}</span> and <span class="math inline">\mathit{PrevExperience}</span> have the same effect on wage: <span class="math inline">H_{0}:\beta_{1}=\beta_{2}</span> or <span class="math inline">H_{0}:\beta_{1}-\beta_{2}=0.</span></p></li>
-<li><p>In this case: <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.</span></p></li>
-</ul></li>
-</ul>
-</section>
-<section id="testing-a-linear-combination-of-coefficients-2" class="level2">
-<h2 class="anchored" data-anchor-id="testing-a-linear-combination-of-coefficients-2">Testing a linear combination of coefficients</h2>
 <ul>
 <li><p>We have that under <span class="math inline">H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,</span></p>
 <p><span class="math display">\begin{aligned}
@@ -281,8 +256,8 @@ H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
 \end{align*}</span></p></li>
 </ul>
 </section>
-<section id="testing-a-linear-combination-of-coefficients-3" class="level2">
-<h2 class="anchored" data-anchor-id="testing-a-linear-combination-of-coefficients-3">Testing a linear combination of coefficients</h2>
+<section id="testing-a-linear-combination-of-coefficients-2" class="level2">
+<h2 class="anchored" data-anchor-id="testing-a-linear-combination-of-coefficients-2">Testing a linear combination of coefficients</h2>
 <ul>
 <li><p>Consider</p>
 <p><span class="math display">
@@ -525,6 +500,8 @@ Model 2: lnY ~ lnL + lnK
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div></li>
+<li><p><code>linearHypothesis()</code> reports an F-statistic. If <span class="math inline">T \sim t_{n-k-1}</span>, then <span class="math inline">F = T^{2} \sim F_{1, n-k-1}</span>.</p></li>
+<li><p>For a single linear restriction, the F-test and the two-sided t-test are equivalent: <span class="math inline">F = T^{2}</span> and the p-values are identical.</p></li>
 <li><p>Testing for equal effects (<span class="math inline">\beta_{1}=\beta_{2}</span>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(fit, <span class="st">"lnL = lnK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -543,7 +520,6 @@ Model 2: lnY ~ lnL + lnK
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div></li>
-<li><p>By default, <code>linearHypothesis()</code> reports an F-statistic. For a single restriction, <span class="math inline">F = T^{2}</span> and the p-values are identical to the two-sided t-test.</p></li>
 </ul>
 <!-- -->
 
@@ -1106,7 +1082,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb32-103"><a href="#cb32-103" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-104"><a href="#cb32-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Test:** Reject $H_{0}$ when $\left\vert T\right\vert&gt;t_{n-k-1,1-\alpha/2}.$</span>
 <span id="cb32-105"><a href="#cb32-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-106"><a href="#cb32-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**P-value:** Find $t_{n-k-1,1-\tau}$ such that $\left\vert T\right\vert=t_{n-k-1,1-\tau}.$ The p-value $=\tau\times 2.$</span>
+<span id="cb32-106"><a href="#cb32-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**P-value:** $\text{p-value}=2\left(1-F_{t_{n-k-1}}\!\left(\left\vert T\right\vert\right)\right),$ where $F_{t_{n-k-1}}$ is the CDF of the $t_{n-k-1}$ distribution.</span>
 <span id="cb32-107"><a href="#cb32-107" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-108"><a href="#cb32-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing a linear combination of coefficients</span></span>
 <span id="cb32-109"><a href="#cb32-109" aria-hidden="true" tabindex="-1"></a></span>
@@ -1117,250 +1093,228 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb32-114"><a href="#cb32-114" aria-hidden="true" tabindex="-1"></a>  H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.</span>
 <span id="cb32-115"><a href="#cb32-115" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb32-116"><a href="#cb32-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-117"><a href="#cb32-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Example 1:** Consider the model</span>
+<span id="cb32-117"><a href="#cb32-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Example 1:** Consider $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$ To test for constant returns to scale, $H_{0}:\beta_{1}+\beta_{2}=1,$ set $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$</span>
 <span id="cb32-118"><a href="#cb32-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-119"><a href="#cb32-119" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb32-120"><a href="#cb32-120" aria-hidden="true" tabindex="-1"></a>  \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span>
-<span id="cb32-121"><a href="#cb32-121" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-119"><a href="#cb32-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Example 2:** Consider $\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.$ To test that the two experience variables have the same effect on wage, $H_{0}:\beta_{1}-\beta_{2}=0,$ set $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$</span>
+<span id="cb32-120"><a href="#cb32-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-121"><a href="#cb32-121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Example 3:** Consider $\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.$ The marginal effect of experience is $\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.$ If the wage-experience profile is concave ($\beta_{2}&lt;0$), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at $\mathit{Exper}=20$: $H_{0}:\beta_{1}+40\beta_{2}=0,$ with $c_{1}=1, c_{2}=40, r=0.$</span>
 <span id="cb32-122"><a href="#cb32-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-123"><a href="#cb32-123" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$</span>
+<span id="cb32-123"><a href="#cb32-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing a linear combination of coefficients</span></span>
 <span id="cb32-124"><a href="#cb32-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-125"><a href="#cb32-125" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In this case: $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$</span>
+<span id="cb32-125"><a href="#cb32-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have that under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$</span>
 <span id="cb32-126"><a href="#cb32-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-127"><a href="#cb32-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing a linear combination of coefficients</span></span>
-<span id="cb32-128"><a href="#cb32-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-129"><a href="#cb32-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $c_{0},c_{1},\ldots,c_{k},r$ be some constants. Consider testing</span>
-<span id="cb32-130"><a href="#cb32-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-131"><a href="#cb32-131" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb32-132"><a href="#cb32-132" aria-hidden="true" tabindex="-1"></a>  H_{0} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} <span class="sc">\\</span></span>
-<span id="cb32-133"><a href="#cb32-133" aria-hidden="true" tabindex="-1"></a>  H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.</span>
-<span id="cb32-134"><a href="#cb32-134" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb32-135"><a href="#cb32-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-136"><a href="#cb32-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Example 2:** Consider the model</span>
-<span id="cb32-137"><a href="#cb32-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-138"><a href="#cb32-138" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb32-139"><a href="#cb32-139" aria-hidden="true" tabindex="-1"></a>  \ln\left(\mathit{Wage}_{i}\right) &amp;= \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i} <span class="sc">\\</span></span>
-<span id="cb32-140"><a href="#cb32-140" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}X_{3,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.</span>
-<span id="cb32-141"><a href="#cb32-141" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb32-142"><a href="#cb32-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-143"><a href="#cb32-143" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We want to test that $\mathit{Experience}$ and $\mathit{PrevExperience}$ have the same effect on wage: $H_{0}:\beta_{1}=\beta_{2}$ or $H_{0}:\beta_{1}-\beta_{2}=0.$</span>
-<span id="cb32-144"><a href="#cb32-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-145"><a href="#cb32-145" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In this case: $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$</span>
-<span id="cb32-146"><a href="#cb32-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-147"><a href="#cb32-147" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing a linear combination of coefficients</span></span>
-<span id="cb32-148"><a href="#cb32-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-149"><a href="#cb32-149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have that under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$</span>
-<span id="cb32-150"><a href="#cb32-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-151"><a href="#cb32-151" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb32-152"><a href="#cb32-152" aria-hidden="true" tabindex="-1"></a>  &amp; \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} <span class="sc">\\</span></span>
-<span id="cb32-153"><a href="#cb32-153" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-\left(c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\right)}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} <span class="sc">\\</span></span>
-<span id="cb32-154"><a href="#cb32-154" aria-hidden="true" tabindex="-1"></a>  &amp; \sim N\left(0,1\right).</span>
-<span id="cb32-155"><a href="#cb32-155" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb32-156"><a href="#cb32-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-157"><a href="#cb32-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variance of the linear combination is</span>
-<span id="cb32-158"><a href="#cb32-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-159"><a href="#cb32-159" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb32-160"><a href="#cb32-160" aria-hidden="true" tabindex="-1"></a>  &amp;\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}} <span class="sc">\\</span></span>
-<span id="cb32-161"><a href="#cb32-161" aria-hidden="true" tabindex="-1"></a>  &amp;= \sum_{j=0}^{k}c_{j}^{2}\Var{\hat{\beta}_{j} \mid \mathbf{X}} + \sum_{j=0}^{k}\sum_{l\neq j}c_{j}c_{l}\Cov{\hat{\beta}_{j},\hat{\beta}_{l} \mid \mathbf{X}}.</span>
-<span id="cb32-162"><a href="#cb32-162" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb32-127"><a href="#cb32-127" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb32-128"><a href="#cb32-128" aria-hidden="true" tabindex="-1"></a>  &amp; \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} <span class="sc">\\</span></span>
+<span id="cb32-129"><a href="#cb32-129" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-\left(c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\right)}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} <span class="sc">\\</span></span>
+<span id="cb32-130"><a href="#cb32-130" aria-hidden="true" tabindex="-1"></a>  &amp; \sim N\left(0,1\right).</span>
+<span id="cb32-131"><a href="#cb32-131" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb32-132"><a href="#cb32-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-133"><a href="#cb32-133" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variance of the linear combination is</span>
+<span id="cb32-134"><a href="#cb32-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-135"><a href="#cb32-135" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb32-136"><a href="#cb32-136" aria-hidden="true" tabindex="-1"></a>  &amp;\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}} <span class="sc">\\</span></span>
+<span id="cb32-137"><a href="#cb32-137" aria-hidden="true" tabindex="-1"></a>  &amp;= \sum_{j=0}^{k}c_{j}^{2}\Var{\hat{\beta}_{j} \mid \mathbf{X}} + \sum_{j=0}^{k}\sum_{l\neq j}c_{j}c_{l}\Cov{\hat{\beta}_{j},\hat{\beta}_{l} \mid \mathbf{X}}.</span>
+<span id="cb32-138"><a href="#cb32-138" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb32-139"><a href="#cb32-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-140"><a href="#cb32-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing a linear combination of coefficients</span></span>
+<span id="cb32-141"><a href="#cb32-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-142"><a href="#cb32-142" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider</span>
+<span id="cb32-143"><a href="#cb32-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-144"><a href="#cb32-144" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-145"><a href="#cb32-145" aria-hidden="true" tabindex="-1"></a>  T=\frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Vhat{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}}}}.</span>
+<span id="cb32-146"><a href="#cb32-146" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-147"><a href="#cb32-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-148"><a href="#cb32-148" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$</span>
+<span id="cb32-149"><a href="#cb32-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-150"><a href="#cb32-150" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-151"><a href="#cb32-151" aria-hidden="true" tabindex="-1"></a>  T\sim t_{n-k-1}.</span>
+<span id="cb32-152"><a href="#cb32-152" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-153"><a href="#cb32-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-154"><a href="#cb32-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Two-sided test:** Reject $H_{0}$ when $\left\vert T\right\vert&gt;t_{n-k-1,1-\alpha/2}.$</span>
+<span id="cb32-155"><a href="#cb32-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-156"><a href="#cb32-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## CRS test: details</span></span>
+<span id="cb32-157"><a href="#cb32-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-158"><a href="#cb32-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the model $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$</span>
+<span id="cb32-159"><a href="#cb32-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-160"><a href="#cb32-160" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$</span>
+<span id="cb32-161"><a href="#cb32-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-162"><a href="#cb32-162" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The test statistic: $T=\dfrac{\hat{\beta}_{1}+\hat{\beta}_{2}-1}{\sqrt{\Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}}}.$</span>
 <span id="cb32-163"><a href="#cb32-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-164"><a href="#cb32-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing a linear combination of coefficients</span></span>
+<span id="cb32-164"><a href="#cb32-164" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated variance:</span>
 <span id="cb32-165"><a href="#cb32-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-166"><a href="#cb32-166" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider</span>
-<span id="cb32-167"><a href="#cb32-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-166"><a href="#cb32-166" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-167"><a href="#cb32-167" aria-hidden="true" tabindex="-1"></a>  \Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}=\Vhat{\hat{\beta}_{1}}+\Vhat{\hat{\beta}_{2}}+2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).</span>
 <span id="cb32-168"><a href="#cb32-168" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb32-169"><a href="#cb32-169" aria-hidden="true" tabindex="-1"></a>  T=\frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Vhat{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}}}}.</span>
-<span id="cb32-170"><a href="#cb32-170" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-169"><a href="#cb32-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-170"><a href="#cb32-170" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\Vhat{\hat{\beta}_{1}}$ and $\Vhat{\hat{\beta}_{2}}$ can be computed from the corresponding standard errors reported by R.</span>
 <span id="cb32-171"><a href="#cb32-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-172"><a href="#cb32-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$</span>
+<span id="cb32-172"><a href="#cb32-172" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In R, $\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right)$ can be obtained (together with the variances) by using the command <span class="in">`vcov(fit)`</span> after running a regression.</span>
 <span id="cb32-173"><a href="#cb32-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-174"><a href="#cb32-174" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb32-175"><a href="#cb32-175" aria-hidden="true" tabindex="-1"></a>  T\sim t_{n-k-1}.</span>
-<span id="cb32-176"><a href="#cb32-176" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-174"><a href="#cb32-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reject $H_{0}:\beta_{1}+\beta_{2}=1$ if $\left\vert T\right\vert&gt;t_{n-3,1-\alpha/2}.$</span>
+<span id="cb32-175"><a href="#cb32-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-176"><a href="#cb32-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
 <span id="cb32-177"><a href="#cb32-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-178"><a href="#cb32-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Two-sided test:** Reject $H_{0}$ when $\left\vert T\right\vert&gt;t_{n-k-1,1-\alpha/2}.$</span>
+<span id="cb32-178"><a href="#cb32-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>1000 observations were generated using the following model:</span>
 <span id="cb32-179"><a href="#cb32-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-180"><a href="#cb32-180" aria-hidden="true" tabindex="-1"></a><span class="fu">## CRS test: details</span></span>
-<span id="cb32-181"><a href="#cb32-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-182"><a href="#cb32-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the model $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$</span>
-<span id="cb32-183"><a href="#cb32-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-184"><a href="#cb32-184" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$</span>
-<span id="cb32-185"><a href="#cb32-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-186"><a href="#cb32-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The test statistic: $T=\dfrac{\hat{\beta}_{1}+\hat{\beta}_{2}-1}{\sqrt{\Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}}}.$</span>
-<span id="cb32-187"><a href="#cb32-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-188"><a href="#cb32-188" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated variance:</span>
-<span id="cb32-189"><a href="#cb32-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-190"><a href="#cb32-190" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb32-191"><a href="#cb32-191" aria-hidden="true" tabindex="-1"></a>  \Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}=\Vhat{\hat{\beta}_{1}}+\Vhat{\hat{\beta}_{2}}+2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).</span>
-<span id="cb32-192"><a href="#cb32-192" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb32-193"><a href="#cb32-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-194"><a href="#cb32-194" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\Vhat{\hat{\beta}_{1}}$ and $\Vhat{\hat{\beta}_{2}}$ can be computed from the corresponding standard errors reported by R.</span>
-<span id="cb32-195"><a href="#cb32-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-196"><a href="#cb32-196" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In R, $\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right)$ can be obtained (together with the variances) by using the command <span class="in">`vcov(fit)`</span> after running a regression.</span>
-<span id="cb32-197"><a href="#cb32-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-198"><a href="#cb32-198" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reject $H_{0}:\beta_{1}+\beta_{2}=1$ if $\left\vert T\right\vert&gt;t_{n-3,1-\alpha/2}.$</span>
-<span id="cb32-199"><a href="#cb32-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-200"><a href="#cb32-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
-<span id="cb32-201"><a href="#cb32-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-202"><a href="#cb32-202" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>1000 observations were generated using the following model:</span>
-<span id="cb32-203"><a href="#cb32-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-204"><a href="#cb32-204" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb32-205"><a href="#cb32-205" aria-hidden="true" tabindex="-1"></a>  &amp;\left.\begin{array}{l}</span>
-<span id="cb32-206"><a href="#cb32-206" aria-hidden="true" tabindex="-1"></a>  L_{i}=e^{l_{i}} <span class="sc">\\</span></span>
-<span id="cb32-207"><a href="#cb32-207" aria-hidden="true" tabindex="-1"></a>  K_{i}=e^{k_{i}}</span>
-<span id="cb32-208"><a href="#cb32-208" aria-hidden="true" tabindex="-1"></a>  \end{array}\right<span class="sc">\}</span> \text{ where } l_{i},k_{i} \text{ are iid } N\left(0,1\right), \Cov{l_{i},k_{i}}=0.5, <span class="sc">\\</span></span>
-<span id="cb32-209"><a href="#cb32-209" aria-hidden="true" tabindex="-1"></a>  &amp;U_{i}\sim \text{iid } N\left(0,1\right) \text{ is independent of } l_{i},k_{i}, <span class="sc">\\</span></span>
-<span id="cb32-210"><a href="#cb32-210" aria-hidden="true" tabindex="-1"></a>  &amp;Y_{i}=L_{i}^{0.35}K_{i}^{0.52}e^{U_{i}}.</span>
-<span id="cb32-211"><a href="#cb32-211" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb32-212"><a href="#cb32-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-213"><a href="#cb32-213" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The following equation was estimated:</span>
-<span id="cb32-214"><a href="#cb32-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-215"><a href="#cb32-215" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb32-216"><a href="#cb32-216" aria-hidden="true" tabindex="-1"></a>  \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span>
-<span id="cb32-217"><a href="#cb32-217" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-180"><a href="#cb32-180" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb32-181"><a href="#cb32-181" aria-hidden="true" tabindex="-1"></a>  &amp;\left.\begin{array}{l}</span>
+<span id="cb32-182"><a href="#cb32-182" aria-hidden="true" tabindex="-1"></a>  L_{i}=e^{l_{i}} <span class="sc">\\</span></span>
+<span id="cb32-183"><a href="#cb32-183" aria-hidden="true" tabindex="-1"></a>  K_{i}=e^{k_{i}}</span>
+<span id="cb32-184"><a href="#cb32-184" aria-hidden="true" tabindex="-1"></a>  \end{array}\right<span class="sc">\}</span> \text{ where } l_{i},k_{i} \text{ are iid } N\left(0,1\right), \Cov{l_{i},k_{i}}=0.5, <span class="sc">\\</span></span>
+<span id="cb32-185"><a href="#cb32-185" aria-hidden="true" tabindex="-1"></a>  &amp;U_{i}\sim \text{iid } N\left(0,1\right) \text{ is independent of } l_{i},k_{i}, <span class="sc">\\</span></span>
+<span id="cb32-186"><a href="#cb32-186" aria-hidden="true" tabindex="-1"></a>  &amp;Y_{i}=L_{i}^{0.35}K_{i}^{0.52}e^{U_{i}}.</span>
+<span id="cb32-187"><a href="#cb32-187" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb32-188"><a href="#cb32-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-189"><a href="#cb32-189" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The following equation was estimated:</span>
+<span id="cb32-190"><a href="#cb32-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-191"><a href="#cb32-191" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-192"><a href="#cb32-192" aria-hidden="true" tabindex="-1"></a>  \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span>
+<span id="cb32-193"><a href="#cb32-193" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb32-194"><a href="#cb32-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-195"><a href="#cb32-195" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We test $H_{0}:\beta_{1}+\beta_{2}=1$ against $H_{1}:\beta_{1}+\beta_{2}\neq 1$ at the 5% significance level.</span>
+<span id="cb32-196"><a href="#cb32-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-197"><a href="#cb32-197" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-198"><a href="#cb32-198" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-199"><a href="#cb32-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb32-200"><a href="#cb32-200" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb32-201"><a href="#cb32-201" aria-hidden="true" tabindex="-1"></a>  lnL <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb32-202"><a href="#cb32-202" aria-hidden="true" tabindex="-1"></a>  lnK <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> lnL <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb32-203"><a href="#cb32-203" aria-hidden="true" tabindex="-1"></a>  U <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb32-204"><a href="#cb32-204" aria-hidden="true" tabindex="-1"></a>  lnY <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> lnL <span class="sc">+</span> <span class="fl">0.52</span> <span class="sc">*</span> lnK <span class="sc">+</span> U</span>
+<span id="cb32-205"><a href="#cb32-205" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-206"><a href="#cb32-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-207"><a href="#cb32-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: regression output</span></span>
+<span id="cb32-208"><a href="#cb32-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-209"><a href="#cb32-209" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Regression output:</span>
+<span id="cb32-210"><a href="#cb32-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-211"><a href="#cb32-211" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-212"><a href="#cb32-212" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-213"><a href="#cb32-213" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(lnY <span class="sc">~</span> lnL <span class="sc">+</span> lnK)</span>
+<span id="cb32-214"><a href="#cb32-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(fit)</span>
+<span id="cb32-215"><a href="#cb32-215" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-216"><a href="#cb32-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-217"><a href="#cb32-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variance-covariance matrix of the coefficient estimates:</span>
 <span id="cb32-218"><a href="#cb32-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-219"><a href="#cb32-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We test $H_{0}:\beta_{1}+\beta_{2}=1$ against $H_{1}:\beta_{1}+\beta_{2}\neq 1$ at the 5% significance level.</span>
-<span id="cb32-220"><a href="#cb32-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-221"><a href="#cb32-221" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-222"><a href="#cb32-222" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-223"><a href="#cb32-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb32-224"><a href="#cb32-224" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb32-225"><a href="#cb32-225" aria-hidden="true" tabindex="-1"></a>  lnL <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb32-226"><a href="#cb32-226" aria-hidden="true" tabindex="-1"></a>  lnK <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> lnL <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb32-227"><a href="#cb32-227" aria-hidden="true" tabindex="-1"></a>  U <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb32-228"><a href="#cb32-228" aria-hidden="true" tabindex="-1"></a>  lnY <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> lnL <span class="sc">+</span> <span class="fl">0.52</span> <span class="sc">*</span> lnK <span class="sc">+</span> U</span>
+<span id="cb32-219"><a href="#cb32-219" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-220"><a href="#cb32-220" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-221"><a href="#cb32-221" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vcov</span>(fit)</span>
+<span id="cb32-222"><a href="#cb32-222" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-223"><a href="#cb32-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-224"><a href="#cb32-224" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The critical value $t_{n-3,0.975}$:</span>
+<span id="cb32-225"><a href="#cb32-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-226"><a href="#cb32-226" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-227"><a href="#cb32-227" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-228"><a href="#cb32-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.025</span>, <span class="at">df =</span> fit<span class="sc">$</span>df.residual)</span>
 <span id="cb32-229"><a href="#cb32-229" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb32-230"><a href="#cb32-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-231"><a href="#cb32-231" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: regression output</span></span>
+<span id="cb32-231"><a href="#cb32-231" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: manual calculation</span></span>
 <span id="cb32-232"><a href="#cb32-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-233"><a href="#cb32-233" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Regression output:</span>
+<span id="cb32-233"><a href="#cb32-233" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the regression output:</span>
 <span id="cb32-234"><a href="#cb32-234" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-235"><a href="#cb32-235" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb32-236"><a href="#cb32-236" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-237"><a href="#cb32-237" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(lnY <span class="sc">~</span> lnL <span class="sc">+</span> lnK)</span>
-<span id="cb32-238"><a href="#cb32-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(fit)</span>
-<span id="cb32-239"><a href="#cb32-239" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-237"><a href="#cb32-237" aria-hidden="true" tabindex="-1"></a>  b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="st">"lnL"</span>]</span>
+<span id="cb32-238"><a href="#cb32-238" aria-hidden="true" tabindex="-1"></a>  b2 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="st">"lnK"</span>]</span>
+<span id="cb32-239"><a href="#cb32-239" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> <span class="fu">vcov</span>(fit)</span>
 <span id="cb32-240"><a href="#cb32-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-241"><a href="#cb32-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variance-covariance matrix of the coefficient estimates:</span>
-<span id="cb32-242"><a href="#cb32-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-243"><a href="#cb32-243" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-244"><a href="#cb32-244" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-245"><a href="#cb32-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vcov</span>(fit)</span>
+<span id="cb32-241"><a href="#cb32-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"b1 ="</span>, b1, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-242"><a href="#cb32-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"b2 ="</span>, b2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-243"><a href="#cb32-243" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Var(b1) ="</span>, V[<span class="st">"lnL"</span>, <span class="st">"lnL"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-244"><a href="#cb32-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Var(b2) ="</span>, V[<span class="st">"lnK"</span>, <span class="st">"lnK"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-245"><a href="#cb32-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Cov(b1, b2) ="</span>, V[<span class="st">"lnL"</span>, <span class="st">"lnK"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb32-246"><a href="#cb32-246" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb32-247"><a href="#cb32-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-248"><a href="#cb32-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The critical value $t_{n-3,0.975}$:</span>
+<span id="cb32-248"><a href="#cb32-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The standard error of $\hat{\beta}_{1}+\hat{\beta}_{2}$:</span>
 <span id="cb32-249"><a href="#cb32-249" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-250"><a href="#cb32-250" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb32-251"><a href="#cb32-251" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-252"><a href="#cb32-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.025</span>, <span class="at">df =</span> fit<span class="sc">$</span>df.residual)</span>
-<span id="cb32-253"><a href="#cb32-253" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-254"><a href="#cb32-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-255"><a href="#cb32-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: manual calculation</span></span>
-<span id="cb32-256"><a href="#cb32-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-257"><a href="#cb32-257" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the regression output:</span>
-<span id="cb32-258"><a href="#cb32-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-259"><a href="#cb32-259" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-260"><a href="#cb32-260" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-261"><a href="#cb32-261" aria-hidden="true" tabindex="-1"></a>  b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="st">"lnL"</span>]</span>
-<span id="cb32-262"><a href="#cb32-262" aria-hidden="true" tabindex="-1"></a>  b2 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="st">"lnK"</span>]</span>
-<span id="cb32-263"><a href="#cb32-263" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> <span class="fu">vcov</span>(fit)</span>
-<span id="cb32-264"><a href="#cb32-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-265"><a href="#cb32-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"b1 ="</span>, b1, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-266"><a href="#cb32-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"b2 ="</span>, b2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-267"><a href="#cb32-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Var(b1) ="</span>, V[<span class="st">"lnL"</span>, <span class="st">"lnL"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-268"><a href="#cb32-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Var(b2) ="</span>, V[<span class="st">"lnK"</span>, <span class="st">"lnK"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-269"><a href="#cb32-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Cov(b1, b2) ="</span>, V[<span class="st">"lnL"</span>, <span class="st">"lnK"</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-252"><a href="#cb32-252" aria-hidden="true" tabindex="-1"></a>  se_sum <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(V[<span class="st">"lnL"</span>, <span class="st">"lnL"</span>] <span class="sc">+</span> V[<span class="st">"lnK"</span>, <span class="st">"lnK"</span>] <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> V[<span class="st">"lnL"</span>, <span class="st">"lnK"</span>])</span>
+<span id="cb32-253"><a href="#cb32-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"se(b1 + b2) ="</span>, se_sum, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-254"><a href="#cb32-254" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-255"><a href="#cb32-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-256"><a href="#cb32-256" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The test statistic:</span>
+<span id="cb32-257"><a href="#cb32-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-258"><a href="#cb32-258" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-259"><a href="#cb32-259" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-260"><a href="#cb32-260" aria-hidden="true" tabindex="-1"></a>  T_stat <span class="ot">&lt;-</span> (b1 <span class="sc">+</span> b2 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> se_sum</span>
+<span id="cb32-261"><a href="#cb32-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"T ="</span>, T_stat, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-262"><a href="#cb32-262" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-263"><a href="#cb32-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-264"><a href="#cb32-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The critical value:</span>
+<span id="cb32-265"><a href="#cb32-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-266"><a href="#cb32-266" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-267"><a href="#cb32-267" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-268"><a href="#cb32-268" aria-hidden="true" tabindex="-1"></a>  cv <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.025</span>, <span class="at">df =</span> fit<span class="sc">$</span>df.residual)</span>
+<span id="cb32-269"><a href="#cb32-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"|T| ="</span>, <span class="fu">abs</span>(T_stat), <span class="st">", critical value ="</span>, cv, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb32-270"><a href="#cb32-270" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb32-271"><a href="#cb32-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-272"><a href="#cb32-272" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The standard error of $\hat{\beta}_{1}+\hat{\beta}_{2}$:</span>
+<span id="cb32-272"><a href="#cb32-272" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\left\vert T\right\vert &gt; t_{997,0.975}$, we reject $H_{0}.$</span>
 <span id="cb32-273"><a href="#cb32-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-274"><a href="#cb32-274" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-275"><a href="#cb32-275" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-276"><a href="#cb32-276" aria-hidden="true" tabindex="-1"></a>  se_sum <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(V[<span class="st">"lnL"</span>, <span class="st">"lnL"</span>] <span class="sc">+</span> V[<span class="st">"lnK"</span>, <span class="st">"lnK"</span>] <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> V[<span class="st">"lnL"</span>, <span class="st">"lnK"</span>])</span>
-<span id="cb32-277"><a href="#cb32-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"se(b1 + b2) ="</span>, se_sum, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-278"><a href="#cb32-278" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-279"><a href="#cb32-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-280"><a href="#cb32-280" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The test statistic:</span>
-<span id="cb32-281"><a href="#cb32-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-282"><a href="#cb32-282" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-283"><a href="#cb32-283" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-284"><a href="#cb32-284" aria-hidden="true" tabindex="-1"></a>  T_stat <span class="ot">&lt;-</span> (b1 <span class="sc">+</span> b2 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> se_sum</span>
-<span id="cb32-285"><a href="#cb32-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"T ="</span>, T_stat, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-286"><a href="#cb32-286" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-287"><a href="#cb32-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-288"><a href="#cb32-288" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The critical value:</span>
-<span id="cb32-289"><a href="#cb32-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-290"><a href="#cb32-290" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-291"><a href="#cb32-291" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-292"><a href="#cb32-292" aria-hidden="true" tabindex="-1"></a>  cv <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.025</span>, <span class="at">df =</span> fit<span class="sc">$</span>df.residual)</span>
-<span id="cb32-293"><a href="#cb32-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"|T| ="</span>, <span class="fu">abs</span>(T_stat), <span class="st">", critical value ="</span>, cv, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-294"><a href="#cb32-294" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-295"><a href="#cb32-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-296"><a href="#cb32-296" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\left\vert T\right\vert &gt; t_{997,0.975}$, we reject $H_{0}.$</span>
-<span id="cb32-297"><a href="#cb32-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-298"><a href="#cb32-298" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ignoring the covariance leads to an incorrect result:</span>
-<span id="cb32-299"><a href="#cb32-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-300"><a href="#cb32-300" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-301"><a href="#cb32-301" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-302"><a href="#cb32-302" aria-hidden="true" tabindex="-1"></a>  se_wrong <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(V[<span class="st">"lnL"</span>, <span class="st">"lnL"</span>] <span class="sc">+</span> V[<span class="st">"lnK"</span>, <span class="st">"lnK"</span>])</span>
-<span id="cb32-303"><a href="#cb32-303" aria-hidden="true" tabindex="-1"></a>  T_wrong <span class="ot">&lt;-</span> (b1 <span class="sc">+</span> b2 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> se_wrong</span>
-<span id="cb32-304"><a href="#cb32-304" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"T (ignoring covariance) ="</span>, T_wrong, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-305"><a href="#cb32-305" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-306"><a href="#cb32-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-307"><a href="#cb32-307" aria-hidden="true" tabindex="-1"></a><span class="fu">## An alternative approach</span></span>
-<span id="cb32-308"><a href="#cb32-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-309"><a href="#cb32-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We want to test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$</span>
-<span id="cb32-310"><a href="#cb32-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-311"><a href="#cb32-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define $\delta=\beta_{1}+\beta_{2}$, or $\beta_{2}=\delta-\beta_{1},$ so that</span>
-<span id="cb32-312"><a href="#cb32-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-313"><a href="#cb32-313" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb32-314"><a href="#cb32-314" aria-hidden="true" tabindex="-1"></a>  \ln Y_{i} &amp;= \beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i} <span class="sc">\\</span></span>
-<span id="cb32-315"><a href="#cb32-315" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\beta_{1}\ln L_{i}+\left(\delta-\beta_{1}\right)\ln K_{i}+U_{i} <span class="sc">\\</span></span>
-<span id="cb32-316"><a href="#cb32-316" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\beta_{1}\left(\ln L_{i}-\ln K_{i}\right)+\delta\ln K_{i}+U_{i}.</span>
-<span id="cb32-317"><a href="#cb32-317" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb32-318"><a href="#cb32-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-319"><a href="#cb32-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Generate a new variable $D_{i}=\ln L_{i}-\ln K_{i}.$</span>
-<span id="cb32-320"><a href="#cb32-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-321"><a href="#cb32-321" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate $\ln Y_{i}=\beta_{0}+\beta_{1}D_{i}+\delta\ln K_{i}+U_{i}$.</span>
-<span id="cb32-322"><a href="#cb32-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-323"><a href="#cb32-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Test $H_{0}:\delta=1$ against $H_{1}:\delta\neq 1.$</span>
-<span id="cb32-324"><a href="#cb32-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-325"><a href="#cb32-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: reparameterization</span></span>
-<span id="cb32-326"><a href="#cb32-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-327"><a href="#cb32-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reparameterized regression output:</span>
+<span id="cb32-274"><a href="#cb32-274" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ignoring the covariance leads to an incorrect result:</span>
+<span id="cb32-275"><a href="#cb32-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-276"><a href="#cb32-276" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-277"><a href="#cb32-277" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-278"><a href="#cb32-278" aria-hidden="true" tabindex="-1"></a>  se_wrong <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(V[<span class="st">"lnL"</span>, <span class="st">"lnL"</span>] <span class="sc">+</span> V[<span class="st">"lnK"</span>, <span class="st">"lnK"</span>])</span>
+<span id="cb32-279"><a href="#cb32-279" aria-hidden="true" tabindex="-1"></a>  T_wrong <span class="ot">&lt;-</span> (b1 <span class="sc">+</span> b2 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> se_wrong</span>
+<span id="cb32-280"><a href="#cb32-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"T (ignoring covariance) ="</span>, T_wrong, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb32-281"><a href="#cb32-281" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-282"><a href="#cb32-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-283"><a href="#cb32-283" aria-hidden="true" tabindex="-1"></a><span class="fu">## An alternative approach</span></span>
+<span id="cb32-284"><a href="#cb32-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-285"><a href="#cb32-285" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We want to test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$</span>
+<span id="cb32-286"><a href="#cb32-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-287"><a href="#cb32-287" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define $\delta=\beta_{1}+\beta_{2}$, or $\beta_{2}=\delta-\beta_{1},$ so that</span>
+<span id="cb32-288"><a href="#cb32-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-289"><a href="#cb32-289" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb32-290"><a href="#cb32-290" aria-hidden="true" tabindex="-1"></a>  \ln Y_{i} &amp;= \beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i} <span class="sc">\\</span></span>
+<span id="cb32-291"><a href="#cb32-291" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\beta_{1}\ln L_{i}+\left(\delta-\beta_{1}\right)\ln K_{i}+U_{i} <span class="sc">\\</span></span>
+<span id="cb32-292"><a href="#cb32-292" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\beta_{1}\left(\ln L_{i}-\ln K_{i}\right)+\delta\ln K_{i}+U_{i}.</span>
+<span id="cb32-293"><a href="#cb32-293" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb32-294"><a href="#cb32-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-295"><a href="#cb32-295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Generate a new variable $D_{i}=\ln L_{i}-\ln K_{i}.$</span>
+<span id="cb32-296"><a href="#cb32-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-297"><a href="#cb32-297" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate $\ln Y_{i}=\beta_{0}+\beta_{1}D_{i}+\delta\ln K_{i}+U_{i}$.</span>
+<span id="cb32-298"><a href="#cb32-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-299"><a href="#cb32-299" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Test $H_{0}:\delta=1$ against $H_{1}:\delta\neq 1.$</span>
+<span id="cb32-300"><a href="#cb32-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-301"><a href="#cb32-301" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: reparameterization</span></span>
+<span id="cb32-302"><a href="#cb32-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-303"><a href="#cb32-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reparameterized regression output:</span>
+<span id="cb32-304"><a href="#cb32-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-305"><a href="#cb32-305" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-306"><a href="#cb32-306" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-307"><a href="#cb32-307" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">&lt;-</span> lnL <span class="sc">-</span> lnK</span>
+<span id="cb32-308"><a href="#cb32-308" aria-hidden="true" tabindex="-1"></a>  fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(lnY <span class="sc">~</span> D <span class="sc">+</span> lnK)</span>
+<span id="cb32-309"><a href="#cb32-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(fit2)</span>
+<span id="cb32-310"><a href="#cb32-310" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb32-311"><a href="#cb32-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-312"><a href="#cb32-312" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The 95% confidence interval for the coefficient on $\ln K$ in the transformed model does not include 1, so we reject $H_{0}.$</span>
+<span id="cb32-313"><a href="#cb32-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-314"><a href="#cb32-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the original equation, $\hat{\beta}_{1}+\hat{\beta}_{2}$ equals the coefficient on $\ln K$ in the reparameterized regression, and $\se{\hat{\beta}_{1}+\hat{\beta}_{2}}$ equals its standard error.</span>
+<span id="cb32-315"><a href="#cb32-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-316"><a href="#cb32-316" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing with `linearHypothesis()` in R</span></span>
+<span id="cb32-317"><a href="#cb32-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-318"><a href="#cb32-318" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`car`</span> package provides <span class="in">`linearHypothesis()`</span>, which directly tests linear restrictions on regression coefficients.</span>
+<span id="cb32-319"><a href="#cb32-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-320"><a href="#cb32-320" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testing for constant returns to scale ($\beta_{1}+\beta_{2}=1$):</span>
+<span id="cb32-321"><a href="#cb32-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-322"><a href="#cb32-322" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-323"><a href="#cb32-323" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-324"><a href="#cb32-324" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| message: false</span></span>
+<span id="cb32-325"><a href="#cb32-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(car)</span>
+<span id="cb32-326"><a href="#cb32-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linearHypothesis</span>(fit, <span class="st">"lnL + lnK = 1"</span>)</span>
+<span id="cb32-327"><a href="#cb32-327" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb32-328"><a href="#cb32-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-329"><a href="#cb32-329" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-330"><a href="#cb32-330" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-331"><a href="#cb32-331" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">&lt;-</span> lnL <span class="sc">-</span> lnK</span>
-<span id="cb32-332"><a href="#cb32-332" aria-hidden="true" tabindex="-1"></a>  fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(lnY <span class="sc">~</span> D <span class="sc">+</span> lnK)</span>
-<span id="cb32-333"><a href="#cb32-333" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(fit2)</span>
-<span id="cb32-334"><a href="#cb32-334" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-335"><a href="#cb32-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-336"><a href="#cb32-336" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The 95% confidence interval for the coefficient on $\ln K$ in the transformed model does not include 1, so we reject $H_{0}.$</span>
-<span id="cb32-337"><a href="#cb32-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-338"><a href="#cb32-338" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the original equation, $\hat{\beta}_{1}+\hat{\beta}_{2}$ equals the coefficient on $\ln K$ in the reparameterized regression, and $\se{\hat{\beta}_{1}+\hat{\beta}_{2}}$ equals its standard error.</span>
-<span id="cb32-339"><a href="#cb32-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-340"><a href="#cb32-340" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing with `linearHypothesis()` in R</span></span>
-<span id="cb32-341"><a href="#cb32-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-342"><a href="#cb32-342" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`car`</span> package provides <span class="in">`linearHypothesis()`</span>, which directly tests linear restrictions on regression coefficients.</span>
-<span id="cb32-343"><a href="#cb32-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-344"><a href="#cb32-344" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testing for constant returns to scale ($\beta_{1}+\beta_{2}=1$):</span>
-<span id="cb32-345"><a href="#cb32-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-346"><a href="#cb32-346" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-347"><a href="#cb32-347" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-348"><a href="#cb32-348" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| message: false</span></span>
-<span id="cb32-349"><a href="#cb32-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(car)</span>
-<span id="cb32-350"><a href="#cb32-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linearHypothesis</span>(fit, <span class="st">"lnL + lnK = 1"</span>)</span>
-<span id="cb32-351"><a href="#cb32-351" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-352"><a href="#cb32-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-353"><a href="#cb32-353" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testing for equal effects ($\beta_{1}=\beta_{2}$):</span>
-<span id="cb32-354"><a href="#cb32-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-355"><a href="#cb32-355" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb32-356"><a href="#cb32-356" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb32-357"><a href="#cb32-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linearHypothesis</span>(fit, <span class="st">"lnL = lnK"</span>)</span>
-<span id="cb32-358"><a href="#cb32-358" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb32-359"><a href="#cb32-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-360"><a href="#cb32-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By default, <span class="in">`linearHypothesis()`</span> reports an F-statistic. For a single restriction, $F = T^{2}$ and the p-values are identical to the two-sided t-test.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb32-329"><a href="#cb32-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`linearHypothesis()`</span> reports an F-statistic. If $T \sim t_{n-k-1}$, then $F = T^{2} \sim F_{1, n-k-1}$.</span>
+<span id="cb32-330"><a href="#cb32-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-331"><a href="#cb32-331" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For a single linear restriction, the F-test and the two-sided t-test are equivalent: $F = T^{2}$ and the p-values are identical.</span>
+<span id="cb32-332"><a href="#cb32-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-333"><a href="#cb32-333" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testing for equal effects ($\beta_{1}=\beta_{2}$):</span>
+<span id="cb32-334"><a href="#cb32-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-335"><a href="#cb32-335" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb32-336"><a href="#cb32-336" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb32-337"><a href="#cb32-337" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linearHypothesis</span>(fit, <span class="st">"lnL = lnK"</span>)</span>
+<span id="cb32-338"><a href="#cb32-338" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

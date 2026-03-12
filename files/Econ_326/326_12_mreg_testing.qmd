@@ -103,7 +103,7 @@ format:
 
 - **Test:** Reject $H_{0}$ when $\left\vert T\right\vert>t_{n-k-1,1-\alpha/2}.$
 
-- **P-value:** Find $t_{n-k-1,1-\tau}$ such that $\left\vert T\right\vert=t_{n-k-1,1-\tau}.$ The p-value $=\tau\times 2.$
+- **P-value:** $\text{p-value}=2\left(1-F_{t_{n-k-1}}\!\left(\left\vert T\right\vert\right)\right),$ where $F_{t_{n-k-1}}$ is the CDF of the $t_{n-k-1}$ distribution.
 
 ## Testing a linear combination of coefficients
 
@@ -114,35 +114,11 @@ format:
   H_{1} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
   \end{aligned}$$
 
-- **Example 1:** Consider the model
+- **Example 1:** Consider $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$ To test for constant returns to scale, $H_{0}:\beta_{1}+\beta_{2}=1,$ set $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$
 
-  $$
-  \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
-  $$
+- **Example 2:** Consider $\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.$ To test that the two experience variables have the same effect on wage, $H_{0}:\beta_{1}-\beta_{2}=0,$ set $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
 
-  - We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$
-
-  - In this case: $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$
-
-## Testing a linear combination of coefficients
-
-- Let $c_{0},c_{1},\ldots,c_{k},r$ be some constants. Consider testing
-
-  $$\begin{aligned}
-  H_{0} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
-  H_{1} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
-  \end{aligned}$$
-
-- **Example 2:** Consider the model
-
-  $$\begin{aligned}
-  \ln\left(\mathit{Wage}_{i}\right) &= \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i} \\
-  &\quad +\beta_{3}X_{3,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.
-  \end{aligned}$$
-
-  - We want to test that $\mathit{Experience}$ and $\mathit{PrevExperience}$ have the same effect on wage: $H_{0}:\beta_{1}=\beta_{2}$ or $H_{0}:\beta_{1}-\beta_{2}=0.$
-
-  - In this case: $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
+- **Example 3:** Consider $\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.$ The marginal effect of experience is $\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.$ If the wage-experience profile is concave ($\beta_{2}<0$), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at $\mathit{Exper}=20$: $H_{0}:\beta_{1}+40\beta_{2}=0,$ with $c_{1}=1, c_{2}=40, r=0.$
 
 ## Testing a linear combination of coefficients
 
@@ -350,11 +326,13 @@ format:
   linearHypothesis(fit, "lnL + lnK = 1")
   ```
 
+- `linearHypothesis()` reports an F-statistic. If $T \sim t_{n-k-1}$, then $F = T^{2} \sim F_{1, n-k-1}$.
+
+- For a single linear restriction, the F-test and the two-sided t-test are equivalent: $F = T^{2}$ and the p-values are identical.
+
 - Testing for equal effects ($\beta_{1}=\beta_{2}$):
 
   ```{r}
   #| echo: true
   linearHypothesis(fit, "lnL = lnK")
   ```
-
-- By default, `linearHypothesis()` reports an F-statistic. For a single restriction, $F = T^{2}$ and the p-values are identical to the two-sided t-test.
