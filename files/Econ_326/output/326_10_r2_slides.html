@@ -1230,52 +1230,46 @@ R^{2} &amp;=\frac{\sum_{i=1}^{n}\left( \hat{Y}_{i}-\bar{Y}\right) ^{2}}{\sum_{i=
 <li class="fragment"><p><span class="math inline">R^{2}</span> measures the proportion of variation in <span class="math inline">Y</span> <strong>in the sample</strong> explained by the <span class="math inline">X</span>’s.</p></li>
 </ul>
 </section>
-<section id="r2-is-non-decreasing-in-regressors" class="slide level2">
-<h2><span class="math inline">R^2</span> is non-decreasing in regressors</h2>
+<section id="ssr-is-non-increasing-in-regressors" class="slide level2">
+<h2>SSR is non-increasing in regressors</h2>
 <ul>
 <li class="fragment"><p>Consider two models:</p>
 <p><span class="math display">\begin{aligned}
 Y_{i} &amp;=\tilde{\beta}_{0}+\tilde{\beta}_{1}X_{1,i}+\tilde{U}_{i}, \\
 Y_{i} &amp;=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\hat{U}_{i}.
 \end{aligned}</span></p></li>
-<li class="fragment"><p>We will show that</p>
-<p><span class="math display">
-\sum_{i=1}^{n}\tilde{U}_{i}^{2}\geq \sum_{i=1}^{n}\hat{U}_{i}^{2}
-</span></p>
-<p>and therefore the <span class="math inline">R^{2}</span> from the regression with one regressor is less than or equal to the <span class="math inline">R^{2}</span> from the regression with two regressors.</p></li>
-<li class="fragment"><p>This can be generalized to the case of <span class="math inline">k</span> and <span class="math inline">k+1</span> regressors.</p></li>
-</ul>
-</section>
-<section id="proof" class="slide level2">
-<h2>Proof</h2>
-<ul>
-<li class="fragment"><p>Consider</p>
-<p><span class="math display">
-\sum_{i=1}^{n}\left( \tilde{U}_{i}-\hat{U}_{i}\right) ^{2}=\sum_{i=1}^{n}\tilde{U}_{i}^{2}+\sum_{i=1}^{n}\hat{U}_{i}^{2}-2\sum_{i=1}^{n}\tilde{U}_{i}\hat{U}_{i}.
-</span></p></li>
-<li class="fragment"><p>We will show that</p>
-<p><span class="math display">
-\sum_{i=1}^{n}\tilde{U}_{i}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}^{2}.
-</span></p></li>
-<li class="fragment"><p>Then,</p>
-<p><span class="math display">
-0\leq \sum_{i=1}^{n}\left( \tilde{U}_{i}-\hat{U}_{i}\right) ^{2}=\sum_{i=1}^{n}\tilde{U}_{i}^{2}-\sum_{i=1}^{n}\hat{U}_{i}^{2},
-</span></p>
-<p>or</p>
+<li class="fragment"><p><strong>Claim:</strong> Adding a regressor cannot increase <span class="math inline">SSR</span>:</p>
 <p><span class="math display">
 \sum_{i=1}^{n}\tilde{U}_{i}^{2}\geq \sum_{i=1}^{n}\hat{U}_{i}^{2}.
 </span></p></li>
+<li class="fragment"><p>This generalizes to the case of <span class="math inline">k</span> and <span class="math inline">k+1</span> regressors.</p></li>
 </ul>
 </section>
-<section id="proof-1" class="slide level2">
-<h2>Proof</h2>
-<p><span class="math display">\begin{aligned}
-\sum_{i=1}^{n}\tilde{U}_{i}\hat{U}_{i} &amp;=\sum_{i=1}^{n}\left( Y_{i}-\tilde{\beta}_{0}-\tilde{\beta}_{1}X_{1,i}\right) \hat{U}_{i} \\
-&amp;=\sum_{i=1}^{n}Y_{i}\hat{U}_{i}-\tilde{\beta}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\tilde{\beta}_{1}\sum_{i=1}^{n}X_{1,i}\hat{U}_{i} \\
-&amp;=\sum_{i=1}^{n}Y_{i}\hat{U}_{i}-\tilde{\beta}_{0}\cdot 0-\tilde{\beta}_{1}\cdot 0 \\
-&amp;=\sum_{i=1}^{n}\left( \hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\hat{U}_{i}\right) \hat{U}_{i} \\
-&amp;=\sum_{i=1}^{n}\hat{U}_{i}^{2}.
-\end{aligned}</span></p>
+<section id="proof-constrained-vs-unconstrained" class="slide level2">
+<h2>Proof: constrained vs unconstrained</h2>
+<ul>
+<li class="fragment"><p>By definition, OLS minimizes the sum of squared residuals.</p></li>
+<li class="fragment"><p>The <strong>short</strong> regression solves</p>
+<p><span class="math display">
+\min_{b_{0},\, b_{1}}\;\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}\right) ^{2},
+</span></p>
+<p>which is the same as minimizing <span class="math inline">\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-b_{2}X_{2,i}\right) ^{2}</span> subject to the <strong>constraint</strong> <span class="math inline">b_{2}=0</span>.</p></li>
+<li class="fragment"><p>The <strong>long</strong> regression minimizes the same sum of squares <strong>without</strong> the constraint <span class="math inline">b_{2}=0</span>.</p></li>
+<li class="fragment"><p>The minimum over a <strong>larger</strong> set (unconstrained) cannot exceed the minimum over a <strong>smaller</strong> set (constrained):</p>
+<p><span class="math display">
+\underbrace{\sum_{i=1}^{n}\hat{U}_{i}^{2}}_{\text{unconstrained min}} \;\leq\; \underbrace{\sum_{i=1}^{n}\tilde{U}_{i}^{2}}_{\text{constrained min}}.
+</span></p></li>
+</ul>
+</section>
+<section id="r2-is-non-decreasing-in-regressors" class="slide level2">
+<h2><span class="math inline">R^2</span> is non-decreasing in regressors</h2>
+<ul>
+<li class="fragment"><p>Since <span class="math inline">SST = \sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}</span> does not depend on the regressors, and <span class="math inline">SSR</span> cannot increase when regressors are added:</p>
+<p><span class="math display">
+R^{2} = 1-\frac{SSR}{SST}
+</span></p>
+<p>cannot decrease when more regressors are added, <strong>even if the additional regressors are irrelevant</strong>.</p></li>
+</ul>
 </section>
 <section id="adjusted-r2" class="slide level2">
 <h2>Adjusted <span class="math inline">R^2</span></h2>

@@ -141,7 +141,7 @@ format:
 
 - $R^{2}$ measures the proportion of variation in $Y$ **in the sample** explained by the $X$'s.
 
-## $R^2$ is non-decreasing in regressors
+## SSR is non-increasing in regressors
 
 - Consider two models:
 
@@ -150,51 +150,43 @@ format:
   Y_{i} &=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\hat{U}_{i}.
   \end{aligned}$$
 
-- We will show that
-
-  $$
-  \sum_{i=1}^{n}\tilde{U}_{i}^{2}\geq \sum_{i=1}^{n}\hat{U}_{i}^{2}
-  $$
-
-  and therefore the $R^{2}$ from the regression with one regressor is less than or equal to the $R^{2}$ from the regression with two regressors.
-
-- This can be generalized to the case of $k$ and $k+1$ regressors.
-
-## Proof
-
-- Consider
-
-  $$
-  \sum_{i=1}^{n}\left( \tilde{U}_{i}-\hat{U}_{i}\right) ^{2}=\sum_{i=1}^{n}\tilde{U}_{i}^{2}+\sum_{i=1}^{n}\hat{U}_{i}^{2}-2\sum_{i=1}^{n}\tilde{U}_{i}\hat{U}_{i}.
-  $$
-
-- We will show that
-
-  $$
-  \sum_{i=1}^{n}\tilde{U}_{i}\hat{U}_{i}=\sum_{i=1}^{n}\hat{U}_{i}^{2}.
-  $$
-
-- Then,
-
-  $$
-  0\leq \sum_{i=1}^{n}\left( \tilde{U}_{i}-\hat{U}_{i}\right) ^{2}=\sum_{i=1}^{n}\tilde{U}_{i}^{2}-\sum_{i=1}^{n}\hat{U}_{i}^{2},
-  $$
-
-  or
+- **Claim:** Adding a regressor cannot increase $SSR$:
 
   $$
   \sum_{i=1}^{n}\tilde{U}_{i}^{2}\geq \sum_{i=1}^{n}\hat{U}_{i}^{2}.
   $$
 
-## Proof
+- This generalizes to the case of $k$ and $k+1$ regressors.
 
-$$\begin{aligned}
-\sum_{i=1}^{n}\tilde{U}_{i}\hat{U}_{i} &=\sum_{i=1}^{n}\left( Y_{i}-\tilde{\beta}_{0}-\tilde{\beta}_{1}X_{1,i}\right) \hat{U}_{i} \\
-&=\sum_{i=1}^{n}Y_{i}\hat{U}_{i}-\tilde{\beta}_{0}\sum_{i=1}^{n}\hat{U}_{i}-\tilde{\beta}_{1}\sum_{i=1}^{n}X_{1,i}\hat{U}_{i} \\
-&=\sum_{i=1}^{n}Y_{i}\hat{U}_{i}-\tilde{\beta}_{0}\cdot 0-\tilde{\beta}_{1}\cdot 0 \\
-&=\sum_{i=1}^{n}\left( \hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\hat{U}_{i}\right) \hat{U}_{i} \\
-&=\sum_{i=1}^{n}\hat{U}_{i}^{2}.
-\end{aligned}$$
+## Proof: constrained vs unconstrained
+
+- By definition, OLS minimizes the sum of squared residuals.
+
+- The **short** regression solves
+
+  $$
+  \min_{b_{0},\, b_{1}}\;\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}\right) ^{2},
+  $$
+
+  which is the same as minimizing $\sum_{i=1}^{n}\left( Y_{i}-b_{0}-b_{1}X_{1,i}-b_{2}X_{2,i}\right) ^{2}$ subject to the **constraint** $b_{2}=0$.
+
+- The **long** regression minimizes the same sum of squares **without** the constraint $b_{2}=0$.
+
+- The minimum over a **larger** set (unconstrained) cannot exceed the minimum over a **smaller** set (constrained):
+
+  $$
+  \underbrace{\sum_{i=1}^{n}\hat{U}_{i}^{2}}_{\text{unconstrained min}} \;\leq\; \underbrace{\sum_{i=1}^{n}\tilde{U}_{i}^{2}}_{\text{constrained min}}.
+  $$
+
+## $R^2$ is non-decreasing in regressors
+
+- Since $SST = \sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}$ does not depend on the regressors, and $SSR$ cannot increase when regressors are added:
+
+  $$
+  R^{2} = 1-\frac{SSR}{SST}
+  $$
+
+  cannot decrease when more regressors are added, **even if the additional regressors are irrelevant**.
 
 ## Adjusted $R^2$
 

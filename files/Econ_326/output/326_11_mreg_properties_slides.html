@@ -1201,9 +1201,9 @@ w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 <li class="fragment"><p><strong>Conditional on <span class="math inline">\mathbf{X}</span></strong>, <span class="math inline">\mathrm{E}\left[U_{i}^{2} \mid \mathbf{X}\right] = \sigma ^{2}</span> for all <span class="math inline">i</span>’s.</p></li>
 <li class="fragment"><p><strong>Conditional on <span class="math inline">\mathbf{X}</span></strong>, <span class="math inline">\mathrm{E}\left[U_{i}U_{j} \mid \mathbf{X}\right] = 0</span> for all <span class="math inline">i\neq j</span>.</p></li>
 </ol></li>
-<li class="fragment"><p>The conditional variance of <span class="math inline">\hat{\beta}_{1}</span> given <span class="math inline">\mathbf{X}</span> is</p>
+<li class="fragment"><p>Denote by <span class="math inline">SSR_{1}=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}</span> the residual sum-of-squares from regressing <span class="math inline">X_{1}</span> on a constant and the other regressors. The conditional variance of <span class="math inline">\hat{\beta}_{1}</span> given <span class="math inline">\mathbf{X}</span> is</p>
 <p><span class="math display">
-\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}}.
 </span></p></li>
 <li class="fragment"><p><strong>Gauss-Markov Theorem:</strong> Under Assumptions 1–4, the OLS estimators are <strong>BLUE</strong>.</p></li>
 </ul>
@@ -1220,7 +1220,7 @@ w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 &amp;=\frac{1}{\left(\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\right) ^{2}}\mathrm{E}\left[\left( \sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}\right) ^{2}  \mid \mathbf{X}\right] \\
 &amp;=\frac{1}{\left(\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\right) ^{2}}\left( \sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sigma ^{2}+\sum_{i\neq j}\tilde{X}_{1,i}\tilde{X}_{1,j}\cdot 0\right) \\
 &amp;=\frac{\sigma ^{2}\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}{\left(\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\right)^{2}}
-=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}}.
 \end{aligned}</span></p></li>
 </ul>
 </section>
@@ -1229,17 +1229,13 @@ w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 <ul>
 <li class="fragment"><p>Consider <span class="math inline">\hat{\beta}_{1}</span> and <span class="math inline">\hat{\beta}_{2}</span>:</p>
 <p><span class="math display">\begin{aligned}
-\hat{\beta}_{1} &amp;=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}, \\
-\hat{\beta}_{2} &amp;=\beta _{2}+\frac{\sum_{i=1}^{n}\tilde{X}_{2,i}U_{i}}{\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}},
+\hat{\beta}_{1} &amp;=\beta _{1}+\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}}{SSR_{1}}, \\
+\hat{\beta}_{2} &amp;=\beta _{2}+\frac{\sum_{i=1}^{n}\tilde{X}_{2,i}U_{i}}{SSR_{2}},
 \end{aligned}</span></p>
-<p>where</p>
-<ul>
-<li class="fragment"><p><span class="math inline">\tilde{X}_{1}</span> are the fitted residuals from the regression of <span class="math inline">X_{1}</span> on a constant and <span class="math inline">X_{2},X_{3},\ldots ,X_{k}</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\tilde{X}_{2}</span> are the fitted residuals from the regression of <span class="math inline">X_{2}</span> on a constant and <span class="math inline">X_{1},X_{3},\ldots ,X_{k}.</span></p></li>
-</ul></li>
+<p>where <span class="math inline">SSR_{2}=\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}</span> is the residual sum-of-squares from regressing <span class="math inline">X_{2}</span> on a constant and <span class="math inline">X_{1},X_{3},\ldots ,X_{k}.</span></p></li>
 <li class="fragment"><p>We will show that given Assumptions 1–4, <strong>conditional on <span class="math inline">\mathbf{X}</span></strong>:</p>
 <p><span class="math display">
-\mathrm{Cov}\left(\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}\right) =\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}
+\mathrm{Cov}\left(\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}\right) =\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{SSR_{1} \cdot SSR_{2}}
 </span></p></li>
 </ul>
 </section>
@@ -1249,11 +1245,11 @@ w_{1,i}=\frac{\tilde{X}_{1,i}}{\sum_{l=1}^{n}\tilde{X}_{1,l}^{2}}.
 <p><span class="math display">\begin{aligned}
 &amp;\mathrm{Cov}\left(\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}\right) \\
 &amp;= \mathrm{E}\left[\left( \hat{\beta}_{1}-\mathrm{E}\left[\hat{\beta}_{1} \mid \mathbf{X}\right]\right) \left( \hat{\beta}_{2}-\mathrm{E}\left[\hat{\beta}_{2} \mid \mathbf{X}\right]\right)  \mid \mathbf{X}\right] \\
-&amp;= \frac{1}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}
+&amp;= \frac{1}{SSR_{1} \cdot SSR_{2}}
 \mathrm{E}\left[\left( \textstyle\sum_{i=1}^{n}\tilde{X}_{1,i}U_{i}\right) \left( \textstyle\sum_{i=1}^{n}\tilde{X}_{2,i}U_{i}\right)  \mid \mathbf{X}\right] \\
-&amp;= \frac{1}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}
+&amp;= \frac{1}{SSR_{1} \cdot SSR_{2}}
 \left(\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}\sigma^{2}+\sum_{i\neq j}\tilde{X}_{1,i}\tilde{X}_{2,j}\cdot 0\right) \\
-&amp;=\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}.
+&amp;=\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{SSR_{1} \cdot SSR_{2}}.
 \end{aligned}</span></p>
 </section>
 <section id="normality-of-the-ols-estimators" class="slide level2">
@@ -1272,8 +1268,8 @@ w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
 <li class="fragment"><p>It follows that <span class="math inline">\hat{\beta}_{0},\hat{\beta}_{1},\ldots ,\hat{\beta}_{k}</span> are jointly normally distributed (conditional on <span class="math inline">\mathbf{X}</span>).</p></li>
 </ul>
 </section>
-<section id="inclusion-of-irrelevant-regressors" class="slide level2">
-<h2>Inclusion of irrelevant regressors</h2>
+<section id="inclusion-of-irrelevant-regressors-no-bias" class="slide level2">
+<h2>Inclusion of irrelevant regressors: No bias</h2>
 <ul>
 <li class="fragment"><p>Suppose that the true model is <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+U_{i}.</span></p></li>
 <li class="fragment"><p>We could estimate <span class="math inline">\beta _{1}</span> by</p>
@@ -1293,8 +1289,8 @@ w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
 <li class="fragment"><p>Since conditional on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right] = 0</span>, <span class="math inline">\tilde{\beta}_{1}</span> is <strong>unbiased</strong>!</p></li>
 </ul>
 </section>
-<section id="inclusion-of-irrelevant-regressors-1" class="slide level2">
-<h2>Inclusion of irrelevant regressors</h2>
+<section id="inclusion-of-irrelevant-regressors-variance-inflation" class="slide level2">
+<h2>Inclusion of irrelevant regressors: Variance inflation</h2>
 <ul>
 <li class="fragment"><p>When <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+U_{i},</span></p>
 <p><span class="math display">\begin{aligned}
@@ -1302,48 +1298,64 @@ w_{j,i}=\frac{\tilde{X}_{j,i}}{\sum_{l=1}^{n}\tilde{X}_{j,l}^{2}},
 \tilde{\beta}_{1}&amp;=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}
 \end{aligned}</span></p>
 <p>are both unbiased.</p></li>
-<li class="fragment"><p>Conditional on <span class="math inline">\mathbf{X}</span>,</p>
+<li class="fragment"><p>Their variances, conditional on <span class="math inline">\mathbf{X}</span>:</p>
 <p><span class="math display">\begin{aligned}
 \mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}} \quad \text{and} \\
-\mathrm{Var}\left(\tilde{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
+\mathrm{Var}\left(\tilde{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{SSR_{1}}.
 \end{aligned}</span></p></li>
-<li class="fragment"><p>Since the true model has only <span class="math inline">X_{1},</span> by the Gauss-Markov Theorem <span class="math inline">\hat{\beta}_{1}</span> is BLUE and</p>
+<li class="fragment"><p>In the short regression, <span class="math inline">X_{1}</span> is regressed on a constant only, so <span class="math inline">SSR_{1}=\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}.</span></p></li>
+<li class="fragment"><p>In the long regression, <span class="math inline">X_{2},\ldots ,X_{k}</span> are added. From Lecture 10, this cannot increase <span class="math inline">SSR_{1}</span>, so</p>
 <p><span class="math display">
 \mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) \leq \mathrm{Var}\left(\tilde{\beta}_{1} \mid \mathbf{X}\right).
 </span></p></li>
-<li class="fragment"><p>Without the Gauss-Markov Theorem, one can show directly that <span class="math inline">\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}\geq \sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.</span></p></li>
+<li class="fragment"><p>Including irrelevant regressors inflates the variance of <span class="math inline">\hat{\beta}_{1}.</span></p></li>
 </ul>
 </section>
-<section id="proof-of-the-variance-inequality" class="slide level2">
-<h2>Proof of the variance inequality</h2>
-<ul>
-<li class="fragment"><p><span class="math inline">\tilde{X}_{1,i}</span> are the fitted residuals from regressing <span class="math inline">X_{1,i}</span> on a constant, <span class="math inline">X_{2,i},\ldots ,X_{k,i}</span>:</p>
-<p><span class="math display">
-X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}+\tilde{X}_{1,i}.
-</span></p></li>
-<li class="fragment"><p>Consider the sums-of-squares for this regression:</p>
-<p><span class="math display">\begin{aligned}
-SST_{1} &amp;=\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}, \\
-SSE_{1} &amp;=\sum_{i=1}^{n}\left( \hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}-\bar{X}_{1}\right) ^{2}, \\
-SSR_{1} &amp;=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.
-\end{aligned}</span></p></li>
-<li class="fragment"><p>Thus,</p>
-<p><span class="math display">
-\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}-\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}=SST_{1}-SSR_{1}=SSE_{1}\geq 0.
-</span></p></li>
-</ul>
-</section>
-<section id="variance-and-the-number-of-regressors" class="slide level2">
+<section id="variance-and-the-number-of-regressors" class="slide level2 scrollable">
 <h2>Variance and the number of regressors</h2>
 <ul>
-<li class="fragment"><p>In <span class="math inline">Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},</span> the variance of the OLS estimator <span class="math inline">\hat{\beta}_{1}</span> is</p>
+<li class="fragment"><p>Recall the variance formula:</p>
 <p><span class="math display">
-\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}=\frac{\sigma ^{2}}{SSR_{1}},
-</span></p>
-<p>where <span class="math inline">SSR_{1}</span> is the residual sum-of-squares from the regression of <span class="math inline">X_{1}</span> on a constant and the rest of the regressors.</p></li>
-<li class="fragment"><p>Since <span class="math inline">SSR_{1}</span> can only decrease when we add more regressors, <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)</span> increases with <span class="math inline">k</span> if the added regressors are irrelevant but correlated with the included regressors.</p></li>
-<li class="fragment"><p>If the added regressors are uncorrelated with <span class="math inline">X_{1},</span> inclusion of such regressors will not affect <span class="math inline">SSR_{1}</span> (in large samples) or the variance of <span class="math inline">\hat{\beta}_{1}.</span></p></li>
-<li class="fragment"><p>If the added regressors are uncorrelated with <span class="math inline">X_{1}</span> and affect <span class="math inline">Y,</span> their inclusion will reduce <span class="math inline">\sigma ^{2}</span> without affecting <span class="math inline">SSR_{1}</span> and will reduce the variance of <span class="math inline">\hat{\beta}_{1}.</span></p></li>
+\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) =\frac{\sigma ^{2}}{SSR_{1}}.
+</span></p></li>
+<li class="fragment"><p>When we add a new regressor to the model, two quantities may change:</p>
+<ol type="1">
+<li class="fragment"><span class="math inline">\sigma^{2}</span> (the error variance): if the new regressor genuinely explains variation in <span class="math inline">Y,</span> including it in the model moves that variation from <span class="math inline">U_{i}</span> into the explained part, reducing <span class="math inline">\mathrm{Var}\left(U_{i} \mid \mathbf{X}\right)=\sigma^{2}</span></li>
+<li class="fragment"><span class="math inline">SSR_{1}</span> (the variation in <span class="math inline">X_{1}</span> net of the other regressors): can only decrease or stay the same; stays the same only when the new regressor is uncorrelated with <span class="math inline">X_{1}</span></li>
+</ol></li>
+</ul>
+</section>
+<section id="case-a-irrelevant-regressor" class="slide level2">
+<h2>Case A: Irrelevant regressor</h2>
+<ul>
+<li class="fragment"><p>Suppose the new regressor does not affect <span class="math inline">Y</span> (its population coefficient is zero).</p></li>
+<li class="fragment"><p><span class="math inline">\sigma^{2}</span> is unchanged, because the error variance is determined by the true data-generating process.</p></li>
+<li class="fragment"><p><span class="math inline">SSR_{1}</span> decreases if the new regressor is correlated with <span class="math inline">X_{1}.</span></p></li>
+<li class="fragment"><p>Net effect: <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)</span> <strong>increases</strong>.</p></li>
+<li class="fragment"><p><strong>Conclusion:</strong> do not include irrelevant regressors.</p></li>
+</ul>
+</section>
+<section id="case-b-relevant-regressor-uncorrelated-with-x_1" class="slide level2">
+<h2>Case B: Relevant regressor, uncorrelated with <span class="math inline">X_{1}</span></h2>
+<ul>
+<li class="fragment"><p>Suppose the new regressor affects <span class="math inline">Y</span> but is uncorrelated with <span class="math inline">X_{1}</span> after controlling for the other regressors.</p></li>
+<li class="fragment"><p><span class="math inline">SSR_{1}</span> is approximately unchanged: the new regressor has no additional predictive power for <span class="math inline">X_{1}</span> beyond the existing regressors, so adding it to the auxiliary regression has a negligible effect on <span class="math inline">SSR_{1}</span> in large samples.</p></li>
+<li class="fragment"><p><span class="math inline">\sigma^{2}</span> decreases, because the new regressor explains part of the variation in <span class="math inline">Y.</span></p></li>
+<li class="fragment"><p>Net effect: <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)</span> <strong>decreases</strong>.</p></li>
+<li class="fragment"><p><strong>Conclusion:</strong> always include such regressors.</p></li>
+</ul>
+</section>
+<section id="case-c-relevant-regressor-correlated-with-x_1" class="slide level2 scrollable">
+<h2>Case C: Relevant regressor, correlated with <span class="math inline">X_{1}</span></h2>
+<ul>
+<li class="fragment"><p>Two opposing forces:</p>
+<ol type="1">
+<li class="fragment"><span class="math inline">\sigma^{2}</span> decreases (the new regressor explains variation in <span class="math inline">Y</span>)</li>
+<li class="fragment"><span class="math inline">SSR_{1}</span> decreases (the new regressor is correlated with <span class="math inline">X_{1}</span>)</li>
+</ol></li>
+<li class="fragment"><p>Net effect on <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right)</span> is <strong>ambiguous</strong>: both the numerator and the denominator of <span class="math inline">\sigma^{2}/SSR_{1}</span> shrink, so the ratio could go either way.</p></li>
+<li class="fragment"><p>However, omitting a relevant regressor introduces <strong>omitted variable bias</strong> (see Lecture 9).</p></li>
+<li class="fragment"><p><strong>Conclusion:</strong> always include relevant regressors, even if the variance of <span class="math inline">\hat{\beta}_{1}</span> may increase. An unbiased estimator with larger variance is preferable to a biased one.</p></li>
 </ul>
 </section>
 <section id="estimation-of-variances-and-covariances" class="slide level2">
@@ -1351,8 +1363,8 @@ SSR_{1} &amp;=\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}.
 <ul>
 <li class="fragment"><p>In <span class="math inline">Y_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1,i}+\hat{\beta}_{2}X_{2,i}+\ldots +\hat{\beta}_{k}X_{k,i}+\hat{U}_{i},</span></p>
 <p><span class="math display">\begin{aligned}
-\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}, \\
-\mathrm{Cov}\left(\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}\right) &amp;=\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}.
+\mathrm{Var}\left(\hat{\beta}_{1} \mid \mathbf{X}\right) &amp;=\frac{\sigma ^{2}}{SSR_{1}}, \\
+\mathrm{Cov}\left(\hat{\beta}_{1},\hat{\beta}_{2} \mid \mathbf{X}\right) &amp;=\sigma ^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{SSR_{1} \cdot SSR_{2}}.
 \end{aligned}</span></p></li>
 <li class="fragment"><p>Variances and covariances can be estimated by replacing <span class="math inline">\sigma ^{2}</span> with</p>
 <p><span class="math display">
@@ -1360,8 +1372,8 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 </span></p></li>
 <li class="fragment"><p>Estimated variance and covariance:</p>
 <p><span class="math display">\begin{aligned}
-\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}\right) &amp;=\frac{s^{2}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}, \\
-\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right) &amp;=s^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\sum_{i=1}^{n}\tilde{X}_{2,i}^{2}}.
+\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}\right) &amp;=\frac{s^{2}}{SSR_{1}}, \\
+\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right) &amp;=s^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{SSR_{1} \cdot SSR_{2}}.
 \end{aligned}</span></p></li>
 </ul>
 

@@ -1101,7 +1101,7 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}.
 \mathrm{E}\left[\hat{\beta}_{1} \mid \mathbf{X}\right] =\beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) ^{2}}\neq \beta _{1}.
 </span></p></li>
 <li class="fragment"><p>This bias is called <strong>omitted variable bias</strong> because it arises from omitting <span class="math inline">X_{2}</span> from the regression.</p></li>
-<li class="fragment"><p>The exception (no omitted variable bias) is when <span class="math inline">X_1</span> and <span class="math inline">X_2</span> are “orthogonal”</p>
+<li class="fragment"><p>The exception (no omitted variable bias) is when <span class="math inline">X_{1}</span> and <span class="math inline">X_{2}</span> are “orthogonal”:</p>
 <p><span class="math display">
 \sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1}\right) X_{2,i}=0.
 </span></p></li>
@@ -1254,7 +1254,7 @@ X_{1,i}=\hat{\gamma}_{0}+\hat{\gamma}_{2}X_{2,i}+\ldots +\hat{\gamma}_{k}X_{k,i}
 <p><span class="math display">
 \hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}Y_{i}}{\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}}.
 </span></p></li>
-<li class="fragment"><p>This formula requires <span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.</span> Under perfect multicollinearity, <span class="math inline">X_{1}</span> is a linear combination of the other regressors, so all residuals <span class="math inline">\tilde{X}_{1,i}=0</span> and the OLS est-r does not exist.</p></li>
+<li class="fragment"><p>This formula requires <span class="math inline">\sum_{i=1}^{n}\tilde{X}_{1,i}^{2}\neq 0.</span> Under perfect multicollinearity, <span class="math inline">X_{1}</span> is a linear combination of the other regressors, so all residuals <span class="math inline">\tilde{X}_{1,i}=0</span> and the OLS estimator does not exist.</p></li>
 </ul></li>
 </ul>
 </section>
