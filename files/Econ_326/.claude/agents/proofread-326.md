@@ -83,8 +83,18 @@ Check for uniform notation throughout the file. In particular:
 | Covariance macro | `\Cov{\cdot}` | `\text{Cov}(\cdot)`, `\mathrm{Cov}(\cdot)`, bare `Cov` |
 | Standard error macro | `\se{\hat{\beta}_1}` | `SE(\hat{\beta}_1)`, `\mathrm{SE}(\hat{\beta}_1)`, uppercase SE |
 | Estimated variance macro | `\Vhat{\hat{\beta}_1}` | `\widehat{\mathrm{Var}}(\hat{\beta}_1)` hand-written |
+| Variable names in math | `\text{Wage}_{i}`, `\text{Exper}_{i}` | `\mathit{Wage}_{i}`, bare `Wage_{i}`, `\mathrm{Wage}_{i}` |
 | Summation indices | $i=1,\ldots,n$ | mixing `i` and `j` for the same sum |
 | Subscript spacing | `\hat{\beta}_{1}` | `\hat{\beta}_1` is acceptable but should be consistent within a file |
+
+**Variable names in math mode:** Any multi-letter name in a regression equation that represents a meaningful variable (not a Greek letter or single-letter symbol) must be wrapped in `\text{...}` to render upright. This includes:
+
+- Economic variables: `Wage`, `Income`, `Price`, `Sales`, `Salary`, `Output`, `Cost`, `Profit`
+- Regressors: `Experience`, `PrevExperience`, `Exper`, `Education`, `Educ`, `Age`, `Tenure`
+- Transformed or constructed variables: `Score`, `GPA`, `Rate`, `Size`, `Distance`
+- Abbreviations and short forms: any multi-letter token that is clearly a variable name rather than a product of single-letter variables
+
+**How to recognize:** If removing the name from the equation would leave a gap that needs a descriptive label (not just a letter), it should be in `\text{...}`. Single letters ($X$, $Y$, $U$, $L$, $K$, $D$) stay italic. Multi-letter function names like $\ln$, $\log$, $\exp$ use their standard LaTeX commands.
 
 Also verify:
 

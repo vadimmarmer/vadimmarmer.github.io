@@ -119,9 +119,9 @@ format:
 
 - **Example 1:** Consider $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$ To test for constant returns to scale, $H_{0}:\beta_{1}+\beta_{2}=1,$ set $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$
 
-- **Example 2:** Consider $\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.$ To test whether the two experience variables have the same effect on wage, $H_{0}:\beta_{1}-\beta_{2}=0,$ set $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
+- **Example 2:** Consider $\ln\left(\text{Wage}_{i}\right) = \beta_{0}+\beta_{1}\text{Experience}_{i}+\beta_{2}\text{PrevExperience}_{i}+\ldots+U_{i}.$ To test whether the two experience variables have the same effect on wage, $H_{0}:\beta_{1}-\beta_{2}=0,$ set $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
 
-- **Example 3:** Consider $\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.$ The marginal effect of experience is $\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.$ For a concave profile ($\beta_{2}<0$), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at $\mathit{Exper}=20$: $H_{0}:\beta_{1}+40\beta_{2}=0,$ with $c_{1}=1, c_{2}=40, r=0.$
+- **Example 3:** Consider $\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\beta_{1}\text{Exper}_{i}+\beta_{2}\text{Exper}_{i}^{2}+\ldots+U_{i}.$ The marginal effect of experience is $\beta_{1}+2\beta_{2}\text{Exper}_{i}.$ For a concave profile ($\beta_{2}<0$), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at $\text{Exper}=20$: $H_{0}:\beta_{1}+40\beta_{2}=0,$ with $c_{1}=1, c_{2}=40, r=0.$
 
 ## Testing a linear combination of coefficients
 
