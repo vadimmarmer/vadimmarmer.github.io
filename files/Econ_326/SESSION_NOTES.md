@@ -1,5 +1,26 @@
 # Session Notes — Econ 326
 
+## 2026-03-17
+
+**File changes:**
+- `.claude/agents/proofread-326.md` — converted from chezmoi symlink to regular file (same content)
+- `.claude/commands/proofread.md` — converted from chezmoi symlink to regular file (same content)
+- `.claude/settings.local.json` — converted from chezmoi symlink to regular file (same content, gitignored)
+
+**New global files (in `~/.claude/`):**
+- `agents/revealjs-check.md` — new 6-pass RevealJS layout auditor agent (YAML & structure, reveal order auto-fix, fenced div integrity, width/margin flags, content overflow flags, compilation & HTML audit)
+- `skills/revealjs-check/SKILL.md` — thin skill wrapper for `/revealjs-check <file>` invocation
+
+**Testing:**
+- Ran `revealjs-check` on `326_14_dummy.qmd`: 0 fixes needed (clean), 19 width/overflow flags
+- Ran `revealjs-check` on `326_12_mreg_testing.qmd`: 0 fixes needed (clean), 11 width/overflow flags
+- Both compilations succeeded with 0 KaTeX errors
+
+**Chezmoi cleanup:**
+- Removed chezmoi management of Econ 326 `.claude/` files (now regular files in git, no longer symlinks)
+
+---
+
 ## 2026-03-16
 
 **File changes (second session):**
