@@ -1,0 +1,494 @@
+---
+title: "Lecture 14: Dummy variables"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_14_dummy.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 326_14_dummy.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_14_dummy_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Interval and ordinal variables
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- An **interval** variable is one where the difference between two values is meaningful. Example: "Education" when measured in years. The difference between 12 and 10 years of education is meaningful.
+
+- In some data sets, education is reported as an **ordinal** variable: only the order of its values matters, but the difference between values has no meaning. The following two variables are equivalent:
+
+  $$
+  \text{Education}_{i}=\left\{
+  \begin{array}{ll}
+  1 & \text{if high-school graduate,} \\
+  2 & \text{if college graduate,} \\
+  3 & \text{if advanced degree.}
+  \end{array}
+  \right.
+  $$
+
+  $$
+  \text{Education}_{i}=\left\{
+  \begin{array}{ll}
+  1 & \text{if high-school graduate,} \\
+  10 & \text{if college graduate,} \\
+  234 & \text{if advanced degree.}
+  \end{array}
+  \right.
+  $$
+
+## Categorical variables
+
+- A **categorical** variable has one or more categories, but there is no natural ordering to the categories. Examples: gender, race, marital status, geographic location.
+
+- The following two variables are equivalent:
+
+  $$
+  \text{Gender}_{i}=\left\{
+  \begin{array}{ll}
+  1 & \text{if observation } i \text{ corresponds to a woman,} \\
+  2 & \text{if observation } i \text{ corresponds to a man.}
+  \end{array}
+  \right.
+  $$
+
+  $$
+  \text{Gender}_{i}=\left\{
+  \begin{array}{ll}
+  1 & \text{if observation } i \text{ corresponds to a man,} \\
+  2 & \text{if observation } i \text{ corresponds to a woman.}
+  \end{array}
+  \right.
+  $$
+
+- Categorical and ordinal variables are also called **qualitative**.
+
+- Qualitative variables cannot simply be included in a regression because the regression technique assumes that all variables are interval.
+
+## Dummy variables
+
+- A **dummy** variable is a binary zero-one variable that takes on the value one if some condition is satisfied and zero if that condition fails:
+
+  - $\text{Married}_{i}=\left\{ \begin{array}{ll} 1 & \text{if individual } i \text{ is married,} \\ 0 & \text{if individual } i \text{ is not married.} \end{array} \right.$
+
+  - $\text{Unmarried}_{i}=\left\{ \begin{array}{ll} 1 & \text{if individual } i \text{ is not married,} \\ 0 & \text{if individual } i \text{ is married.} \end{array} \right.$
+
+  - Note that $\text{Married}_{i}+\text{Unmarried}_{i}=1$ for all observations $i$.
+
+## Example
+
+- Preview of the `wage1` data from the `wooldridge` package:
+
+  ```{r}
+  #| echo: true
+  #| message: false
+  library(wooldridge)
+  data(wage1)
+  head(wage1[, c("wage", "female", "educ", "exper", "tenure")], n = 10)
+  ```
+
+## Single dummy independent variable
+
+- Consider the following regression:
+
+  $$
+  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+  $$
+
+  and assume that, conditional on all independent variables, $\E{U_{i} \mid \mathbf{X}}=0.$
+
+- Here, tenure refers to the number of years the worker has been employed at their current firm.
+
+- If observation $i$ corresponds to a woman, $\text{Female}_{i}=1$, and
+
+  $$\begin{aligned}
+  &\E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} \\
+  &= \beta_{0}+\delta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.
+  \end{aligned}$$
+
+- If observation $i$ corresponds to a man, $\text{Female}_{i}=0$, and
+
+  $$\begin{aligned}
+  &\E{\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} \\
+  &= \beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.
+  \end{aligned}$$
+
+- Thus,
+
+  $$\begin{aligned}
+  \delta_{0} &= \E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} \\
+  &\quad - \E{\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}}.
+  \end{aligned}$$
+
+## Intercept shift
+
+- The model:
+
+  $$
+  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- For men ($\text{Female}_{i}=0$):
+
+  $$
+  \text{Wage}_{i}^M=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- For women ($\text{Female}_{i}=1$):
+
+  $$
+  \text{Wage}_{i}^W=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- In this case, men play the role of the **base** group.
+
+- $\delta_{0}$ measures the wage difference relative to the base group.
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-width: 6
+#| fig-height: 4
+
+beta_0 <- -1.57
+delta_0 <- -1.81
+beta_1 <- 0.572
+
+educ <- seq(8, 20, length.out = 100)
+wage_men <- beta_0 + beta_1 * educ
+wage_women <- (beta_0 + delta_0) + beta_1 * educ
+
+plot(educ, wage_men, type = "l", lwd = 2, col = "blue",
+     xlab = "Education", ylab = "Wage",
+     ylim = range(c(wage_men, wage_women)),
+     main = "Intercept shift")
+lines(educ, wage_women, lwd = 2, col = "red", lty = 2)
+
+# Annotate the intercept shift
+mid_educ <- 14
+arrows(mid_educ, beta_0 + beta_1 * mid_educ,
+       mid_educ, (beta_0 + delta_0) + beta_1 * mid_educ,
+       code = 3, length = 0.1, lwd = 1.5)
+text(mid_educ + 0.5,
+     beta_0 + beta_1 * mid_educ + delta_0 / 2,
+     expression(delta[0]), cex = 1.2)
+
+legend("topleft", legend = c("Men", "Women"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+```
+
+## Example
+
+- Estimated equation:
+
+  $$\begin{aligned}
+  \widehat{\text{Wage}}_{i} &= \underset{(0.72)}{-1.57} - \underset{(0.26)}{1.81}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} \\
+  &\quad + \underset{(0.012)}{0.025}\, \text{Exper}_{i} + \underset{(0.021)}{0.141}\, \text{Tenure}_{i}.
+  \end{aligned}$$
+
+- The dependent variable is the wage per hour.
+
+- $\hat{\delta}_{0}=-1.81$ implies that a woman earns \$1.81 less per hour than a man with the same level of education, experience, and tenure. (These are 1976 wages.)
+
+- The difference is also statistically significant.
+
+## Log dependent variable
+
+- The model:
+
+  $$
+  \ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- In this case,
+
+$$\begin{aligned}
+\delta_{0} &= \ln\left(\text{Wage}^{F}\right)-\ln\left(\text{Wage}^{M}\right) \\
+&= \ln\left(\frac{\text{Wage}^{F}}{\text{Wage}^{M}}\right) \\
+&= \ln\left(\frac{\text{Wage}^{M}+\left(\text{Wage}^{F}-\text{Wage}^{M}\right)}{\text{Wage}^{M}}\right) \\
+&= \ln\left(1+\frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}\right) \\
+&\approx \frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}.
+\end{aligned}$$
+
+- When the dependent variable is in the log form, $\delta_{0}$ has a **percentage** interpretation.
+
+## Example
+
+- Estimated equation:
+
+  $$\begin{aligned}
+  \widehat{\ln\left(\text{Wage}_{i}\right)} &= \underset{(0.099)}{0.417} - \underset{(0.036)}{0.297}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} \\
+  &\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00010)}{0.00058}\, \text{Exper}_{i}^{2} \\
+  &\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00023)}{0.00059}\, \text{Tenure}_{i}^{2}.
+  \end{aligned}$$
+
+- $\hat{\delta}_{0}=-0.297$ implies that a woman earns 29.7% less than a man with the same level of education, experience, and tenure.
+
+## Changing the base group
+
+- Instead of
+
+  $$
+  \ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+  $$
+
+  consider:
+
+  $$
+  \ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- Since $\text{Male}_{i}=1-\text{Female}_{i},$
+
+$$\begin{aligned}
+\ln\left(\text{Wage}_{i}\right) &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+&= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+&= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}$$
+
+- We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:
+
+  $$
+  \ln\left(\text{Wage}_{i}\right)=\left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- Thus, changing the base group has no effect on the conclusions.
+
+- In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.
+
+## Dummy variable trap
+
+- Consider the equation:
+
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}\right) &= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{0}\text{Male}_{i} \\
+  &\quad +\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  \end{aligned}$$
+
+- Recall that the intercept is a regressor that takes the value one for all observations.
+
+- In this dataset, $\text{Female}_{i}+\text{Male}_{i}=1$ for all observations $i$, so we have **perfect multicollinearity**. Such an equation cannot be estimated.
+
+- **One cannot include an intercept and dummies for all the groups!**
+
+## Dummy variable trap
+
+- One of the dummies has to be omitted and the corresponding group becomes the **base** group:
+
+  - Men are the base group: $\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$
+
+  - Women are the base group: $\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$
+
+- Alternatively, one can include both dummies **without** the intercept:
+
+  $\ln\left(\text{Wage}_{i}\right)=\pi_{0}\text{Female}_{i}+\pi_{1}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$
+
+  - In R, a regression without an intercept can be estimated by adding `+ 0` or `- 1` to the formula:
+
+    ```r
+    lm(Y ~ X + 0)
+    ```
+
+    or equivalently:
+
+    ```r
+    lm(Y ~ X - 1)
+    ```
+
+  - The coefficients on the dummy variables lose the difference interpretation.
+
+## Slope changes and interactions
+
+- We can also allow the returns to education to be different for men and women:
+
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}\right) &= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\delta_{1}\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right) \\
+  &\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  \end{aligned}$$
+
+- The variable $\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right)$ is called an **interaction**.
+
+- The equation for men ($\text{Female}_{i}=0$):
+
+  $$
+  \ln\left(\text{Wage}_{i}^{M}\right)=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  $$
+
+- The equation for women ($\text{Female}_{i}=1$):
+
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}^{F}\right) &= \left(\beta_{0}+\delta_{0}\right)+\left(\beta_{1}+\delta_{1}\right)\text{Educ}_{i} \\
+  &\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  \end{aligned}$$
+
+- $\delta_{1}$ can be interpreted as the difference in the return to education between women and men (the base group) after controlling for experience and tenure.
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-width: 6
+#| fig-height: 4
+
+# Stylized coefficients to clearly illustrate slope shift
+b0 <- 0.8        # beta_0
+d0 <- -0.3       # delta_0 (intercept shift)
+b1 <- 0.10       # beta_1 (slope for men)
+d1 <- -0.04      # delta_1 (slope shift)
+
+educ <- seq(0, 20, length.out = 100)
+y_men   <- b0 + b1 * educ
+y_women <- (b0 + d0) + (b1 + d1) * educ
+
+plot(educ, y_men, type = "l", lwd = 2, col = "blue",
+     xlab = "Education", ylab = "ln(Wage)",
+     ylim = c(0.25, 3.0))
+lines(educ, y_women, lwd = 2, col = "red", lty = 2)
+
+# Intercept dots on y-axis with dashed guide lines
+points(0, b0, pch = 16, col = "blue")
+points(0, b0 + d0, pch = 16, col = "red")
+segments(0, b0, 3, b0, lty = 3, col = "gray50")
+segments(0, b0 + d0, 3, b0 + d0, lty = 3, col = "gray50")
+text(3.2, b0, expression(beta[0]), adj = 0, cex = 0.9, col = "blue")
+text(3.2, b0 + d0, expression(beta[0] + delta[0]), adj = 0, cex = 0.9,
+     col = "red")
+
+# Line labels near right end
+text(18, b0 + b1 * 18, "Men", col = "blue", pos = 3, cex = 1)
+text(18, (b0 + d0) + (b1 + d1) * 18, "Women", col = "red", pos = 1, cex = 1)
+
+# Slope labels in the middle, placed fully above/below the lines
+text(11, b0 + b1 * 11,
+     expression(slope == beta[1]), col = "blue", cex = 0.85, pos = 3, offset = 0.7)
+text(11, (b0 + d0) + (b1 + d1) * 11,
+     expression(slope == beta[1] + delta[1]), col = "red", cex = 0.85, pos = 1, offset = 0.7)
+```
+
+## Example
+
+- Estimated equation:
+
+  $$\begin{aligned}
+  \widehat{\ln\left(\text{Wage}_{i}\right)} &= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} + \underset{(0.008)}{0.082}\, \text{Educ}_{i} - \underset{(0.0131)}{0.0056}\, \text{Female}_{i}\cdot \text{Educ}_{i} \\
+  &\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} \\
+  &\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.
+  \end{aligned}$$
+
+- $\hat{\delta}_{1}=-0.0056$, suggesting that the return to education for women is 0.56 percentage points less than for men; however, this difference is not statistically significant. We cannot reject the hypothesis that the return to education is the same for men and women.
+
+## Multiple categories
+
+- In the previous examples, $\text{Educ}$ was a quantitative variable: years of education.
+
+- Suppose now that instead the education variable is **ordinal**:
+
+  $$
+  \text{Education}_{i} = \left\{
+  \begin{array}{ll}
+  1 & \text{if high-school dropout,} \\
+  2 & \text{if high-school graduate,} \\
+  3 & \text{if some college,} \\
+  4 & \text{if college graduate,} \\
+  5 & \text{if advanced degree.}
+  \end{array}
+  \right.
+  $$
+
+- Only the order is important, and there is no meaning to the **distance** between the values.
+
+- Adding such a variable to the regression will give a meaningless result.
+
+## Multiple categories
+
+$$
+\text{Education}_{i} = \left\{
+\begin{array}{ll}
+1 & \text{if high-school dropout,} \\
+2 & \text{if high-school graduate,} \\
+3 & \text{if some college,} \\
+4 & \text{if college graduate,} \\
+5 & \text{if advanced degree.}
+\end{array}
+\right.
+$$
+
+- Define 5 new dummy variables:
+
+  $$\begin{aligned}
+  E_{1,i} &= \left\{ \begin{array}{cc} 1 & \text{if high-school dropout,} \\ 0 & \text{otherwise.} \end{array} \right. \quad &
+  E_{2,i} &= \left\{ \begin{array}{cc} 1 & \text{if high-school graduate,} \\ 0 & \text{otherwise.} \end{array} \right. \\
+  E_{3,i} &= \left\{ \begin{array}{cc} 1 & \text{if some college,} \\ 0 & \text{otherwise.} \end{array} \right. \quad &
+  E_{4,i} &= \left\{ \begin{array}{cc} 1 & \text{if college graduate,} \\ 0 & \text{otherwise.} \end{array} \right. \\
+  E_{5,i} &= \left\{ \begin{array}{cc} 1 & \text{if advanced degree,} \\ 0 & \text{otherwise.} \end{array} \right.
+  \end{aligned}$$
+
+- To avoid the dummy variable trap, one of the dummies has to be omitted:
+
+  $$
+  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i}+\delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}
+  $$
+
+- Group 1 (high-school dropout) becomes the base group.
+
+- $\delta_{2}$ measures the wage difference between high-school graduates and high-school dropouts.
+
+- $\delta_{3}$ measures the wage difference between individuals with some college education and high-school dropouts.
+
+## Comparing consecutive groups
+
+- The previous definitions compare each group to the **base** group (high-school dropouts). Alternatively, we can define dummies that compare each group to the **previous** one:
+
+  $$\begin{aligned}
+  D_{2,i} &= \left\{ \begin{array}{cc} 1 & \text{if high-school graduate or higher,} \\ 0 & \text{otherwise.} \end{array} \right. \\
+  D_{3,i} &= \left\{ \begin{array}{cc} 1 & \text{if some college or higher,} \\ 0 & \text{otherwise.} \end{array} \right. \\
+  D_{4,i} &= \left\{ \begin{array}{cc} 1 & \text{if college graduate or higher,} \\ 0 & \text{otherwise.} \end{array} \right. \\
+  D_{5,i} &= \left\{ \begin{array}{cc} 1 & \text{if advanced degree,} \\ 0 & \text{otherwise.} \end{array} \right.
+  \end{aligned}$$
+
+- The model:
+
+  $$
+  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i}+\gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}
+  $$
+
+- $\gamma_{2}$ measures the wage difference between high-school graduates and high-school dropouts.
+
+- $\gamma_{3}$ measures the wage difference between individuals with some college and high-school graduates.
+
+- $\gamma_{4}$ measures the wage difference between college graduates and individuals with some college.
+
+- $\gamma_{5}$ measures the wage difference between individuals with advanced degrees and college graduates.

@@ -1,5 +1,42 @@
 # Session Notes — Econ 326
 
+## 2026-03-16
+
+**File changes:**
+- Created `326_14_dummy.qmd` — new lecture converted from LaTeX `326_15_dummy.tex`
+
+**Conversion details (LaTeX lecture 15 → QMD lecture 14):**
+- Title: "Lecture 14: Dummy variables"
+- 18 slides covering: interval/ordinal/categorical variables, dummy variable definitions, single dummy independent variable, intercept shift, log dependent variable, changing the base group, dummy variable trap, slope shift and interactions, multiple categories
+- Slide 3: Female/Male dummy definitions replaced with Married/Unmarried per plan
+- Slide 4: Textbook table image (`tab7-1.tif`) replaced with R code using `wooldridge::wage1`
+- Slide 5: Added tenure definition ("number of years at current firm")
+- Slide 7: Textbook figure (`fig7-1.tif`) replaced with R-generated intercept shift plot using base R
+- Slide 11: Added binary gender clarification note
+- Slides 12-13: Stata `noconstant` syntax replaced with R `lm(Y ~ X + 0)` / `lm(Y ~ X - 1)`
+- Slide 15: Textbook figure (`fig7-2.tif`) replaced with R-generated slope shift plot using base R
+- Slides 19-21 (structural breaks / Chow test): dropped entirely per plan
+- Standard conversion applied throughout: TCIMACRO stripped, color markup → bold, eqnarray* → aligned, etc.
+- Estimated equations formatted with `\underset{(se)}{coeff}` pattern
+
+**Post-conversion refinements:**
+- Conditioning notation: replaced 4 instances of `E\left(...\right)` with `\E{...}` macro for consistency with other lectures
+- Variable names: wrapped all multi-letter variable names (`Wage`, `Female`, `Male`, `Educ`, `Exper`, `Tenure`, `Married`, `Unmarried`, `Education`, `Gender`) in `\text{...}` for upright (roman) rendering
+- Missing subscripts: added `_i` to log model equation (line 234) and Education definition (line 416)
+- Dummy variable trap slide: changed multicollinearity explanation to "In this dataset, Female+Male=1"
+- User manually changed intercept shift superscripts from `^F` to `^W` (Women), merged intercept shift heading with figure slide, and simplified dummy variable trap text
+- Slope shift plot: redesigned multiple times; final version uses stylized coefficients (β₀=0.8, δ₀=−0.3, β₁=0.10, δ₁=−0.04), dashed guide lines from y-axis intercepts to labels, "Men"/"Women" line labels, and slope annotation labels offset from lines
+- Example slide plot (with actual estimated coefficients) was added then dropped per user request (slope difference too small to see)
+
+**Persistent memory updates:**
+- Added convention: conditioning expectations must use `\E{...}` macro
+- Added convention: multi-letter variable names in math must use `\text{...}` for upright rendering
+
+**Verification:**
+- All 3 output formats render successfully, 0 KaTeX errors
+- 18 section tags (1 title + 17 content slides)
+- No "Chow" or "structural break" content remains
+
 ## 2026-03-12
 
 **File changes:**

@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vadim Marmer, UBC">
+
+<title>Lecture 14: Dummy variables</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="326_14_dummy_files/libs/clipboard/clipboard.min.js"></script>
+<script src="326_14_dummy_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="326_14_dummy_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="326_14_dummy_files/libs/quarto-html/popper.min.js"></script>
+<script src="326_14_dummy_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="326_14_dummy_files/libs/quarto-html/anchor.min.js"></script>
+<link href="326_14_dummy_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="326_14_dummy_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="326_14_dummy_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="326_14_dummy_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="326_14_dummy_files/libs/bootstrap/bootstrap-8a894fcc3cb5e37eb5bf30def131be2f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#interval-and-ordinal-variables" id="toc-interval-and-ordinal-variables" class="nav-link active" data-scroll-target="#interval-and-ordinal-variables">Interval and ordinal variables</a></li>
+  <li><a href="#categorical-variables" id="toc-categorical-variables" class="nav-link" data-scroll-target="#categorical-variables">Categorical variables</a></li>
+  <li><a href="#dummy-variables" id="toc-dummy-variables" class="nav-link" data-scroll-target="#dummy-variables">Dummy variables</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#single-dummy-independent-variable" id="toc-single-dummy-independent-variable" class="nav-link" data-scroll-target="#single-dummy-independent-variable">Single dummy independent variable</a></li>
+  <li><a href="#intercept-shift" id="toc-intercept-shift" class="nav-link" data-scroll-target="#intercept-shift">Intercept shift</a></li>
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example</a></li>
+  <li><a href="#log-dependent-variable" id="toc-log-dependent-variable" class="nav-link" data-scroll-target="#log-dependent-variable">Log dependent variable</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example</a></li>
+  <li><a href="#changing-the-base-group" id="toc-changing-the-base-group" class="nav-link" data-scroll-target="#changing-the-base-group">Changing the base group</a></li>
+  <li><a href="#dummy-variable-trap" id="toc-dummy-variable-trap" class="nav-link" data-scroll-target="#dummy-variable-trap">Dummy variable trap</a></li>
+  <li><a href="#dummy-variable-trap-1" id="toc-dummy-variable-trap-1" class="nav-link" data-scroll-target="#dummy-variable-trap-1">Dummy variable trap</a></li>
+  <li><a href="#slope-changes-and-interactions" id="toc-slope-changes-and-interactions" class="nav-link" data-scroll-target="#slope-changes-and-interactions">Slope changes and interactions</a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example</a></li>
+  <li><a href="#multiple-categories" id="toc-multiple-categories" class="nav-link" data-scroll-target="#multiple-categories">Multiple categories</a></li>
+  <li><a href="#multiple-categories-1" id="toc-multiple-categories-1" class="nav-link" data-scroll-target="#multiple-categories-1">Multiple categories</a></li>
+  <li><a href="#comparing-consecutive-groups" id="toc-comparing-consecutive-groups" class="nav-link" data-scroll-target="#comparing-consecutive-groups">Comparing consecutive groups</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_14_dummy.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_14_dummy_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Lecture 14: Dummy variables</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Economics 326 — Introduction to Econometrics II</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vadim Marmer, UBC </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="interval-and-ordinal-variables" class="level2">
+<h2 class="anchored" data-anchor-id="interval-and-ordinal-variables">Interval and ordinal variables</h2>
+<div class="hidden">
+
+</div>
+<ul>
+<li><p>An <strong>interval</strong> variable is one where the difference between two values is meaningful. Example: “Education” when measured in years. The difference between 12 and 10 years of education is meaningful.</p></li>
+<li><p>In some data sets, education is reported as an <strong>ordinal</strong> variable: only the order of its values matters, but the difference between values has no meaning. The following two variables are equivalent:</p>
+<p><span class="math display">
+\text{Education}_{i}=\left\{
+\begin{array}{ll}
+1 &amp; \text{if high-school graduate,} \\
+2 &amp; \text{if college graduate,} \\
+3 &amp; \text{if advanced degree.}
+\end{array}
+\right.
+</span></p>
+<p><span class="math display">
+\text{Education}_{i}=\left\{
+\begin{array}{ll}
+1 &amp; \text{if high-school graduate,} \\
+10 &amp; \text{if college graduate,} \\
+234 &amp; \text{if advanced degree.}
+\end{array}
+\right.
+</span></p></li>
+</ul>
+</section>
+<section id="categorical-variables" class="level2">
+<h2 class="anchored" data-anchor-id="categorical-variables">Categorical variables</h2>
+<ul>
+<li><p>A <strong>categorical</strong> variable has one or more categories, but there is no natural ordering to the categories. Examples: gender, race, marital status, geographic location.</p></li>
+<li><p>The following two variables are equivalent:</p>
+<p><span class="math display">
+\text{Gender}_{i}=\left\{
+\begin{array}{ll}
+1 &amp; \text{if observation } i \text{ corresponds to a woman,} \\
+2 &amp; \text{if observation } i \text{ corresponds to a man.}
+\end{array}
+\right.
+</span></p>
+<p><span class="math display">
+\text{Gender}_{i}=\left\{
+\begin{array}{ll}
+1 &amp; \text{if observation } i \text{ corresponds to a man,} \\
+2 &amp; \text{if observation } i \text{ corresponds to a woman.}
+\end{array}
+\right.
+</span></p></li>
+<li><p>Categorical and ordinal variables are also called <strong>qualitative</strong>.</p></li>
+<li><p>Qualitative variables cannot simply be included in a regression because the regression technique assumes that all variables are interval.</p></li>
+</ul>
+</section>
+<section id="dummy-variables" class="level2">
+<h2 class="anchored" data-anchor-id="dummy-variables">Dummy variables</h2>
+<ul>
+<li><p>A <strong>dummy</strong> variable is a binary zero-one variable that takes on the value one if some condition is satisfied and zero if that condition fails:</p>
+<ul>
+<li><p><span class="math inline">\text{Married}_{i}=\left\{ \begin{array}{ll} 1 &amp; \text{if individual } i \text{ is married,} \\ 0 &amp; \text{if individual } i \text{ is not married.} \end{array} \right.</span></p></li>
+<li><p><span class="math inline">\text{Unmarried}_{i}=\left\{ \begin{array}{ll} 1 &amp; \text{if individual } i \text{ is not married,} \\ 0 &amp; \text{if individual } i \text{ is married.} \end{array} \right.</span></p></li>
+<li><p>Note that <span class="math inline">\text{Married}_{i}+\text{Unmarried}_{i}=1</span> for all observations <span class="math inline">i</span>.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<ul>
+<li><p>Preview of the <code>wage1</code> data from the <code>wooldridge</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(wage1)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wage1[, <span class="fu">c</span>(<span class="st">"wage"</span>, <span class="st">"female"</span>, <span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"tenure"</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    wage female educ exper tenure
+1   3.10      1   11     2      0
+2   3.24      1   12    22      2
+3   3.00      0   11     2      0
+4   6.00      0    8    44     28
+5   5.30      0   12     7      2
+6   8.75      0   16     9      8
+7  11.25      0   18    15      7
+8   5.00      1   12     5      3
+9   3.60      1   12    26      4
+10 18.18      0   17    22     21</code></pre>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="single-dummy-independent-variable" class="level2">
+<h2 class="anchored" data-anchor-id="single-dummy-independent-variable">Single dummy independent variable</h2>
+<ul>
+<li><p>Consider the following regression:</p>
+<p><span class="math display">
+\text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+</span></p>
+<p>and assume that, conditional on all independent variables, <span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right]=0.</span></p></li>
+<li><p>Here, tenure refers to the number of years the worker has been employed at their current firm.</p></li>
+<li><p>If observation <span class="math inline">i</span> corresponds to a woman, <span class="math inline">\text{Female}_{i}=1</span>, and</p>
+<p><span class="math display">\begin{aligned}
+&amp;\mathrm{E}\left[\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}\right] \\
+&amp;= \beta_{0}+\delta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.
+\end{aligned}</span></p></li>
+<li><p>If observation <span class="math inline">i</span> corresponds to a man, <span class="math inline">\text{Female}_{i}=0</span>, and</p>
+<p><span class="math display">\begin{aligned}
+&amp;\mathrm{E}\left[\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}\right] \\
+&amp;= \beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.
+\end{aligned}</span></p></li>
+<li><p>Thus,</p>
+<p><span class="math display">\begin{aligned}
+\delta_{0} &amp;= \mathrm{E}\left[\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}\right] \\
+&amp;\quad - \mathrm{E}\left[\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}\right].
+\end{aligned}</span></p></li>
+</ul>
+</section>
+<section id="intercept-shift" class="level2">
+<h2 class="anchored" data-anchor-id="intercept-shift">Intercept shift</h2>
+<ul>
+<li><p>The model:</p>
+<p><span class="math display">
+\text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>For men (<span class="math inline">\text{Female}_{i}=0</span>):</p>
+<p><span class="math display">
+\text{Wage}_{i}^M=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>For women (<span class="math inline">\text{Female}_{i}=1</span>):</p>
+<p><span class="math display">
+\text{Wage}_{i}^W=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>In this case, men play the role of the <strong>base</strong> group.</p></li>
+<li><p><span class="math inline">\delta_{0}</span> measures the wage difference relative to the base group.</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="326_14_dummy_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-1" class="level2">
+<h2 class="anchored" data-anchor-id="example-1">Example</h2>
+<ul>
+<li><p>Estimated equation:</p>
+<p><span class="math display">\begin{aligned}
+\widehat{\text{Wage}}_{i} &amp;= \underset{(0.72)}{-1.57} - \underset{(0.26)}{1.81}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} \\
+&amp;\quad + \underset{(0.012)}{0.025}\, \text{Exper}_{i} + \underset{(0.021)}{0.141}\, \text{Tenure}_{i}.
+\end{aligned}</span></p></li>
+<li><p>The dependent variable is the wage per hour.</p></li>
+<li><p><span class="math inline">\hat{\delta}_{0}=-1.81</span> implies that a woman earns $1.81 less per hour than a man with the same level of education, experience, and tenure. (These are 1976 wages.)</p></li>
+<li><p>The difference is also statistically significant.</p></li>
+</ul>
+</section>
+<section id="log-dependent-variable" class="level2">
+<h2 class="anchored" data-anchor-id="log-dependent-variable">Log dependent variable</h2>
+<ul>
+<li><p>The model:</p>
+<p><span class="math display">
+\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>In this case,</p></li>
+</ul>
+<p><span class="math display">\begin{aligned}
+\delta_{0} &amp;= \ln\left(\text{Wage}^{F}\right)-\ln\left(\text{Wage}^{M}\right) \\
+&amp;= \ln\left(\frac{\text{Wage}^{F}}{\text{Wage}^{M}}\right) \\
+&amp;= \ln\left(\frac{\text{Wage}^{M}+\left(\text{Wage}^{F}-\text{Wage}^{M}\right)}{\text{Wage}^{M}}\right) \\
+&amp;= \ln\left(1+\frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}\right) \\
+&amp;\approx \frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}.
+\end{aligned}</span></p>
+<ul>
+<li>When the dependent variable is in the log form, <span class="math inline">\delta_{0}</span> has a <strong>percentage</strong> interpretation.</li>
+</ul>
+</section>
+<section id="example-2" class="level2">
+<h2 class="anchored" data-anchor-id="example-2">Example</h2>
+<ul>
+<li><p>Estimated equation:</p>
+<p><span class="math display">\begin{aligned}
+\widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.099)}{0.417} - \underset{(0.036)}{0.297}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} \\
+&amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00010)}{0.00058}\, \text{Exper}_{i}^{2} \\
+&amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00023)}{0.00059}\, \text{Tenure}_{i}^{2}.
+\end{aligned}</span></p></li>
+<li><p><span class="math inline">\hat{\delta}_{0}=-0.297</span> implies that a woman earns 29.7% less than a man with the same level of education, experience, and tenure.</p></li>
+</ul>
+</section>
+<section id="changing-the-base-group" class="level2">
+<h2 class="anchored" data-anchor-id="changing-the-base-group">Changing the base group</h2>
+<ul>
+<li><p>Instead of</p>
+<p><span class="math display">
+\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+</span></p>
+<p>consider:</p>
+<p><span class="math display">
+\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>Since <span class="math inline">\text{Male}_{i}=1-\text{Female}_{i},</span></p></li>
+</ul>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}\right) &amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+&amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+&amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}</span></p>
+<ul>
+<li><p>We conclude that <span class="math inline">\delta_{0}=-\gamma_{0},</span> <span class="math inline">\beta_{0}=\theta_{0}-\delta_{0},</span> <span class="math inline">\beta_{1}=\theta_{1},</span> etc.:</p>
+<p><span class="math display">
+\ln\left(\text{Wage}_{i}\right)=\left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>Thus, changing the base group has no effect on the conclusions.</p></li>
+<li><p>In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.</p></li>
+</ul>
+</section>
+<section id="dummy-variable-trap" class="level2">
+<h2 class="anchored" data-anchor-id="dummy-variable-trap">Dummy variable trap</h2>
+<ul>
+<li><p>Consider the equation:</p>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{0}\text{Male}_{i} \\
+&amp;\quad +\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}</span></p></li>
+<li><p>Recall that the intercept is a regressor that takes the value one for all observations.</p></li>
+<li><p>In this dataset, <span class="math inline">\text{Female}_{i}+\text{Male}_{i}=1</span> for all observations <span class="math inline">i</span>, so we have <strong>perfect multicollinearity</strong>. Such an equation cannot be estimated.</p></li>
+<li><p><strong>One cannot include an intercept and dummies for all the groups!</strong></p></li>
+</ul>
+</section>
+<section id="dummy-variable-trap-1" class="level2">
+<h2 class="anchored" data-anchor-id="dummy-variable-trap-1">Dummy variable trap</h2>
+<ul>
+<li><p>One of the dummies has to be omitted and the corresponding group becomes the <strong>base</strong> group:</p>
+<ul>
+<li><p>Men are the base group: <span class="math inline">\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span></p></li>
+<li><p>Women are the base group: <span class="math inline">\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span></p></li>
+</ul></li>
+<li><p>Alternatively, one can include both dummies <strong>without</strong> the intercept:</p>
+<p><span class="math inline">\ln\left(\text{Wage}_{i}\right)=\pi_{0}\text{Female}_{i}+\pi_{1}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span></p>
+<ul>
+<li><p>In R, a regression without an intercept can be estimated by adding <code>+ 0</code> or <code>- 1</code> to the formula:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or equivalently:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>The coefficients on the dummy variables lose the difference interpretation.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="slope-changes-and-interactions" class="level2">
+<h2 class="anchored" data-anchor-id="slope-changes-and-interactions">Slope changes and interactions</h2>
+<ul>
+<li><p>We can also allow the returns to education to be different for men and women:</p>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\delta_{1}\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right) \\
+&amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}</span></p></li>
+<li><p>The variable <span class="math inline">\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right)</span> is called an <strong>interaction</strong>.</p></li>
+<li><p>The equation for men (<span class="math inline">\text{Female}_{i}=0</span>):</p>
+<p><span class="math display">
+\ln\left(\text{Wage}_{i}^{M}\right)=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+</span></p></li>
+<li><p>The equation for women (<span class="math inline">\text{Female}_{i}=1</span>):</p>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}^{F}\right) &amp;= \left(\beta_{0}+\delta_{0}\right)+\left(\beta_{1}+\delta_{1}\right)\text{Educ}_{i} \\
+&amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}</span></p></li>
+<li><p><span class="math inline">\delta_{1}</span> can be interpreted as the difference in the return to education between women and men (the base group) after controlling for experience and tenure.</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="326_14_dummy_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-3" class="level2">
+<h2 class="anchored" data-anchor-id="example-3">Example</h2>
+<ul>
+<li><p>Estimated equation:</p>
+<p><span class="math display">\begin{aligned}
+\widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} + \underset{(0.008)}{0.082}\, \text{Educ}_{i} - \underset{(0.0131)}{0.0056}\, \text{Female}_{i}\cdot \text{Educ}_{i} \\
+&amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} \\
+&amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.
+\end{aligned}</span></p></li>
+<li><p><span class="math inline">\hat{\delta}_{1}=-0.0056</span>, suggesting that the return to education for women is 0.56 percentage points less than for men; however, this difference is not statistically significant. We cannot reject the hypothesis that the return to education is the same for men and women.</p></li>
+</ul>
+</section>
+<section id="multiple-categories" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-categories">Multiple categories</h2>
+<ul>
+<li><p>In the previous examples, <span class="math inline">\text{Educ}</span> was a quantitative variable: years of education.</p></li>
+<li><p>Suppose now that instead the education variable is <strong>ordinal</strong>:</p>
+<p><span class="math display">
+\text{Education}_{i} = \left\{
+\begin{array}{ll}
+1 &amp; \text{if high-school dropout,} \\
+2 &amp; \text{if high-school graduate,} \\
+3 &amp; \text{if some college,} \\
+4 &amp; \text{if college graduate,} \\
+5 &amp; \text{if advanced degree.}
+\end{array}
+\right.
+</span></p></li>
+<li><p>Only the order is important, and there is no meaning to the <strong>distance</strong> between the values.</p></li>
+<li><p>Adding such a variable to the regression will give a meaningless result.</p></li>
+</ul>
+</section>
+<section id="multiple-categories-1" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-categories-1">Multiple categories</h2>
+<p><span class="math display">
+\text{Education}_{i} = \left\{
+\begin{array}{ll}
+1 &amp; \text{if high-school dropout,} \\
+2 &amp; \text{if high-school graduate,} \\
+3 &amp; \text{if some college,} \\
+4 &amp; \text{if college graduate,} \\
+5 &amp; \text{if advanced degree.}
+\end{array}
+\right.
+</span></p>
+<ul>
+<li><p>Define 5 new dummy variables:</p>
+<p><span class="math display">\begin{aligned}
+E_{1,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if high-school dropout,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \quad &amp;
+E_{2,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if high-school graduate,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \\
+E_{3,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if some college,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \quad &amp;
+E_{4,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if college graduate,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \\
+E_{5,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text{otherwise.} \end{array} \right.
+\end{aligned}</span></p></li>
+<li><p>To avoid the dummy variable trap, one of the dummies has to be omitted:</p>
+<p><span class="math display">
+\text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i}+\delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}
+</span></p></li>
+<li><p>Group 1 (high-school dropout) becomes the base group.</p></li>
+<li><p><span class="math inline">\delta_{2}</span> measures the wage difference between high-school graduates and high-school dropouts.</p></li>
+<li><p><span class="math inline">\delta_{3}</span> measures the wage difference between individuals with some college education and high-school dropouts.</p></li>
+</ul>
+</section>
+<section id="comparing-consecutive-groups" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-consecutive-groups">Comparing consecutive groups</h2>
+<ul>
+<li><p>The previous definitions compare each group to the <strong>base</strong> group (high-school dropouts). Alternatively, we can define dummies that compare each group to the <strong>previous</strong> one:</p>
+<p><span class="math display">\begin{aligned}
+D_{2,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if high-school graduate or higher,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \\
+D_{3,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if some college or higher,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \\
+D_{4,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if college graduate or higher,} \\ 0 &amp; \text{otherwise.} \end{array} \right. \\
+D_{5,i} &amp;= \left\{ \begin{array}{cc} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text{otherwise.} \end{array} \right.
+\end{aligned}</span></p></li>
+<li><p>The model:</p>
+<p><span class="math display">
+\text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i}+\gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}
+</span></p></li>
+<li><p><span class="math inline">\gamma_{2}</span> measures the wage difference between high-school graduates and high-school dropouts.</p></li>
+<li><p><span class="math inline">\gamma_{3}</span> measures the wage difference between individuals with some college and high-school graduates.</p></li>
+<li><p><span class="math inline">\gamma_{4}</span> measures the wage difference between college graduates and individuals with some college.</p></li>
+<li><p><span class="math inline">\gamma_{5}</span> measures the wage difference between individuals with advanced degrees and college graduates.</p></li>
+</ul>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb5" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 14: Dummy variables"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Economics 326 — Introduction to Econometrics II"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: "Vadim Marmer, UBC"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_14_dummy.html</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-location: right</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-title: "Table of Contents"</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">    smooth-scroll: true</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">    html-math-method: katex</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">  pdf:</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_14_dummy.pdf</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">    pdf-engine: xelatex</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">    geometry: margin=0.75in</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">    fontsize: 10pt</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: false</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">    classoption: fleqn</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">  revealjs:</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_14_dummy_slides.html</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: solarized</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">    css: slides_no_caps.css</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-number: c/t</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">    incremental: true</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">    html-math-method: katex</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">    scrollable: true</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">    chalkboard: false</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co">    transition: none</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interval and ordinal variables</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>::: {.hidden}</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>\gdef\E#1{\mathrm{E}\left<span class="co">[</span><span class="ot">#1\right</span><span class="co">]</span>}</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>\gdef\Var#1{\mathrm{Var}\left(#1\right)}</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>\gdef\se#1{\mathrm{se}\left(#1\right)}</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An **interval** variable is one where the difference between two values is meaningful. Example: "Education" when measured in years. The difference between 12 and 10 years of education is meaningful.</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In some data sets, education is reported as an **ordinal** variable: only the order of its values matters, but the difference between values has no meaning. The following two variables are equivalent:</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i}=\left<span class="sc">\{</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>  3 &amp; \text{if advanced degree.}</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i}=\left<span class="sc">\{</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>  10 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>  234 &amp; \text{if advanced degree.}</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## Categorical variables</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A **categorical** variable has one or more categories, but there is no natural ordering to the categories. Examples: gender, race, marital status, geographic location.</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The following two variables are equivalent:</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>  \text{Gender}_{i}=\left<span class="sc">\{</span></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if observation } i \text{ corresponds to a woman,} <span class="sc">\\</span></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if observation } i \text{ corresponds to a man.}</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>  \text{Gender}_{i}=\left<span class="sc">\{</span></span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if observation } i \text{ corresponds to a man,} <span class="sc">\\</span></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if observation } i \text{ corresponds to a woman.}</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Categorical and ordinal variables are also called **qualitative**.</span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Qualitative variables cannot simply be included in a regression because the regression technique assumes that all variables are interval.</span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variables</span></span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A **dummy** variable is a binary zero-one variable that takes on the value one if some condition is satisfied and zero if that condition fails:</span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\text{Married}_{i}=\left<span class="sc">\{</span> \begin{array}{ll} 1 &amp; \text{if individual } i \text{ is married,} <span class="sc">\\</span> 0 &amp; \text{if individual } i \text{ is not married.} \end{array} \right.$</span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\text{Unmarried}_{i}=\left<span class="sc">\{</span> \begin{array}{ll} 1 &amp; \text{if individual } i \text{ is not married,} <span class="sc">\\</span> 0 &amp; \text{if individual } i \text{ is married.} \end{array} \right.$</span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Note that $\text{Married}_{i}+\text{Unmarried}_{i}=1$ for all observations $i$.</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Preview of the <span class="in">`wage1`</span> data from the <span class="in">`wooldridge`</span> package:</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| message: false</span></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(wage1)</span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(wage1[, <span class="fu">c</span>(<span class="st">"wage"</span>, <span class="st">"female"</span>, <span class="st">"educ"</span>, <span class="st">"exper"</span>, <span class="st">"tenure"</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## Single dummy independent variable</span></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the following regression:</span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},</span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>  and assume that, conditional on all independent variables, $\E{U_{i} \mid \mathbf{X}}=0.$</span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Here, tenure refers to the number of years the worker has been employed at their current firm.</span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If observation $i$ corresponds to a woman, $\text{Female}_{i}=1$, and</span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>  &amp;\E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} <span class="sc">\\</span></span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\delta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.</span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If observation $i$ corresponds to a man, $\text{Female}_{i}=0$, and</span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>  &amp;\E{\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} <span class="sc">\\</span></span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.</span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus,</span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a>  \delta_{0} &amp;= \E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} <span class="sc">\\</span></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}}.</span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Intercept shift</span></span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model:</span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For men ($\text{Female}_{i}=0$):</span>
+<span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}^M=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For women ($\text{Female}_{i}=1$):</span>
+<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}^W=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, men play the role of the **base** group.</span>
+<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{0}$ measures the wage difference relative to the base group.</span>
+<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-182"><a href="#cb5-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-183"><a href="#cb5-183" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb5-184"><a href="#cb5-184" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb5-185"><a href="#cb5-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb5-186"><a href="#cb5-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb5-187"><a href="#cb5-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-188"><a href="#cb5-188" aria-hidden="true" tabindex="-1"></a>beta_0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">1.57</span></span>
+<span id="cb5-189"><a href="#cb5-189" aria-hidden="true" tabindex="-1"></a>delta_0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">1.81</span></span>
+<span id="cb5-190"><a href="#cb5-190" aria-hidden="true" tabindex="-1"></a>beta_1 <span class="ot">&lt;-</span> <span class="fl">0.572</span></span>
+<span id="cb5-191"><a href="#cb5-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-192"><a href="#cb5-192" aria-hidden="true" tabindex="-1"></a>educ <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">8</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb5-193"><a href="#cb5-193" aria-hidden="true" tabindex="-1"></a>wage_men <span class="ot">&lt;-</span> beta_0 <span class="sc">+</span> beta_1 <span class="sc">*</span> educ</span>
+<span id="cb5-194"><a href="#cb5-194" aria-hidden="true" tabindex="-1"></a>wage_women <span class="ot">&lt;-</span> (beta_0 <span class="sc">+</span> delta_0) <span class="sc">+</span> beta_1 <span class="sc">*</span> educ</span>
+<span id="cb5-195"><a href="#cb5-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-196"><a href="#cb5-196" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(educ, wage_men, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb5-197"><a href="#cb5-197" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Education"</span>, <span class="at">ylab =</span> <span class="st">"Wage"</span>,</span>
+<span id="cb5-198"><a href="#cb5-198" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(wage_men, wage_women)),</span>
+<span id="cb5-199"><a href="#cb5-199" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Intercept shift"</span>)</span>
+<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(educ, wage_women, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb5-201"><a href="#cb5-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-202"><a href="#cb5-202" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotate the intercept shift</span></span>
+<span id="cb5-203"><a href="#cb5-203" aria-hidden="true" tabindex="-1"></a>mid_educ <span class="ot">&lt;-</span> <span class="dv">14</span></span>
+<span id="cb5-204"><a href="#cb5-204" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(mid_educ, beta_0 <span class="sc">+</span> beta_1 <span class="sc">*</span> mid_educ,</span>
+<span id="cb5-205"><a href="#cb5-205" aria-hidden="true" tabindex="-1"></a>       mid_educ, (beta_0 <span class="sc">+</span> delta_0) <span class="sc">+</span> beta_1 <span class="sc">*</span> mid_educ,</span>
+<span id="cb5-206"><a href="#cb5-206" aria-hidden="true" tabindex="-1"></a>       <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.1</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb5-207"><a href="#cb5-207" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(mid_educ <span class="sc">+</span> <span class="fl">0.5</span>,</span>
+<span id="cb5-208"><a href="#cb5-208" aria-hidden="true" tabindex="-1"></a>     beta_0 <span class="sc">+</span> beta_1 <span class="sc">*</span> mid_educ <span class="sc">+</span> delta_0 <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb5-209"><a href="#cb5-209" aria-hidden="true" tabindex="-1"></a>     <span class="fu">expression</span>(delta[<span class="dv">0</span>]), <span class="at">cex =</span> <span class="fl">1.2</span>)</span>
+<span id="cb5-210"><a href="#cb5-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-211"><a href="#cb5-211" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Men"</span>, <span class="st">"Women"</span>),</span>
+<span id="cb5-212"><a href="#cb5-212" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-213"><a href="#cb5-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-214"><a href="#cb5-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-215"><a href="#cb5-215" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
+<span id="cb5-216"><a href="#cb5-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-217"><a href="#cb5-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
+<span id="cb5-218"><a href="#cb5-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-219"><a href="#cb5-219" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-220"><a href="#cb5-220" aria-hidden="true" tabindex="-1"></a>  \widehat{\text{Wage}}_{i} &amp;= \underset{(0.72)}{-1.57} - \underset{(0.26)}{1.81}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-221"><a href="#cb5-221" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.012)}{0.025}\, \text{Exper}_{i} + \underset{(0.021)}{0.141}\, \text{Tenure}_{i}.</span>
+<span id="cb5-222"><a href="#cb5-222" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-223"><a href="#cb5-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-224"><a href="#cb5-224" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The dependent variable is the wage per hour.</span>
+<span id="cb5-225"><a href="#cb5-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-226"><a href="#cb5-226" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\delta}_{0}=-1.81$ implies that a woman earns \$1.81 less per hour than a man with the same level of education, experience, and tenure. (These are 1976 wages.)</span>
+<span id="cb5-227"><a href="#cb5-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-228"><a href="#cb5-228" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The difference is also statistically significant.</span>
+<span id="cb5-229"><a href="#cb5-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## Log dependent variable</span></span>
+<span id="cb5-231"><a href="#cb5-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-232"><a href="#cb5-232" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model:</span>
+<span id="cb5-233"><a href="#cb5-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-234"><a href="#cb5-234" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-235"><a href="#cb5-235" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-236"><a href="#cb5-236" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-237"><a href="#cb5-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-238"><a href="#cb5-238" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case,</span>
+<span id="cb5-239"><a href="#cb5-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-240"><a href="#cb5-240" aria-hidden="true" tabindex="-1"></a>$$\begin{aligned}</span>
+<span id="cb5-241"><a href="#cb5-241" aria-hidden="true" tabindex="-1"></a>\delta_{0} &amp;= \ln\left(\text{Wage}^{F}\right)-\ln\left(\text{Wage}^{M}\right) <span class="sc">\\</span></span>
+<span id="cb5-242"><a href="#cb5-242" aria-hidden="true" tabindex="-1"></a>&amp;= \ln\left(\frac{\text{Wage}^{F}}{\text{Wage}^{M}}\right) <span class="sc">\\</span></span>
+<span id="cb5-243"><a href="#cb5-243" aria-hidden="true" tabindex="-1"></a>&amp;= \ln\left(\frac{\text{Wage}^{M}+\left(\text{Wage}^{F}-\text{Wage}^{M}\right)}{\text{Wage}^{M}}\right) <span class="sc">\\</span></span>
+<span id="cb5-244"><a href="#cb5-244" aria-hidden="true" tabindex="-1"></a>&amp;= \ln\left(1+\frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}\right) <span class="sc">\\</span></span>
+<span id="cb5-245"><a href="#cb5-245" aria-hidden="true" tabindex="-1"></a>&amp;\approx \frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}.</span>
+<span id="cb5-246"><a href="#cb5-246" aria-hidden="true" tabindex="-1"></a>\end{aligned}$$</span>
+<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-248"><a href="#cb5-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When the dependent variable is in the log form, $\delta_{0}$ has a **percentage** interpretation.</span>
+<span id="cb5-249"><a href="#cb5-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-250"><a href="#cb5-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
+<span id="cb5-251"><a href="#cb5-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-252"><a href="#cb5-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
+<span id="cb5-253"><a href="#cb5-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-254"><a href="#cb5-254" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-255"><a href="#cb5-255" aria-hidden="true" tabindex="-1"></a>  \widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.099)}{0.417} - \underset{(0.036)}{0.297}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-256"><a href="#cb5-256" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00010)}{0.00058}\, \text{Exper}_{i}^{2} <span class="sc">\\</span></span>
+<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00023)}{0.00059}\, \text{Tenure}_{i}^{2}.</span>
+<span id="cb5-258"><a href="#cb5-258" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-259"><a href="#cb5-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\delta}_{0}=-0.297$ implies that a woman earns 29.7% less than a man with the same level of education, experience, and tenure.</span>
+<span id="cb5-261"><a href="#cb5-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-262"><a href="#cb5-262" aria-hidden="true" tabindex="-1"></a><span class="fu">## Changing the base group</span></span>
+<span id="cb5-263"><a href="#cb5-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-264"><a href="#cb5-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Instead of</span>
+<span id="cb5-265"><a href="#cb5-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-266"><a href="#cb5-266" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-267"><a href="#cb5-267" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},</span>
+<span id="cb5-268"><a href="#cb5-268" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-269"><a href="#cb5-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-270"><a href="#cb5-270" aria-hidden="true" tabindex="-1"></a>  consider:</span>
+<span id="cb5-271"><a href="#cb5-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-272"><a href="#cb5-272" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-273"><a href="#cb5-273" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-274"><a href="#cb5-274" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-275"><a href="#cb5-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-276"><a href="#cb5-276" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\text{Male}_{i}=1-\text{Female}_{i},$</span>
+<span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a>$$\begin{aligned}</span>
+<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a>\ln\left(\text{Wage}_{i}\right) &amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} <span class="sc">\\</span></span>
+<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a>&amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} <span class="sc">\\</span></span>
+<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a>&amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a>\end{aligned}$$</span>
+<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:</span>
+<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-290"><a href="#cb5-290" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, changing the base group has no effect on the conclusions.</span>
+<span id="cb5-291"><a href="#cb5-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-292"><a href="#cb5-292" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.</span>
+<span id="cb5-293"><a href="#cb5-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-294"><a href="#cb5-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variable trap</span></span>
+<span id="cb5-295"><a href="#cb5-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-296"><a href="#cb5-296" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the equation:</span>
+<span id="cb5-297"><a href="#cb5-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-298"><a href="#cb5-298" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-299"><a href="#cb5-299" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{0}\text{Male}_{i} <span class="sc">\\</span></span>
+<span id="cb5-300"><a href="#cb5-300" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-301"><a href="#cb5-301" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-302"><a href="#cb5-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-303"><a href="#cb5-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that the intercept is a regressor that takes the value one for all observations.</span>
+<span id="cb5-304"><a href="#cb5-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-305"><a href="#cb5-305" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this dataset, $\text{Female}_{i}+\text{Male}_{i}=1$ for all observations $i$, so we have **perfect multicollinearity**. Such an equation cannot be estimated.</span>
+<span id="cb5-306"><a href="#cb5-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-307"><a href="#cb5-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**One cannot include an intercept and dummies for all the groups!**</span>
+<span id="cb5-308"><a href="#cb5-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-309"><a href="#cb5-309" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variable trap</span></span>
+<span id="cb5-310"><a href="#cb5-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-311"><a href="#cb5-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One of the dummies has to be omitted and the corresponding group becomes the **base** group:</span>
+<span id="cb5-312"><a href="#cb5-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-313"><a href="#cb5-313" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Men are the base group: $\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-314"><a href="#cb5-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-315"><a href="#cb5-315" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Women are the base group: $\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-316"><a href="#cb5-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-317"><a href="#cb5-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alternatively, one can include both dummies **without** the intercept:</span>
+<span id="cb5-318"><a href="#cb5-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-319"><a href="#cb5-319" aria-hidden="true" tabindex="-1"></a>  $\ln\left(\text{Wage}_{i}\right)=\pi_{0}\text{Female}_{i}+\pi_{1}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-320"><a href="#cb5-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-321"><a href="#cb5-321" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In R, a regression without an intercept can be estimated by adding <span class="in">`+ 0`</span> or <span class="in">`- 1`</span> to the formula:</span>
+<span id="cb5-322"><a href="#cb5-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-323"><a href="#cb5-323" aria-hidden="true" tabindex="-1"></a>    <span class="in">```r</span></span>
+<span id="cb5-324"><a href="#cb5-324" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> <span class="dv">0</span>)</span>
+<span id="cb5-325"><a href="#cb5-325" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb5-326"><a href="#cb5-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a>    or equivalently:</span>
+<span id="cb5-328"><a href="#cb5-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a>    <span class="in">```r</span></span>
+<span id="cb5-330"><a href="#cb5-330" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The coefficients on the dummy variables lose the difference interpretation.</span>
+<span id="cb5-334"><a href="#cb5-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slope changes and interactions</span></span>
+<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-337"><a href="#cb5-337" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can also allow the returns to education to be different for men and women:</span>
+<span id="cb5-338"><a href="#cb5-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-339"><a href="#cb5-339" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-340"><a href="#cb5-340" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\delta_{1}\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right) <span class="sc">\\</span></span>
+<span id="cb5-341"><a href="#cb5-341" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-342"><a href="#cb5-342" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-343"><a href="#cb5-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-344"><a href="#cb5-344" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variable $\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right)$ is called an **interaction**.</span>
+<span id="cb5-345"><a href="#cb5-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-346"><a href="#cb5-346" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The equation for men ($\text{Female}_{i}=0$):</span>
+<span id="cb5-347"><a href="#cb5-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-348"><a href="#cb5-348" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-349"><a href="#cb5-349" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}^{M}\right)=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-350"><a href="#cb5-350" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-351"><a href="#cb5-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-352"><a href="#cb5-352" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The equation for women ($\text{Female}_{i}=1$):</span>
+<span id="cb5-353"><a href="#cb5-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-354"><a href="#cb5-354" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-355"><a href="#cb5-355" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}^{F}\right) &amp;= \left(\beta_{0}+\delta_{0}\right)+\left(\beta_{1}+\delta_{1}\right)\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-356"><a href="#cb5-356" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-357"><a href="#cb5-357" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-358"><a href="#cb5-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-359"><a href="#cb5-359" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{1}$ can be interpreted as the difference in the return to education between women and men (the base group) after controlling for experience and tenure.</span>
+<span id="cb5-360"><a href="#cb5-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-361"><a href="#cb5-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-364"><a href="#cb5-364" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-365"><a href="#cb5-365" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb5-366"><a href="#cb5-366" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb5-367"><a href="#cb5-367" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb5-368"><a href="#cb5-368" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb5-369"><a href="#cb5-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-370"><a href="#cb5-370" aria-hidden="true" tabindex="-1"></a><span class="co"># Stylized coefficients to clearly illustrate slope shift</span></span>
+<span id="cb5-371"><a href="#cb5-371" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fl">0.8</span>        <span class="co"># beta_0</span></span>
+<span id="cb5-372"><a href="#cb5-372" aria-hidden="true" tabindex="-1"></a>d0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.3</span>       <span class="co"># delta_0 (intercept shift)</span></span>
+<span id="cb5-373"><a href="#cb5-373" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fl">0.10</span>       <span class="co"># beta_1 (slope for men)</span></span>
+<span id="cb5-374"><a href="#cb5-374" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.04</span>      <span class="co"># delta_1 (slope shift)</span></span>
+<span id="cb5-375"><a href="#cb5-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-376"><a href="#cb5-376" aria-hidden="true" tabindex="-1"></a>educ <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb5-377"><a href="#cb5-377" aria-hidden="true" tabindex="-1"></a>y_men   <span class="ot">&lt;-</span> b0 <span class="sc">+</span> b1 <span class="sc">*</span> educ</span>
+<span id="cb5-378"><a href="#cb5-378" aria-hidden="true" tabindex="-1"></a>y_women <span class="ot">&lt;-</span> (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> educ</span>
+<span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(educ, y_men, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Education"</span>, <span class="at">ylab =</span> <span class="st">"ln(Wage)"</span>,</span>
+<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">3.0</span>))</span>
+<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(educ, y_women, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a><span class="co"># Intercept dots on y-axis with dashed guide lines</span></span>
+<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">0</span>, b0, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">0</span>, b0 <span class="sc">+</span> d0, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>, b0, <span class="dv">3</span>, b0, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>, b0 <span class="sc">+</span> d0, <span class="dv">3</span>, b0 <span class="sc">+</span> d0, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">3.2</span>, b0, <span class="fu">expression</span>(beta[<span class="dv">0</span>]), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.9</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">3.2</span>, b0 <span class="sc">+</span> d0, <span class="fu">expression</span>(beta[<span class="dv">0</span>] <span class="sc">+</span> delta[<span class="dv">0</span>]), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a><span class="co"># Line labels near right end</span></span>
+<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">18</span>, b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">18</span>, <span class="st">"Men"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
+<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">18</span>, (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> <span class="dv">18</span>, <span class="st">"Women"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
+<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a><span class="co"># Slope labels in the middle, placed fully above/below the lines</span></span>
+<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">11</span>, b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">11</span>,</span>
+<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a>     <span class="fu">expression</span>(slope <span class="sc">==</span> beta[<span class="dv">1</span>]), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">offset =</span> <span class="fl">0.7</span>)</span>
+<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">11</span>, (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> <span class="dv">11</span>,</span>
+<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a>     <span class="fu">expression</span>(slope <span class="sc">==</span> beta[<span class="dv">1</span>] <span class="sc">+</span> delta[<span class="dv">1</span>]), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">offset =</span> <span class="fl">0.7</span>)</span>
+<span id="cb5-403"><a href="#cb5-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-404"><a href="#cb5-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-405"><a href="#cb5-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
+<span id="cb5-406"><a href="#cb5-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-407"><a href="#cb5-407" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
+<span id="cb5-408"><a href="#cb5-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-409"><a href="#cb5-409" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-410"><a href="#cb5-410" aria-hidden="true" tabindex="-1"></a>  \widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} + \underset{(0.008)}{0.082}\, \text{Educ}_{i} - \underset{(0.0131)}{0.0056}\, \text{Female}_{i}\cdot \text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-411"><a href="#cb5-411" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} <span class="sc">\\</span></span>
+<span id="cb5-412"><a href="#cb5-412" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.</span>
+<span id="cb5-413"><a href="#cb5-413" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-414"><a href="#cb5-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-415"><a href="#cb5-415" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\delta}_{1}=-0.0056$, suggesting that the return to education for women is 0.56 percentage points less than for men; however, this difference is not statistically significant. We cannot reject the hypothesis that the return to education is the same for men and women.</span>
+<span id="cb5-416"><a href="#cb5-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-417"><a href="#cb5-417" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple categories</span></span>
+<span id="cb5-418"><a href="#cb5-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-419"><a href="#cb5-419" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the previous examples, $\text{Educ}$ was a quantitative variable: years of education.</span>
+<span id="cb5-420"><a href="#cb5-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-421"><a href="#cb5-421" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose now that instead the education variable is **ordinal**:</span>
+<span id="cb5-422"><a href="#cb5-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-423"><a href="#cb5-423" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-424"><a href="#cb5-424" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i} = \left<span class="sc">\{</span></span>
+<span id="cb5-425"><a href="#cb5-425" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-426"><a href="#cb5-426" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school dropout,} <span class="sc">\\</span></span>
+<span id="cb5-427"><a href="#cb5-427" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
+<span id="cb5-428"><a href="#cb5-428" aria-hidden="true" tabindex="-1"></a>  3 &amp; \text{if some college,} <span class="sc">\\</span></span>
+<span id="cb5-429"><a href="#cb5-429" aria-hidden="true" tabindex="-1"></a>  4 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
+<span id="cb5-430"><a href="#cb5-430" aria-hidden="true" tabindex="-1"></a>  5 &amp; \text{if advanced degree.}</span>
+<span id="cb5-431"><a href="#cb5-431" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-432"><a href="#cb5-432" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-433"><a href="#cb5-433" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-434"><a href="#cb5-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-435"><a href="#cb5-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Only the order is important, and there is no meaning to the **distance** between the values.</span>
+<span id="cb5-436"><a href="#cb5-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-437"><a href="#cb5-437" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding such a variable to the regression will give a meaningless result.</span>
+<span id="cb5-438"><a href="#cb5-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-439"><a href="#cb5-439" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple categories</span></span>
+<span id="cb5-440"><a href="#cb5-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-441"><a href="#cb5-441" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb5-442"><a href="#cb5-442" aria-hidden="true" tabindex="-1"></a>\text{Education}_{i} = \left<span class="sc">\{</span></span>
+<span id="cb5-443"><a href="#cb5-443" aria-hidden="true" tabindex="-1"></a>\begin{array}{ll}</span>
+<span id="cb5-444"><a href="#cb5-444" aria-hidden="true" tabindex="-1"></a>1 &amp; \text{if high-school dropout,} <span class="sc">\\</span></span>
+<span id="cb5-445"><a href="#cb5-445" aria-hidden="true" tabindex="-1"></a>2 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
+<span id="cb5-446"><a href="#cb5-446" aria-hidden="true" tabindex="-1"></a>3 &amp; \text{if some college,} <span class="sc">\\</span></span>
+<span id="cb5-447"><a href="#cb5-447" aria-hidden="true" tabindex="-1"></a>4 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
+<span id="cb5-448"><a href="#cb5-448" aria-hidden="true" tabindex="-1"></a>5 &amp; \text{if advanced degree.}</span>
+<span id="cb5-449"><a href="#cb5-449" aria-hidden="true" tabindex="-1"></a>\end{array}</span>
+<span id="cb5-450"><a href="#cb5-450" aria-hidden="true" tabindex="-1"></a>\right.</span>
+<span id="cb5-451"><a href="#cb5-451" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb5-452"><a href="#cb5-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-453"><a href="#cb5-453" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define 5 new dummy variables:</span>
+<span id="cb5-454"><a href="#cb5-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-455"><a href="#cb5-455" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-456"><a href="#cb5-456" aria-hidden="true" tabindex="-1"></a>  E_{1,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if high-school dropout,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. \quad &amp;</span>
+<span id="cb5-457"><a href="#cb5-457" aria-hidden="true" tabindex="-1"></a>  E_{2,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if high-school graduate,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. <span class="sc">\\</span></span>
+<span id="cb5-458"><a href="#cb5-458" aria-hidden="true" tabindex="-1"></a>  E_{3,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if some college,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. \quad &amp;</span>
+<span id="cb5-459"><a href="#cb5-459" aria-hidden="true" tabindex="-1"></a>  E_{4,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if college graduate,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. <span class="sc">\\</span></span>
+<span id="cb5-460"><a href="#cb5-460" aria-hidden="true" tabindex="-1"></a>  E_{5,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if advanced degree,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right.</span>
+<span id="cb5-461"><a href="#cb5-461" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-462"><a href="#cb5-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-463"><a href="#cb5-463" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To avoid the dummy variable trap, one of the dummies has to be omitted:</span>
+<span id="cb5-464"><a href="#cb5-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-465"><a href="#cb5-465" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-466"><a href="#cb5-466" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i}+\delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}</span>
+<span id="cb5-467"><a href="#cb5-467" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-468"><a href="#cb5-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-469"><a href="#cb5-469" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Group 1 (high-school dropout) becomes the base group.</span>
+<span id="cb5-470"><a href="#cb5-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-471"><a href="#cb5-471" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{2}$ measures the wage difference between high-school graduates and high-school dropouts.</span>
+<span id="cb5-472"><a href="#cb5-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-473"><a href="#cb5-473" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{3}$ measures the wage difference between individuals with some college education and high-school dropouts.</span>
+<span id="cb5-474"><a href="#cb5-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-475"><a href="#cb5-475" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparing consecutive groups</span></span>
+<span id="cb5-476"><a href="#cb5-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-477"><a href="#cb5-477" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The previous definitions compare each group to the **base** group (high-school dropouts). Alternatively, we can define dummies that compare each group to the **previous** one:</span>
+<span id="cb5-478"><a href="#cb5-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-479"><a href="#cb5-479" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-480"><a href="#cb5-480" aria-hidden="true" tabindex="-1"></a>  D_{2,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if high-school graduate or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. <span class="sc">\\</span></span>
+<span id="cb5-481"><a href="#cb5-481" aria-hidden="true" tabindex="-1"></a>  D_{3,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if some college or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. <span class="sc">\\</span></span>
+<span id="cb5-482"><a href="#cb5-482" aria-hidden="true" tabindex="-1"></a>  D_{4,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if college graduate or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right. <span class="sc">\\</span></span>
+<span id="cb5-483"><a href="#cb5-483" aria-hidden="true" tabindex="-1"></a>  D_{5,i} &amp;= \left<span class="sc">\{</span> \begin{array}{cc} 1 &amp; \text{if advanced degree,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{array} \right.</span>
+<span id="cb5-484"><a href="#cb5-484" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-485"><a href="#cb5-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-486"><a href="#cb5-486" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model:</span>
+<span id="cb5-487"><a href="#cb5-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-488"><a href="#cb5-488" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-489"><a href="#cb5-489" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i}+\gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}</span>
+<span id="cb5-490"><a href="#cb5-490" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{2}$ measures the wage difference between high-school graduates and high-school dropouts.</span>
+<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{3}$ measures the wage difference between individuals with some college and high-school graduates.</span>
+<span id="cb5-495"><a href="#cb5-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-496"><a href="#cb5-496" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{4}$ measures the wage difference between college graduates and individuals with some college.</span>
+<span id="cb5-497"><a href="#cb5-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-498"><a href="#cb5-498" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{5}$ measures the wage difference between individuals with advanced degrees and college graduates.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<script src="326_14_dummy_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
