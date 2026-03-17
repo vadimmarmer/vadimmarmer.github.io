@@ -374,6 +374,47 @@ format:
          col = c("blue", "red"), lty = c(1, 2), lwd = 2)
   ```
 
+## Example: adding more covariates
+
+- So far, we used only `educ` as the control. The dataset contains more pre-treatment characteristics: `age`, `black`, `married`.
+
+- With random assignment, slopes are approximately equal across groups, so we can add controls directly without demeaned interactions:
+
+  ```{r}
+  #| echo: true
+  reg_X <- lm(re78 ~ train + educ + age + black + married, data = jtrain2)
+  round(summary(reg_X)$coefficients, 1)
+  ```
+
+## Comparison: simple vs. controlled
+
+- Compare the estimated ATE and its standard error across specifications:
+
+  ```{r}
+  #| echo: true
+  m1 <- lm(re78 ~ train, data = jtrain2)
+  m2 <- lm(re78 ~ train + educ + age + black + married, data = jtrain2)
+  tab <- rbind(
+    "No controls"   = c(Estimate = coef(m1)["train"],
+                        SE       = summary(m1)$coef["train", "Std. Error"]),
+    "With controls" = c(Estimate = coef(m2)["train"],
+                        SE       = summary(m2)$coef["train", "Std. Error"])
+  )
+  round(tab, 0)
+  ```
+
+- The estimated ATE barely changes. The standard error shrinks when controls are added.
+
+## Why do controls change little here?
+
+- Under **random assignment**, $D_i$ is independent of all covariates: the treatment and control groups are balanced in expectation.
+
+- Because of balance, including $X_i$ does not change the coefficient on $D_i$: there is no selection bias to remove.
+
+- However, covariates explain variation in earnings, reducing residual variance. The standard error of $\hat{\tau}$ shrinks, so estimates become more precise.
+
+- This contrasts with **observational data**: without randomization, omitting relevant covariates causes the coefficient on $D_i$ to absorb selection bias, and the ATE estimate changes substantially when controls are added.
+
 ## From cross-sections to panel data
 
 - So far, we used **cross-sectional** data and assumed selection on observables: after controlling for $X_i$, treatment is as good as random.
