@@ -151,7 +151,9 @@ format:
 
 ## Example: Lalonde data
 
-- The **National Supported Work (NSW)** program randomly assigned disadvantaged workers to receive job training.
+- The **National Supported Work (NSW)** demonstration recruited disadvantaged workers (long-term unemployed, high-school dropouts, former drug users, ex-offenders).
+
+- Among eligible applicants, some were **randomly assigned** to receive job training (treated group), and the rest formed the **experimental control group**. Both groups come from the same disadvantaged population.
 
 - We use the `jtrain2` dataset from the `wooldridge` package, based on the Lalonde (1986) study:
 
@@ -163,8 +165,8 @@ format:
   head(jtrain2[, c("train", "re78", "educ", "age", "black", "married")], n = 10)
   ```
 
-- `train`: 1 if assigned to job training, 0 otherwise.
-- `re78`: real earnings in 1978 (in dollars).
+- `train`: 1 if randomly assigned to job training, 0 if assigned to control.
+- `re78`: real earnings in 1978 (thousands of dollars).
 
 ## Estimating the ATE
 
@@ -175,7 +177,7 @@ format:
   summary(lm(re78 ~ train, data = jtrain2))$coefficients
   ```
 
-- The estimated ATE is approximately \$1,794: on average, participation in the job training program increased 1978 earnings by about \$1,794.
+- The estimated ATE is approximately \$1,800 (recall that `re78` is in thousands): on average, participation in the job training program increased 1978 earnings by about \$1,800.
 
 ## Observational studies
 
@@ -429,16 +431,34 @@ format:
 
 ## Example: observational data (jtrain3)
 
-- The `jtrain3` dataset from the `wooldridge` package combines the same NSW trainees with a **non-experimental** control group drawn from the Current Population Survey (CPS).
+- Lalonde (1986) asked: what if we had no experiment and instead compared the NSW trainees to ordinary workers?
 
-- In this dataset, treatment is **not** randomly assigned: CPS respondents differ systematically from NSW participants.
+- The `jtrain3` dataset keeps the **same 185 NSW trainees** as the treated group but replaces the experimental control group with **2,490 respondents from the Current Population Survey (CPS)**, a nationally representative survey of American workers.
 
   ```{r}
   #| echo: true
   data(jtrain3)
-  cat("n =", nrow(jtrain3), " (train=1:", sum(jtrain3$train == 1),
-      ", train=0:", sum(jtrain3$train == 0), ")\n")
+  cat("n =", nrow(jtrain3), " (NSW trainees:", sum(jtrain3$train == 1),
+      ", CPS controls:", sum(jtrain3$train == 0), ")\n")
   ```
+
+- CPS respondents were not selected for being disadvantaged. They are typical American workers with higher education, higher earnings, and more stable employment than NSW participants.
+
+## The selection problem in jtrain3
+
+- The two groups have very different baseline characteristics:
+
+  ```{r}
+  #| echo: true
+  grp <- split(jtrain3, jtrain3$train)
+  tab <- rbind(
+    "NSW trainees (train=1)" = colMeans(grp[["1"]][, c("re78","re75","educ","age","black","married")]),
+    "CPS controls (train=0)" = colMeans(grp[["0"]][, c("re78","re75","educ","age","black","married")])
+  )
+  round(tab, 1)
+  ```
+
+- CPS workers earn about \$21,500 in 1978; NSW trainees earn about \$6,300. This gap is not a treatment effect — it reflects the very different populations.
 
 ## Observational: without controls
 
@@ -450,9 +470,9 @@ format:
   round(summary(obs1)$coefficients, 3)
   ```
 
-- The estimated "effect" is **large and negative**: trainees appear to earn far less than the CPS comparison group.
+- The estimated "effect" is **large and negative**: trainees appear to earn about \$15,200 less than CPS workers.
 
-- This is pure **selection bias**: individuals selected into the NSW program were disadvantaged, with much lower baseline earnings.
+- This is pure **selection bias**: the NSW program recruited disadvantaged workers who would have earned less than CPS respondents regardless of training.
 
 ## Observational: with controls
 
@@ -465,7 +485,7 @@ format:
   round(summary(obs2)$coefficients, 3)
   ```
 
-- The coefficient on `train` shifts from about $-$15,200 to about $+$900, much closer to the experimental benchmark of $+$1,794.
+- The coefficient on `train` shifts from about $-$15.2 to about $+$0.9 (thousands), much closer to the experimental benchmark of $+$1.8.
 
 ## Experimental vs. observational
 
