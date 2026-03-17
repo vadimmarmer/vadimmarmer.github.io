@@ -1514,13 +1514,15 @@ With controls              2  1</code></pre>
 <section id="why-does-the-standard-error-shrink" class="slide level2">
 <h2>Why does the standard error shrink?</h2>
 <ul>
-<li class="fragment"><p>Recall that the variance of the OLS estimator depends on the residual variance <span class="math inline">\hat{\sigma}^2</span>:</p>
-<p><span class="math display">
-\widehat{\mathrm{Var}}\left(\hat{\tau}\right) = \frac{\hat{\sigma}^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2 (1 - R_D^2)},
-</span></p>
-<p>where <span class="math inline">R_D^2</span> is the <span class="math inline">R^2</span> from regressing <span class="math inline">D_i</span> on the other regressors.</p></li>
-<li class="fragment"><p>With randomization, <span class="math inline">D_i</span> is nearly uncorrelated with covariates, so <span class="math inline">R_D^2 \approx 0</span>: the denominator stays roughly the same.</p></li>
-<li class="fragment"><p>However, covariates that predict earnings absorb variation in <span class="math inline">Y_i</span>, reducing <span class="math inline">\hat{\sigma}^2</span>. Since <span class="math inline">\mathrm{se}\left(\hat{\tau}\right) \propto \hat{\sigma}</span>, the standard error shrinks.</p></li>
+<li class="fragment"><p>From lecture 11, the variance of the coefficient on <span class="math inline">D_i</span> in a multiple regression is</p>
+<p><span class="math display">\widehat{\mathrm{Var}}\left(\hat{\tau}\right) = \frac{s^2}{SSR_D},</span></p>
+<p>where <span class="math inline">SSR_D = \sum_{i=1}^{n}\tilde{D}_i^2</span> is the RSS from regressing <span class="math inline">D_i</span> on all controls.</p></li>
+<li class="fragment"><p>By the definition of <span class="math inline">R^2</span>: <span class="math inline">R_D^2 = 1 - SSR_D / SST_D</span>, where <span class="math inline">SST_D = \sum_{i=1}^{n}(D_i-\bar{D})^2</span>. Solving for <span class="math inline">SSR_D</span>:</p>
+<p><span class="math display">SSR_D = \sum_{i=1}^{n}(D_i - \bar{D})^2\,(1 - R_D^2).</span></p></li>
+<li class="fragment"><p>Substituting into the variance formula:</p>
+<p><span class="math display">\widehat{\mathrm{Var}}\left(\hat{\tau}\right) = \frac{s^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2\,(1 - R_D^2)}.</span></p></li>
+<li class="fragment"><p><strong>Denominator effect:</strong> with randomization, <span class="math inline">D_i</span> is nearly uncorrelated with the controls, so <span class="math inline">R_D^2 \approx 0</span> — the denominator is unchanged.</p></li>
+<li class="fragment"><p><strong>Numerator effect:</strong> controls that predict <span class="math inline">Y_i</span> reduce the residual variance <span class="math inline">s^2</span>. Since <span class="math inline">\mathrm{se}\left(\hat{\tau}\right) \propto s</span>, the standard error shrinks.</p></li>
 <li class="fragment"><p>In short: <strong>adding covariates under randomization buys precision without changing the point estimate</strong>.</p></li>
 </ul>
 </section>

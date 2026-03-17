@@ -415,17 +415,23 @@ format:
 
 ## Why does the standard error shrink?
 
-- Recall that the variance of the OLS estimator depends on the residual variance $\hat{\sigma}^2$:
+- From lecture 11, the variance of the coefficient on $D_i$ in a multiple regression is
 
-  $$
-  \Vhat{\hat{\tau}} = \frac{\hat{\sigma}^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2 (1 - R_D^2)},
-  $$
+  $$\Vhat{\hat{\tau}} = \frac{s^2}{SSR_D},$$
 
-  where $R_D^2$ is the $R^2$ from regressing $D_i$ on the other regressors.
+  where $SSR_D = \sum_{i=1}^{n}\tilde{D}_i^2$ is the RSS from regressing $D_i$ on all controls.
 
-- With randomization, $D_i$ is nearly uncorrelated with covariates, so $R_D^2 \approx 0$: the denominator stays roughly the same.
+- By the definition of $R^2$: $R_D^2 = 1 - SSR_D / SST_D$, where $SST_D = \sum_{i=1}^{n}(D_i-\bar{D})^2$. Solving for $SSR_D$:
 
-- However, covariates that predict earnings absorb variation in $Y_i$, reducing $\hat{\sigma}^2$. Since $\se{\hat{\tau}} \propto \hat{\sigma}$, the standard error shrinks.
+  $$SSR_D = \sum_{i=1}^{n}(D_i - \bar{D})^2\,(1 - R_D^2).$$
+
+- Substituting into the variance formula:
+
+  $$\Vhat{\hat{\tau}} = \frac{s^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2\,(1 - R_D^2)}.$$
+
+- **Denominator effect:** with randomization, $D_i$ is nearly uncorrelated with the controls, so $R_D^2 \approx 0$ — the denominator is unchanged.
+
+- **Numerator effect:** controls that predict $Y_i$ reduce the residual variance $s^2$. Since $\se{\hat{\tau}} \propto s$, the standard error shrinks.
 
 - In short: **adding covariates under randomization buys precision without changing the point estimate**.
 
