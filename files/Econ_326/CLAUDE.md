@@ -1,0 +1,1 @@
+/Users/vmarmer/.local/share/chezmoi/shared/projects/econ326/Econ_326/CLAUDE.md
