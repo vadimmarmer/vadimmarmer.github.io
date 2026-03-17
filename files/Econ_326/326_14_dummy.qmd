@@ -119,6 +119,11 @@ format:
   head(wage1[, c("wage", "female", "educ", "exper", "tenure")], n = 10)
   ```
 
+- In this dataset:
+  - `wage` (hourly wage) — **interval** variable.
+  - `educ` (years of education), `exper` (years of experience), `tenure` (years at current firm) — **interval** variables.
+  - `female` (1 if woman, 0 if man) — **dummy** (categorical) variable.
+
 ## Single dummy independent variable
 
 - Consider the following regression:
@@ -127,7 +132,7 @@ format:
   \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
   $$
 
-  and assume that, conditional on all independent variables, $\E{U_{i} \mid \mathbf{X}}=0.$
+  and assume that $\E{U_{i} \mid \text{Female}_{i}, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}}=0.$
 
 - Here, tenure refers to the number of years the worker has been employed at their current firm.
 
@@ -135,7 +140,7 @@ format:
 
   $$\begin{aligned}
   &\E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} \\
-  &= \beta_{0}+\delta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.
+  &= \beta_{0}+{\color{red}\delta_{0}}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}.
   \end{aligned}$$
 
 - If observation $i$ corresponds to a man, $\text{Female}_{i}=0$, and
@@ -148,7 +153,7 @@ format:
 - Thus,
 
   $$\begin{aligned}
-  \delta_{0} &= \E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} \\
+  {\color{red}\delta_{0}} &= \E{\text{Wage}_{i} \mid \text{Female}_{i}=1, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}} \\
   &\quad - \E{\text{Wage}_{i} \mid \text{Female}_{i}=0, \text{Educ}_{i}, \text{Exper}_{i}, \text{Tenure}_{i}}.
   \end{aligned}$$
 
@@ -176,39 +181,38 @@ format:
 
 - $\delta_{0}$ measures the wage difference relative to the base group.
 
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 8
+  #| fig-height: 5.5
 
-```{r}
-#| echo: false
-#| fig-align: center
-#| fig-width: 6
-#| fig-height: 4
+  beta_0 <- -1.57
+  delta_0 <- -1.81
+  beta_1 <- 0.572
 
-beta_0 <- -1.57
-delta_0 <- -1.81
-beta_1 <- 0.572
+  educ <- seq(8, 20, length.out = 100)
+  wage_men <- beta_0 + beta_1 * educ
+  wage_women <- (beta_0 + delta_0) + beta_1 * educ
 
-educ <- seq(8, 20, length.out = 100)
-wage_men <- beta_0 + beta_1 * educ
-wage_women <- (beta_0 + delta_0) + beta_1 * educ
+  plot(educ, wage_men, type = "l", lwd = 2, col = "blue",
+       xlab = "Education", ylab = "Wage",
+       ylim = range(c(wage_men, wage_women)),
+       main = "Intercept shift")
+  lines(educ, wage_women, lwd = 2, col = "red", lty = 2)
 
-plot(educ, wage_men, type = "l", lwd = 2, col = "blue",
-     xlab = "Education", ylab = "Wage",
-     ylim = range(c(wage_men, wage_women)),
-     main = "Intercept shift")
-lines(educ, wage_women, lwd = 2, col = "red", lty = 2)
+  # Annotate the intercept shift
+  mid_educ <- 14
+  arrows(mid_educ, beta_0 + beta_1 * mid_educ,
+         mid_educ, (beta_0 + delta_0) + beta_1 * mid_educ,
+         code = 3, length = 0.1, lwd = 1.5)
+  text(mid_educ + 0.5,
+       beta_0 + beta_1 * mid_educ + delta_0 / 2,
+       expression(delta[0]), cex = 1.2)
 
-# Annotate the intercept shift
-mid_educ <- 14
-arrows(mid_educ, beta_0 + beta_1 * mid_educ,
-       mid_educ, (beta_0 + delta_0) + beta_1 * mid_educ,
-       code = 3, length = 0.1, lwd = 1.5)
-text(mid_educ + 0.5,
-     beta_0 + beta_1 * mid_educ + delta_0 / 2,
-     expression(delta[0]), cex = 1.2)
-
-legend("topleft", legend = c("Men", "Women"),
-       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
-```
+  legend("topleft", legend = c("Men", "Women"),
+         col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+  ```
 
 ## Example
 
@@ -235,13 +239,13 @@ legend("topleft", legend = c("Men", "Women"),
 
 - In this case,
 
-$$\begin{aligned}
-\delta_{0} &= \ln\left(\text{Wage}^{F}\right)-\ln\left(\text{Wage}^{M}\right) \\
-&= \ln\left(\frac{\text{Wage}^{F}}{\text{Wage}^{M}}\right) \\
-&= \ln\left(\frac{\text{Wage}^{M}+\left(\text{Wage}^{F}-\text{Wage}^{M}\right)}{\text{Wage}^{M}}\right) \\
-&= \ln\left(1+\frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}\right) \\
-&\approx \frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}.
-\end{aligned}$$
+  $$\begin{aligned}
+  \delta_{0} &= \ln\left(\text{Wage}^{F}\right)-\ln\left(\text{Wage}^{M}\right) \\
+  &= \ln\left(\frac{\text{Wage}^{F}}{\text{Wage}^{M}}\right) \\
+  &= \ln\left(\frac{\text{Wage}^{M}+\left(\text{Wage}^{F}-\text{Wage}^{M}\right)}{\text{Wage}^{M}}\right) \\
+  &= \ln\left(1+\frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}\right) \\
+  &\approx \frac{\text{Wage}^{F}-\text{Wage}^{M}}{\text{Wage}^{M}}.
+  \end{aligned}$$
 
 - When the dependent variable is in the log form, $\delta_{0}$ has a **percentage** interpretation.
 
@@ -273,11 +277,11 @@ $$\begin{aligned}
 
 - Since $\text{Male}_{i}=1-\text{Female}_{i},$
 
-$$\begin{aligned}
-\ln\left(\text{Wage}_{i}\right) &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-&= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-&= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
-\end{aligned}$$
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}\right) &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+  &= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+  &= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+  \end{aligned}$$
 
 - We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:
 
@@ -356,47 +360,46 @@ $$\begin{aligned}
 
 - $\delta_{1}$ can be interpreted as the difference in the return to education between women and men (the base group) after controlling for experience and tenure.
 
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 8
+  #| fig-height: 5.5
 
-```{r}
-#| echo: false
-#| fig-align: center
-#| fig-width: 6
-#| fig-height: 4
+  # Stylized coefficients to clearly illustrate slope shift
+  b0 <- 0.8        # beta_0
+  d0 <- -0.3       # delta_0 (intercept shift)
+  b1 <- 0.10       # beta_1 (slope for men)
+  d1 <- -0.04      # delta_1 (slope shift)
 
-# Stylized coefficients to clearly illustrate slope shift
-b0 <- 0.8        # beta_0
-d0 <- -0.3       # delta_0 (intercept shift)
-b1 <- 0.10       # beta_1 (slope for men)
-d1 <- -0.04      # delta_1 (slope shift)
+  educ <- seq(0, 20, length.out = 100)
+  y_men   <- b0 + b1 * educ
+  y_women <- (b0 + d0) + (b1 + d1) * educ
 
-educ <- seq(0, 20, length.out = 100)
-y_men   <- b0 + b1 * educ
-y_women <- (b0 + d0) + (b1 + d1) * educ
+  plot(educ, y_men, type = "l", lwd = 2, col = "blue",
+       xlab = "Education", ylab = "ln(Wage)",
+       ylim = c(0.25, 3.0))
+  lines(educ, y_women, lwd = 2, col = "red", lty = 2)
 
-plot(educ, y_men, type = "l", lwd = 2, col = "blue",
-     xlab = "Education", ylab = "ln(Wage)",
-     ylim = c(0.25, 3.0))
-lines(educ, y_women, lwd = 2, col = "red", lty = 2)
+  # Intercept dots on y-axis with dashed guide lines
+  points(0, b0, pch = 16, col = "blue")
+  points(0, b0 + d0, pch = 16, col = "red")
+  segments(0, b0, 3, b0, lty = 3, col = "gray50")
+  segments(0, b0 + d0, 3, b0 + d0, lty = 3, col = "gray50")
+  text(3.2, b0, expression(beta[0]), adj = 0, cex = 0.9, col = "blue")
+  text(3.2, b0 + d0, expression(beta[0] + delta[0]), adj = 0, cex = 0.9,
+       col = "red")
 
-# Intercept dots on y-axis with dashed guide lines
-points(0, b0, pch = 16, col = "blue")
-points(0, b0 + d0, pch = 16, col = "red")
-segments(0, b0, 3, b0, lty = 3, col = "gray50")
-segments(0, b0 + d0, 3, b0 + d0, lty = 3, col = "gray50")
-text(3.2, b0, expression(beta[0]), adj = 0, cex = 0.9, col = "blue")
-text(3.2, b0 + d0, expression(beta[0] + delta[0]), adj = 0, cex = 0.9,
-     col = "red")
+  # Line labels near right end
+  text(18, b0 + b1 * 18, "Men", col = "blue", pos = 3, cex = 1)
+  text(18, (b0 + d0) + (b1 + d1) * 18, "Women", col = "red", pos = 1, cex = 1)
 
-# Line labels near right end
-text(18, b0 + b1 * 18, "Men", col = "blue", pos = 3, cex = 1)
-text(18, (b0 + d0) + (b1 + d1) * 18, "Women", col = "red", pos = 1, cex = 1)
-
-# Slope labels in the middle, placed fully above/below the lines
-text(11, b0 + b1 * 11,
-     expression(slope == beta[1]), col = "blue", cex = 0.85, pos = 3, offset = 0.7)
-text(11, (b0 + d0) + (b1 + d1) * 11,
-     expression(slope == beta[1] + delta[1]), col = "red", cex = 0.85, pos = 1, offset = 0.7)
-```
+  # Slope labels in the middle, placed fully above/below the lines
+  text(11, b0 + b1 * 11,
+       expression(slope == beta[1]), col = "blue", cex = 0.85, pos = 3, offset = 0.7)
+  text(11, (b0 + d0) + (b1 + d1) * 11,
+       expression(slope == beta[1] + delta[1]), col = "red", cex = 0.85, pos = 1, offset = 0.7)
+  ```
 
 ## Example
 
@@ -434,26 +437,28 @@ text(11, (b0 + d0) + (b1 + d1) * 11,
 
 ## Multiple categories
 
-$$
-\text{Education}_{i} = \left\{
-\begin{array}{ll}
-1 & \text{if high-school dropout,} \\
-2 & \text{if high-school graduate,} \\
-3 & \text{if some college,} \\
-4 & \text{if college graduate,} \\
-5 & \text{if advanced degree.}
-\end{array}
-\right.
-$$
+- Recall the ordinal education variable:
+
+  $$
+  \text{Education}_{i} = \left\{
+  \begin{array}{ll}
+  1 & \text{if high-school dropout,} \\
+  2 & \text{if high-school graduate,} \\
+  3 & \text{if some college,} \\
+  4 & \text{if college graduate,} \\
+  5 & \text{if advanced degree.}
+  \end{array}
+  \right.
+  $$
 
 - Define 5 new dummy variables:
 
   $$\begin{aligned}
-  E_{1,i} &= \left\{ \begin{array}{cc} 1 & \text{if high-school dropout,} \\ 0 & \text{otherwise.} \end{array} \right. \quad &
-  E_{2,i} &= \left\{ \begin{array}{cc} 1 & \text{if high-school graduate,} \\ 0 & \text{otherwise.} \end{array} \right. \\
-  E_{3,i} &= \left\{ \begin{array}{cc} 1 & \text{if some college,} \\ 0 & \text{otherwise.} \end{array} \right. \quad &
-  E_{4,i} &= \left\{ \begin{array}{cc} 1 & \text{if college graduate,} \\ 0 & \text{otherwise.} \end{array} \right. \\
-  E_{5,i} &= \left\{ \begin{array}{cc} 1 & \text{if advanced degree,} \\ 0 & \text{otherwise.} \end{array} \right.
+  E_{1,i} &= \begin{cases} 1 & \text{if high-school dropout,} \\ 0 & \text{otherwise.} \end{cases} \\
+  E_{2,i} &= \begin{cases} 1 & \text{if high-school graduate,} \\ 0 & \text{otherwise.} \end{cases} \\
+  E_{3,i} &= \begin{cases} 1 & \text{if some college,} \\ 0 & \text{otherwise.} \end{cases} \\
+  E_{4,i} &= \begin{cases} 1 & \text{if college graduate,} \\ 0 & \text{otherwise.} \end{cases} \\
+  E_{5,i} &= \begin{cases} 1 & \text{if advanced degree,} \\ 0 & \text{otherwise.} \end{cases}
   \end{aligned}$$
 
 - To avoid the dummy variable trap, one of the dummies has to be omitted:
@@ -473,10 +478,10 @@ $$
 - The previous definitions compare each group to the **base** group (high-school dropouts). Alternatively, we can define dummies that compare each group to the **previous** one:
 
   $$\begin{aligned}
-  D_{2,i} &= \left\{ \begin{array}{cc} 1 & \text{if high-school graduate or higher,} \\ 0 & \text{otherwise.} \end{array} \right. \\
-  D_{3,i} &= \left\{ \begin{array}{cc} 1 & \text{if some college or higher,} \\ 0 & \text{otherwise.} \end{array} \right. \\
-  D_{4,i} &= \left\{ \begin{array}{cc} 1 & \text{if college graduate or higher,} \\ 0 & \text{otherwise.} \end{array} \right. \\
-  D_{5,i} &= \left\{ \begin{array}{cc} 1 & \text{if advanced degree,} \\ 0 & \text{otherwise.} \end{array} \right.
+  D_{2,i} &= \begin{cases} 1 & \text{if high-school graduate or higher,} \\ 0 & \text{otherwise.} \end{cases} \\
+  D_{3,i} &= \begin{cases} 1 & \text{if some college or higher,} \\ 0 & \text{otherwise.} \end{cases} \\
+  D_{4,i} &= \begin{cases} 1 & \text{if college graduate or higher,} \\ 0 & \text{otherwise.} \end{cases} \\
+  D_{5,i} &= \begin{cases} 1 & \text{if advanced degree,} \\ 0 & \text{otherwise.} \end{cases}
   \end{aligned}$$
 
 - The model:

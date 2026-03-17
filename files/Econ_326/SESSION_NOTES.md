@@ -2,7 +2,25 @@
 
 ## 2026-03-16
 
-**File changes:**
+**File changes (second session):**
+- Modified `326_14_dummy.qmd` — fixes for RevealJS reveal order, figure sizing, color emphasis, and width overflow
+- Updated `CLAUDE.md` — added "RevealJS reveal order (CRITICAL)" conversion rules section; updated proofread-326 Pass 8 description
+- Updated `MEMORY.md` — added RevealJS reveal order notes
+
+**Edits to `326_14_dummy.qmd`:**
+- Example slide (~line 122): added bullet points explaining variable types (interval, dummy)
+- Single dummy slide (~line 135): replaced abstract `$\E{U_i \mid \mathbf{X}}=0$` with explicit conditioning on Female, Educ, Exper, Tenure
+- Color emphasis (~lines 143, 157): added `\color{red}` to δ₀ in women's conditional expectation and "Thus" equation
+- Intercept shift figure (~line 184): indented R chunk under parent bullet for correct reveal order; enlarged from 6×4 to 8×5.5
+- Slope shift figure (~line 369): same indentation fix and size increase
+- Log dependent variable (~line 242): indented aligned derivation under "In this case," bullet
+- Changing base group (~line 280): indented aligned derivation under "Since Male = 1 − Female" bullet
+- Multiple categories (~line 440): added "Recall the ordinal education variable:" bullet and indented math; converted E₁–E₅ definitions from two-column `\left\{\begin{array}` to single-column `\begin{cases}`
+- Comparing consecutive groups (~line 480): converted D₂–D₅ definitions from `\left\{\begin{array}` to `\begin{cases}`
+
+---
+
+**File changes (first session):**
 - Created `326_14_dummy.qmd` — new lecture converted from LaTeX `326_15_dummy.tex`
 
 **Conversion details (LaTeX lecture 15 → QMD lecture 14):**
