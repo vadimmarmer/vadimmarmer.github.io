@@ -150,6 +150,8 @@ exclude:
   - vendor
   - "*.qmd"
   - files/Econ_326/mathjax_fragment_issue.md
+  - CLAUDE.md
+  - .claude
 keep_files:
   - .git
   - .svn
