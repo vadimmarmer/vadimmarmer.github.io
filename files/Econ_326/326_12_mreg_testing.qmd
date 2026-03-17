@@ -57,7 +57,7 @@ format:
 
   5. Conditional on $\mathbf{X}$, $U_{i}$'s are jointly normally distributed.
 
-- We also continue to assume **no perfect multicollinearity**: the $k$ regressors and constant **do not** form a perfect linear combination, i.e., we **cannot** find constants $c_{1},\ldots,c_{k},c_{k+1}$ (not all equal to zero) such that for **all $i$'s**:
+- We also assume **no perfect multicollinearity**: there exist no constants $c_{1},\ldots,c_{k},c_{k+1}$ (not all zero) such that for **all $i$'s**:
 
   $$
   c_{1}X_{1,i}+\ldots+c_{k}X_{k,i}+c_{k+1}=0.
@@ -77,7 +77,7 @@ format:
 
 - Therefore, $\left(\hat{\beta}_{j}-\beta_{j}\right)/\sqrt{\Var{\hat{\beta}_{j} \mid \mathbf{X}}}\sim N\left(0,1\right).$
 
-- The conditional variance $\Var{\hat{\beta}_{j} \mid \mathbf{X}}$ is unknown because $\sigma^{2}$ is unknown. The estimator for $\Var{\hat{\beta}_{j} \mid \mathbf{X}}$ is
+- Since $\sigma^{2}$ is unknown, so is $\Var{\hat{\beta}_{j} \mid \mathbf{X}}$. We estimate it by
 
   $$
   \Vhat{\hat{\beta}_{j}}=\frac{s^{2}}{\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}},
@@ -85,17 +85,14 @@ format:
 
   where $s^{2}=\sum_{i=1}^{n}\hat{U}_{i}^{2}/\left(n-k-1\right)$ (see Lecture 10).
 
-## Testing a single coefficient
 
-- We have that conditional on $\mathbf{X}$,
+- Conditional on $\mathbf{X}$,
 
   $$
   \frac{\hat{\beta}_{j}-\beta_{j}}{\sqrt{\Vhat{\hat{\beta}_{j}}}}\sim t_{n-k-1}.
   $$
 
 - Standard error: $\se{\hat{\beta}_{j}}=\sqrt{\Vhat{\hat{\beta}_{j}}}=\sqrt{s^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}}$.
-
-## Testing a single coefficient: two-sided
 
 - Consider testing $H_{0}:\beta_{j}=\beta_{j,0}$ against $H_{1}:\beta_{j}\neq\beta_{j,0}$.
 
@@ -113,7 +110,7 @@ format:
 
 ## Testing a linear combination of coefficients
 
-- Let $c_{0},c_{1},\ldots,c_{k},r$ be some constants. Consider testing
+- Let $c_{0},c_{1},\ldots,c_{k},r$ be given constants. Consider testing
 
   \begin{align*}
   H_{0} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
@@ -122,9 +119,9 @@ format:
 
 - **Example 1:** Consider $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$ To test for constant returns to scale, $H_{0}:\beta_{1}+\beta_{2}=1,$ set $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$
 
-- **Example 2:** Consider $\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.$ To test that the two experience variables have the same effect on wage, $H_{0}:\beta_{1}-\beta_{2}=0,$ set $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
+- **Example 2:** Consider $\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.$ To test whether the two experience variables have the same effect on wage, $H_{0}:\beta_{1}-\beta_{2}=0,$ set $c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.$
 
-- **Example 3:** Consider $\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.$ The marginal effect of experience is $\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.$ If the wage-experience profile is concave ($\beta_{2}<0$), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at $\mathit{Exper}=20$: $H_{0}:\beta_{1}+40\beta_{2}=0,$ with $c_{1}=1, c_{2}=40, r=0.$
+- **Example 3:** Consider $\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.$ The marginal effect of experience is $\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.$ For a concave profile ($\beta_{2}<0$), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at $\mathit{Exper}=20$: $H_{0}:\beta_{1}+40\beta_{2}=0,$ with $c_{1}=1, c_{2}=40, r=0.$
 
 ## Testing a linear combination of coefficients
 
@@ -163,7 +160,7 @@ format:
 
 - Consider the model $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$
 
-- We want to test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$
+- We test for constant returns to scale: $H_{0}:\beta_{1}+\beta_{2}=1.$
 
 - The test statistic: $T=\dfrac{\hat{\beta}_{1}+\hat{\beta}_{2}-1}{\sqrt{\Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}}}.$
 
@@ -174,15 +171,15 @@ format:
   &\quad +2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).
   \end{align*}
 
-  - $\Vhat{\hat{\beta}_{1}}$ and $\Vhat{\hat{\beta}_{2}}$ can be computed from the corresponding standard errors reported by R.
+  - $\Vhat{\hat{\beta}_{1}}$ and $\Vhat{\hat{\beta}_{2}}$ are obtained from the standard errors reported by R.
 
-  - In R, $\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right)$ can be obtained (together with the variances) by using the command `vcov(fit)` after running a regression.
+  - In R, `vcov(fit)` returns the full variance-covariance matrix of the coefficient estimates, including $\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right)$.
 
 - Reject $H_{0}:\beta_{1}+\beta_{2}=1$ if $\left\vert T\right\vert>t_{n-3,1-\alpha/2}.$
 
 ## Example
 
-- 1000 observations were generated using the following model:
+- We generate 1000 observations from the model:
 
   \begin{align*}
   &\left.\begin{array}{l}
@@ -193,7 +190,7 @@ format:
   &Y_{i}=L_{i}^{0.35}K_{i}^{0.52}e^{U_{i}}.
   \end{align*}
 
-- The following equation was estimated:
+- We estimate the equation:
 
   $$
   \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
@@ -289,7 +286,7 @@ format:
 
 ## Re-parametrization approach
 
-- We want to test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$
+- We test $\beta_{1}+\beta_{2}=1$ in $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$
 
 - Define $\delta=\beta_{1}+\beta_{2}$, or $\beta_{2}=\delta-\beta_{1},$ so that
 
@@ -325,11 +322,11 @@ format:
 
 - The interval does not include 1, so we reject $H_{0}.$
 
-- In the original equation, $\hat{\beta}_{1}+\hat{\beta}_{2}$ equals the coefficient on $\ln K$ in the reparameterized regression, and $\se{\hat{\beta}_{1}+\hat{\beta}_{2}}$ equals its standard error.
+- In the original equation, $\hat{\beta}_{1}+\hat{\beta}_{2}$ and $\se{\hat{\beta}_{1}+\hat{\beta}_{2}}$ equal the coefficient and standard error of $\ln K$ in the reparameterized regression.
 
 ## Testing with `linearHypothesis()` in R
 
-- The `car` package provides `linearHypothesis()`, which directly tests linear restrictions on regression coefficients.
+- The `car` package provides `linearHypothesis()` for testing linear restrictions on regression coefficients.
 
 - Testing for constant returns to scale ($\beta_{1}+\beta_{2}=1$):
 
@@ -342,7 +339,7 @@ format:
 
 - `linearHypothesis()` reports an F-statistic. If $T \sim t_{n-k-1}$, then $F = T^{2} \sim F_{1, n-k-1}$.
 
-- For a single linear restriction, the F-test and the two-sided t-test are equivalent: $F = T^{2}$ and the p-values are identical.
+- For a single restriction, the F-test and the two-sided t-test are equivalent: $F = T^{2}$, with identical p-values.
 
 - Testing for equal effects ($\beta_{1}=\beta_{2}$):
 

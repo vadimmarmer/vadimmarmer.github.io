@@ -1,5 +1,20 @@
 # Session Notes — Econ 326
 
+## 2026-03-17 (session 2)
+
+**Lecture 12 language tightening (`326_12_mreg_testing.qmd`):**
+- 14 bullet-point edits: removed filler ("want to", "continue to", "the following"), passive→active voice ("was estimated"→"we estimate"), "test that"→"test whether", "some constants"→"given constants", reduced repetition of heavy expressions, tightened relative clauses and parallel structures
+- Rendered all 3 formats: 0 errors, 0 KaTeX errors
+
+**`proofread-326` agent update (`.claude/agents/proofread-326.md`):**
+- Added new Pass 3 (Language tightening) with 10-pattern checklist for wordy constructions
+- Renumbered existing passes 3–9 → 4–10; updated introductory count from 9 to 10 passes
+
+**`CLAUDE.md` update:**
+- Updated proofread-326 pass table (9→10 passes, added language tightening row, renumbered)
+
+---
+
 ## 2026-03-17
 
 **File changes:**

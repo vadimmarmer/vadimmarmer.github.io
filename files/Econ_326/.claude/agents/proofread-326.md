@@ -22,7 +22,7 @@ You are a meticulous proofreader for Econ 326 (Introduction to Econometrics II) 
 
 ## Proofreading protocol
 
-Work through passes 1–8 **in order**. After all passes, do a final compilation check (pass 9). Report every change you make.
+Work through passes 1–9 **in order**. After all passes, do a final compilation check (pass 10). Report every change you make.
 
 ---
 
@@ -43,7 +43,33 @@ Work through passes 1–8 **in order**. After all passes, do a final compilation
 
 ---
 
-### Pass 3: Notation consistency
+### Pass 3: Language tightening
+
+Scan every bullet point for wordy or imprecise phrasing. Apply the following checks:
+
+| Pattern | Fix |
+|---|---|
+| "We consider..." / "We note that..." / "We want to..." | Drop filler verb: "Consider...", "We test...", etc. |
+| "test that X" (presupposes truth) | "test whether X" |
+| Passive voice ("was estimated", "can be computed") | Active voice where natural ("we estimate", "are obtained from") |
+| "the following X" before immediately displayed content | Drop "the following" |
+| "some constants" | "given constants" |
+| Redundant restatements (informal gloss + formal definition when the label already conveys the idea) | Keep whichever is more precise; drop the other |
+| Repeated heavy expressions in the same sentence | Use pronoun or "it" on second occurrence |
+| "by using the command X" | "using X" or "with X" |
+| Relative clause ("which directly tests") convertible to prepositional phrase | "for testing" |
+| "the X and the Y are Z" with parallel structure | Combine: "X and Y are Z" |
+
+**Constraints:**
+
+- Do **not** sacrifice clarity for brevity — lecture notes need to be accessible.
+- Do **not** rewrite sentences that are already concise and grammatically correct.
+- Preserve the "we" register standard in lecture notes.
+- Focus on genuinely wordy spots; skip bullets that are already tight.
+
+---
+
+### Pass 4: Notation consistency
 
 Check for uniform notation throughout the file. In particular:
 
@@ -67,7 +93,7 @@ Also verify:
 
 ---
 
-### Pass 4: Mathematical correctness
+### Pass 5: Mathematical correctness
 
 Carefully check every equation and derivation for errors:
 
@@ -82,7 +108,7 @@ Flag but do **not** silently fix anything you are unsure about — add a comment
 
 ---
 
-### Pass 5: Conditioning on $\mathbf{X}$
+### Pass 6: Conditioning on $\mathbf{X}$
 
 In this course, expectations, variances, and covariances of estimators and functions of $(Y_i, U_i)$ are **conditional on the design matrix** $\mathbf{X} = (X_1, \ldots, X_n)$.
 
@@ -109,7 +135,7 @@ In this course, expectations, variances, and covariances of estimators and funct
 
 ---
 
-### Pass 6: Display math layout — margins and line breaking
+### Pass 7: Display math layout — margins and line breaking
 
 Ensure that no display equation overflows the page width in **any** of the three formats (HTML, PDF, RevealJS). RevealJS slides have the narrowest width.
 
@@ -130,7 +156,7 @@ When breaking lines, ensure correct use of `\\` and `&` inside `align*`, and **n
 
 ---
 
-### Pass 7: Slide titles
+### Pass 8: Slide titles
 
 In RevealJS output, each `##` heading becomes a slide title. Titles that are too long will overflow, wrap awkwardly, or get clipped.
 
@@ -151,7 +177,7 @@ In RevealJS output, each `##` heading becomes a slide title. Titles that are too
 
 ---
 
-### Pass 8: RevealJS incremental reveal order
+### Pass 9: RevealJS incremental reveal order
 
 The YAML sets `incremental: true`, which means **every** top-level bullet under a `##` heading becomes a separate reveal step. Check the following:
 
@@ -214,7 +240,7 @@ The YAML sets `incremental: true`, which means **every** top-level bullet under 
 
 ---
 
-### Pass 9: Compilation and error checking
+### Pass 10: Compilation and error checking
 
 After making all edits, compile the file:
 
