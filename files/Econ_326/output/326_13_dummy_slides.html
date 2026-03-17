@@ -1338,30 +1338,30 @@ Vadim Marmer, UBC
 <li class="fragment"><p>Instead of</p>
 <p><span class="math display">\begin{aligned}
 \ln\left(\text{Wage}_{i}\right)
-&amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i} \\
-&amp;\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+&amp;= {\color{blue}\beta_{0}}+{\color{red}\delta_{0}}\text{Female}_{i}+{\color{blue}\beta_{1}}\text{Educ}_{i} \\
+&amp;\quad + {\color{blue}\beta_{3}}\text{Exper}_{i}+{\color{blue}\beta_{4}}\text{Tenure}_{i}+U_{i},
 \end{aligned}</span></p>
 <p>consider:</p>
 <p><span class="math display">\begin{aligned}
 \ln\left(\text{Wage}_{i}\right)
-&amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
-&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+&amp;= {\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\text{Male}_{i}+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+&amp;\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i}.
 \end{aligned}</span></p></li>
 <li class="fragment"><p>Since <span class="math inline">\text{Male}_{i}=1-\text{Female}_{i},</span></p>
 <p><span class="math display">\begin{aligned}
 \ln\left(\text{Wage}_{i}\right)
-&amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
-&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-&amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i} \\
-&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-&amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i} \\
-&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+&amp;= {\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\text{Male}_{i}+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+&amp;\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i} \\
+&amp;= {\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\left(1-\text{Female}_{i}\right)+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+&amp;\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i} \\
+&amp;= \left({\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\right)-{\color{red}\gamma_{0}}\text{Female}_{i}+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+&amp;\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i}.
 \end{aligned}</span></p></li>
-<li class="fragment"><p>We conclude that <span class="math inline">\delta_{0}=-\gamma_{0},</span> <span class="math inline">\beta_{0}=\theta_{0}-\delta_{0},</span> <span class="math inline">\beta_{1}=\theta_{1},</span> etc.:</p>
+<li class="fragment"><p>We conclude that <span class="math inline">{\color{red}\delta_{0}=-\gamma_{0}},</span> <span class="math inline">{\color{blue}\beta_{0}=\theta_{0}+\gamma_{0}},</span> <span class="math inline">{\color{blue}\beta_{1}=\theta_{1}},</span> etc.:</p>
 <p><span class="math display">\begin{aligned}
 \ln\left(\text{Wage}_{i}\right)
-&amp;= \left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i} \\
-&amp;\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+&amp;= \left({\color{blue}\beta_{0}}+{\color{red}\delta_{0}}\right)-{\color{red}\delta_{0}}\text{Male}_{i}+{\color{blue}\beta_{1}}\text{Educ}_{i} \\
+&amp;\quad + {\color{blue}\beta_{3}}\text{Exper}_{i}+{\color{blue}\beta_{4}}\text{Tenure}_{i}+U_{i}.
 \end{aligned}</span></p></li>
 <li class="fragment"><p>Thus, changing the base group has no effect on the conclusions.</p></li>
 <li class="fragment"><p>In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.</p></li>

@@ -13,6 +13,7 @@ format:
     theme: cosmo
     smooth-scroll: true
     html-math-method: katex
+    embed-resources: true
   pdf:
     output-file: 326_13_dummy.pdf
     pdf-engine: xelatex
@@ -267,36 +268,36 @@ format:
 
   $$\begin{aligned}
   \ln\left(\text{Wage}_{i}\right)
-  &= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i} \\
-  &\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+  &= {\color{blue}\beta_{0}}+{\color{red}\delta_{0}}\text{Female}_{i}+{\color{blue}\beta_{1}}\text{Educ}_{i} \\
+  &\quad + {\color{blue}\beta_{3}}\text{Exper}_{i}+{\color{blue}\beta_{4}}\text{Tenure}_{i}+U_{i},
   \end{aligned}$$
 
   consider:
 
   $$\begin{aligned}
   \ln\left(\text{Wage}_{i}\right)
-  &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
-  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+  &= {\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\text{Male}_{i}+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+  &\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i}.
   \end{aligned}$$
 
 - Since $\text{Male}_{i}=1-\text{Female}_{i},$
 
   $$\begin{aligned}
   \ln\left(\text{Wage}_{i}\right)
-  &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
-  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-  &= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i} \\
-  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-  &= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i} \\
-  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+  &= {\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\text{Male}_{i}+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+  &\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i} \\
+  &= {\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\left(1-\text{Female}_{i}\right)+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+  &\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i} \\
+  &= \left({\color{blue}\theta_{0}}+{\color{red}\gamma_{0}}\right)-{\color{red}\gamma_{0}}\text{Female}_{i}+{\color{blue}\theta_{1}}\text{Educ}_{i} \\
+  &\quad + {\color{blue}\theta_{3}}\text{Exper}_{i}+{\color{blue}\theta_{4}}\text{Tenure}_{i}+U_{i}.
   \end{aligned}$$
 
-- We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:
+- We conclude that ${\color{red}\delta_{0}=-\gamma_{0}},$ ${\color{blue}\beta_{0}=\theta_{0}+\gamma_{0}},$ ${\color{blue}\beta_{1}=\theta_{1}},$ etc.:
 
   $$\begin{aligned}
   \ln\left(\text{Wage}_{i}\right)
-  &= \left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i} \\
-  &\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  &= \left({\color{blue}\beta_{0}}+{\color{red}\delta_{0}}\right)-{\color{red}\delta_{0}}\text{Male}_{i}+{\color{blue}\beta_{1}}\text{Educ}_{i} \\
+  &\quad + {\color{blue}\beta_{3}}\text{Exper}_{i}+{\color{blue}\beta_{4}}\text{Tenure}_{i}+U_{i}.
   \end{aligned}$$
 
 - Thus, changing the base group has no effect on the conclusions.
