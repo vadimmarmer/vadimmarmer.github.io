@@ -88,7 +88,17 @@ Check for uniform notation throughout the file. In particular:
 
 Also verify:
 
-- The hidden macro div (`\gdef\E`, `\gdef\Var`, `\gdef\Cov`, `\gdef\Vhat`, `\gdef\se`) is present right after the first `##` heading. Include `\Vhat` and `\se` in any lecture that uses estimated variances or standard errors (from lecture 06 onward).
+- The hidden macro div is present right after the first `##` heading and has the correct structure:
+  ```
+  ::: {.hidden}
+  \gdef\E#1{\mathrm{E}\left[#1\right]}
+  \gdef\Var#1{\mathrm{Var}\left(#1\right)}
+  \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+  \gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+  \gdef\se#1{\mathrm{se}\left(#1\right)}
+  :::
+  ```
+  Include `\Vhat` and `\se` in any lecture that uses estimated variances or standard errors (from lecture 06 onward). The macro definitions must **not** be wrapped in `$...$` — dollar signs cause visible `$` in the PDF output. The macros work without them.
 - All uses of `\E{...}`, `\Var{...}`, `\Cov{...}`, `\Vhat{...}`, `\se{...}` throughout the file use the gdef macros (not hand-written `\mathrm{E}\left[...\right]`, `\mathrm{se}(...)`, `\widehat{\mathrm{Var}}(...)`, etc.).
 - Greek letters and operators are spelled correctly (`\alpha`, `\beta`, `\sigma`, `\sim`, not `\aplha`, `\bea`, etc.).
 
