@@ -174,7 +174,7 @@ format:
 - For women ($\text{Female}_{i}=1$):
 
   $$
-  \text{Wage}_{i}^W=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  \text{Wage}_{i}^F=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
   $$
 
 - In this case, men play the role of the **base** group.
@@ -219,7 +219,7 @@ format:
 - Estimated equation:
 
   $$\begin{aligned}
-  \widehat{\text{Wage}}_{i} &= \underset{(0.72)}{-1.57} - \underset{(0.26)}{1.81}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} \\
+  \widehat{\text{Wage}}_{i} &= \underset{(0.72)}{-1.57}\, {\color{red}\underset{(0.26)}{-1.81}}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} \\
   &\quad + \underset{(0.012)}{0.025}\, \text{Exper}_{i} + \underset{(0.021)}{0.141}\, \text{Tenure}_{i}.
   \end{aligned}$$
 
@@ -254,7 +254,7 @@ format:
 - Estimated equation:
 
   $$\begin{aligned}
-  \widehat{\ln\left(\text{Wage}_{i}\right)} &= \underset{(0.099)}{0.417} - \underset{(0.036)}{0.297}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} \\
+  \widehat{\ln\left(\text{Wage}_{i}\right)} &= \underset{(0.099)}{0.417}\, {\color{red}\mathbin{-}\underset{(0.036)}{0.297}}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} \\
   &\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00010)}{0.00058}\, \text{Exper}_{i}^{2} \\
   &\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00023)}{0.00059}\, \text{Tenure}_{i}^{2}.
   \end{aligned}$$
@@ -265,29 +265,39 @@ format:
 
 - Instead of
 
-  $$
-  \ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
-  $$
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}\right)
+  &= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i} \\
+  &\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+  \end{aligned}$$
 
   consider:
 
-  $$
-  \ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
-  $$
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}\right)
+  &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
+  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+  \end{aligned}$$
 
 - Since $\text{Male}_{i}=1-\text{Female}_{i},$
 
   $$\begin{aligned}
-  \ln\left(\text{Wage}_{i}\right) &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-  &= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-  &= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+  \ln\left(\text{Wage}_{i}\right)
+  &= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
+  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+  &= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i} \\
+  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+  &= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i} \\
+  &\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
   \end{aligned}$$
 
 - We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:
 
-  $$
-  \ln\left(\text{Wage}_{i}\right)=\left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
-  $$
+  $$\begin{aligned}
+  \ln\left(\text{Wage}_{i}\right)
+  &= \left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i} \\
+  &\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+  \end{aligned}$$
 
 - Thus, changing the base group has no effect on the conclusions.
 
@@ -406,7 +416,9 @@ format:
 - Estimated equation:
 
   $$\begin{aligned}
-  \widehat{\ln\left(\text{Wage}_{i}\right)} &= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} + \underset{(0.008)}{0.082}\, \text{Educ}_{i} - \underset{(0.0131)}{0.0056}\, \text{Female}_{i}\cdot \text{Educ}_{i} \\
+  \widehat{\ln\left(\text{Wage}_{i}\right)}
+  &= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} \\
+  &\quad + \underset{(0.008)}{0.082}\, \text{Educ}_{i} {\color{red}-\underset{(0.0131)}{0.0056}}\, \text{Female}_{i}\cdot \text{Educ}_{i} \\
   &\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} \\
   &\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.
   \end{aligned}$$
@@ -463,9 +475,11 @@ format:
 
 - To avoid the dummy variable trap, one of the dummies has to be omitted:
 
-  $$
-  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i}+\delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}
-  $$
+  $$\begin{aligned}
+  \text{Wage}_{i}
+  &= \beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i} \\
+  &\quad + \delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}
+  \end{aligned}$$
 
 - Group 1 (high-school dropout) becomes the base group.
 
@@ -486,9 +500,11 @@ format:
 
 - The model:
 
-  $$
-  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i}+\gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}
-  $$
+  $$\begin{aligned}
+  \text{Wage}_{i}
+  &= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i} \\
+  &\quad + \gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}
+  \end{aligned}$$
 
 - $\gamma_{2}$ measures the wage difference between high-school graduates and high-school dropouts.
 

@@ -307,7 +307,7 @@ window.Quarto = {
 </span></p></li>
 <li><p>For women (<span class="math inline">\text{Female}_{i}=1</span>):</p>
 <p><span class="math display">
-\text{Wage}_{i}^W=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+\text{Wage}_{i}^F=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
 </span></p></li>
 <li><p>In this case, men play the role of the <strong>base</strong> group.</p></li>
 <li><p><span class="math inline">\delta_{0}</span> measures the wage difference relative to the base group.</p>
@@ -327,7 +327,7 @@ window.Quarto = {
 <ul>
 <li><p>Estimated equation:</p>
 <p><span class="math display">\begin{aligned}
-\widehat{\text{Wage}}_{i} &amp;= \underset{(0.72)}{-1.57} - \underset{(0.26)}{1.81}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} \\
+\widehat{\text{Wage}}_{i} &amp;= \underset{(0.72)}{-1.57}\, {\color{red}\underset{(0.26)}{-1.81}}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} \\
 &amp;\quad + \underset{(0.012)}{0.025}\, \text{Exper}_{i} + \underset{(0.021)}{0.141}\, \text{Tenure}_{i}.
 \end{aligned}</span></p></li>
 <li><p>The dependent variable is the wage per hour.</p></li>
@@ -358,7 +358,7 @@ window.Quarto = {
 <ul>
 <li><p>Estimated equation:</p>
 <p><span class="math display">\begin{aligned}
-\widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.099)}{0.417} - \underset{(0.036)}{0.297}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} \\
+\widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.099)}{0.417}\, {\color{red}\mathbin{-}\underset{(0.036)}{0.297}}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} \\
 &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00010)}{0.00058}\, \text{Exper}_{i}^{2} \\
 &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00023)}{0.00059}\, \text{Tenure}_{i}^{2}.
 \end{aligned}</span></p></li>
@@ -369,23 +369,33 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="changing-the-base-group">Changing the base group</h2>
 <ul>
 <li><p>Instead of</p>
-<p><span class="math display">
-\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
-</span></p>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}\right)
+&amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i} \\
+&amp;\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},
+\end{aligned}</span></p>
 <p>consider:</p>
-<p><span class="math display">
-\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
-</span></p></li>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}\right)
+&amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
+&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}</span></p></li>
 <li><p>Since <span class="math inline">\text{Male}_{i}=1-\text{Female}_{i},</span></p>
 <p><span class="math display">\begin{aligned}
-\ln\left(\text{Wage}_{i}\right) &amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-&amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
-&amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
+\ln\left(\text{Wage}_{i}\right)
+&amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} \\
+&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+&amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i} \\
+&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} \\
+&amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i} \\
+&amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.
 \end{aligned}</span></p></li>
 <li><p>We conclude that <span class="math inline">\delta_{0}=-\gamma_{0},</span> <span class="math inline">\beta_{0}=\theta_{0}-\delta_{0},</span> <span class="math inline">\beta_{1}=\theta_{1},</span> etc.:</p>
-<p><span class="math display">
-\ln\left(\text{Wage}_{i}\right)=\left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
-</span></p></li>
+<p><span class="math display">\begin{aligned}
+\ln\left(\text{Wage}_{i}\right)
+&amp;= \left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i} \\
+&amp;\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.
+\end{aligned}</span></p></li>
 <li><p>Thus, changing the base group has no effect on the conclusions.</p></li>
 <li><p>In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.</p></li>
 </ul>
@@ -457,7 +467,9 @@ window.Quarto = {
 <ul>
 <li><p>Estimated equation:</p>
 <p><span class="math display">\begin{aligned}
-\widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} + \underset{(0.008)}{0.082}\, \text{Educ}_{i} - \underset{(0.0131)}{0.0056}\, \text{Female}_{i}\cdot \text{Educ}_{i} \\
+\widehat{\ln\left(\text{Wage}_{i}\right)}
+&amp;= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} \\
+&amp;\quad + \underset{(0.008)}{0.082}\, \text{Educ}_{i} {\color{red}-\underset{(0.0131)}{0.0056}}\, \text{Female}_{i}\cdot \text{Educ}_{i} \\
 &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} \\
 &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.
 \end{aligned}</span></p></li>
@@ -508,9 +520,11 @@ E_{4,i} &amp;= \begin{cases} 1 &amp; \text{if college graduate,} \\ 0 &amp; \tex
 E_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text{otherwise.} \end{cases}
 \end{aligned}</span></p></li>
 <li><p>To avoid the dummy variable trap, one of the dummies has to be omitted:</p>
-<p><span class="math display">
-\text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i}+\delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}
-</span></p></li>
+<p><span class="math display">\begin{aligned}
+\text{Wage}_{i}
+&amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i} \\
+&amp;\quad + \delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}
+\end{aligned}</span></p></li>
 <li><p>Group 1 (high-school dropout) becomes the base group.</p></li>
 <li><p><span class="math inline">\delta_{2}</span> measures the wage difference between high-school graduates and high-school dropouts.</p></li>
 <li><p><span class="math inline">\delta_{3}</span> measures the wage difference between individuals with some college education and high-school dropouts.</p></li>
@@ -527,9 +541,11 @@ D_{4,i} &amp;= \begin{cases} 1 &amp; \text{if college graduate or higher,} \\ 0 
 D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text{otherwise.} \end{cases}
 \end{aligned}</span></p></li>
 <li><p>The model:</p>
-<p><span class="math display">
-\text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i}+\gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}
-</span></p></li>
+<p><span class="math display">\begin{aligned}
+\text{Wage}_{i}
+&amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i} \\
+&amp;\quad + \gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}
+\end{aligned}</span></p></li>
 <li><p><span class="math inline">\gamma_{2}</span> measures the wage difference between high-school graduates and high-school dropouts.</p></li>
 <li><p><span class="math inline">\gamma_{3}</span> measures the wage difference between individuals with some college and high-school graduates.</p></li>
 <li><p><span class="math inline">\gamma_{4}</span> measures the wage difference between college graduates and individuals with some college.</p></li>
@@ -1167,7 +1183,7 @@ D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text
 <span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For women ($\text{Female}_{i}=1$):</span>
 <span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}^W=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}^F=\left(\beta_{0}+\delta_{0}\right)+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
 <span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-180"><a href="#cb5-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, men play the role of the **base** group.</span>
@@ -1212,7 +1228,7 @@ D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text
 <span id="cb5-219"><a href="#cb5-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
 <span id="cb5-220"><a href="#cb5-220" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-221"><a href="#cb5-221" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-222"><a href="#cb5-222" aria-hidden="true" tabindex="-1"></a>  \widehat{\text{Wage}}_{i} &amp;= \underset{(0.72)}{-1.57} - \underset{(0.26)}{1.81}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-222"><a href="#cb5-222" aria-hidden="true" tabindex="-1"></a>  \widehat{\text{Wage}}_{i} &amp;= \underset{(0.72)}{-1.57}\, {\color{red}\underset{(0.26)}{-1.81}}\, \text{Female}_{i} + \underset{(0.049)}{0.572}\, \text{Educ}_{i} <span class="sc">\\</span></span>
 <span id="cb5-223"><a href="#cb5-223" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.012)}{0.025}\, \text{Exper}_{i} + \underset{(0.021)}{0.141}\, \text{Tenure}_{i}.</span>
 <span id="cb5-224"><a href="#cb5-224" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb5-225"><a href="#cb5-225" aria-hidden="true" tabindex="-1"></a></span>
@@ -1247,7 +1263,7 @@ D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text
 <span id="cb5-254"><a href="#cb5-254" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
 <span id="cb5-255"><a href="#cb5-255" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-256"><a href="#cb5-256" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a>  \widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.099)}{0.417} - \underset{(0.036)}{0.297}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a>  \widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.099)}{0.417}\, {\color{red}\mathbin{-}\underset{(0.036)}{0.297}}\, \text{Female}_{i} + \underset{(0.007)}{0.080}\, \text{Educ}_{i} <span class="sc">\\</span></span>
 <span id="cb5-258"><a href="#cb5-258" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00010)}{0.00058}\, \text{Exper}_{i}^{2} <span class="sc">\\</span></span>
 <span id="cb5-259"><a href="#cb5-259" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00023)}{0.00059}\, \text{Tenure}_{i}^{2}.</span>
 <span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
@@ -1258,238 +1274,254 @@ D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} \\ 0 &amp; \text
 <span id="cb5-265"><a href="#cb5-265" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-266"><a href="#cb5-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Instead of</span>
 <span id="cb5-267"><a href="#cb5-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-268"><a href="#cb5-268" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-269"><a href="#cb5-269" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},</span>
-<span id="cb5-270"><a href="#cb5-270" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-271"><a href="#cb5-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-272"><a href="#cb5-272" aria-hidden="true" tabindex="-1"></a>  consider:</span>
+<span id="cb5-268"><a href="#cb5-268" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-269"><a href="#cb5-269" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)</span>
+<span id="cb5-270"><a href="#cb5-270" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-271"><a href="#cb5-271" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i},</span>
+<span id="cb5-272"><a href="#cb5-272" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb5-273"><a href="#cb5-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-274"><a href="#cb5-274" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-275"><a href="#cb5-275" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-276"><a href="#cb5-276" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\text{Male}_{i}=1-\text{Female}_{i},$</span>
-<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} <span class="sc">\\</span></span>
-<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a>  &amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} <span class="sc">\\</span></span>
-<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a>  &amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i}+\theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:</span>
-<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)=\left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-290"><a href="#cb5-290" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-291"><a href="#cb5-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-292"><a href="#cb5-292" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, changing the base group has no effect on the conclusions.</span>
+<span id="cb5-274"><a href="#cb5-274" aria-hidden="true" tabindex="-1"></a>  consider:</span>
+<span id="cb5-275"><a href="#cb5-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-276"><a href="#cb5-276" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)</span>
+<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a>  &amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\text{Male}_{i}=1-\text{Female}_{i},$</span>
+<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)</span>
+<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a>  &amp;= \theta_{0}+\gamma_{0}\text{Male}_{i}+\theta_{1}\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} <span class="sc">\\</span></span>
+<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>  &amp;= \theta_{0}+\gamma_{0}\left(1-\text{Female}_{i}\right)+\theta_{1}\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i} <span class="sc">\\</span></span>
+<span id="cb5-290"><a href="#cb5-290" aria-hidden="true" tabindex="-1"></a>  &amp;= \left(\theta_{0}+\gamma_{0}\right)-\gamma_{0}\text{Female}_{i}+\theta_{1}\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-291"><a href="#cb5-291" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \theta_{3}\text{Exper}_{i}+\theta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-292"><a href="#cb5-292" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb5-293"><a href="#cb5-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-294"><a href="#cb5-294" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.</span>
+<span id="cb5-294"><a href="#cb5-294" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We conclude that $\delta_{0}=-\gamma_{0},$ $\beta_{0}=\theta_{0}-\delta_{0},$ $\beta_{1}=\theta_{1},$ etc.:</span>
 <span id="cb5-295"><a href="#cb5-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-296"><a href="#cb5-296" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variable trap</span></span>
-<span id="cb5-297"><a href="#cb5-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-298"><a href="#cb5-298" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the equation:</span>
-<span id="cb5-299"><a href="#cb5-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-300"><a href="#cb5-300" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-301"><a href="#cb5-301" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{0}\text{Male}_{i} <span class="sc">\\</span></span>
-<span id="cb5-302"><a href="#cb5-302" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-303"><a href="#cb5-303" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb5-304"><a href="#cb5-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-305"><a href="#cb5-305" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that the intercept is a regressor that takes the value one for all observations.</span>
-<span id="cb5-306"><a href="#cb5-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-307"><a href="#cb5-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this dataset, $\text{Female}_{i}+\text{Male}_{i}=1$ for all observations $i$, so we have **perfect multicollinearity**. Such an equation cannot be estimated.</span>
-<span id="cb5-308"><a href="#cb5-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-309"><a href="#cb5-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**One cannot include an intercept and dummies for all the groups!**</span>
-<span id="cb5-310"><a href="#cb5-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-311"><a href="#cb5-311" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variable trap</span></span>
-<span id="cb5-312"><a href="#cb5-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-313"><a href="#cb5-313" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One of the dummies has to be omitted and the corresponding group becomes the **base** group:</span>
+<span id="cb5-296"><a href="#cb5-296" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-297"><a href="#cb5-297" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right)</span>
+<span id="cb5-298"><a href="#cb5-298" aria-hidden="true" tabindex="-1"></a>  &amp;= \left(\beta_{0}+\delta_{0}\right)-\delta_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-299"><a href="#cb5-299" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-300"><a href="#cb5-300" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-301"><a href="#cb5-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-302"><a href="#cb5-302" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, changing the base group has no effect on the conclusions.</span>
+<span id="cb5-303"><a href="#cb5-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-304"><a href="#cb5-304" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this dataset, gender is recorded as a binary variable (female/male). The dummy variable approach shown here applies to any binary grouping.</span>
+<span id="cb5-305"><a href="#cb5-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-306"><a href="#cb5-306" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variable trap</span></span>
+<span id="cb5-307"><a href="#cb5-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-308"><a href="#cb5-308" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the equation:</span>
+<span id="cb5-309"><a href="#cb5-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-310"><a href="#cb5-310" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-311"><a href="#cb5-311" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{0}\text{Male}_{i} <span class="sc">\\</span></span>
+<span id="cb5-312"><a href="#cb5-312" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-313"><a href="#cb5-313" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb5-314"><a href="#cb5-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-315"><a href="#cb5-315" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Men are the base group: $\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-315"><a href="#cb5-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that the intercept is a regressor that takes the value one for all observations.</span>
 <span id="cb5-316"><a href="#cb5-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-317"><a href="#cb5-317" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Women are the base group: $\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-317"><a href="#cb5-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this dataset, $\text{Female}_{i}+\text{Male}_{i}=1$ for all observations $i$, so we have **perfect multicollinearity**. Such an equation cannot be estimated.</span>
 <span id="cb5-318"><a href="#cb5-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-319"><a href="#cb5-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alternatively, one can include both dummies **without** the intercept:</span>
+<span id="cb5-319"><a href="#cb5-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**One cannot include an intercept and dummies for all the groups!**</span>
 <span id="cb5-320"><a href="#cb5-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-321"><a href="#cb5-321" aria-hidden="true" tabindex="-1"></a>  $\ln\left(\text{Wage}_{i}\right)=\pi_{0}\text{Female}_{i}+\pi_{1}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-321"><a href="#cb5-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dummy variable trap</span></span>
 <span id="cb5-322"><a href="#cb5-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-323"><a href="#cb5-323" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In R, a regression without an intercept can be estimated by adding <span class="in">`+ 0`</span> or <span class="in">`- 1`</span> to the formula:</span>
+<span id="cb5-323"><a href="#cb5-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One of the dummies has to be omitted and the corresponding group becomes the **base** group:</span>
 <span id="cb5-324"><a href="#cb5-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-325"><a href="#cb5-325" aria-hidden="true" tabindex="-1"></a>    <span class="in">```r</span></span>
-<span id="cb5-326"><a href="#cb5-326" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> <span class="dv">0</span>)</span>
-<span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb5-325"><a href="#cb5-325" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Men are the base group: $\ln\left(\text{Wage}_{i}\right)=\beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-326"><a href="#cb5-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Women are the base group: $\ln\left(\text{Wage}_{i}\right)=\theta_{0}+\gamma_{0}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
 <span id="cb5-328"><a href="#cb5-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a>    or equivalently:</span>
+<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alternatively, one can include both dummies **without** the intercept:</span>
 <span id="cb5-330"><a href="#cb5-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a>    <span class="in">```r</span></span>
-<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a>  $\ln\left(\text{Wage}_{i}\right)=\pi_{0}\text{Female}_{i}+\pi_{1}\text{Male}_{i}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.$</span>
+<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In R, a regression without an intercept can be estimated by adding <span class="in">`+ 0`</span> or <span class="in">`- 1`</span> to the formula:</span>
 <span id="cb5-334"><a href="#cb5-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The coefficients on the dummy variables lose the difference interpretation.</span>
-<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-337"><a href="#cb5-337" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slope changes and interactions</span></span>
+<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a>    <span class="in">```r</span></span>
+<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">+</span> <span class="dv">0</span>)</span>
+<span id="cb5-337"><a href="#cb5-337" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
 <span id="cb5-338"><a href="#cb5-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-339"><a href="#cb5-339" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can also allow the returns to education to be different for men and women:</span>
+<span id="cb5-339"><a href="#cb5-339" aria-hidden="true" tabindex="-1"></a>    or equivalently:</span>
 <span id="cb5-340"><a href="#cb5-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-341"><a href="#cb5-341" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-342"><a href="#cb5-342" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\delta_{1}\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right) <span class="sc">\\</span></span>
-<span id="cb5-343"><a href="#cb5-343" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-344"><a href="#cb5-344" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb5-345"><a href="#cb5-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-346"><a href="#cb5-346" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variable $\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right)$ is called an **interaction**.</span>
-<span id="cb5-347"><a href="#cb5-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-348"><a href="#cb5-348" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The equation for men ($\text{Female}_{i}=0$):</span>
-<span id="cb5-349"><a href="#cb5-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-350"><a href="#cb5-350" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-351"><a href="#cb5-351" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}^{M}\right)=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-352"><a href="#cb5-352" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-353"><a href="#cb5-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-354"><a href="#cb5-354" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The equation for women ($\text{Female}_{i}=1$):</span>
+<span id="cb5-341"><a href="#cb5-341" aria-hidden="true" tabindex="-1"></a>    <span class="in">```r</span></span>
+<span id="cb5-342"><a href="#cb5-342" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lm</span>(Y <span class="sc">~</span> X <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-343"><a href="#cb5-343" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb5-344"><a href="#cb5-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-345"><a href="#cb5-345" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The coefficients on the dummy variables lose the difference interpretation.</span>
+<span id="cb5-346"><a href="#cb5-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-347"><a href="#cb5-347" aria-hidden="true" tabindex="-1"></a><span class="fu">## Slope changes and interactions</span></span>
+<span id="cb5-348"><a href="#cb5-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-349"><a href="#cb5-349" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can also allow the returns to education to be different for men and women:</span>
+<span id="cb5-350"><a href="#cb5-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-351"><a href="#cb5-351" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-352"><a href="#cb5-352" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}\right) &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\beta_{1}\text{Educ}_{i}+\delta_{1}\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right) <span class="sc">\\</span></span>
+<span id="cb5-353"><a href="#cb5-353" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-354"><a href="#cb5-354" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb5-355"><a href="#cb5-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-356"><a href="#cb5-356" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-357"><a href="#cb5-357" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}^{F}\right) &amp;= \left(\beta_{0}+\delta_{0}\right)+\left(\beta_{1}+\delta_{1}\right)\text{Educ}_{i} <span class="sc">\\</span></span>
-<span id="cb5-358"><a href="#cb5-358" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
-<span id="cb5-359"><a href="#cb5-359" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb5-360"><a href="#cb5-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-361"><a href="#cb5-361" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{1}$ can be interpreted as the difference in the return to education between women and men (the base group) after controlling for experience and tenure.</span>
-<span id="cb5-362"><a href="#cb5-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-363"><a href="#cb5-363" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb5-364"><a href="#cb5-364" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
-<span id="cb5-365"><a href="#cb5-365" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
-<span id="cb5-366"><a href="#cb5-366" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
-<span id="cb5-367"><a href="#cb5-367" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
-<span id="cb5-368"><a href="#cb5-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-369"><a href="#cb5-369" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Stylized coefficients to clearly illustrate slope shift</span></span>
-<span id="cb5-370"><a href="#cb5-370" aria-hidden="true" tabindex="-1"></a>  b0 <span class="ot">&lt;-</span> <span class="fl">0.8</span>        <span class="co"># beta_0</span></span>
-<span id="cb5-371"><a href="#cb5-371" aria-hidden="true" tabindex="-1"></a>  d0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.3</span>       <span class="co"># delta_0 (intercept shift)</span></span>
-<span id="cb5-372"><a href="#cb5-372" aria-hidden="true" tabindex="-1"></a>  b1 <span class="ot">&lt;-</span> <span class="fl">0.10</span>       <span class="co"># beta_1 (slope for men)</span></span>
-<span id="cb5-373"><a href="#cb5-373" aria-hidden="true" tabindex="-1"></a>  d1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.04</span>      <span class="co"># delta_1 (slope shift)</span></span>
-<span id="cb5-374"><a href="#cb5-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-375"><a href="#cb5-375" aria-hidden="true" tabindex="-1"></a>  educ <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
-<span id="cb5-376"><a href="#cb5-376" aria-hidden="true" tabindex="-1"></a>  y_men   <span class="ot">&lt;-</span> b0 <span class="sc">+</span> b1 <span class="sc">*</span> educ</span>
-<span id="cb5-377"><a href="#cb5-377" aria-hidden="true" tabindex="-1"></a>  y_women <span class="ot">&lt;-</span> (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> educ</span>
+<span id="cb5-356"><a href="#cb5-356" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The variable $\left(\text{Female}_{i}\cdot \text{Educ}_{i}\right)$ is called an **interaction**.</span>
+<span id="cb5-357"><a href="#cb5-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-358"><a href="#cb5-358" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The equation for men ($\text{Female}_{i}=0$):</span>
+<span id="cb5-359"><a href="#cb5-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-360"><a href="#cb5-360" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-361"><a href="#cb5-361" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}^{M}\right)=\beta_{0}+\beta_{1}\text{Educ}_{i}+\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-362"><a href="#cb5-362" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-363"><a href="#cb5-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-364"><a href="#cb5-364" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The equation for women ($\text{Female}_{i}=1$):</span>
+<span id="cb5-365"><a href="#cb5-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-366"><a href="#cb5-366" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-367"><a href="#cb5-367" aria-hidden="true" tabindex="-1"></a>  \ln\left(\text{Wage}_{i}^{F}\right) &amp;= \left(\beta_{0}+\delta_{0}\right)+\left(\beta_{1}+\delta_{1}\right)\text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-368"><a href="#cb5-368" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +\beta_{3}\text{Exper}_{i}+\beta_{4}\text{Tenure}_{i}+U_{i}.</span>
+<span id="cb5-369"><a href="#cb5-369" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-370"><a href="#cb5-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-371"><a href="#cb5-371" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{1}$ can be interpreted as the difference in the return to education between women and men (the base group) after controlling for experience and tenure.</span>
+<span id="cb5-372"><a href="#cb5-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-373"><a href="#cb5-373" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb5-374"><a href="#cb5-374" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
+<span id="cb5-375"><a href="#cb5-375" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
+<span id="cb5-376"><a href="#cb5-376" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
+<span id="cb5-377"><a href="#cb5-377" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
 <span id="cb5-378"><a href="#cb5-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(educ, y_men, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
-<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Education"</span>, <span class="at">ylab =</span> <span class="st">"ln(Wage)"</span>,</span>
-<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">3.0</span>))</span>
-<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(educ, y_women, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Intercept dots on y-axis with dashed guide lines</span></span>
-<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="dv">0</span>, b0, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
-<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="dv">0</span>, b0 <span class="sc">+</span> d0, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>, b0, <span class="dv">3</span>, b0, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
-<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>, b0 <span class="sc">+</span> d0, <span class="dv">3</span>, b0 <span class="sc">+</span> d0, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
-<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">3.2</span>, b0, <span class="fu">expression</span>(beta[<span class="dv">0</span>]), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.9</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
-<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">3.2</span>, b0 <span class="sc">+</span> d0, <span class="fu">expression</span>(beta[<span class="dv">0</span>] <span class="sc">+</span> delta[<span class="dv">0</span>]), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
-<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Line labels near right end</span></span>
-<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">18</span>, b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">18</span>, <span class="st">"Men"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
-<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">18</span>, (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> <span class="dv">18</span>, <span class="st">"Women"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
-<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Slope labels in the middle, placed fully above/below the lines</span></span>
-<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">11</span>, b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">11</span>,</span>
-<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a>       <span class="fu">expression</span>(slope <span class="sc">==</span> beta[<span class="dv">1</span>]), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">offset =</span> <span class="fl">0.7</span>)</span>
-<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">11</span>, (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> <span class="dv">11</span>,</span>
-<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a>       <span class="fu">expression</span>(slope <span class="sc">==</span> beta[<span class="dv">1</span>] <span class="sc">+</span> delta[<span class="dv">1</span>]), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">offset =</span> <span class="fl">0.7</span>)</span>
-<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb5-403"><a href="#cb5-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-404"><a href="#cb5-404" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
-<span id="cb5-405"><a href="#cb5-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-406"><a href="#cb5-406" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
-<span id="cb5-407"><a href="#cb5-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-408"><a href="#cb5-408" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-409"><a href="#cb5-409" aria-hidden="true" tabindex="-1"></a>  \widehat{\ln\left(\text{Wage}_{i}\right)} &amp;= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} + \underset{(0.008)}{0.082}\, \text{Educ}_{i} - \underset{(0.0131)}{0.0056}\, \text{Female}_{i}\cdot \text{Educ}_{i} <span class="sc">\\</span></span>
-<span id="cb5-410"><a href="#cb5-410" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} <span class="sc">\\</span></span>
-<span id="cb5-411"><a href="#cb5-411" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.</span>
-<span id="cb5-412"><a href="#cb5-412" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Stylized coefficients to clearly illustrate slope shift</span></span>
+<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a>  b0 <span class="ot">&lt;-</span> <span class="fl">0.8</span>        <span class="co"># beta_0</span></span>
+<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a>  d0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.3</span>       <span class="co"># delta_0 (intercept shift)</span></span>
+<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a>  b1 <span class="ot">&lt;-</span> <span class="fl">0.10</span>       <span class="co"># beta_1 (slope for men)</span></span>
+<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a>  d1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.04</span>      <span class="co"># delta_1 (slope shift)</span></span>
+<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a>  educ <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a>  y_men   <span class="ot">&lt;-</span> b0 <span class="sc">+</span> b1 <span class="sc">*</span> educ</span>
+<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a>  y_women <span class="ot">&lt;-</span> (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> educ</span>
+<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(educ, y_men, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Education"</span>, <span class="at">ylab =</span> <span class="st">"ln(Wage)"</span>,</span>
+<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">3.0</span>))</span>
+<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(educ, y_women, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Intercept dots on y-axis with dashed guide lines</span></span>
+<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="dv">0</span>, b0, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="dv">0</span>, b0 <span class="sc">+</span> d0, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>, b0, <span class="dv">3</span>, b0, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(<span class="dv">0</span>, b0 <span class="sc">+</span> d0, <span class="dv">3</span>, b0 <span class="sc">+</span> d0, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">3.2</span>, b0, <span class="fu">expression</span>(beta[<span class="dv">0</span>]), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.9</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">3.2</span>, b0 <span class="sc">+</span> d0, <span class="fu">expression</span>(beta[<span class="dv">0</span>] <span class="sc">+</span> delta[<span class="dv">0</span>]), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-403"><a href="#cb5-403" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Line labels near right end</span></span>
+<span id="cb5-404"><a href="#cb5-404" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">18</span>, b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">18</span>, <span class="st">"Men"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
+<span id="cb5-405"><a href="#cb5-405" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">18</span>, (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> <span class="dv">18</span>, <span class="st">"Women"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
+<span id="cb5-406"><a href="#cb5-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-407"><a href="#cb5-407" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Slope labels in the middle, placed fully above/below the lines</span></span>
+<span id="cb5-408"><a href="#cb5-408" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">11</span>, b0 <span class="sc">+</span> b1 <span class="sc">*</span> <span class="dv">11</span>,</span>
+<span id="cb5-409"><a href="#cb5-409" aria-hidden="true" tabindex="-1"></a>       <span class="fu">expression</span>(slope <span class="sc">==</span> beta[<span class="dv">1</span>]), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">offset =</span> <span class="fl">0.7</span>)</span>
+<span id="cb5-410"><a href="#cb5-410" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">11</span>, (b0 <span class="sc">+</span> d0) <span class="sc">+</span> (b1 <span class="sc">+</span> d1) <span class="sc">*</span> <span class="dv">11</span>,</span>
+<span id="cb5-411"><a href="#cb5-411" aria-hidden="true" tabindex="-1"></a>       <span class="fu">expression</span>(slope <span class="sc">==</span> beta[<span class="dv">1</span>] <span class="sc">+</span> delta[<span class="dv">1</span>]), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">pos =</span> <span class="dv">1</span>, <span class="at">offset =</span> <span class="fl">0.7</span>)</span>
+<span id="cb5-412"><a href="#cb5-412" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb5-413"><a href="#cb5-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-414"><a href="#cb5-414" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\delta}_{1}=-0.0056$, suggesting that the return to education for women is 0.56 percentage points less than for men; however, this difference is not statistically significant. We cannot reject the hypothesis that the return to education is the same for men and women.</span>
+<span id="cb5-414"><a href="#cb5-414" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example</span></span>
 <span id="cb5-415"><a href="#cb5-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-416"><a href="#cb5-416" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple categories</span></span>
+<span id="cb5-416"><a href="#cb5-416" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated equation:</span>
 <span id="cb5-417"><a href="#cb5-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-418"><a href="#cb5-418" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the previous examples, $\text{Educ}$ was a quantitative variable: years of education.</span>
-<span id="cb5-419"><a href="#cb5-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-420"><a href="#cb5-420" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose now that instead the education variable is **ordinal**:</span>
-<span id="cb5-421"><a href="#cb5-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-422"><a href="#cb5-422" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-423"><a href="#cb5-423" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i} = \left<span class="sc">\{</span></span>
-<span id="cb5-424"><a href="#cb5-424" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
-<span id="cb5-425"><a href="#cb5-425" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school dropout,} <span class="sc">\\</span></span>
-<span id="cb5-426"><a href="#cb5-426" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
-<span id="cb5-427"><a href="#cb5-427" aria-hidden="true" tabindex="-1"></a>  3 &amp; \text{if some college,} <span class="sc">\\</span></span>
-<span id="cb5-428"><a href="#cb5-428" aria-hidden="true" tabindex="-1"></a>  4 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
-<span id="cb5-429"><a href="#cb5-429" aria-hidden="true" tabindex="-1"></a>  5 &amp; \text{if advanced degree.}</span>
-<span id="cb5-430"><a href="#cb5-430" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
-<span id="cb5-431"><a href="#cb5-431" aria-hidden="true" tabindex="-1"></a>  \right.</span>
-<span id="cb5-432"><a href="#cb5-432" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-418"><a href="#cb5-418" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-419"><a href="#cb5-419" aria-hidden="true" tabindex="-1"></a>  \widehat{\ln\left(\text{Wage}_{i}\right)}</span>
+<span id="cb5-420"><a href="#cb5-420" aria-hidden="true" tabindex="-1"></a>  &amp;= \underset{(0.119)}{0.389} - \underset{(0.168)}{0.227}\, \text{Female}_{i} <span class="sc">\\</span></span>
+<span id="cb5-421"><a href="#cb5-421" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.008)}{0.082}\, \text{Educ}_{i} {\color{red}-\underset{(0.0131)}{0.0056}}\, \text{Female}_{i}\cdot \text{Educ}_{i} <span class="sc">\\</span></span>
+<span id="cb5-422"><a href="#cb5-422" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.005)}{0.029}\, \text{Exper}_{i} - \underset{(0.00011)}{0.00058}\, \text{Exper}_{i}^{2} <span class="sc">\\</span></span>
+<span id="cb5-423"><a href="#cb5-423" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underset{(0.007)}{0.032}\, \text{Tenure}_{i} - \underset{(0.00024)}{0.00059}\, \text{Tenure}_{i}^{2}.</span>
+<span id="cb5-424"><a href="#cb5-424" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-425"><a href="#cb5-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-426"><a href="#cb5-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\delta}_{1}=-0.0056$, suggesting that the return to education for women is 0.56 percentage points less than for men; however, this difference is not statistically significant. We cannot reject the hypothesis that the return to education is the same for men and women.</span>
+<span id="cb5-427"><a href="#cb5-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-428"><a href="#cb5-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple categories</span></span>
+<span id="cb5-429"><a href="#cb5-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-430"><a href="#cb5-430" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the previous examples, $\text{Educ}$ was a quantitative variable: years of education.</span>
+<span id="cb5-431"><a href="#cb5-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-432"><a href="#cb5-432" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose now that instead the education variable is **ordinal**:</span>
 <span id="cb5-433"><a href="#cb5-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-434"><a href="#cb5-434" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Only the order is important, and there is no meaning to the **distance** between the values.</span>
-<span id="cb5-435"><a href="#cb5-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-436"><a href="#cb5-436" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding such a variable to the regression will give a meaningless result.</span>
-<span id="cb5-437"><a href="#cb5-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-438"><a href="#cb5-438" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple categories</span></span>
-<span id="cb5-439"><a href="#cb5-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-440"><a href="#cb5-440" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall the ordinal education variable:</span>
-<span id="cb5-441"><a href="#cb5-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-442"><a href="#cb5-442" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-443"><a href="#cb5-443" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i} = \left<span class="sc">\{</span></span>
-<span id="cb5-444"><a href="#cb5-444" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
-<span id="cb5-445"><a href="#cb5-445" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school dropout,} <span class="sc">\\</span></span>
-<span id="cb5-446"><a href="#cb5-446" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
-<span id="cb5-447"><a href="#cb5-447" aria-hidden="true" tabindex="-1"></a>  3 &amp; \text{if some college,} <span class="sc">\\</span></span>
-<span id="cb5-448"><a href="#cb5-448" aria-hidden="true" tabindex="-1"></a>  4 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
-<span id="cb5-449"><a href="#cb5-449" aria-hidden="true" tabindex="-1"></a>  5 &amp; \text{if advanced degree.}</span>
-<span id="cb5-450"><a href="#cb5-450" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
-<span id="cb5-451"><a href="#cb5-451" aria-hidden="true" tabindex="-1"></a>  \right.</span>
-<span id="cb5-452"><a href="#cb5-452" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-434"><a href="#cb5-434" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-435"><a href="#cb5-435" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i} = \left<span class="sc">\{</span></span>
+<span id="cb5-436"><a href="#cb5-436" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-437"><a href="#cb5-437" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school dropout,} <span class="sc">\\</span></span>
+<span id="cb5-438"><a href="#cb5-438" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
+<span id="cb5-439"><a href="#cb5-439" aria-hidden="true" tabindex="-1"></a>  3 &amp; \text{if some college,} <span class="sc">\\</span></span>
+<span id="cb5-440"><a href="#cb5-440" aria-hidden="true" tabindex="-1"></a>  4 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
+<span id="cb5-441"><a href="#cb5-441" aria-hidden="true" tabindex="-1"></a>  5 &amp; \text{if advanced degree.}</span>
+<span id="cb5-442"><a href="#cb5-442" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-443"><a href="#cb5-443" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-444"><a href="#cb5-444" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-445"><a href="#cb5-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-446"><a href="#cb5-446" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Only the order is important, and there is no meaning to the **distance** between the values.</span>
+<span id="cb5-447"><a href="#cb5-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-448"><a href="#cb5-448" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding such a variable to the regression will give a meaningless result.</span>
+<span id="cb5-449"><a href="#cb5-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-450"><a href="#cb5-450" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple categories</span></span>
+<span id="cb5-451"><a href="#cb5-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-452"><a href="#cb5-452" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall the ordinal education variable:</span>
 <span id="cb5-453"><a href="#cb5-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-454"><a href="#cb5-454" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define 5 new dummy variables:</span>
-<span id="cb5-455"><a href="#cb5-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-456"><a href="#cb5-456" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-457"><a href="#cb5-457" aria-hidden="true" tabindex="-1"></a>  E_{1,i} &amp;= \begin{cases} 1 &amp; \text{if high-school dropout,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-458"><a href="#cb5-458" aria-hidden="true" tabindex="-1"></a>  E_{2,i} &amp;= \begin{cases} 1 &amp; \text{if high-school graduate,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-459"><a href="#cb5-459" aria-hidden="true" tabindex="-1"></a>  E_{3,i} &amp;= \begin{cases} 1 &amp; \text{if some college,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-460"><a href="#cb5-460" aria-hidden="true" tabindex="-1"></a>  E_{4,i} &amp;= \begin{cases} 1 &amp; \text{if college graduate,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-461"><a href="#cb5-461" aria-hidden="true" tabindex="-1"></a>  E_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases}</span>
-<span id="cb5-462"><a href="#cb5-462" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb5-463"><a href="#cb5-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-464"><a href="#cb5-464" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To avoid the dummy variable trap, one of the dummies has to be omitted:</span>
+<span id="cb5-454"><a href="#cb5-454" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb5-455"><a href="#cb5-455" aria-hidden="true" tabindex="-1"></a>  \text{Education}_{i} = \left<span class="sc">\{</span></span>
+<span id="cb5-456"><a href="#cb5-456" aria-hidden="true" tabindex="-1"></a>  \begin{array}{ll}</span>
+<span id="cb5-457"><a href="#cb5-457" aria-hidden="true" tabindex="-1"></a>  1 &amp; \text{if high-school dropout,} <span class="sc">\\</span></span>
+<span id="cb5-458"><a href="#cb5-458" aria-hidden="true" tabindex="-1"></a>  2 &amp; \text{if high-school graduate,} <span class="sc">\\</span></span>
+<span id="cb5-459"><a href="#cb5-459" aria-hidden="true" tabindex="-1"></a>  3 &amp; \text{if some college,} <span class="sc">\\</span></span>
+<span id="cb5-460"><a href="#cb5-460" aria-hidden="true" tabindex="-1"></a>  4 &amp; \text{if college graduate,} <span class="sc">\\</span></span>
+<span id="cb5-461"><a href="#cb5-461" aria-hidden="true" tabindex="-1"></a>  5 &amp; \text{if advanced degree.}</span>
+<span id="cb5-462"><a href="#cb5-462" aria-hidden="true" tabindex="-1"></a>  \end{array}</span>
+<span id="cb5-463"><a href="#cb5-463" aria-hidden="true" tabindex="-1"></a>  \right.</span>
+<span id="cb5-464"><a href="#cb5-464" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb5-465"><a href="#cb5-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-466"><a href="#cb5-466" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-467"><a href="#cb5-467" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i}+\delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}</span>
-<span id="cb5-468"><a href="#cb5-468" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-469"><a href="#cb5-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-470"><a href="#cb5-470" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Group 1 (high-school dropout) becomes the base group.</span>
-<span id="cb5-471"><a href="#cb5-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-472"><a href="#cb5-472" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{2}$ measures the wage difference between high-school graduates and high-school dropouts.</span>
-<span id="cb5-473"><a href="#cb5-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-474"><a href="#cb5-474" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{3}$ measures the wage difference between individuals with some college education and high-school dropouts.</span>
+<span id="cb5-466"><a href="#cb5-466" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define 5 new dummy variables:</span>
+<span id="cb5-467"><a href="#cb5-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-468"><a href="#cb5-468" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-469"><a href="#cb5-469" aria-hidden="true" tabindex="-1"></a>  E_{1,i} &amp;= \begin{cases} 1 &amp; \text{if high-school dropout,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-470"><a href="#cb5-470" aria-hidden="true" tabindex="-1"></a>  E_{2,i} &amp;= \begin{cases} 1 &amp; \text{if high-school graduate,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-471"><a href="#cb5-471" aria-hidden="true" tabindex="-1"></a>  E_{3,i} &amp;= \begin{cases} 1 &amp; \text{if some college,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-472"><a href="#cb5-472" aria-hidden="true" tabindex="-1"></a>  E_{4,i} &amp;= \begin{cases} 1 &amp; \text{if college graduate,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-473"><a href="#cb5-473" aria-hidden="true" tabindex="-1"></a>  E_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases}</span>
+<span id="cb5-474"><a href="#cb5-474" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
 <span id="cb5-475"><a href="#cb5-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-476"><a href="#cb5-476" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparing consecutive groups</span></span>
+<span id="cb5-476"><a href="#cb5-476" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To avoid the dummy variable trap, one of the dummies has to be omitted:</span>
 <span id="cb5-477"><a href="#cb5-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-478"><a href="#cb5-478" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The previous definitions compare each group to the **base** group (high-school dropouts). Alternatively, we can define dummies that compare each group to the **previous** one:</span>
-<span id="cb5-479"><a href="#cb5-479" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-480"><a href="#cb5-480" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
-<span id="cb5-481"><a href="#cb5-481" aria-hidden="true" tabindex="-1"></a>  D_{2,i} &amp;= \begin{cases} 1 &amp; \text{if high-school graduate or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-482"><a href="#cb5-482" aria-hidden="true" tabindex="-1"></a>  D_{3,i} &amp;= \begin{cases} 1 &amp; \text{if some college or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-483"><a href="#cb5-483" aria-hidden="true" tabindex="-1"></a>  D_{4,i} &amp;= \begin{cases} 1 &amp; \text{if college graduate or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
-<span id="cb5-484"><a href="#cb5-484" aria-hidden="true" tabindex="-1"></a>  D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases}</span>
-<span id="cb5-485"><a href="#cb5-485" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
-<span id="cb5-486"><a href="#cb5-486" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-487"><a href="#cb5-487" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model:</span>
-<span id="cb5-488"><a href="#cb5-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-489"><a href="#cb5-489" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-490"><a href="#cb5-490" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}=\beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i}+\gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}</span>
-<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{2}$ measures the wage difference between high-school graduates and high-school dropouts.</span>
-<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-495"><a href="#cb5-495" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{3}$ measures the wage difference between individuals with some college and high-school graduates.</span>
-<span id="cb5-496"><a href="#cb5-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-497"><a href="#cb5-497" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{4}$ measures the wage difference between college graduates and individuals with some college.</span>
-<span id="cb5-498"><a href="#cb5-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-499"><a href="#cb5-499" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{5}$ measures the wage difference between individuals with advanced degrees and college graduates.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb5-478"><a href="#cb5-478" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-479"><a href="#cb5-479" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}</span>
+<span id="cb5-480"><a href="#cb5-480" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\delta_{2}E_{2,i}+\delta_{3}E_{3,i} <span class="sc">\\</span></span>
+<span id="cb5-481"><a href="#cb5-481" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \delta_{4}E_{4,i}+\delta_{5}E_{5,i}+\text{Other Factors}</span>
+<span id="cb5-482"><a href="#cb5-482" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-483"><a href="#cb5-483" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-484"><a href="#cb5-484" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Group 1 (high-school dropout) becomes the base group.</span>
+<span id="cb5-485"><a href="#cb5-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-486"><a href="#cb5-486" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{2}$ measures the wage difference between high-school graduates and high-school dropouts.</span>
+<span id="cb5-487"><a href="#cb5-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-488"><a href="#cb5-488" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta_{3}$ measures the wage difference between individuals with some college education and high-school dropouts.</span>
+<span id="cb5-489"><a href="#cb5-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-490"><a href="#cb5-490" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparing consecutive groups</span></span>
+<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The previous definitions compare each group to the **base** group (high-school dropouts). Alternatively, we can define dummies that compare each group to the **previous** one:</span>
+<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-495"><a href="#cb5-495" aria-hidden="true" tabindex="-1"></a>  D_{2,i} &amp;= \begin{cases} 1 &amp; \text{if high-school graduate or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-496"><a href="#cb5-496" aria-hidden="true" tabindex="-1"></a>  D_{3,i} &amp;= \begin{cases} 1 &amp; \text{if some college or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-497"><a href="#cb5-497" aria-hidden="true" tabindex="-1"></a>  D_{4,i} &amp;= \begin{cases} 1 &amp; \text{if college graduate or higher,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases} <span class="sc">\\</span></span>
+<span id="cb5-498"><a href="#cb5-498" aria-hidden="true" tabindex="-1"></a>  D_{5,i} &amp;= \begin{cases} 1 &amp; \text{if advanced degree,} <span class="sc">\\</span> 0 &amp; \text{otherwise.} \end{cases}</span>
+<span id="cb5-499"><a href="#cb5-499" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-500"><a href="#cb5-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-501"><a href="#cb5-501" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model:</span>
+<span id="cb5-502"><a href="#cb5-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-503"><a href="#cb5-503" aria-hidden="true" tabindex="-1"></a>  $$\begin{aligned}</span>
+<span id="cb5-504"><a href="#cb5-504" aria-hidden="true" tabindex="-1"></a>  \text{Wage}_{i}</span>
+<span id="cb5-505"><a href="#cb5-505" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta_{0}+\delta_{0}\text{Female}_{i}+\gamma_{2}D_{2,i}+\gamma_{3}D_{3,i} <span class="sc">\\</span></span>
+<span id="cb5-506"><a href="#cb5-506" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \gamma_{4}D_{4,i}+\gamma_{5}D_{5,i}+\text{Other Factors}</span>
+<span id="cb5-507"><a href="#cb5-507" aria-hidden="true" tabindex="-1"></a>  \end{aligned}$$</span>
+<span id="cb5-508"><a href="#cb5-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-509"><a href="#cb5-509" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{2}$ measures the wage difference between high-school graduates and high-school dropouts.</span>
+<span id="cb5-510"><a href="#cb5-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-511"><a href="#cb5-511" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{3}$ measures the wage difference between individuals with some college and high-school graduates.</span>
+<span id="cb5-512"><a href="#cb5-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-513"><a href="#cb5-513" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{4}$ measures the wage difference between college graduates and individuals with some college.</span>
+<span id="cb5-514"><a href="#cb5-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-515"><a href="#cb5-515" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma_{5}$ measures the wage difference between individuals with advanced degrees and college graduates.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
