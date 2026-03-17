@@ -19,6 +19,13 @@
 **Chezmoi cleanup:**
 - Removed chezmoi management of Econ 326 `.claude/` files (now regular files in git, no longer symlinks)
 
+**Lecture 12 edits (`326_12_mreg_testing.qmd`):**
+- Removed redundant "Conditional on $\mathbf{X}$," prefix from items 2–4 on "The model" slide (lines 52, 54, 56) — the math already contains `\mid \mathbf{X}`
+- Converted long inline normality result on "Testing a single coefficient" slide (line 70) to display math indented under bullet
+- Proofread (9-pass): 3 conditioning fixes (added "conditional on $\mathbf{X}$" to distributional statements on lines 102, 131, 154); 4 `$$\begin{aligned}$$` → `\begin{align*}` conversions; 1 overflow line break (estimated variance formula, line 172–175)
+- RevealJS check: 0 fixes needed, 10 width flags (long math expressions, no structural issues)
+- Rendered all 3 formats: 0 KaTeX errors, PDF 67KB
+
 ---
 
 ## 2026-03-16
@@ -212,3 +219,22 @@
 **Config changes:**
 - Added "Session notes" and "TODO list" sections to project CLAUDE.md (chezmoi source)
 - Added user preferences (session notes, TODO tracking) to project MEMORY.md
+
+## 2026-03-17
+
+**Proofread:** `326_12_mreg_testing.qmd` (Lecture 12: Hypothesis testing in multiple regression)
+
+**Changes made:**
+- Pass 5 (conditioning): Added "conditional on **X**" to three distributional statements on lines 102, 131, and 154 that were missing explicit conditioning
+- Pass 6 (display math): Converted four `$$egin{aligned}...nd{aligned}$$` blocks to `egin{align*}...nd{align*}` (lines 118, 133, 187, 296)
+- Pass 6 (line breaking): Split long single-line estimated variance equation (line 173) into two-line `align*` block to prevent RevealJS overflow
+
+**No issues found in:**
+- Pass 1 (spelling): No errors
+- Pass 2 (grammar): No errors
+- Pass 3 (notation): Macros (`\E`, `\Var`, `\Cov`, `\Vhat`, `\se`) used consistently; `\widehat{\mathrm{Cov}}` used for estimated covariance (no macro exists; consistent with Lecture 11)
+- Pass 4 (math correctness): All formulas, degrees of freedom, and derivations verified correct
+- Pass 7 (slide titles): All 15 `##` headings within ~50-character limit
+- Pass 8 (reveal order): All display math and code chunks properly indented under parent bullets; no loose text between bullet items
+
+**Compilation:** All three formats (HTML, PDF, RevealJS) render cleanly with 0 KaTeX errors.

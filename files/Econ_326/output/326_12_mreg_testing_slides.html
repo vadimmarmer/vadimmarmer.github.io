@@ -1150,9 +1150,9 @@ Vadim Marmer, UBC
 <li class="fragment"><p>We consider the classical normal linear regression model:</p>
 <ol type="1">
 <li class="fragment"><p><span class="math inline">Y_{i}=\beta_{0}+\beta_{1}X_{1,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.</span></p></li>
-<li class="fragment"><p>Conditional on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right]=0</span> for all <span class="math inline">i</span>’s.</p></li>
-<li class="fragment"><p>Conditional on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{E}\left[U_{i}^{2} \mid \mathbf{X}\right]=\sigma^{2}</span> for all <span class="math inline">i</span>’s.</p></li>
-<li class="fragment"><p>Conditional on <span class="math inline">\mathbf{X}</span>, <span class="math inline">\mathrm{E}\left[U_{i}U_{j} \mid \mathbf{X}\right]=0</span> for all <span class="math inline">i\neq j</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i} \mid \mathbf{X}\right]=0</span> for all <span class="math inline">i</span>’s.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i}^{2} \mid \mathbf{X}\right]=\sigma^{2}</span> for all <span class="math inline">i</span>’s.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_{i}U_{j} \mid \mathbf{X}\right]=0</span> for all <span class="math inline">i\neq j</span>.</p></li>
 <li class="fragment"><p>Conditional on <span class="math inline">\mathbf{X}</span>, <span class="math inline">U_{i}</span>’s are jointly normally distributed.</p></li>
 </ol></li>
 <li class="fragment"><p>We also continue to assume <strong>no perfect multicollinearity</strong>: the <span class="math inline">k</span> regressors and constant <strong>do not</strong> form a perfect linear combination, i.e., we <strong>cannot</strong> find constants <span class="math inline">c_{1},\ldots,c_{k},c_{k+1}</span> (not all equal to zero) such that for <strong>all <span class="math inline">i</span>’s</strong>:</p>
@@ -1165,7 +1165,11 @@ c_{1}X_{1,i}+\ldots+c_{k}X_{k,i}+c_{k+1}=0.
 <h2>Testing a single coefficient</h2>
 <ul>
 <li class="fragment"><p>Take the <span class="math inline">j</span>-th coefficient <span class="math inline">\beta_{j}</span>, <span class="math inline">j\in\left\{0,1,\ldots,k\right\}.</span></p></li>
-<li class="fragment"><p>Under our assumptions, conditional on <span class="math inline">\mathbf{X}</span>, the OLS estimator <span class="math inline">\hat{\beta}_{j}</span> satisfies <span class="math inline">\hat{\beta}_{j}\sim N\left(\beta_{j},\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)\right),</span> where <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)=\sigma^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}</span> (see Lecture 11).</p></li>
+<li class="fragment"><p>Under our assumptions, conditional on <span class="math inline">\mathbf{X}</span>, the OLS estimator <span class="math inline">\hat{\beta}_{j}</span> satisfies</p>
+<p><span class="math display">
+\hat{\beta}_{j}\sim N\left(\beta_{j},\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)\right),
+</span></p>
+<p>where <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)=\sigma^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}</span> (see Lecture 11).</p></li>
 <li class="fragment"><p>Therefore, <span class="math inline">\left(\hat{\beta}_{j}-\beta_{j}\right)/\sqrt{\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)}\sim N\left(0,1\right).</span></p></li>
 <li class="fragment"><p>The conditional variance <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)</span> is unknown because <span class="math inline">\sigma^{2}</span> is unknown. The estimator for <span class="math inline">\mathrm{Var}\left(\hat{\beta}_{j} \mid \mathbf{X}\right)</span> is</p>
 <p><span class="math display">
@@ -1188,7 +1192,7 @@ c_{1}X_{1,i}+\ldots+c_{k}X_{k,i}+c_{k+1}=0.
 <h2>Testing a single coefficient: two-sided</h2>
 <ul>
 <li class="fragment"><p>Consider testing <span class="math inline">H_{0}:\beta_{j}=\beta_{j,0}</span> against <span class="math inline">H_{1}:\beta_{j}\neq\beta_{j,0}</span>.</p></li>
-<li class="fragment"><p>Under <span class="math inline">H_{0},</span> we have that</p>
+<li class="fragment"><p>Under <span class="math inline">H_{0},</span> conditional on <span class="math inline">\mathbf{X}</span>,</p>
 <p><span class="math display">
 T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}_{j}\right)}}\sim t_{n-k-1}.
 </span></p></li>
@@ -1201,10 +1205,10 @@ T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\bet
 <h2>Testing a linear combination of coefficients</h2>
 <ul>
 <li class="fragment"><p>Let <span class="math inline">c_{0},c_{1},\ldots,c_{k},r</span> be some constants. Consider testing</p>
-<p><span class="math display">\begin{aligned}
+<p><span class="math display">\begin{align*}
 H_{0} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
 H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
-\end{aligned}</span></p></li>
+\end{align*}</span></p></li>
 <li class="fragment"><p><strong>Example 1:</strong> Consider <span class="math inline">\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span> To test for constant returns to scale, <span class="math inline">H_{0}:\beta_{1}+\beta_{2}=1,</span> set <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=1, r=1.</span></p></li>
 <li class="fragment"><p><strong>Example 2:</strong> Consider <span class="math inline">\ln\left(\mathit{Wage}_{i}\right) = \beta_{0}+\beta_{1}\mathit{Experience}_{i}+\beta_{2}\mathit{PrevExperience}_{i}+\ldots+U_{i}.</span> To test that the two experience variables have the same effect on wage, <span class="math inline">H_{0}:\beta_{1}-\beta_{2}=0,</span> set <span class="math inline">c_{0}=0, c_{1}=1, c_{2}=-1, c_{3}=\ldots=c_{k}=0, r=0.</span></p></li>
 <li class="fragment"><p><strong>Example 3:</strong> Consider <span class="math inline">\ln\left(\mathit{Wage}_{i}\right)=\beta_{0}+\beta_{1}\mathit{Exper}_{i}+\beta_{2}\mathit{Exper}_{i}^{2}+\ldots+U_{i}.</span> The marginal effect of experience is <span class="math inline">\beta_{1}+2\beta_{2}\mathit{Exper}_{i}.</span> If the wage-experience profile is concave (<span class="math inline">\beta_{2}&lt;0</span>), the marginal effect is smallest at the highest experience level. To test whether the marginal effect equals zero at <span class="math inline">\mathit{Exper}=20</span>: <span class="math inline">H_{0}:\beta_{1}+40\beta_{2}=0,</span> with <span class="math inline">c_{1}=1, c_{2}=40, r=0.</span></p></li>
@@ -1213,12 +1217,12 @@ H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
 <section id="testing-a-linear-combination-of-coefficients-1" class="slide level2">
 <h2>Testing a linear combination of coefficients</h2>
 <ul>
-<li class="fragment"><p>We have that under <span class="math inline">H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,</span></p>
-<p><span class="math display">\begin{aligned}
+<li class="fragment"><p>Conditional on <span class="math inline">\mathbf{X}</span>, under <span class="math inline">H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,</span></p>
+<p><span class="math display">\begin{align*}
 &amp; \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\mathrm{Var}\left(c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}\right)}} \\
 &amp;= \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-\left(c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\right)}{\sqrt{\mathrm{Var}\left(c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}\right)}} \\
 &amp; \sim N\left(0,1\right).
-\end{aligned}</span></p></li>
+\end{align*}</span></p></li>
 <li class="fragment"><p>The variance of the linear combination is</p>
 <p><span class="math display">\begin{align*}
 &amp;\mathrm{Var}\left(c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}\right) \\
@@ -1233,7 +1237,7 @@ H_{1} &amp;: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
 <p><span class="math display">
 T=\frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\widehat{\mathrm{Var}}\left(c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}\right)}}.
 </span></p></li>
-<li class="fragment"><p>Under <span class="math inline">H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,</span></p>
+<li class="fragment"><p>Under <span class="math inline">H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,</span> conditional on <span class="math inline">\mathbf{X}</span>,</p>
 <p><span class="math display">
 T\sim t_{n-k-1}.
 </span></p></li>
@@ -1247,9 +1251,10 @@ T\sim t_{n-k-1}.
 <li class="fragment"><p>We want to test for constant returns to scale: <span class="math inline">H_{0}:\beta_{1}+\beta_{2}=1.</span></p></li>
 <li class="fragment"><p>The test statistic: <span class="math inline">T=\dfrac{\hat{\beta}_{1}+\hat{\beta}_{2}-1}{\sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}+\hat{\beta}_{2}\right)}}.</span></p></li>
 <li class="fragment"><p>The estimated variance:</p>
-<p><span class="math display">
-\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}+\hat{\beta}_{2}\right)=\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}\right)+\widehat{\mathrm{Var}}\left(\hat{\beta}_{2}\right)+2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).
-</span></p>
+<p><span class="math display">\begin{align*}
+\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}+\hat{\beta}_{2}\right) &amp;= \widehat{\mathrm{Var}}\left(\hat{\beta}_{1}\right)+\widehat{\mathrm{Var}}\left(\hat{\beta}_{2}\right) \\
+&amp;\quad +2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).
+\end{align*}</span></p>
 <ul>
 <li class="fragment"><p><span class="math inline">\widehat{\mathrm{Var}}\left(\hat{\beta}_{1}\right)</span> and <span class="math inline">\widehat{\mathrm{Var}}\left(\hat{\beta}_{2}\right)</span> can be computed from the corresponding standard errors reported by R.</p></li>
 <li class="fragment"><p>In R, <span class="math inline">\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right)</span> can be obtained (together with the variances) by using the command <code>vcov(fit)</code> after running a regression.</p></li>
@@ -1261,14 +1266,14 @@ T\sim t_{n-k-1}.
 <h2>Example</h2>
 <ul>
 <li class="fragment"><p>1000 observations were generated using the following model:</p>
-<p><span class="math display">\begin{aligned}
+<p><span class="math display">\begin{align*}
 &amp;\left.\begin{array}{l}
 L_{i}=e^{l_{i}} \\
 K_{i}=e^{k_{i}}
 \end{array}\right\} \text{ where } l_{i},k_{i} \text{ are iid } N\left(0,1\right), \mathrm{Cov}\left(l_{i},k_{i}\right)=0.5, \\
 &amp;U_{i}\sim \text{iid } N\left(0,1\right) \text{ is independent of } l_{i},k_{i}, \\
 &amp;Y_{i}=L_{i}^{0.35}K_{i}^{0.52}e^{U_{i}}.
-\end{aligned}</span></p></li>
+\end{align*}</span></p></li>
 <li class="fragment"><p>The following equation was estimated:</p>
 <p><span class="math display">
 \ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.
@@ -1403,11 +1408,11 @@ lnK         -4.491794e-05 -7.281792e-04  1.263649e-03</code></pre>
 <ul>
 <li class="fragment"><p>We want to test <span class="math inline">\beta_{1}+\beta_{2}=1</span> in <span class="math inline">\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.</span></p></li>
 <li class="fragment"><p>Define <span class="math inline">\delta=\beta_{1}+\beta_{2}</span>, or <span class="math inline">\beta_{2}=\delta-\beta_{1},</span> so that</p>
-<p><span class="math display">\begin{aligned}
+<p><span class="math display">\begin{align*}
 \ln Y_{i} &amp;= \beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i} \\
 &amp;= \beta_{0}+\beta_{1}\ln L_{i}+\left(\delta-\beta_{1}\right)\ln K_{i}+U_{i} \\
 &amp;= \beta_{0}+\beta_{1}\left(\ln L_{i}-\ln K_{i}\right)+\delta\ln K_{i}+U_{i}.
-\end{aligned}</span></p></li>
+\end{align*}</span></p></li>
 <li class="fragment"><p>Generate a new variable <span class="math inline">D_{i}=\ln L_{i}-\ln K_{i}.</span></p></li>
 <li class="fragment"><p>Estimate <span class="math inline">\ln Y_{i}=\beta_{0}+\beta_{1}D_{i}+\delta\ln K_{i}+U_{i}</span>.</p></li>
 <li class="fragment"><p>Test <span class="math inline">H_{0}:\delta=1</span> against <span class="math inline">H_{1}:\delta\neq 1.</span></p></li>
@@ -1464,9 +1469,8 @@ lnK 0.7963561 0.932423</code></pre>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href></a><span class="fu">library</span>(car)</span>
 <span id="cb30-2"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL + lnK = 1&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Linear hypothesis test
-
-Hypothesis:
+<pre><code>
+Linear hypothesis test:
 lnL  + lnK = 1
 
 Model 1: restricted model
@@ -1485,9 +1489,8 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL = lnK&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Linear hypothesis test
-
-Hypothesis:
+<pre><code>
+Linear hypothesis test:
 lnL - lnK = 0
 
 Model 1: restricted model

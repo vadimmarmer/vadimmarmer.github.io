@@ -49,11 +49,11 @@ format:
 
   1. $Y_{i}=\beta_{0}+\beta_{1}X_{1,i}+\ldots+\beta_{k}X_{k,i}+U_{i}.$
 
-  2. Conditional on $\mathbf{X}$, $\E{U_{i} \mid \mathbf{X}}=0$ for all $i$'s.
+  2. $\E{U_{i} \mid \mathbf{X}}=0$ for all $i$'s.
 
-  3. Conditional on $\mathbf{X}$, $\E{U_{i}^{2} \mid \mathbf{X}}=\sigma^{2}$ for all $i$'s.
+  3. $\E{U_{i}^{2} \mid \mathbf{X}}=\sigma^{2}$ for all $i$'s.
 
-  4. Conditional on $\mathbf{X}$, $\E{U_{i}U_{j} \mid \mathbf{X}}=0$ for all $i\neq j$.
+  4. $\E{U_{i}U_{j} \mid \mathbf{X}}=0$ for all $i\neq j$.
 
   5. Conditional on $\mathbf{X}$, $U_{i}$'s are jointly normally distributed.
 
@@ -67,7 +67,13 @@ format:
 
 - Take the $j$-th coefficient $\beta_{j}$, $j\in\left\{0,1,\ldots,k\right\}.$
 
-- Under our assumptions, conditional on $\mathbf{X}$, the OLS estimator $\hat{\beta}_{j}$ satisfies $\hat{\beta}_{j}\sim N\left(\beta_{j},\Var{\hat{\beta}_{j} \mid \mathbf{X}}\right),$ where $\Var{\hat{\beta}_{j} \mid \mathbf{X}}=\sigma^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}$ (see Lecture 11).
+- Under our assumptions, conditional on $\mathbf{X}$, the OLS estimator $\hat{\beta}_{j}$ satisfies
+
+  $$
+  \hat{\beta}_{j}\sim N\left(\beta_{j},\Var{\hat{\beta}_{j} \mid \mathbf{X}}\right),
+  $$
+
+  where $\Var{\hat{\beta}_{j} \mid \mathbf{X}}=\sigma^{2}/\sum_{i=1}^{n}\tilde{X}_{j,i}^{2}$ (see Lecture 11).
 
 - Therefore, $\left(\hat{\beta}_{j}-\beta_{j}\right)/\sqrt{\Var{\hat{\beta}_{j} \mid \mathbf{X}}}\sim N\left(0,1\right).$
 
@@ -93,7 +99,7 @@ format:
 
 - Consider testing $H_{0}:\beta_{j}=\beta_{j,0}$ against $H_{1}:\beta_{j}\neq\beta_{j,0}$.
 
-- Under $H_{0},$ we have that
+- Under $H_{0},$ conditional on $\mathbf{X}$,
 
   $$
   T=\frac{\hat{\beta}_{j}-\beta_{j,0}}{\sqrt{\Vhat{\hat{\beta}_{j}}}}\sim t_{n-k-1}.
@@ -109,10 +115,10 @@ format:
 
 - Let $c_{0},c_{1},\ldots,c_{k},r$ be some constants. Consider testing
 
-  $$\begin{aligned}
+  \begin{align*}
   H_{0} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r \text{ against} \\
   H_{1} &: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\neq r.
-  \end{aligned}$$
+  \end{align*}
 
 - **Example 1:** Consider $\ln Y_{i}=\beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i}.$ To test for constant returns to scale, $H_{0}:\beta_{1}+\beta_{2}=1,$ set $c_{0}=0, c_{1}=1, c_{2}=1, r=1.$
 
@@ -122,13 +128,13 @@ format:
 
 ## Testing a linear combination of coefficients
 
-- We have that under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$
+- Conditional on $\mathbf{X}$, under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$
 
-  $$\begin{aligned}
+  \begin{align*}
   & \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} \\
   &= \frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-\left(c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}\right)}{\sqrt{\Var{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k} \mid \mathbf{X}}}} \\
   & \sim N\left(0,1\right).
-  \end{aligned}$$
+  \end{align*}
 
 - The variance of the linear combination is
 
@@ -145,7 +151,7 @@ format:
   T=\frac{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}-r}{\sqrt{\Vhat{c_{0}\hat{\beta}_{0}+c_{1}\hat{\beta}_{1}+\ldots+c_{k}\hat{\beta}_{k}}}}.
   $$
 
-- Under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$
+- Under $H_{0}: c_{0}\beta_{0}+c_{1}\beta_{1}+\ldots+c_{k}\beta_{k}=r,$ conditional on $\mathbf{X}$,
 
   $$
   T\sim t_{n-k-1}.
@@ -163,9 +169,10 @@ format:
 
 - The estimated variance:
 
-  $$
-  \Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}}=\Vhat{\hat{\beta}_{1}}+\Vhat{\hat{\beta}_{2}}+2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).
-  $$
+  \begin{align*}
+  \Vhat{\hat{\beta}_{1}+\hat{\beta}_{2}} &= \Vhat{\hat{\beta}_{1}}+\Vhat{\hat{\beta}_{2}} \\
+  &\quad +2\widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right).
+  \end{align*}
 
   - $\Vhat{\hat{\beta}_{1}}$ and $\Vhat{\hat{\beta}_{2}}$ can be computed from the corresponding standard errors reported by R.
 
@@ -177,14 +184,14 @@ format:
 
 - 1000 observations were generated using the following model:
 
-  $$\begin{aligned}
+  \begin{align*}
   &\left.\begin{array}{l}
   L_{i}=e^{l_{i}} \\
   K_{i}=e^{k_{i}}
   \end{array}\right\} \text{ where } l_{i},k_{i} \text{ are iid } N\left(0,1\right), \Cov{l_{i},k_{i}}=0.5, \\
   &U_{i}\sim \text{iid } N\left(0,1\right) \text{ is independent of } l_{i},k_{i}, \\
   &Y_{i}=L_{i}^{0.35}K_{i}^{0.52}e^{U_{i}}.
-  \end{aligned}$$
+  \end{align*}
 
 - The following equation was estimated:
 
@@ -286,11 +293,11 @@ format:
 
 - Define $\delta=\beta_{1}+\beta_{2}$, or $\beta_{2}=\delta-\beta_{1},$ so that
 
-  $$\begin{aligned}
+  \begin{align*}
   \ln Y_{i} &= \beta_{0}+\beta_{1}\ln L_{i}+\beta_{2}\ln K_{i}+U_{i} \\
   &= \beta_{0}+\beta_{1}\ln L_{i}+\left(\delta-\beta_{1}\right)\ln K_{i}+U_{i} \\
   &= \beta_{0}+\beta_{1}\left(\ln L_{i}-\ln K_{i}\right)+\delta\ln K_{i}+U_{i}.
-  \end{aligned}$$
+  \end{align*}
 
 - Generate a new variable $D_{i}=\ln L_{i}-\ln K_{i}.$
 
