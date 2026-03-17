@@ -1464,8 +1464,9 @@ lnK 0.7963561 0.932423</code></pre>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href></a><span class="fu">library</span>(car)</span>
 <span id="cb30-2"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL + lnK = 1&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Linear hypothesis test:
+<pre><code>Linear hypothesis test
+
+Hypothesis:
 lnL  + lnK = 1
 
 Model 1: restricted model
@@ -1484,8 +1485,9 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href></a><span class="fu">linearHypothesis</span>(fit, <span class="st">&quot;lnL = lnK&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Linear hypothesis test:
+<pre><code>Linear hypothesis test
+
+Hypothesis:
 lnL - lnK = 0
 
 Model 1: restricted model
