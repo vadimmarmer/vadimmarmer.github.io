@@ -411,9 +411,82 @@ format:
 
 - Because of balance, including $X_i$ does not change the coefficient on $D_i$: there is no selection bias to remove.
 
-- However, covariates explain variation in earnings, reducing residual variance. The standard error of $\hat{\tau}$ shrinks, so estimates become more precise.
+## Why does the standard error shrink?
 
-- This contrasts with **observational data**: without randomization, omitting relevant covariates causes the coefficient on $D_i$ to absorb selection bias, and the ATE estimate changes substantially when controls are added.
+- Recall that the variance of the OLS estimator depends on the residual variance $\hat{\sigma}^2$:
+
+  $$
+  \Vhat{\hat{\tau}} = \frac{\hat{\sigma}^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2 (1 - R_D^2)},
+  $$
+
+  where $R_D^2$ is the $R^2$ from regressing $D_i$ on the other regressors.
+
+- With randomization, $D_i$ is nearly uncorrelated with covariates, so $R_D^2 \approx 0$: the denominator stays roughly the same.
+
+- However, covariates that predict earnings absorb variation in $Y_i$, reducing $\hat{\sigma}^2$. Since $\se{\hat{\tau}} \propto \hat{\sigma}$, the standard error shrinks.
+
+- In short: **adding covariates under randomization buys precision without changing the point estimate**.
+
+## Example: observational data (jtrain3)
+
+- The `jtrain3` dataset from the `wooldridge` package combines the same NSW trainees with a **non-experimental** control group drawn from the Current Population Survey (CPS).
+
+- In this dataset, treatment is **not** randomly assigned: CPS respondents differ systematically from NSW participants.
+
+  ```{r}
+  #| echo: true
+  data(jtrain3)
+  cat("n =", nrow(jtrain3), " (train=1:", sum(jtrain3$train == 1),
+      ", train=0:", sum(jtrain3$train == 0), ")\n")
+  ```
+
+## Observational: without controls
+
+- A simple regression of earnings on the training dummy:
+
+  ```{r}
+  #| echo: true
+  obs1 <- lm(re78 ~ train, data = jtrain3)
+  round(summary(obs1)$coefficients, 3)
+  ```
+
+- The estimated "effect" is **large and negative**: trainees appear to earn far less than the CPS comparison group.
+
+- This is pure **selection bias**: individuals selected into the NSW program were disadvantaged, with much lower baseline earnings.
+
+## Observational: with controls
+
+- Adding covariates dramatically changes the estimate:
+
+  ```{r}
+  #| echo: true
+  obs2 <- lm(re78 ~ train + educ + age + black + hisp + married + re74 + re75,
+              data = jtrain3)
+  round(summary(obs2)$coefficients, 3)
+  ```
+
+- The coefficient on `train` shifts from about $-$15,200 to about $+$900, much closer to the experimental benchmark of $+$1,794.
+
+## Experimental vs. observational
+
+- Side-by-side comparison:
+
+  ```{r}
+  #| echo: true
+  make_row <- function(m) c(Estimate = coef(m)["train"],
+                            SE = summary(m)$coef["train", "Std. Error"])
+  tab <- rbind(
+    "Experimental: no controls"   = make_row(m1),
+    "Experimental: with controls" = make_row(m2),
+    "Observational: no controls"  = make_row(obs1),
+    "Observational: with controls"= make_row(obs2)
+  )
+  round(tab, 3)
+  ```
+
+- **Experimental data:** controls barely change the estimate (1.79 vs. 1.68); standard errors shrink.
+
+- **Observational data:** controls remove most of the selection bias ($-$15.2 → $+$0.9); covariates are essential for a credible estimate.
 
 ## From cross-sections to panel data
 

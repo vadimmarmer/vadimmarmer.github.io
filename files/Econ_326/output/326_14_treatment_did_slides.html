@@ -1508,8 +1508,101 @@ With controls              2  1</code></pre>
 <ul>
 <li class="fragment"><p>Under <strong>random assignment</strong>, <span class="math inline">D_i</span> is independent of all covariates: the treatment and control groups are balanced in expectation.</p></li>
 <li class="fragment"><p>Because of balance, including <span class="math inline">X_i</span> does not change the coefficient on <span class="math inline">D_i</span>: there is no selection bias to remove.</p></li>
-<li class="fragment"><p>However, covariates explain variation in earnings, reducing residual variance. The standard error of <span class="math inline">\hat{\tau}</span> shrinks, so estimates become more precise.</p></li>
-<li class="fragment"><p>This contrasts with <strong>observational data</strong>: without randomization, omitting relevant covariates causes the coefficient on <span class="math inline">D_i</span> to absorb selection bias, and the ATE estimate changes substantially when controls are added.</p></li>
+</ul>
+</section>
+<section id="why-does-the-standard-error-shrink" class="slide level2">
+<h2>Why does the standard error shrink?</h2>
+<ul>
+<li class="fragment"><p>Recall that the variance of the OLS estimator depends on the residual variance <span class="math inline">\hat{\sigma}^2</span>:</p>
+<p><span class="math display">
+\widehat{\mathrm{Var}}\left(\hat{\tau}\right) = \frac{\hat{\sigma}^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2 (1 - R_D^2)},
+</span></p>
+<p>where <span class="math inline">R_D^2</span> is the <span class="math inline">R^2</span> from regressing <span class="math inline">D_i</span> on the other regressors.</p></li>
+<li class="fragment"><p>With randomization, <span class="math inline">D_i</span> is nearly uncorrelated with covariates, so <span class="math inline">R_D^2 \approx 0</span>: the denominator stays roughly the same.</p></li>
+<li class="fragment"><p>However, covariates that predict earnings absorb variation in <span class="math inline">Y_i</span>, reducing <span class="math inline">\hat{\sigma}^2</span>. Since <span class="math inline">\mathrm{se}\left(\hat{\tau}\right) \propto \hat{\sigma}</span>, the standard error shrinks.</p></li>
+<li class="fragment"><p>In short: <strong>adding covariates under randomization buys precision without changing the point estimate</strong>.</p></li>
+</ul>
+</section>
+<section id="example-observational-data-jtrain3" class="slide level2">
+<h2>Example: observational data (jtrain3)</h2>
+<ul>
+<li class="fragment"><p>The <code>jtrain3</code> dataset from the <code>wooldridge</code> package combines the same NSW trainees with a <strong>non-experimental</strong> control group drawn from the Current Population Survey (CPS).</p></li>
+<li class="fragment"><p>In this dataset, treatment is <strong>not</strong> randomly assigned: CPS respondents differ systematically from NSW participants.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href></a><span class="fu">data</span>(jtrain3)</span>
+<span id="cb17-2"><a href></a><span class="fu">cat</span>(<span class="st">&quot;n =&quot;</span>, <span class="fu">nrow</span>(jtrain3), <span class="st">&quot; (train=1:&quot;</span>, <span class="fu">sum</span>(jtrain3<span class="sc">$</span>train <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb17-3"><a href></a>    <span class="st">&quot;, train=0:&quot;</span>, <span class="fu">sum</span>(jtrain3<span class="sc">$</span>train <span class="sc">==</span> <span class="dv">0</span>), <span class="st">&quot;)</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n = 2675  (train=1: 185 , train=0: 2490 )</code></pre>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="observational-without-controls" class="slide level2">
+<h2>Observational: without controls</h2>
+<ul>
+<li class="fragment"><p>A simple regression of earnings on the training dummy:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href></a>obs1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain3)</span>
+<span id="cb19-2"><a href></a><span class="fu">round</span>(<span class="fu">summary</span>(obs1)<span class="sc">$</span>coefficients, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   21.554      0.304  70.985        0
+train        -15.205      1.155 -13.169        0</code></pre>
+</div>
+</div></li>
+<li class="fragment"><p>The estimated “effect” is <strong>large and negative</strong>: trainees appear to earn far less than the CPS comparison group.</p></li>
+<li class="fragment"><p>This is pure <strong>selection bias</strong>: individuals selected into the NSW program were disadvantaged, with much lower baseline earnings.</p></li>
+</ul>
+</section>
+<section id="observational-with-controls" class="slide level2">
+<h2>Observational: with controls</h2>
+<ul>
+<li class="fragment"><p>Adding covariates dramatically changes the estimate:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href></a>obs2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> hisp <span class="sc">+</span> married <span class="sc">+</span> re74 <span class="sc">+</span> re75,</span>
+<span id="cb21-2"><a href></a>            <span class="at">data =</span> jtrain3)</span>
+<span id="cb21-3"><a href></a><span class="fu">round</span>(<span class="fu">summary</span>(obs2)<span class="sc">$</span>coefficients, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    0.777      1.366   0.569    0.570
+train          0.860      0.908   0.947    0.344
+educ           0.528      0.075   7.015    0.000
+age           -0.082      0.021  -3.940    0.000
+black         -0.543      0.494  -1.098    0.272
+hisp           2.166      1.092   1.983    0.048
+married        1.220      0.586   2.083    0.037
+re74           0.278      0.028   9.952    0.000
+re75           0.568      0.028  20.615    0.000</code></pre>
+</div>
+</div></li>
+<li class="fragment"><p>The coefficient on <code>train</code> shifts from about $-$15,200 to about $+$900, much closer to the experimental benchmark of $+$1,794.</p></li>
+</ul>
+</section>
+<section id="experimental-vs.-observational" class="slide level2">
+<h2>Experimental vs. observational</h2>
+<ul>
+<li class="fragment"><p>Side-by-side comparison:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href></a>make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(m) <span class="fu">c</span>(<span class="at">Estimate =</span> <span class="fu">coef</span>(m)[<span class="st">&quot;train&quot;</span>],</span>
+<span id="cb23-2"><a href></a>                          <span class="at">SE =</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coef[<span class="st">&quot;train&quot;</span>, <span class="st">&quot;Std. Error&quot;</span>])</span>
+<span id="cb23-3"><a href></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb23-4"><a href></a>  <span class="st">&quot;Experimental: no controls&quot;</span>   <span class="ot">=</span> <span class="fu">make_row</span>(m1),</span>
+<span id="cb23-5"><a href></a>  <span class="st">&quot;Experimental: with controls&quot;</span> <span class="ot">=</span> <span class="fu">make_row</span>(m2),</span>
+<span id="cb23-6"><a href></a>  <span class="st">&quot;Observational: no controls&quot;</span>  <span class="ot">=</span> <span class="fu">make_row</span>(obs1),</span>
+<span id="cb23-7"><a href></a>  <span class="st">&quot;Observational: with controls&quot;</span><span class="ot">=</span> <span class="fu">make_row</span>(obs2)</span>
+<span id="cb23-8"><a href></a>)</span>
+<span id="cb23-9"><a href></a><span class="fu">round</span>(tab, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             Estimate.train    SE
+Experimental: no controls             1.794 0.633
+Experimental: with controls           1.679 0.629
+Observational: no controls          -15.205 1.155
+Observational: with controls          0.860 0.908</code></pre>
+</div>
+</div></li>
+<li class="fragment"><p><strong>Experimental data:</strong> controls barely change the estimate (1.79 vs. 1.68); standard errors shrink.</p></li>
+<li class="fragment"><p><strong>Observational data:</strong> controls remove most of the selection bias ($-$15.2 → $+$0.9); covariates are essential for a credible estimate.</p></li>
 </ul>
 </section>
 <section id="from-cross-sections-to-panel-data" class="slide level2">
@@ -1613,8 +1706,8 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 <li class="fragment"><p>Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts.</p></li>
 <li class="fragment"><p>We use the <code>kielmc</code> dataset from the <code>wooldridge</code> package:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href></a><span class="fu">data</span>(kielmc)</span>
-<span id="cb17-2"><a href></a><span class="fu">head</span>(kielmc[, <span class="fu">c</span>(<span class="st">&quot;rprice&quot;</span>, <span class="st">&quot;y81&quot;</span>, <span class="st">&quot;nearinc&quot;</span>, <span class="st">&quot;y81nrinc&quot;</span>, <span class="st">&quot;age&quot;</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href></a><span class="fu">data</span>(kielmc)</span>
+<span id="cb25-2"><a href></a><span class="fu">head</span>(kielmc[, <span class="fu">c</span>(<span class="st">&quot;rprice&quot;</span>, <span class="st">&quot;y81&quot;</span>, <span class="st">&quot;nearinc&quot;</span>, <span class="st">&quot;y81nrinc&quot;</span>, <span class="st">&quot;age&quot;</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   rprice y81 nearinc y81nrinc age
 1   60000   0       1        0  48
@@ -1640,10 +1733,10 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 <ul>
 <li class="fragment"><p>Compute the four group means:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href></a>means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(kielmc<span class="sc">$</span>rprice, <span class="fu">list</span>(kielmc<span class="sc">$</span>y81, kielmc<span class="sc">$</span>nearinc), mean)</span>
-<span id="cb19-2"><a href></a><span class="fu">colnames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Far (nearinc=0)&quot;</span>, <span class="st">&quot;Near (nearinc=1)&quot;</span>)</span>
-<span id="cb19-3"><a href></a><span class="fu">rownames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;1978 (y81=0)&quot;</span>, <span class="st">&quot;1981 (y81=1)&quot;</span>)</span>
-<span id="cb19-4"><a href></a><span class="fu">round</span>(means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href></a>means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(kielmc<span class="sc">$</span>rprice, <span class="fu">list</span>(kielmc<span class="sc">$</span>y81, kielmc<span class="sc">$</span>nearinc), mean)</span>
+<span id="cb27-2"><a href></a><span class="fu">colnames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Far (nearinc=0)&quot;</span>, <span class="st">&quot;Near (nearinc=1)&quot;</span>)</span>
+<span id="cb27-3"><a href></a><span class="fu">rownames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;1978 (y81=0)&quot;</span>, <span class="st">&quot;1981 (y81=1)&quot;</span>)</span>
+<span id="cb27-4"><a href></a><span class="fu">round</span>(means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Far (nearinc=0) Near (nearinc=1)
 1978 (y81=0)           82517            63693
@@ -1652,18 +1745,18 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 </div></li>
 <li class="fragment"><p>Computing the DID by hand:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href></a>diff_near <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb21-2"><a href></a>diff_far  <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">1</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">1</span>]</span>
-<span id="cb21-3"><a href></a>DID <span class="ot">&lt;-</span> diff_near <span class="sc">-</span> diff_far</span>
-<span id="cb21-4"><a href></a><span class="fu">cat</span>(<span class="st">&quot;Change (near):&quot;</span>, <span class="fu">round</span>(diff_near), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href></a>diff_near <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb29-2"><a href></a>diff_far  <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">1</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb29-3"><a href></a>DID <span class="ot">&lt;-</span> diff_near <span class="sc">-</span> diff_far</span>
+<span id="cb29-4"><a href></a><span class="fu">cat</span>(<span class="st">&quot;Change (near):&quot;</span>, <span class="fu">round</span>(diff_near), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Change (near): 6926 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href></a><span class="fu">cat</span>(<span class="st">&quot;Change (far): &quot;</span>, <span class="fu">round</span>(diff_far), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href></a><span class="fu">cat</span>(<span class="st">&quot;Change (far): &quot;</span>, <span class="fu">round</span>(diff_far), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Change (far):  18790 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href></a><span class="fu">cat</span>(<span class="st">&quot;DID:          &quot;</span>, <span class="fu">round</span>(DID), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href></a><span class="fu">cat</span>(<span class="st">&quot;DID:          &quot;</span>, <span class="fu">round</span>(DID), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DID:           -11864 </code></pre>
 </div>
@@ -1675,8 +1768,8 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 <ul>
 <li class="fragment"><p>The DID regression:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href></a>reg_did <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc, <span class="at">data =</span> kielmc)</span>
-<span id="cb27-2"><a href></a><span class="fu">summary</span>(reg_did)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href></a>reg_did <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc, <span class="at">data =</span> kielmc)</span>
+<span id="cb35-2"><a href></a><span class="fu">summary</span>(reg_did)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Estimate Std. Error   t value     Pr(&gt;|t|)
 (Intercept)  82517.23   2726.910 30.260341 1.709246e-95
@@ -1694,9 +1787,9 @@ y81nrinc    -11863.90   7456.646 -1.591051 1.125948e-01</code></pre>
 <ul>
 <li class="fragment"><p>Adding house characteristics as controls can improve precision:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href></a>reg_did_cov <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb29-2"><a href></a>                   <span class="at">data =</span> kielmc)</span>
-<span id="cb29-3"><a href></a><span class="fu">summary</span>(reg_did_cov)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href></a>reg_did_cov <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb37-2"><a href></a>                   <span class="at">data =</span> kielmc)</span>
+<span id="cb37-3"><a href></a><span class="fu">summary</span>(reg_did_cov)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 Estimate   Std. Error    t value      Pr(&gt;|t|)
 (Intercept)  89116.535375 2406.0510717  37.038505 8.247920e-117
