@@ -4,7 +4,3 @@ vendor/
 .DS_Store
 files/Lima_2023/R/.Rhistory
 
-# CLAUDE.md symlinks (point to local chezmoi paths, break on GitHub Actions)
-CLAUDE.md
-files/Econ_326/CLAUDE.md
-
