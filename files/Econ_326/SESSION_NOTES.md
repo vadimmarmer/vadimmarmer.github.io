@@ -32,10 +32,24 @@
 - Added convention: conditioning expectations must use `\E{...}` macro
 - Added convention: multi-letter variable names in math must use `\text{...}` for upright rendering
 
+**Proofreading (3-agent consensus: codex, gemini, opus):**
+- Slide titles: split "Interval, ordinal, and categorical variables" into "Interval and ordinal variables" + "Categorical variables"; dropped articles from "A single dummy independent variable", "An intercept shift", "The dummy variable trap" (×2) for consistency
+- Grammar: "conditionally on" → "conditional on"; "which takes on" → "that takes on"; "cannot be simply included in regression" → "cannot simply be included in a regression"; "order between" → "order of"
+- Awkward phrasing: rewrote fragment definitions for interval and categorical variables as full sentences
+- Notation: added `\mid \mathbf{X}` to `\E{U_i}` for consistency with other lectures
+- Precision: "0.56% less" → "0.56 percentage points less"; "We can conclude" → "We cannot reject the hypothesis" (non-rejection ≠ acceptance)
+- Added "wage" to "$\delta_0$ measures the wage difference"; added "the" before "return to education"
+- RevealJS: indented 5 aligned blocks under parent bullets for proper incremental reveal (lines 136, 143, 150, 451, 475)
+- New slide: "Comparing consecutive groups" with successive-difference dummy definitions (D₂–D₅)
+- E-variable alignment: added `&` before second-column variables for proper alignment
+- Added lecture 14 to course page
+
 **Verification:**
 - All 3 output formats render successfully, 0 KaTeX errors
 - 18 section tags (1 title + 17 content slides)
+- RevealJS reveal order verified: all indented blocks properly nested inside `<li class="fragment">`
 - No "Chow" or "structural break" content remains
+- Pushed to GitHub
 
 ## 2026-03-12
 
