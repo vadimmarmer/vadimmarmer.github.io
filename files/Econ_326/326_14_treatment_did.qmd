@@ -1,5 +1,5 @@
 ---
-title: "Lecture 14: Treatment effects and difference-in-differences"
+title: "Lecture 14: Causal inference"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
