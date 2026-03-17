@@ -1,6 +1,6 @@
 ---
 name: proofread-326
-description: Proofreads Econ 326 Quarto lecture notes — spelling, grammar, notation, math, conditioning, layout, slide titles, reveal order, and compilation
+description: Proofreads Econ 326 Quarto lecture notes — spelling, grammar, language tightening, notation (`\E`, `\Var`, `\Cov`, `\Vhat`, `\se`, `\mathbf{X}`), math, conditioning on `\mathbf{X}`, layout, slide titles, reveal order, and compilation
 tools:
   - Read
   - Write
@@ -81,14 +81,15 @@ Check for uniform notation throughout the file. In particular:
 | Variance macro | `\Var{\cdot}` | `\text{Var}(\cdot)`, `\mathrm{Var}(\cdot)`, bare `Var` |
 | Expectation macro | `\E{\cdot}` | `\text{E}[\cdot]`, `\mathrm{E}[\cdot]`, bare `E` |
 | Covariance macro | `\Cov{\cdot}` | `\text{Cov}(\cdot)`, `\mathrm{Cov}(\cdot)`, bare `Cov` |
-| Standard error | `SE(\hat{\beta}_1)` or `\mathrm{SE}(\hat{\beta}_1)` | inconsistent capitalization or delimiters |
+| Standard error macro | `\se{\hat{\beta}_1}` | `SE(\hat{\beta}_1)`, `\mathrm{SE}(\hat{\beta}_1)`, uppercase SE |
+| Estimated variance macro | `\Vhat{\hat{\beta}_1}` | `\widehat{\mathrm{Var}}(\hat{\beta}_1)` hand-written |
 | Summation indices | $i=1,\ldots,n$ | mixing `i` and `j` for the same sum |
 | Subscript spacing | `\hat{\beta}_{1}` | `\hat{\beta}_1` is acceptable but should be consistent within a file |
 
 Also verify:
 
-- The hidden macro div (`\gdef\E`, `\gdef\Var`, `\gdef\Cov`) is present right after the first `##` heading.
-- All uses of `\E{...}`, `\Var{...}`, `\Cov{...}` throughout the file use the gdef macros (not hand-written `\mathrm{E}\left[...\right]`).
+- The hidden macro div (`\gdef\E`, `\gdef\Var`, `\gdef\Cov`, `\gdef\Vhat`, `\gdef\se`) is present right after the first `##` heading. Include `\Vhat` and `\se` in any lecture that uses estimated variances or standard errors (from lecture 06 onward).
+- All uses of `\E{...}`, `\Var{...}`, `\Cov{...}`, `\Vhat{...}`, `\se{...}` throughout the file use the gdef macros (not hand-written `\mathrm{E}\left[...\right]`, `\mathrm{se}(...)`, `\widehat{\mathrm{Var}}(...)`, etc.).
 - Greek letters and operators are spelled correctly (`\alpha`, `\beta`, `\sigma`, `\sim`, not `\aplha`, `\bea`, etc.).
 
 ---
