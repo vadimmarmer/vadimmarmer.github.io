@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vadim Marmer, UBC">
+
+<title>Lecture 14: Treatment effects and difference-in-differences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="326_14_treatment_did_files/libs/clipboard/clipboard.min.js"></script>
+<script src="326_14_treatment_did_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="326_14_treatment_did_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="326_14_treatment_did_files/libs/quarto-html/popper.min.js"></script>
+<script src="326_14_treatment_did_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="326_14_treatment_did_files/libs/quarto-html/anchor.min.js"></script>
+<link href="326_14_treatment_did_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="326_14_treatment_did_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="326_14_treatment_did_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="326_14_treatment_did_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="326_14_treatment_did_files/libs/bootstrap/bootstrap-8a894fcc3cb5e37eb5bf30def131be2f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#motivation-causal-questions" id="toc-motivation-causal-questions" class="nav-link active" data-scroll-target="#motivation-causal-questions">Motivation: causal questions</a></li>
+  <li><a href="#potential-outcomes" id="toc-potential-outcomes" class="nav-link" data-scroll-target="#potential-outcomes">Potential outcomes</a></li>
+  <li><a href="#the-fundamental-problem" id="toc-the-fundamental-problem" class="nav-link" data-scroll-target="#the-fundamental-problem">The fundamental problem</a></li>
+  <li><a href="#average-treatment-effects" id="toc-average-treatment-effects" class="nav-link" data-scroll-target="#average-treatment-effects">Average treatment effects</a></li>
+  <li><a href="#selection-bias" id="toc-selection-bias" class="nav-link" data-scroll-target="#selection-bias">Selection bias</a></li>
+  <li><a href="#random-assignment" id="toc-random-assignment" class="nav-link" data-scroll-target="#random-assignment">Random assignment</a></li>
+  <li><a href="#regression-with-a-treatment-dummy" id="toc-regression-with-a-treatment-dummy" class="nav-link" data-scroll-target="#regression-with-a-treatment-dummy">Regression with a treatment dummy</a></li>
+  <li><a href="#example-lalonde-data" id="toc-example-lalonde-data" class="nav-link" data-scroll-target="#example-lalonde-data">Example: Lalonde data</a></li>
+  <li><a href="#estimating-the-ate" id="toc-estimating-the-ate" class="nav-link" data-scroll-target="#estimating-the-ate">Estimating the ATE</a></li>
+  <li><a href="#observational-studies" id="toc-observational-studies" class="nav-link" data-scroll-target="#observational-studies">Observational studies</a></li>
+  <li><a href="#potential-outcomes-with-a-covariate" id="toc-potential-outcomes-with-a-covariate" class="nav-link" data-scroll-target="#potential-outcomes-with-a-covariate">Potential outcomes with a covariate</a></li>
+  <li><a href="#the-ate-with-a-covariate" id="toc-the-ate-with-a-covariate" class="nav-link" data-scroll-target="#the-ate-with-a-covariate">The ATE with a covariate</a></li>
+  <li><a href="#two-separate-regressions" id="toc-two-separate-regressions" class="nav-link" data-scroll-target="#two-separate-regressions">Two separate regressions</a></li>
+  <li><a href="#combined-regression-with-interactions" id="toc-combined-regression-with-interactions" class="nav-link" data-scroll-target="#combined-regression-with-interactions">Combined regression with interactions</a></li>
+  <li><a href="#the-demeaning-trick" id="toc-the-demeaning-trick" class="nav-link" data-scroll-target="#the-demeaning-trick">The demeaning trick</a></li>
+  <li><a href="#estimating-the-ate-with-covariates" id="toc-estimating-the-ate-with-covariates" class="nav-link" data-scroll-target="#estimating-the-ate-with-covariates">Estimating the ATE with covariates</a></li>
+  <li><a href="#why-not-regress-y_i-on-d_i-and-x_i" id="toc-why-not-regress-y_i-on-d_i-and-x_i" class="nav-link" data-scroll-target="#why-not-regress-y_i-on-d_i-and-x_i">Why not regress <span class="math inline">Y_i</span> on <span class="math inline">D_i</span> and <span class="math inline">X_i</span>?</a></li>
+  <li><a href="#example-separate-regressions" id="toc-example-separate-regressions" class="nav-link" data-scroll-target="#example-separate-regressions">Example: separate regressions</a></li>
+  <li><a href="#example-demeaned-regression" id="toc-example-demeaned-regression" class="nav-link" data-scroll-target="#example-demeaned-regression">Example: demeaned regression</a></li>
+  <li><a href="#example-regression-lines" id="toc-example-regression-lines" class="nav-link" data-scroll-target="#example-regression-lines">Example: regression lines</a></li>
+  <li><a href="#from-cross-sections-to-panel-data" id="toc-from-cross-sections-to-panel-data" class="nav-link" data-scroll-target="#from-cross-sections-to-panel-data">From cross-sections to panel data</a></li>
+  <li><a href="#did-setup" id="toc-did-setup" class="nav-link" data-scroll-target="#did-setup">DID setup</a></li>
+  <li><a href="#did-regression-model" id="toc-did-regression-model" class="nav-link" data-scroll-target="#did-regression-model">DID regression model</a></li>
+  <li><a href="#interpreting-the-coefficients" id="toc-interpreting-the-coefficients" class="nav-link" data-scroll-target="#interpreting-the-coefficients">Interpreting the coefficients</a></li>
+  <li><a href="#deriving-the-did-estimand" id="toc-deriving-the-did-estimand" class="nav-link" data-scroll-target="#deriving-the-did-estimand">Deriving the DID estimand</a></li>
+  <li><a href="#did-diagram" id="toc-did-diagram" class="nav-link" data-scroll-target="#did-diagram">DID diagram</a></li>
+  <li><a href="#example-incinerator-and-house-prices" id="toc-example-incinerator-and-house-prices" class="nav-link" data-scroll-target="#example-incinerator-and-house-prices">Example: incinerator and house prices</a></li>
+  <li><a href="#the-22-table-of-means" id="toc-the-22-table-of-means" class="nav-link" data-scroll-target="#the-22-table-of-means">The 2×2 table of means</a></li>
+  <li><a href="#did-regression" id="toc-did-regression" class="nav-link" data-scroll-target="#did-regression">DID regression</a></li>
+  <li><a href="#did-with-covariates" id="toc-did-with-covariates" class="nav-link" data-scroll-target="#did-with-covariates">DID with covariates</a></li>
+  <li><a href="#did-and-potential-outcomes" id="toc-did-and-potential-outcomes" class="nav-link" data-scroll-target="#did-and-potential-outcomes">DID and potential outcomes</a></li>
+  <li><a href="#did-as-a-treatment-effect" id="toc-did-as-a-treatment-effect" class="nav-link" data-scroll-target="#did-as-a-treatment-effect">DID as a treatment effect</a></li>
+  <li><a href="#assumption-1-no-anticipation" id="toc-assumption-1-no-anticipation" class="nav-link" data-scroll-target="#assumption-1-no-anticipation">Assumption 1: no anticipation</a></li>
+  <li><a href="#assumption-2-parallel-trends" id="toc-assumption-2-parallel-trends" class="nav-link" data-scroll-target="#assumption-2-parallel-trends">Assumption 2: parallel trends</a></li>
+  <li><a href="#parallel-trends-diagram" id="toc-parallel-trends-diagram" class="nav-link" data-scroll-target="#parallel-trends-diagram">Parallel trends diagram</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_14_treatment_did.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_14_treatment_did_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Lecture 14: Treatment effects and difference-in-differences</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Economics 326 — Introduction to Econometrics II</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vadim Marmer, UBC </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivation-causal-questions" class="level2">
+<h2 class="anchored" data-anchor-id="motivation-causal-questions">Motivation: causal questions</h2>
+<div class="hidden">
+
+</div>
+<ul>
+<li>Many important questions in economics are <strong>causal</strong>:
+<ul>
+<li>Does job training increase earnings?</li>
+<li>Does a new drug improve health outcomes?</li>
+<li>Does building an incinerator reduce nearby house prices?</li>
+</ul></li>
+<li>The <strong>fundamental challenge</strong>: we can never observe the same individual both with and without treatment at the same time.</li>
+</ul>
+</section>
+<section id="potential-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="potential-outcomes">Potential outcomes</h2>
+<ul>
+<li><p>For each individual <span class="math inline">i</span>, define two <strong>potential outcomes</strong>:</p>
+<ul>
+<li><span class="math inline">Y_i(1)</span>: outcome if individual <span class="math inline">i</span> receives treatment (<span class="math inline">D_i = 1</span>),</li>
+<li><span class="math inline">Y_i(0)</span>: outcome if individual <span class="math inline">i</span> does not receive treatment (<span class="math inline">D_i = 0</span>).</li>
+</ul></li>
+<li><p>The <strong>individual treatment effect</strong> for person <span class="math inline">i</span> is:</p>
+<p><span class="math display">
+Y_i(1) - Y_i(0).
+</span></p></li>
+<li><p>Example: if <span class="math inline">Y_i</span> is earnings and <span class="math inline">D_i</span> indicates job training, then <span class="math inline">Y_i(1) - Y_i(0)</span> is the causal effect of training on earnings for person <span class="math inline">i</span>.</p></li>
+</ul>
+</section>
+<section id="the-fundamental-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-fundamental-problem">The fundamental problem</h2>
+<ul>
+<li><p>Let <span class="math inline">D_i \in \{0, 1\}</span> denote treatment status. The <strong>observed outcome</strong> is:</p>
+<p><span class="math display">
+Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
+</span></p></li>
+<li><p>If <span class="math inline">D_i = 1</span>, we observe <span class="math inline">Y_i(1)</span> but not <span class="math inline">Y_i(0)</span>.</p></li>
+<li><p>If <span class="math inline">D_i = 0</span>, we observe <span class="math inline">Y_i(0)</span> but not <span class="math inline">Y_i(1)</span>.</p></li>
+<li><p>We can never observe both potential outcomes for the same individual. This is the <strong>fundamental problem of causal inference</strong>.</p></li>
+</ul>
+</section>
+<section id="average-treatment-effects" class="level2">
+<h2 class="anchored" data-anchor-id="average-treatment-effects">Average treatment effects</h2>
+<ul>
+<li><p>Since individual treatment effects <span class="math inline">Y_i(1) - Y_i(0)</span> are unobservable, we focus on averages.</p></li>
+<li><p><strong>Average Treatment Effect (ATE):</strong></p>
+<p><span class="math display">
+\text{ATE} = \mathrm{E}\left[Y_i(1) - Y_i(0)\right].
+</span></p></li>
+<li><p><strong>Average Treatment Effect on the Treated (ATT):</strong></p>
+<p><span class="math display">
+\text{ATT} = \mathrm{E}\left[Y_i(1) - Y_i(0) \mid D_i = 1\right].
+</span></p></li>
+<li><p>ATE averages over the entire population; ATT averages only over those who actually receive treatment.</p></li>
+</ul>
+</section>
+<section id="selection-bias" class="level2">
+<h2 class="anchored" data-anchor-id="selection-bias">Selection bias</h2>
+<ul>
+<li><p>A naive comparison of treated and untreated outcomes yields:</p>
+<p><span class="math display">\begin{align*}
+&amp;\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right] \\
+&amp;= \mathrm{E}\left[Y_i(1) \mid D_i = 1\right] - \mathrm{E}\left[Y_i(0) \mid D_i = 0\right].
+\end{align*}</span></p></li>
+<li><p>Add and subtract <span class="math inline">\mathrm{E}\left[Y_i(0) \mid D_i = 1\right]</span>:</p>
+<p><span class="math display">\begin{align*}
+&amp;= \underbrace{\mathrm{E}\left[Y_i(1) - Y_i(0) \mid D_i = 1\right]}_{\text{ATT}} \\
+&amp;\quad + \underbrace{\mathrm{E}\left[Y_i(0) \mid D_i = 1\right] - \mathrm{E}\left[Y_i(0) \mid D_i = 0\right]}_{\text{Selection bias}}.
+\end{align*}</span></p></li>
+<li><p><strong>Selection bias</strong> arises when the treatment and control groups differ in their baseline outcomes <span class="math inline">Y_i(0)</span>. For example, people who choose to enroll in job training may differ systematically from those who do not.</p></li>
+</ul>
+</section>
+<section id="random-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="random-assignment">Random assignment</h2>
+<ul>
+<li><p>Under <strong>random assignment</strong>, treatment <span class="math inline">D_i</span> is independent of potential outcomes:</p>
+<p><span class="math display">
+\mathrm{E}\left[Y_i(0) \mid D_i = 1\right] = \mathrm{E}\left[Y_i(0) \mid D_i = 0\right] = \mathrm{E}\left[Y_i(0)\right].
+</span></p></li>
+<li><p>The selection bias vanishes, and the simple difference in means equals the ATE:</p>
+<p><span class="math display">
+\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right] = \text{ATE} = \text{ATT}.
+</span></p></li>
+<li><p>Randomized experiments (like the National Supported Work program) achieve this by randomly assigning individuals to treatment and control groups.</p></li>
+</ul>
+</section>
+<section id="regression-with-a-treatment-dummy" class="level2">
+<h2 class="anchored" data-anchor-id="regression-with-a-treatment-dummy">Regression with a treatment dummy</h2>
+<ul>
+<li><p>With random assignment, the ATE can be estimated by regressing <span class="math inline">Y_i</span> on a treatment dummy:</p>
+<p><span class="math display">
+Y_i = \alpha + \tau D_i + U_i,
+</span></p>
+<p>where <span class="math inline">\mathrm{E}\left[U_i \mid D_i\right] = 0</span> under randomization.</p></li>
+<li><p>The OLS estimate of <span class="math inline">\tau</span> equals the difference in sample means:</p>
+<p><span class="math display">
+\hat{\tau} = \bar{Y}_1 - \bar{Y}_0,
+</span></p>
+<p>where <span class="math inline">\bar{Y}_1</span> and <span class="math inline">\bar{Y}_0</span> are the sample averages for the treated and control groups.</p></li>
+</ul>
+</section>
+<section id="example-lalonde-data" class="level2">
+<h2 class="anchored" data-anchor-id="example-lalonde-data">Example: Lalonde data</h2>
+<ul>
+<li><p>The <strong>National Supported Work (NSW)</strong> program randomly assigned disadvantaged workers to receive job training.</p></li>
+<li><p>We use the <code>jtrain2</code> dataset from the <code>wooldridge</code> package, based on the Lalonde (1986) study:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(jtrain2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(jtrain2[, <span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"re78"</span>, <span class="st">"educ"</span>, <span class="st">"age"</span>, <span class="st">"black"</span>, <span class="st">"married"</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   train     re78 educ age black married
+1      1  9.93005   11  37     1       1
+2      1  3.59589    9  22     0       0
+3      1 24.90950   12  30     1       0
+4      1  7.50615   11  27     1       0
+5      1  0.28979    8  33     1       0
+6      1  4.05649    9  22     1       0
+7      1  0.00000   12  23     1       0
+8      1  8.47216   11  32     1       0
+9      1  2.16402   16  22     1       0
+10     1 12.41810   12  33     0       1</code></pre>
+</div>
+</div></li>
+<li><p><code>train</code>: 1 if assigned to job training, 0 otherwise.</p></li>
+<li><p><code>re78</code>: real earnings in 1978 (in dollars).</p></li>
+</ul>
+</section>
+<section id="estimating-the-ate" class="level2">
+<h2 class="anchored" data-anchor-id="estimating-the-ate">Estimating the ATE</h2>
+<ul>
+<li><p>Since treatment was randomly assigned, the coefficient on <code>train</code> estimates the ATE:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain2))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 4.554802  0.4080460 11.162474 1.154113e-25
+train       1.794343  0.6328536  2.835321 4.787524e-03</code></pre>
+</div>
+</div></li>
+<li><p>The estimated ATE is approximately $1,794: on average, participation in the job training program increased 1978 earnings by about $1,794.</p></li>
+</ul>
+</section>
+<section id="observational-studies" class="level2">
+<h2 class="anchored" data-anchor-id="observational-studies">Observational studies</h2>
+<ul>
+<li><p>In many settings, treatment is <strong>not randomly assigned</strong>. Individuals self-select into treatment.</p></li>
+<li><p>Example: workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.</p></li>
+<li><p>Self-selection generates <strong>selection bias</strong>, and the simple difference in means no longer estimates the ATE.</p></li>
+<li><p>To estimate treatment effects from observational data, we need to <strong>control for covariates</strong> that affect both treatment selection and outcomes.</p></li>
+</ul>
+</section>
+<section id="potential-outcomes-with-a-covariate" class="level2">
+<h2 class="anchored" data-anchor-id="potential-outcomes-with-a-covariate">Potential outcomes with a covariate</h2>
+<ul>
+<li><p>Suppose the potential outcomes depend linearly on a covariate <span class="math inline">X_i</span>:</p>
+<p><span class="math display">\begin{align*}
+Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), \\
+Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),
+\end{align*}</span></p>
+<p>where <span class="math inline">\mathrm{E}\left[U_i(0) \mid X_i, D_i\right] = 0</span> and <span class="math inline">\mathrm{E}\left[U_i(1) \mid X_i, D_i\right] = 0</span>.</p></li>
+<li><p>These assumptions mean that, after conditioning on <span class="math inline">X_i</span>, treatment assignment <span class="math inline">D_i</span> is as good as random. This is called <strong>conditional mean independence</strong> (or “selection on observables”).</p></li>
+</ul>
+</section>
+<section id="the-ate-with-a-covariate" class="level2">
+<h2 class="anchored" data-anchor-id="the-ate-with-a-covariate">The ATE with a covariate</h2>
+<ul>
+<li><p>Taking expectations of the potential outcomes:</p>
+<p><span class="math display">\begin{align*}
+\mathrm{E}\left[Y_i(1)\right] &amp;= \alpha_1 + \beta_1 \mathrm{E}\left[X_i\right], \\
+\mathrm{E}\left[Y_i(0)\right] &amp;= \alpha_0 + \beta_0 \mathrm{E}\left[X_i\right].
+\end{align*}</span></p></li>
+<li><p>The ATE is:</p>
+<p><span class="math display">\begin{align*}
+\text{ATE} &amp;= \mathrm{E}\left[Y_i(1) - Y_i(0)\right] \\
+&amp;= (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right].
+\end{align*}</span></p></li>
+<li><p>The ATE depends on the difference in intercepts <strong>and</strong> the difference in slopes, weighted by the population mean of <span class="math inline">X_i</span>.</p></li>
+</ul>
+</section>
+<section id="two-separate-regressions" class="level2">
+<h2 class="anchored" data-anchor-id="two-separate-regressions">Two separate regressions</h2>
+<ul>
+<li><p>One approach: estimate separate regressions for each group.</p></li>
+<li><p><strong>Control group</strong> (<span class="math inline">D_i = 0</span>): <span class="math inline">Y_i = \alpha_0 + \beta_0 X_i + U_i(0).</span></p></li>
+<li><p><strong>Treatment group</strong> (<span class="math inline">D_i = 1</span>): <span class="math inline">Y_i = \alpha_1 + \beta_1 X_i + U_i(1).</span></p></li>
+<li><p>The estimated ATE is:</p>
+<p><span class="math display">\begin{align*}
+\widehat{\text{ATE}} &amp;= (\hat{\alpha}_1 - \hat{\alpha}_0) \\
+&amp;\quad + (\hat{\beta}_1 - \hat{\beta}_0)\bar{X},
+\end{align*}</span></p>
+<p>where <span class="math inline">\bar{X}</span> is the overall sample mean of <span class="math inline">X_i</span>.</p></li>
+</ul>
+</section>
+<section id="combined-regression-with-interactions" class="level2">
+<h2 class="anchored" data-anchor-id="combined-regression-with-interactions">Combined regression with interactions</h2>
+<ul>
+<li><p>The observed outcome <span class="math inline">Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)</span> can be written as a single regression. Expanding:</p>
+<p><span class="math display">\begin{align*}
+Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i \\
+&amp;\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + \tilde{U}_i \\
+&amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i \\
+&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + \tilde{U}_i,
+\end{align*}</span></p>
+<p>where <span class="math inline">\tilde{U}_i = (1 - D_i)U_i(0) + D_i U_i(1)</span>.</p></li>
+<li><p>This is a regression of <span class="math inline">Y_i</span> on <span class="math inline">D_i</span>, <span class="math inline">X_i</span>, and the interaction <span class="math inline">X_i D_i</span>.</p></li>
+<li><p>The coefficient on <span class="math inline">D_i</span> is <span class="math inline">\alpha_1 - \alpha_0</span>, which is <strong>not</strong> the ATE (unless <span class="math inline">\beta_1 = \beta_0</span>).</p></li>
+</ul>
+</section>
+<section id="the-demeaning-trick" class="level2">
+<h2 class="anchored" data-anchor-id="the-demeaning-trick">The demeaning trick</h2>
+<ul>
+<li><p>Write <span class="math inline">X_i = \mathrm{E}\left[X_i\right] + (X_i - \mathrm{E}\left[X_i\right])</span>. Then the interaction term becomes:</p>
+<p><span class="math display">\begin{align*}
+(\beta_1 - \beta_0)X_i D_i &amp;= (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right] D_i \\
+&amp;\quad + (\beta_1 - \beta_0)(X_i - \mathrm{E}\left[X_i\right])D_i.
+\end{align*}</span></p></li>
+<li><p>Substituting into the regression:</p>
+<p><span class="math display">\begin{align*}
+Y_i &amp;= \alpha_0 + \Big[(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]\Big] D_i \\
+&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \mathrm{E}\left[X_i\right])D_i + \tilde{U}_i.
+\end{align*}</span></p></li>
+<li><p>Define <span class="math inline">\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> and <span class="math inline">\delta = \beta_1 - \beta_0</span>:</p>
+<p><span class="math display">\begin{align*}
+Y_i &amp;= \alpha_0 + \tau D_i + \beta_0 X_i \\
+&amp;\quad + \delta(X_i - \mathrm{E}\left[X_i\right])D_i + \tilde{U}_i.
+\end{align*}</span></p></li>
+<li><p>The coefficient <span class="math inline">\tau</span> on <span class="math inline">D_i</span> is exactly the <strong>ATE</strong>.</p></li>
+</ul>
+</section>
+<section id="estimating-the-ate-with-covariates" class="level2">
+<h2 class="anchored" data-anchor-id="estimating-the-ate-with-covariates">Estimating the ATE with covariates</h2>
+<ul>
+<li><p>In practice, replace <span class="math inline">\mathrm{E}\left[X_i\right]</span> with the sample mean <span class="math inline">\bar{X}</span> and run the regression:</p>
+<p><span class="math display">\begin{align*}
+Y_i &amp;= \hat{\alpha}_0 + \hat{\tau} D_i + \hat{\beta}_0 X_i \\
+&amp;\quad + \hat{\delta}(X_i - \bar{X})D_i + \text{residual}.
+\end{align*}</span></p></li>
+<li><p>The coefficient <span class="math inline">\hat{\tau}</span> on <span class="math inline">D_i</span> directly estimates the ATE.</p></li>
+<li><p>This works because demeaning the interaction “absorbs” the <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> part of the ATE into the coefficient on <span class="math inline">D_i</span>.</p></li>
+</ul>
+</section>
+<section id="why-not-regress-y_i-on-d_i-and-x_i" class="level2">
+<h2 class="anchored" data-anchor-id="why-not-regress-y_i-on-d_i-and-x_i">Why not regress <span class="math inline">Y_i</span> on <span class="math inline">D_i</span> and <span class="math inline">X_i</span>?</h2>
+<ul>
+<li><p>A simpler regression omits the interaction:</p>
+<p><span class="math display">
+Y_i = a + \tau D_i + b X_i + V_i.
+</span></p></li>
+<li><p>This is valid if <span class="math inline">\beta_1 = \beta_0</span> (the covariate has the same effect in both groups). Then <span class="math inline">\delta = 0</span>, the interaction drops out, and the coefficient on <span class="math inline">D_i</span> is the ATE.</p></li>
+<li><p>If <span class="math inline">\beta_1 \neq \beta_0</span>, the omitted interaction creates bias. The regression with the demeaned interaction nests the simpler model as a special case.</p></li>
+</ul>
+</section>
+<section id="example-separate-regressions" class="level2">
+<h2 class="anchored" data-anchor-id="example-separate-regressions">Example: separate regressions</h2>
+<ul>
+<li><p>Estimate separate regressions of <code>re78</code> on <code>educ</code> for the treatment and control groups:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">0</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>reg1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">1</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">Control =</span> <span class="fu">coef</span>(reg0), <span class="at">Treatment =</span> <span class="fu">coef</span>(reg1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Control  Treatment
+(Intercept) 3.80301658 -0.7821703
+educ        0.07451936  0.6892860</code></pre>
+</div>
+</div></li>
+<li><p>Compute the estimated ATE:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>]; b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>]; b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ATE_manual <span class="ot">&lt;-</span> (a1 <span class="sc">-</span> a0) <span class="sc">+</span> (b1 <span class="sc">-</span> b0) <span class="sc">*</span> xbar</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Sample mean of educ:"</span>, <span class="fu">round</span>(xbar, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sample mean of educ: 10.2 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Estimated ATE:"</span>, <span class="fu">round</span>(ATE_manual, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated ATE: 1.68 </code></pre>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="example-demeaned-regression" class="level2">
+<h2 class="anchored" data-anchor-id="example-demeaned-regression">Example: demeaned regression</h2>
+<ul>
+<li><p>Create the demeaned interaction and run the combined regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>jtrain2<span class="sc">$</span>educ_dm <span class="ot">&lt;-</span> jtrain2<span class="sc">$</span>educ <span class="sc">-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>reg_dm <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> educ_dm), <span class="at">data =</span> jtrain2)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_dm)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate Std. Error   t value   Pr(&gt;|t|)
+(Intercept)        3.80301658  2.5689136 1.4803988 0.13948090
+train              1.68266981  0.6299604 2.6710725 0.00784062
+educ               0.07451936  0.2514521 0.2963561 0.76709766
+I(train * educ_dm) 0.61476663  0.3472755 1.7702560 0.07737534</code></pre>
+</div>
+</div></li>
+<li><p>The coefficient on <code>train</code> directly estimates the ATE, matching the result from the separate regressions approach.</p></li>
+</ul>
+</section>
+<section id="example-regression-lines" class="level2">
+<h2 class="anchored" data-anchor-id="example-regression-lines">Example: regression lines</h2>
+<ul>
+<li><p>The two regression lines, with a vertical line at <span class="math inline">\bar{X}</span> and the ATE marked as the gap:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="326_14_treatment_did_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="from-cross-sections-to-panel-data" class="level2">
+<h2 class="anchored" data-anchor-id="from-cross-sections-to-panel-data">From cross-sections to panel data</h2>
+<ul>
+<li><p>So far, we used <strong>cross-sectional</strong> data and assumed selection on observables: after controlling for <span class="math inline">X_i</span>, treatment is as good as random.</p></li>
+<li><p>In some settings, this assumption is hard to justify. An alternative approach exploits <strong>panel data</strong> (repeated observations on the same units over time).</p></li>
+<li><p>The <strong>difference-in-differences (DID)</strong> method compares changes over time between a treatment group and a control group.</p></li>
+</ul>
+</section>
+<section id="did-setup" class="level2">
+<h2 class="anchored" data-anchor-id="did-setup">DID setup</h2>
+<ul>
+<li><p>Two time periods: <span class="math inline">t \in \{0, 1\}</span> (before and after treatment).</p></li>
+<li><p>Two groups: <span class="math inline">D_i \in \{0, 1\}</span> (control and treatment).</p></li>
+<li><p>Treatment occurs between periods 0 and 1, and only the treatment group (<span class="math inline">D_i = 1</span>) is affected.</p></li>
+<li><p>We observe <span class="math inline">Y_{it}</span>: the outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span>.</p></li>
+</ul>
+</section>
+<section id="did-regression-model" class="level2">
+<h2 class="anchored" data-anchor-id="did-regression-model">DID regression model</h2>
+<ul>
+<li><p>The DID regression is:</p>
+<p><span class="math display">
+Y_{it} = \alpha + \delta \cdot t + \gamma D_i + \beta(t \cdot D_i) + U_{it},
+</span></p>
+<p>where <span class="math inline">\mathrm{E}\left[U_{it} \mid D_i\right] = 0</span>.</p></li>
+<li><p>The 2×2 table of conditional means:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">D_i = 0</span> (Control)</th>
+<th><span class="math inline">D_i = 1</span> (Treatment)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">t = 0</span></td>
+<td><span class="math inline">\alpha</span></td>
+<td><span class="math inline">\alpha + \gamma</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">t = 1</span></td>
+<td><span class="math inline">\alpha + \delta</span></td>
+<td><span class="math inline">\alpha + \delta + \gamma + \beta</span></td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</section>
+<section id="interpreting-the-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-the-coefficients">Interpreting the coefficients</h2>
+<ul>
+<li><p><span class="math inline">\alpha</span>: baseline expected outcome (control group, before treatment).</p></li>
+<li><p><span class="math inline">\delta</span>: <strong>time effect</strong> — the change in the control group’s outcome from <span class="math inline">t = 0</span> to <span class="math inline">t = 1</span>. This captures common trends (e.g., inflation, economic growth).</p></li>
+<li><p><span class="math inline">\gamma</span>: <strong>group difference</strong> at baseline — the pre-existing difference between treatment and control groups at <span class="math inline">t = 0</span>.</p></li>
+<li><p><span class="math inline">\beta</span>: <strong>DID estimand</strong> — the additional change in the treatment group’s outcome, beyond what the control group experienced.</p></li>
+</ul>
+</section>
+<section id="deriving-the-did-estimand" class="level2">
+<h2 class="anchored" data-anchor-id="deriving-the-did-estimand">Deriving the DID estimand</h2>
+<ul>
+<li><p>For each combination of <span class="math inline">t</span> and <span class="math inline">D_i</span>, take expectations using <span class="math inline">\mathrm{E}\left[U_{it} \mid D_i\right] = 0</span>:</p>
+<p><span class="math display">\begin{align*}
+t = 0,\ D_i = 0: \quad &amp; \mathrm{E}\left[Y_{i0} \mid D_i = 0\right] = \alpha, \\
+t = 1,\ D_i = 0: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 0\right] = \alpha + \delta, \\
+t = 0,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i0} \mid D_i = 1\right] = \alpha + \gamma, \\
+t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha + \delta + \gamma + \beta.
+\end{align*}</span></p></li>
+<li><p>Subtracting the control group change from the treatment group change:</p>
+<p><span class="math display">\begin{align*}
+\beta &amp;= \Big(\mathrm{E}\left[Y_{i1} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i0} \mid D_i = 1\right]\Big) \\
+&amp;\quad - \Big(\mathrm{E}\left[Y_{i1} \mid D_i = 0\right] - \mathrm{E}\left[Y_{i0} \mid D_i = 0\right]\Big).
+\end{align*}</span></p></li>
+<li><p>The DID estimand is the <strong>difference in within-group changes</strong> over time:</p>
+<p><span class="math display">\begin{align*}
+\beta &amp;= \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 1\right] \\
+&amp;\quad - \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 0\right].
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="did-diagram" class="level2">
+<h2 class="anchored" data-anchor-id="did-diagram">DID diagram</h2>
+<ul>
+<li><p>The classic DID diagram shows the control group, treatment group, and counterfactual:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="326_14_treatment_did_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="example-incinerator-and-house-prices" class="level2">
+<h2 class="anchored" data-anchor-id="example-incinerator-and-house-prices">Example: incinerator and house prices</h2>
+<ul>
+<li><p>Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts.</p></li>
+<li><p>We use the <code>kielmc</code> dataset from the <code>wooldridge</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(kielmc)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kielmc[, <span class="fu">c</span>(<span class="st">"rprice"</span>, <span class="st">"y81"</span>, <span class="st">"nearinc"</span>, <span class="st">"y81nrinc"</span>, <span class="st">"age"</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   rprice y81 nearinc y81nrinc age
+1   60000   0       1        0  48
+2   40000   0       1        0  83
+3   34000   0       1        0  58
+4   63900   0       1        0  11
+5   44000   0       1        0  48
+6   46000   0       1        0  78
+7   56000   0       1        0  22
+8   38500   0       1        0  78
+9   60500   0       1        0  42
+10  55000   0       1        0  41</code></pre>
+</div>
+</div></li>
+<li><p><code>rprice</code>: house price in 1978 dollars.</p></li>
+<li><p><code>y81</code>: 1 if year is 1981 (after incinerator announced), 0 if 1978.</p></li>
+<li><p><code>nearinc</code>: 1 if house is near the incinerator site.</p></li>
+<li><p><code>y81nrinc</code>: interaction <code>y81 * nearinc</code>.</p></li>
+</ul>
+</section>
+<section id="the-22-table-of-means" class="level2">
+<h2 class="anchored" data-anchor-id="the-22-table-of-means">The 2×2 table of means</h2>
+<ul>
+<li><p>Compute the four group means:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(kielmc<span class="sc">$</span>rprice, <span class="fu">list</span>(kielmc<span class="sc">$</span>y81, kielmc<span class="sc">$</span>nearinc), mean)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Far (nearinc=0)"</span>, <span class="st">"Near (nearinc=1)"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1978 (y81=0)"</span>, <span class="st">"1981 (y81=1)"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Far (nearinc=0) Near (nearinc=1)
+1978 (y81=0)           82517            63693
+1981 (y81=1)          101308            70619</code></pre>
+</div>
+</div></li>
+<li><p>Computing the DID by hand:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>diff_near <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>diff_far  <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">1</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>DID <span class="ot">&lt;-</span> diff_near <span class="sc">-</span> diff_far</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Change (near):"</span>, <span class="fu">round</span>(diff_near), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Change (near): 6926 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Change (far): "</span>, <span class="fu">round</span>(diff_far), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Change (far):  18790 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"DID:          "</span>, <span class="fu">round</span>(DID), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DID:           -11864 </code></pre>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="did-regression" class="level2">
+<h2 class="anchored" data-anchor-id="did-regression">DID regression</h2>
+<ul>
+<li><p>The DID regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>reg_did <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc, <span class="at">data =</span> kielmc)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_did)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)  82517.23   2726.910 30.260341 1.709246e-95
+y81          18790.29   4050.065  4.639502 5.116892e-06
+nearinc     -18824.37   4875.322 -3.861154 1.368017e-04
+y81nrinc    -11863.90   7456.646 -1.591051 1.125948e-01</code></pre>
+</div>
+</div></li>
+<li><p>The coefficient on <code>y81nrinc</code> matches the DID computed from the 2×2 table.</p></li>
+<li><p>The estimated effect is negative (incinerator reduced nearby prices), but the p-value is around 0.11, so it is not statistically significant at the 5% level.</p></li>
+</ul>
+</section>
+<section id="did-with-covariates" class="level2">
+<h2 class="anchored" data-anchor-id="did-with-covariates">DID with covariates</h2>
+<ul>
+<li><p>Adding house characteristics as controls can improve precision:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>reg_did_cov <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> kielmc)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_did_cov)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Estimate   Std. Error    t value      Pr(&gt;|t|)
+(Intercept)  89116.535375 2406.0510717  37.038505 8.247920e-117
+y81          21321.041753 3443.6310979   6.191442  1.857145e-09
+nearinc       9397.935862 4812.2218389   1.952931  5.171307e-02
+y81nrinc    -21920.269951 6359.7453905  -3.446721  6.444775e-04
+age          -1494.424046  131.8603155 -11.333387  3.347719e-25
+I(age^2)         8.691277    0.8481268  10.247615  1.859361e-21</code></pre>
+</div>
+</div></li>
+<li><p>After controlling for house age, the DID estimate becomes larger in magnitude and statistically significant.</p></li>
+<li><p>Controlling for covariates reduces residual variance, leading to more precise estimates.</p></li>
+</ul>
+</section>
+<section id="did-and-potential-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="did-and-potential-outcomes">DID and potential outcomes</h2>
+<ul>
+<li><p>To connect DID with the potential outcomes framework, define <strong>panel potential outcomes</strong>: <span class="math inline">Y_{it}(d)</span> is the outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span> if assigned to group <span class="math inline">d \in \{0, 1\}</span>.</p></li>
+<li><p>The observed outcome is:</p>
+<p><span class="math display">
+Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
+</span></p></li>
+<li><p>What we observe for each group:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Control (<span class="math inline">D_i = 0</span>)</th>
+<th>Treatment (<span class="math inline">D_i = 1</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">t = 0</span></td>
+<td><span class="math inline">Y_{i0}(0)</span></td>
+<td><span class="math inline">Y_{i0}(1)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">t = 1</span></td>
+<td><span class="math inline">Y_{i1}(0)</span></td>
+<td><span class="math inline">Y_{i1}(1)</span></td>
+</tr>
+</tbody>
+</table></li>
+<li><p>The treatment effect at time <span class="math inline">t = 1</span> for the treated group is:</p>
+<p><span class="math display">
+\text{ATT} = \mathrm{E}\left[Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1\right].
+</span></p>
+<p>The counterfactual <span class="math inline">Y_{i1}(0)</span> is unobserved for the treated group.</p></li>
+</ul>
+</section>
+<section id="did-as-a-treatment-effect" class="level2">
+<h2 class="anchored" data-anchor-id="did-as-a-treatment-effect">DID as a treatment effect</h2>
+<ul>
+<li><p>Recall that <span class="math inline">\beta = \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 0\right]</span>.</p></li>
+<li><p>Substituting observed outcomes with potential outcomes:</p>
+<p><span class="math display">\begin{align*}
+\beta &amp;= \mathrm{E}\left[Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1\right] \\
+&amp;\quad - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right].
+\end{align*}</span></p></li>
+<li><p>To relate <span class="math inline">\beta</span> to the ATT, add and subtract <span class="math inline">\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right]</span>:</p>
+<p><span class="math display">\begin{align*}
+\beta &amp;= \underbrace{\mathrm{E}\left[Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1\right]}_{\text{ATT}} \\
+&amp;\quad + \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(1) \mid D_i = 1\right] \\
+&amp;\quad - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right].
+\end{align*}</span></p></li>
+<li><p>For <span class="math inline">\beta</span> to equal the ATT, we need two additional assumptions.</p></li>
+</ul>
+</section>
+<section id="assumption-1-no-anticipation" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-1-no-anticipation">Assumption 1: no anticipation</h2>
+<ul>
+<li><p><strong>No anticipation:</strong> the outcome at <span class="math inline">t = 0</span> (before treatment) is not affected by future treatment group assignment:</p>
+<p><span class="math display">
+\mathrm{E}\left[Y_{i0}(1) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i0}(0) \mid D_i = 1\right].
+</span></p></li>
+<li><p>Being assigned to the treatment group does not change pre-treatment outcomes in expectation.</p></li>
+<li><p>In the incinerator example: before the incinerator was announced, living near the future site did not affect house prices (relative to what they would have been otherwise).</p></li>
+<li><p>Under no anticipation, we can replace <span class="math inline">Y_{i0}(1)</span> with <span class="math inline">Y_{i0}(0)</span> in the expression for <span class="math inline">\beta</span>:</p>
+<p><span class="math display">\begin{align*}
+\beta &amp;= \text{ATT} + \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] \\
+&amp;\quad - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right].
+\end{align*}</span></p></li>
+</ul>
+</section>
+<section id="assumption-2-parallel-trends" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-2-parallel-trends">Assumption 2: parallel trends</h2>
+<ul>
+<li><p><strong>Parallel trends:</strong> in the absence of treatment, both groups would have experienced the same change over time:</p>
+<p><span class="math display">
+\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right] = \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right].
+</span></p></li>
+<li><p>Under both no anticipation and parallel trends:</p>
+<p><span class="math display">
+\beta = \text{ATT}.
+</span></p></li>
+<li><p>The parallel trends assumption cannot be directly tested because <span class="math inline">Y_{i1}(0)</span> is unobserved for the treated group. However, if pre-treatment data for multiple periods exist, one can check whether trends were parallel before treatment.</p></li>
+</ul>
+</section>
+<section id="parallel-trends-diagram" class="level2">
+<h2 class="anchored" data-anchor-id="parallel-trends-diagram">Parallel trends diagram</h2>
+<ul>
+<li><p>Illustrating the parallel trends assumption:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="326_14_treatment_did_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div></li>
+</ul>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ul>
+<li><p><strong>Potential outcomes</strong> <span class="math inline">Y_i(1)</span> and <span class="math inline">Y_i(0)</span> formalize causal effects. The individual treatment effect <span class="math inline">Y_i(1) - Y_i(0)</span> is never fully observed.</p></li>
+<li><p>The <strong>ATE</strong> and <strong>ATT</strong> are population-level summaries of treatment effects.</p></li>
+<li><p>With <strong>random assignment</strong>, a simple regression of <span class="math inline">Y_i</span> on <span class="math inline">D_i</span> estimates the ATE.</p></li>
+<li><p>With <strong>observational data</strong>, controlling for covariates and using the <strong>demeaning trick</strong> (interacting <span class="math inline">D_i</span> with <span class="math inline">X_i - \bar{X}</span>) allows the coefficient on <span class="math inline">D_i</span> to estimate the ATE.</p></li>
+<li><p><strong>Difference-in-differences</strong> uses panel data to compare changes over time between groups:</p>
+<p><span class="math display">\begin{align*}
+\beta &amp;= \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 1\right] \\
+&amp;\quad - \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 0\right].
+\end{align*}</span></p></li>
+<li><p>Under <strong>no anticipation</strong> and <strong>parallel trends</strong>, the DID estimand <span class="math inline">\beta</span> equals the ATT.</p></li>
+</ul>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb27" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Lecture 14: Treatment effects and difference-in-differences"</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Economics 326 — Introduction to Econometrics II"</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: "Vadim Marmer, UBC"</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_14_treatment_did.html</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-location: right</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-title: "Table of Contents"</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="co">    smooth-scroll: true</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co">    html-math-method: katex</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co">  pdf:</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_14_treatment_did.pdf</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co">    pdf-engine: xelatex</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co">    geometry: margin=0.75in</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co">    fontsize: 10pt</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: false</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="co">    classoption: fleqn</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co">  revealjs:</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="co">    output-file: 326_14_treatment_did_slides.html</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: solarized</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="co">    css: slides_no_caps.css</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-number: c/t</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="co">    incremental: true</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="co">    html-math-method: katex</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="co">    scrollable: true</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="co">    chalkboard: false</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a><span class="co">    transition: none</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Motivation: causal questions</span></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>::: {.hidden}</span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>\gdef\E#1{\mathrm{E}\left<span class="co">[</span><span class="ot">#1\right</span><span class="co">]</span>}</span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>\gdef\Var#1{\mathrm{Var}\left(#1\right)}</span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}</span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}</span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>\gdef\se#1{\mathrm{se}\left(#1\right)}</span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Many important questions in economics are **causal**:</span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Does job training increase earnings?</span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Does a new drug improve health outcomes?</span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Does building an incinerator reduce nearby house prices?</span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **fundamental challenge**: we can never observe the same individual both with and without treatment at the same time.</span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Potential outcomes</span></span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For each individual $i$, define two **potential outcomes**:</span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$Y_i(1)$: outcome if individual $i$ receives treatment ($D_i = 1$),</span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$Y_i(0)$: outcome if individual $i$ does not receive treatment ($D_i = 0$).</span>
+<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **individual treatment effect** for person $i$ is:</span>
+<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>  Y_i(1) - Y_i(0).</span>
+<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-67"><a href="#cb27-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Example: if $Y_i$ is earnings and $D_i$ indicates job training, then $Y_i(1) - Y_i(0)$ is the causal effect of training on earnings for person $i$.</span>
+<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## The fundamental problem</span></span>
+<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $D_i \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$ denote treatment status. The **observed outcome** is:</span>
+<span id="cb27-72"><a href="#cb27-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-73"><a href="#cb27-73" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-74"><a href="#cb27-74" aria-hidden="true" tabindex="-1"></a>  Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).</span>
+<span id="cb27-75"><a href="#cb27-75" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-76"><a href="#cb27-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-77"><a href="#cb27-77" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $D_i = 1$, we observe $Y_i(1)$ but not $Y_i(0)$.</span>
+<span id="cb27-78"><a href="#cb27-78" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $D_i = 0$, we observe $Y_i(0)$ but not $Y_i(1)$.</span>
+<span id="cb27-79"><a href="#cb27-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-80"><a href="#cb27-80" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can never observe both potential outcomes for the same individual. This is the **fundamental problem of causal inference**.</span>
+<span id="cb27-81"><a href="#cb27-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-82"><a href="#cb27-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## Average treatment effects</span></span>
+<span id="cb27-83"><a href="#cb27-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-84"><a href="#cb27-84" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since individual treatment effects $Y_i(1) - Y_i(0)$ are unobservable, we focus on averages.</span>
+<span id="cb27-85"><a href="#cb27-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-86"><a href="#cb27-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Average Treatment Effect (ATE):**</span>
+<span id="cb27-87"><a href="#cb27-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-88"><a href="#cb27-88" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-89"><a href="#cb27-89" aria-hidden="true" tabindex="-1"></a>  \text{ATE} = \E{Y_i(1) - Y_i(0)}.</span>
+<span id="cb27-90"><a href="#cb27-90" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-91"><a href="#cb27-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-92"><a href="#cb27-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Average Treatment Effect on the Treated (ATT):**</span>
+<span id="cb27-93"><a href="#cb27-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-94"><a href="#cb27-94" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-95"><a href="#cb27-95" aria-hidden="true" tabindex="-1"></a>  \text{ATT} = \E{Y_i(1) - Y_i(0) \mid D_i = 1}.</span>
+<span id="cb27-96"><a href="#cb27-96" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-97"><a href="#cb27-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-98"><a href="#cb27-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ATE averages over the entire population; ATT averages only over those who actually receive treatment.</span>
+<span id="cb27-99"><a href="#cb27-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-100"><a href="#cb27-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## Selection bias</span></span>
+<span id="cb27-101"><a href="#cb27-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-102"><a href="#cb27-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A naive comparison of treated and untreated outcomes yields:</span>
+<span id="cb27-103"><a href="#cb27-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-104"><a href="#cb27-104" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-105"><a href="#cb27-105" aria-hidden="true" tabindex="-1"></a>  &amp;\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} <span class="sc">\\</span></span>
+<span id="cb27-106"><a href="#cb27-106" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_i(1) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}.</span>
+<span id="cb27-107"><a href="#cb27-107" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-108"><a href="#cb27-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-109"><a href="#cb27-109" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Add and subtract $\E{Y_i(0) \mid D_i = 1}$:</span>
+<span id="cb27-110"><a href="#cb27-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-111"><a href="#cb27-111" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-112"><a href="#cb27-112" aria-hidden="true" tabindex="-1"></a>  &amp;= \underbrace{\E{Y_i(1) - Y_i(0) \mid D_i = 1}}_{\text{ATT}} <span class="sc">\\</span></span>
+<span id="cb27-113"><a href="#cb27-113" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{\E{Y_i(0) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}}_{\text{Selection bias}}.</span>
+<span id="cb27-114"><a href="#cb27-114" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-115"><a href="#cb27-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-116"><a href="#cb27-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Selection bias** arises when the treatment and control groups differ in their baseline outcomes $Y_i(0)$. For example, people who choose to enroll in job training may differ systematically from those who do not.</span>
+<span id="cb27-117"><a href="#cb27-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-118"><a href="#cb27-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Random assignment</span></span>
+<span id="cb27-119"><a href="#cb27-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-120"><a href="#cb27-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under **random assignment**, treatment $D_i$ is independent of potential outcomes:</span>
+<span id="cb27-121"><a href="#cb27-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-122"><a href="#cb27-122" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-123"><a href="#cb27-123" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(0) \mid D_i = 1} = \E{Y_i(0) \mid D_i = 0} = \E{Y_i(0)}.</span>
+<span id="cb27-124"><a href="#cb27-124" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-125"><a href="#cb27-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-126"><a href="#cb27-126" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The selection bias vanishes, and the simple difference in means equals the ATE:</span>
+<span id="cb27-127"><a href="#cb27-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-128"><a href="#cb27-128" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-129"><a href="#cb27-129" aria-hidden="true" tabindex="-1"></a>  \E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} = \text{ATE} = \text{ATT}.</span>
+<span id="cb27-130"><a href="#cb27-130" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-131"><a href="#cb27-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-132"><a href="#cb27-132" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Randomized experiments (like the National Supported Work program) achieve this by randomly assigning individuals to treatment and control groups.</span>
+<span id="cb27-133"><a href="#cb27-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-134"><a href="#cb27-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Regression with a treatment dummy</span></span>
+<span id="cb27-135"><a href="#cb27-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-136"><a href="#cb27-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With random assignment, the ATE can be estimated by regressing $Y_i$ on a treatment dummy:</span>
+<span id="cb27-137"><a href="#cb27-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-138"><a href="#cb27-138" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-139"><a href="#cb27-139" aria-hidden="true" tabindex="-1"></a>  Y_i = \alpha + \tau D_i + U_i,</span>
+<span id="cb27-140"><a href="#cb27-140" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-141"><a href="#cb27-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-142"><a href="#cb27-142" aria-hidden="true" tabindex="-1"></a>  where $\E{U_i \mid D_i} = 0$ under randomization.</span>
+<span id="cb27-143"><a href="#cb27-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-144"><a href="#cb27-144" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimate of $\tau$ equals the difference in sample means:</span>
+<span id="cb27-145"><a href="#cb27-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-146"><a href="#cb27-146" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-147"><a href="#cb27-147" aria-hidden="true" tabindex="-1"></a>  \hat{\tau} = \bar{Y}_1 - \bar{Y}_0,</span>
+<span id="cb27-148"><a href="#cb27-148" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-149"><a href="#cb27-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-150"><a href="#cb27-150" aria-hidden="true" tabindex="-1"></a>  where $\bar{Y}_1$ and $\bar{Y}_0$ are the sample averages for the treated and control groups.</span>
+<span id="cb27-151"><a href="#cb27-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-152"><a href="#cb27-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: Lalonde data</span></span>
+<span id="cb27-153"><a href="#cb27-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-154"><a href="#cb27-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **National Supported Work (NSW)** program randomly assigned disadvantaged workers to receive job training.</span>
+<span id="cb27-155"><a href="#cb27-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-156"><a href="#cb27-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We use the <span class="in">`jtrain2`</span> dataset from the <span class="in">`wooldridge`</span> package, based on the Lalonde (1986) study:</span>
+<span id="cb27-157"><a href="#cb27-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-158"><a href="#cb27-158" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-159"><a href="#cb27-159" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-160"><a href="#cb27-160" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| message: false</span></span>
+<span id="cb27-161"><a href="#cb27-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
+<span id="cb27-162"><a href="#cb27-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(jtrain2)</span>
+<span id="cb27-163"><a href="#cb27-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(jtrain2[, <span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"re78"</span>, <span class="st">"educ"</span>, <span class="st">"age"</span>, <span class="st">"black"</span>, <span class="st">"married"</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb27-164"><a href="#cb27-164" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-165"><a href="#cb27-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-166"><a href="#cb27-166" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`train`</span>: 1 if assigned to job training, 0 otherwise.</span>
+<span id="cb27-167"><a href="#cb27-167" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`re78`</span>: real earnings in 1978 (in dollars).</span>
+<span id="cb27-168"><a href="#cb27-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-169"><a href="#cb27-169" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating the ATE</span></span>
+<span id="cb27-170"><a href="#cb27-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-171"><a href="#cb27-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since treatment was randomly assigned, the coefficient on <span class="in">`train`</span> estimates the ATE:</span>
+<span id="cb27-172"><a href="#cb27-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-173"><a href="#cb27-173" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-174"><a href="#cb27-174" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-175"><a href="#cb27-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain2))<span class="sc">$</span>coefficients</span>
+<span id="cb27-176"><a href="#cb27-176" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-177"><a href="#cb27-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-178"><a href="#cb27-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated ATE is approximately \$1,794: on average, participation in the job training program increased 1978 earnings by about \$1,794.</span>
+<span id="cb27-179"><a href="#cb27-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-180"><a href="#cb27-180" aria-hidden="true" tabindex="-1"></a><span class="fu">## Observational studies</span></span>
+<span id="cb27-181"><a href="#cb27-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-182"><a href="#cb27-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In many settings, treatment is **not randomly assigned**. Individuals self-select into treatment.</span>
+<span id="cb27-183"><a href="#cb27-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-184"><a href="#cb27-184" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Example: workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.</span>
+<span id="cb27-185"><a href="#cb27-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-186"><a href="#cb27-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Self-selection generates **selection bias**, and the simple difference in means no longer estimates the ATE.</span>
+<span id="cb27-187"><a href="#cb27-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-188"><a href="#cb27-188" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To estimate treatment effects from observational data, we need to **control for covariates** that affect both treatment selection and outcomes.</span>
+<span id="cb27-189"><a href="#cb27-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-190"><a href="#cb27-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## Potential outcomes with a covariate</span></span>
+<span id="cb27-191"><a href="#cb27-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-192"><a href="#cb27-192" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose the potential outcomes depend linearly on a covariate $X_i$:</span>
+<span id="cb27-193"><a href="#cb27-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-194"><a href="#cb27-194" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-195"><a href="#cb27-195" aria-hidden="true" tabindex="-1"></a>  Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), <span class="sc">\\</span></span>
+<span id="cb27-196"><a href="#cb27-196" aria-hidden="true" tabindex="-1"></a>  Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),</span>
+<span id="cb27-197"><a href="#cb27-197" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-198"><a href="#cb27-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-199"><a href="#cb27-199" aria-hidden="true" tabindex="-1"></a>  where $\E{U_i(0) \mid X_i, D_i} = 0$ and $\E{U_i(1) \mid X_i, D_i} = 0$.</span>
+<span id="cb27-200"><a href="#cb27-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-201"><a href="#cb27-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These assumptions mean that, after conditioning on $X_i$, treatment assignment $D_i$ is as good as random. This is called **conditional mean independence** (or "selection on observables").</span>
+<span id="cb27-202"><a href="#cb27-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-203"><a href="#cb27-203" aria-hidden="true" tabindex="-1"></a><span class="fu">## The ATE with a covariate</span></span>
+<span id="cb27-204"><a href="#cb27-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-205"><a href="#cb27-205" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Taking expectations of the potential outcomes:</span>
+<span id="cb27-206"><a href="#cb27-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-207"><a href="#cb27-207" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-208"><a href="#cb27-208" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(1)} &amp;= \alpha_1 + \beta_1 \E{X_i}, <span class="sc">\\</span></span>
+<span id="cb27-209"><a href="#cb27-209" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(0)} &amp;= \alpha_0 + \beta_0 \E{X_i}.</span>
+<span id="cb27-210"><a href="#cb27-210" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-211"><a href="#cb27-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-212"><a href="#cb27-212" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The ATE is:</span>
+<span id="cb27-213"><a href="#cb27-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-214"><a href="#cb27-214" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-215"><a href="#cb27-215" aria-hidden="true" tabindex="-1"></a>  \text{ATE} &amp;= \E{Y_i(1) - Y_i(0)} <span class="sc">\\</span></span>
+<span id="cb27-216"><a href="#cb27-216" aria-hidden="true" tabindex="-1"></a>  &amp;= (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}.</span>
+<span id="cb27-217"><a href="#cb27-217" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-218"><a href="#cb27-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-219"><a href="#cb27-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The ATE depends on the difference in intercepts **and** the difference in slopes, weighted by the population mean of $X_i$.</span>
+<span id="cb27-220"><a href="#cb27-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-221"><a href="#cb27-221" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two separate regressions</span></span>
+<span id="cb27-222"><a href="#cb27-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-223"><a href="#cb27-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One approach: estimate separate regressions for each group.</span>
+<span id="cb27-224"><a href="#cb27-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-225"><a href="#cb27-225" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Control group** ($D_i = 0$): $Y_i = \alpha_0 + \beta_0 X_i + U_i(0).$</span>
+<span id="cb27-226"><a href="#cb27-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-227"><a href="#cb27-227" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Treatment group** ($D_i = 1$): $Y_i = \alpha_1 + \beta_1 X_i + U_i(1).$</span>
+<span id="cb27-228"><a href="#cb27-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-229"><a href="#cb27-229" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated ATE is:</span>
+<span id="cb27-230"><a href="#cb27-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-231"><a href="#cb27-231" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-232"><a href="#cb27-232" aria-hidden="true" tabindex="-1"></a>  \widehat{\text{ATE}} &amp;= (\hat{\alpha}_1 - \hat{\alpha}_0) <span class="sc">\\</span></span>
+<span id="cb27-233"><a href="#cb27-233" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + (\hat{\beta}_1 - \hat{\beta}_0)\bar{X},</span>
+<span id="cb27-234"><a href="#cb27-234" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-235"><a href="#cb27-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-236"><a href="#cb27-236" aria-hidden="true" tabindex="-1"></a>  where $\bar{X}$ is the overall sample mean of $X_i$.</span>
+<span id="cb27-237"><a href="#cb27-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-238"><a href="#cb27-238" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combined regression with interactions</span></span>
+<span id="cb27-239"><a href="#cb27-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-240"><a href="#cb27-240" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The observed outcome $Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)$ can be written as a single regression. Expanding:</span>
+<span id="cb27-241"><a href="#cb27-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-242"><a href="#cb27-242" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-243"><a href="#cb27-243" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i <span class="sc">\\</span></span>
+<span id="cb27-244"><a href="#cb27-244" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + \tilde{U}_i <span class="sc">\\</span></span>
+<span id="cb27-245"><a href="#cb27-245" aria-hidden="true" tabindex="-1"></a>  &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i <span class="sc">\\</span></span>
+<span id="cb27-246"><a href="#cb27-246" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + \tilde{U}_i,</span>
+<span id="cb27-247"><a href="#cb27-247" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-248"><a href="#cb27-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-249"><a href="#cb27-249" aria-hidden="true" tabindex="-1"></a>  where $\tilde{U}_i = (1 - D_i)U_i(0) + D_i U_i(1)$.</span>
+<span id="cb27-250"><a href="#cb27-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-251"><a href="#cb27-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is a regression of $Y_i$ on $D_i$, $X_i$, and the interaction $X_i D_i$.</span>
+<span id="cb27-252"><a href="#cb27-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-253"><a href="#cb27-253" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, which is **not** the ATE (unless $\beta_1 = \beta_0$).</span>
+<span id="cb27-254"><a href="#cb27-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-255"><a href="#cb27-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## The demeaning trick</span></span>
+<span id="cb27-256"><a href="#cb27-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-257"><a href="#cb27-257" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Write $X_i = \E{X_i} + (X_i - \E{X_i})$. Then the interaction term becomes:</span>
+<span id="cb27-258"><a href="#cb27-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-259"><a href="#cb27-259" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-260"><a href="#cb27-260" aria-hidden="true" tabindex="-1"></a>  (\beta_1 - \beta_0)X_i D_i &amp;= (\beta_1 - \beta_0)\E{X_i} D_i <span class="sc">\\</span></span>
+<span id="cb27-261"><a href="#cb27-261" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i.</span>
+<span id="cb27-262"><a href="#cb27-262" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-263"><a href="#cb27-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-264"><a href="#cb27-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Substituting into the regression:</span>
+<span id="cb27-265"><a href="#cb27-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-266"><a href="#cb27-266" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-267"><a href="#cb27-267" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0 + \Big<span class="co">[</span><span class="ot">(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}\Big</span><span class="co">]</span> D_i <span class="sc">\\</span></span>
+<span id="cb27-268"><a href="#cb27-268" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i + \tilde{U}_i.</span>
+<span id="cb27-269"><a href="#cb27-269" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-270"><a href="#cb27-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-271"><a href="#cb27-271" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define $\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$ and $\delta = \beta_1 - \beta_0$:</span>
+<span id="cb27-272"><a href="#cb27-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-273"><a href="#cb27-273" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-274"><a href="#cb27-274" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0 + \tau D_i + \beta_0 X_i <span class="sc">\\</span></span>
+<span id="cb27-275"><a href="#cb27-275" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \delta(X_i - \E{X_i})D_i + \tilde{U}_i.</span>
+<span id="cb27-276"><a href="#cb27-276" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-277"><a href="#cb27-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-278"><a href="#cb27-278" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient $\tau$ on $D_i$ is exactly the **ATE**.</span>
+<span id="cb27-279"><a href="#cb27-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-280"><a href="#cb27-280" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating the ATE with covariates</span></span>
+<span id="cb27-281"><a href="#cb27-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-282"><a href="#cb27-282" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In practice, replace $\E{X_i}$ with the sample mean $\bar{X}$ and run the regression:</span>
+<span id="cb27-283"><a href="#cb27-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-284"><a href="#cb27-284" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-285"><a href="#cb27-285" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \hat{\alpha}_0 + \hat{\tau} D_i + \hat{\beta}_0 X_i <span class="sc">\\</span></span>
+<span id="cb27-286"><a href="#cb27-286" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \hat{\delta}(X_i - \bar{X})D_i + \text{residual}.</span>
+<span id="cb27-287"><a href="#cb27-287" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-288"><a href="#cb27-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-289"><a href="#cb27-289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient $\hat{\tau}$ on $D_i$ directly estimates the ATE.</span>
+<span id="cb27-290"><a href="#cb27-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-291"><a href="#cb27-291" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This works because demeaning the interaction "absorbs" the $(\beta_1 - \beta_0)\E{X_i}$ part of the ATE into the coefficient on $D_i$.</span>
+<span id="cb27-292"><a href="#cb27-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-293"><a href="#cb27-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why not regress $Y_i$ on $D_i$ and $X_i$?</span></span>
+<span id="cb27-294"><a href="#cb27-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-295"><a href="#cb27-295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A simpler regression omits the interaction:</span>
+<span id="cb27-296"><a href="#cb27-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-297"><a href="#cb27-297" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-298"><a href="#cb27-298" aria-hidden="true" tabindex="-1"></a>  Y_i = a + \tau D_i + b X_i + V_i.</span>
+<span id="cb27-299"><a href="#cb27-299" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-300"><a href="#cb27-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-301"><a href="#cb27-301" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is valid if $\beta_1 = \beta_0$ (the covariate has the same effect in both groups). Then $\delta = 0$, the interaction drops out, and the coefficient on $D_i$ is the ATE.</span>
+<span id="cb27-302"><a href="#cb27-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-303"><a href="#cb27-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\beta_1 \neq \beta_0$, the omitted interaction creates bias. The regression with the demeaned interaction nests the simpler model as a special case.</span>
+<span id="cb27-304"><a href="#cb27-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-305"><a href="#cb27-305" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: separate regressions</span></span>
+<span id="cb27-306"><a href="#cb27-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-307"><a href="#cb27-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate separate regressions of <span class="in">`re78`</span> on <span class="in">`educ`</span> for the treatment and control groups:</span>
+<span id="cb27-308"><a href="#cb27-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-309"><a href="#cb27-309" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-310"><a href="#cb27-310" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-311"><a href="#cb27-311" aria-hidden="true" tabindex="-1"></a>  reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">0</span>))</span>
+<span id="cb27-312"><a href="#cb27-312" aria-hidden="true" tabindex="-1"></a>  reg1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">1</span>))</span>
+<span id="cb27-313"><a href="#cb27-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="at">Control =</span> <span class="fu">coef</span>(reg0), <span class="at">Treatment =</span> <span class="fu">coef</span>(reg1))</span>
+<span id="cb27-314"><a href="#cb27-314" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-315"><a href="#cb27-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-316"><a href="#cb27-316" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute the estimated ATE:</span>
+<span id="cb27-317"><a href="#cb27-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-318"><a href="#cb27-318" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-319"><a href="#cb27-319" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-320"><a href="#cb27-320" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb27-321"><a href="#cb27-321" aria-hidden="true" tabindex="-1"></a>  a0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>]; b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>]</span>
+<span id="cb27-322"><a href="#cb27-322" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>]; b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>]</span>
+<span id="cb27-323"><a href="#cb27-323" aria-hidden="true" tabindex="-1"></a>  ATE_manual <span class="ot">&lt;-</span> (a1 <span class="sc">-</span> a0) <span class="sc">+</span> (b1 <span class="sc">-</span> b0) <span class="sc">*</span> xbar</span>
+<span id="cb27-324"><a href="#cb27-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Sample mean of educ:"</span>, <span class="fu">round</span>(xbar, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb27-325"><a href="#cb27-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Estimated ATE:"</span>, <span class="fu">round</span>(ATE_manual, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb27-326"><a href="#cb27-326" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-327"><a href="#cb27-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-328"><a href="#cb27-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: demeaned regression</span></span>
+<span id="cb27-329"><a href="#cb27-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-330"><a href="#cb27-330" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create the demeaned interaction and run the combined regression:</span>
+<span id="cb27-331"><a href="#cb27-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-332"><a href="#cb27-332" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-333"><a href="#cb27-333" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-334"><a href="#cb27-334" aria-hidden="true" tabindex="-1"></a>  jtrain2<span class="sc">$</span>educ_dm <span class="ot">&lt;-</span> jtrain2<span class="sc">$</span>educ <span class="sc">-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb27-335"><a href="#cb27-335" aria-hidden="true" tabindex="-1"></a>  reg_dm <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> educ_dm), <span class="at">data =</span> jtrain2)</span>
+<span id="cb27-336"><a href="#cb27-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_dm)<span class="sc">$</span>coefficients</span>
+<span id="cb27-337"><a href="#cb27-337" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-338"><a href="#cb27-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-339"><a href="#cb27-339" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`train`</span> directly estimates the ATE, matching the result from the separate regressions approach.</span>
+<span id="cb27-340"><a href="#cb27-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-341"><a href="#cb27-341" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: regression lines</span></span>
+<span id="cb27-342"><a href="#cb27-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-343"><a href="#cb27-343" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The two regression lines, with a vertical line at $\bar{X}$ and the ATE marked as the gap:</span>
+<span id="cb27-344"><a href="#cb27-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-345"><a href="#cb27-345" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-346"><a href="#cb27-346" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
+<span id="cb27-347"><a href="#cb27-347" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
+<span id="cb27-348"><a href="#cb27-348" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
+<span id="cb27-349"><a href="#cb27-349" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
+<span id="cb27-350"><a href="#cb27-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-351"><a href="#cb27-351" aria-hidden="true" tabindex="-1"></a>  educ_range <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">18</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb27-352"><a href="#cb27-352" aria-hidden="true" tabindex="-1"></a>  yhat0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>] <span class="sc">*</span> educ_range</span>
+<span id="cb27-353"><a href="#cb27-353" aria-hidden="true" tabindex="-1"></a>  yhat1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>] <span class="sc">*</span> educ_range</span>
+<span id="cb27-354"><a href="#cb27-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-355"><a href="#cb27-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(educ_range, yhat0, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb27-356"><a href="#cb27-356" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Education (years)"</span>, <span class="at">ylab =</span> <span class="st">"Earnings in 1978 ($)"</span>,</span>
+<span id="cb27-357"><a href="#cb27-357" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(yhat0, yhat1)),</span>
+<span id="cb27-358"><a href="#cb27-358" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Separate regression lines by treatment group"</span>)</span>
+<span id="cb27-359"><a href="#cb27-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(educ_range, yhat1, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb27-360"><a href="#cb27-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-361"><a href="#cb27-361" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Vertical line at xbar</span></span>
+<span id="cb27-362"><a href="#cb27-362" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb27-363"><a href="#cb27-363" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> xbar, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb27-364"><a href="#cb27-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-365"><a href="#cb27-365" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ATE arrow at xbar</span></span>
+<span id="cb27-366"><a href="#cb27-366" aria-hidden="true" tabindex="-1"></a>  y0_at_xbar <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>] <span class="sc">*</span> xbar</span>
+<span id="cb27-367"><a href="#cb27-367" aria-hidden="true" tabindex="-1"></a>  y1_at_xbar <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>] <span class="sc">*</span> xbar</span>
+<span id="cb27-368"><a href="#cb27-368" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(xbar <span class="sc">+</span> <span class="fl">0.3</span>, y0_at_xbar, xbar <span class="sc">+</span> <span class="fl">0.3</span>, y1_at_xbar,</span>
+<span id="cb27-369"><a href="#cb27-369" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.1</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">col =</span> <span class="st">"black"</span>)</span>
+<span id="cb27-370"><a href="#cb27-370" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(xbar <span class="sc">+</span> <span class="fl">0.7</span>, (y0_at_xbar <span class="sc">+</span> y1_at_xbar) <span class="sc">/</span> <span class="dv">2</span>, <span class="st">"ATE"</span>, <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
+<span id="cb27-371"><a href="#cb27-371" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(xbar, <span class="fu">min</span>(yhat0, yhat1) <span class="sc">-</span> <span class="dv">300</span>, <span class="fu">expression</span>(<span class="fu">bar</span>(X)), <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
+<span id="cb27-372"><a href="#cb27-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-373"><a href="#cb27-373" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Control (train = 0)"</span>, <span class="st">"Treatment (train = 1)"</span>),</span>
+<span id="cb27-374"><a href="#cb27-374" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb27-375"><a href="#cb27-375" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-376"><a href="#cb27-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-377"><a href="#cb27-377" aria-hidden="true" tabindex="-1"></a><span class="fu">## From cross-sections to panel data</span></span>
+<span id="cb27-378"><a href="#cb27-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-379"><a href="#cb27-379" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>So far, we used **cross-sectional** data and assumed selection on observables: after controlling for $X_i$, treatment is as good as random.</span>
+<span id="cb27-380"><a href="#cb27-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-381"><a href="#cb27-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In some settings, this assumption is hard to justify. An alternative approach exploits **panel data** (repeated observations on the same units over time).</span>
+<span id="cb27-382"><a href="#cb27-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-383"><a href="#cb27-383" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **difference-in-differences (DID)** method compares changes over time between a treatment group and a control group.</span>
+<span id="cb27-384"><a href="#cb27-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-385"><a href="#cb27-385" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID setup</span></span>
+<span id="cb27-386"><a href="#cb27-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-387"><a href="#cb27-387" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Two time periods: $t \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$ (before and after treatment).</span>
+<span id="cb27-388"><a href="#cb27-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-389"><a href="#cb27-389" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Two groups: $D_i \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$ (control and treatment).</span>
+<span id="cb27-390"><a href="#cb27-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-391"><a href="#cb27-391" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treatment occurs between periods 0 and 1, and only the treatment group ($D_i = 1$) is affected.</span>
+<span id="cb27-392"><a href="#cb27-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-393"><a href="#cb27-393" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We observe $Y_{it}$: the outcome for individual $i$ at time $t$.</span>
+<span id="cb27-394"><a href="#cb27-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-395"><a href="#cb27-395" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID regression model</span></span>
+<span id="cb27-396"><a href="#cb27-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-397"><a href="#cb27-397" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The DID regression is:</span>
+<span id="cb27-398"><a href="#cb27-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-399"><a href="#cb27-399" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-400"><a href="#cb27-400" aria-hidden="true" tabindex="-1"></a>  Y_{it} = \alpha + \delta \cdot t + \gamma D_i + \beta(t \cdot D_i) + U_{it},</span>
+<span id="cb27-401"><a href="#cb27-401" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-402"><a href="#cb27-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-403"><a href="#cb27-403" aria-hidden="true" tabindex="-1"></a>  where $\E{U_{it} \mid D_i} = 0$.</span>
+<span id="cb27-404"><a href="#cb27-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-405"><a href="#cb27-405" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The 2×2 table of conditional means:</span>
+<span id="cb27-406"><a href="#cb27-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-407"><a href="#cb27-407" aria-hidden="true" tabindex="-1"></a>  | | $D_i = 0$ (Control) | $D_i = 1$ (Treatment) |</span>
+<span id="cb27-408"><a href="#cb27-408" aria-hidden="true" tabindex="-1"></a>  |---|---|---|</span>
+<span id="cb27-409"><a href="#cb27-409" aria-hidden="true" tabindex="-1"></a>  | $t = 0$ | $\alpha$ | $\alpha + \gamma$ |</span>
+<span id="cb27-410"><a href="#cb27-410" aria-hidden="true" tabindex="-1"></a>  | $t = 1$ | $\alpha + \delta$ | $\alpha + \delta + \gamma + \beta$ |</span>
+<span id="cb27-411"><a href="#cb27-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-412"><a href="#cb27-412" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interpreting the coefficients</span></span>
+<span id="cb27-413"><a href="#cb27-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-414"><a href="#cb27-414" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\alpha$: baseline expected outcome (control group, before treatment).</span>
+<span id="cb27-415"><a href="#cb27-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-416"><a href="#cb27-416" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\delta$: **time effect** — the change in the control group's outcome from $t = 0$ to $t = 1$. This captures common trends (e.g., inflation, economic growth).</span>
+<span id="cb27-417"><a href="#cb27-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-418"><a href="#cb27-418" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\gamma$: **group difference** at baseline — the pre-existing difference between treatment and control groups at $t = 0$.</span>
+<span id="cb27-419"><a href="#cb27-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-420"><a href="#cb27-420" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\beta$: **DID estimand** — the additional change in the treatment group's outcome, beyond what the control group experienced.</span>
+<span id="cb27-421"><a href="#cb27-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-422"><a href="#cb27-422" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deriving the DID estimand</span></span>
+<span id="cb27-423"><a href="#cb27-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-424"><a href="#cb27-424" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For each combination of $t$ and $D_i$, take expectations using $\E{U_{it} \mid D_i} = 0$:</span>
+<span id="cb27-425"><a href="#cb27-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-426"><a href="#cb27-426" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-427"><a href="#cb27-427" aria-hidden="true" tabindex="-1"></a>  t = 0,\ D_i = 0: \quad &amp; \E{Y_{i0} \mid D_i = 0} = \alpha, <span class="sc">\\</span></span>
+<span id="cb27-428"><a href="#cb27-428" aria-hidden="true" tabindex="-1"></a>  t = 1,\ D_i = 0: \quad &amp; \E{Y_{i1} \mid D_i = 0} = \alpha + \delta, <span class="sc">\\</span></span>
+<span id="cb27-429"><a href="#cb27-429" aria-hidden="true" tabindex="-1"></a>  t = 0,\ D_i = 1: \quad &amp; \E{Y_{i0} \mid D_i = 1} = \alpha + \gamma, <span class="sc">\\</span></span>
+<span id="cb27-430"><a href="#cb27-430" aria-hidden="true" tabindex="-1"></a>  t = 1,\ D_i = 1: \quad &amp; \E{Y_{i1} \mid D_i = 1} = \alpha + \delta + \gamma + \beta.</span>
+<span id="cb27-431"><a href="#cb27-431" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-432"><a href="#cb27-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-433"><a href="#cb27-433" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Subtracting the control group change from the treatment group change:</span>
+<span id="cb27-434"><a href="#cb27-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-435"><a href="#cb27-435" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-436"><a href="#cb27-436" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \Big(\E{Y_{i1} \mid D_i = 1} - \E{Y_{i0} \mid D_i = 1}\Big) <span class="sc">\\</span></span>
+<span id="cb27-437"><a href="#cb27-437" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \Big(\E{Y_{i1} \mid D_i = 0} - \E{Y_{i0} \mid D_i = 0}\Big).</span>
+<span id="cb27-438"><a href="#cb27-438" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-439"><a href="#cb27-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-440"><a href="#cb27-440" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The DID estimand is the **difference in within-group changes** over time:</span>
+<span id="cb27-441"><a href="#cb27-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-442"><a href="#cb27-442" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-443"><a href="#cb27-443" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1} - Y_{i0} \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb27-444"><a href="#cb27-444" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.</span>
+<span id="cb27-445"><a href="#cb27-445" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-446"><a href="#cb27-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-447"><a href="#cb27-447" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID diagram</span></span>
+<span id="cb27-448"><a href="#cb27-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-449"><a href="#cb27-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The classic DID diagram shows the control group, treatment group, and counterfactual:</span>
+<span id="cb27-450"><a href="#cb27-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-451"><a href="#cb27-451" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-452"><a href="#cb27-452" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
+<span id="cb27-453"><a href="#cb27-453" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
+<span id="cb27-454"><a href="#cb27-454" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
+<span id="cb27-455"><a href="#cb27-455" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
+<span id="cb27-456"><a href="#cb27-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-457"><a href="#cb27-457" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> <span class="dv">5</span>; delta <span class="ot">&lt;-</span> <span class="dv">2</span>; gamma <span class="ot">&lt;-</span> <span class="dv">1</span>; beta_did <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb27-458"><a href="#cb27-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-459"><a href="#cb27-459" aria-hidden="true" tabindex="-1"></a>  y_ctrl <span class="ot">&lt;-</span> <span class="fu">c</span>(alpha, alpha <span class="sc">+</span> delta)</span>
+<span id="cb27-460"><a href="#cb27-460" aria-hidden="true" tabindex="-1"></a>  y_treat <span class="ot">&lt;-</span> <span class="fu">c</span>(alpha <span class="sc">+</span> gamma, alpha <span class="sc">+</span> delta <span class="sc">+</span> gamma <span class="sc">+</span> beta_did)</span>
+<span id="cb27-461"><a href="#cb27-461" aria-hidden="true" tabindex="-1"></a>  y_cf <span class="ot">&lt;-</span> <span class="fu">c</span>(alpha <span class="sc">+</span> gamma, alpha <span class="sc">+</span> delta <span class="sc">+</span> gamma)</span>
+<span id="cb27-462"><a href="#cb27-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-463"><a href="#cb27-463" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), y_ctrl, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb27-464"><a href="#cb27-464" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time period"</span>, <span class="at">ylab =</span> <span class="st">"Outcome"</span>,</span>
+<span id="cb27-465"><a href="#cb27-465" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">1.3</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">13</span>),</span>
+<span id="cb27-466"><a href="#cb27-466" aria-hidden="true" tabindex="-1"></a>       <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">main =</span> <span class="st">"Difference-in-differences"</span>)</span>
+<span id="cb27-467"><a href="#cb27-467" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"t = 0</span><span class="sc">\n</span><span class="st">(Before)"</span>, <span class="st">"t = 1</span><span class="sc">\n</span><span class="st">(After)"</span>))</span>
+<span id="cb27-468"><a href="#cb27-468" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), y_treat, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb27-469"><a href="#cb27-469" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), y_cf, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb27-470"><a href="#cb27-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-471"><a href="#cb27-471" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(<span class="fl">1.05</span>, y_cf[<span class="dv">2</span>], <span class="fl">1.05</span>, y_treat[<span class="dv">2</span>],</span>
+<span id="cb27-472"><a href="#cb27-472" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.08</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb27-473"><a href="#cb27-473" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">1.15</span>, (y_cf[<span class="dv">2</span>] <span class="sc">+</span> y_treat[<span class="dv">2</span>]) <span class="sc">/</span> <span class="dv">2</span>, <span class="fu">expression</span>(beta), <span class="at">cex =</span> <span class="fl">1.3</span>)</span>
+<span id="cb27-474"><a href="#cb27-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-475"><a href="#cb27-475" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">1.05</span>, y_ctrl[<span class="dv">2</span>], <span class="st">"Control"</span>, <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
+<span id="cb27-476"><a href="#cb27-476" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">1.05</span>, y_treat[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.3</span>, <span class="st">"Treatment"</span>, <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
+<span id="cb27-477"><a href="#cb27-477" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">1.05</span>, y_cf[<span class="dv">2</span>] <span class="sc">-</span> <span class="fl">0.3</span>, <span class="st">"Counterfactual"</span>, <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
+<span id="cb27-478"><a href="#cb27-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-479"><a href="#cb27-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(<span class="sc">-</span><span class="fl">0.05</span>, y_ctrl[<span class="dv">1</span>], <span class="sc">-</span><span class="fl">0.05</span>, y_ctrl[<span class="dv">2</span>],</span>
+<span id="cb27-480"><a href="#cb27-480" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.08</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb27-481"><a href="#cb27-481" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="sc">-</span><span class="fl">0.1</span>, (y_ctrl[<span class="dv">1</span>] <span class="sc">+</span> y_ctrl[<span class="dv">2</span>]) <span class="sc">/</span> <span class="dv">2</span>, <span class="fu">expression</span>(delta), <span class="at">cex =</span> <span class="dv">1</span>,</span>
+<span id="cb27-482"><a href="#cb27-482" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">pos =</span> <span class="dv">2</span>)</span>
+<span id="cb27-483"><a href="#cb27-483" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-484"><a href="#cb27-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-485"><a href="#cb27-485" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: incinerator and house prices</span></span>
+<span id="cb27-486"><a href="#cb27-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-487"><a href="#cb27-487" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts.</span>
+<span id="cb27-488"><a href="#cb27-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-489"><a href="#cb27-489" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We use the <span class="in">`kielmc`</span> dataset from the <span class="in">`wooldridge`</span> package:</span>
+<span id="cb27-490"><a href="#cb27-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-491"><a href="#cb27-491" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-492"><a href="#cb27-492" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-493"><a href="#cb27-493" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(kielmc)</span>
+<span id="cb27-494"><a href="#cb27-494" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(kielmc[, <span class="fu">c</span>(<span class="st">"rprice"</span>, <span class="st">"y81"</span>, <span class="st">"nearinc"</span>, <span class="st">"y81nrinc"</span>, <span class="st">"age"</span>)], <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb27-495"><a href="#cb27-495" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-496"><a href="#cb27-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-497"><a href="#cb27-497" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`rprice`</span>: house price in 1978 dollars.</span>
+<span id="cb27-498"><a href="#cb27-498" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`y81`</span>: 1 if year is 1981 (after incinerator announced), 0 if 1978.</span>
+<span id="cb27-499"><a href="#cb27-499" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`nearinc`</span>: 1 if house is near the incinerator site.</span>
+<span id="cb27-500"><a href="#cb27-500" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`y81nrinc`</span>: interaction <span class="in">`y81 * nearinc`</span>.</span>
+<span id="cb27-501"><a href="#cb27-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-502"><a href="#cb27-502" aria-hidden="true" tabindex="-1"></a><span class="fu">## The 2×2 table of means</span></span>
+<span id="cb27-503"><a href="#cb27-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-504"><a href="#cb27-504" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute the four group means:</span>
+<span id="cb27-505"><a href="#cb27-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-506"><a href="#cb27-506" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-507"><a href="#cb27-507" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-508"><a href="#cb27-508" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(kielmc<span class="sc">$</span>rprice, <span class="fu">list</span>(kielmc<span class="sc">$</span>y81, kielmc<span class="sc">$</span>nearinc), mean)</span>
+<span id="cb27-509"><a href="#cb27-509" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Far (nearinc=0)"</span>, <span class="st">"Near (nearinc=1)"</span>)</span>
+<span id="cb27-510"><a href="#cb27-510" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(means) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1978 (y81=0)"</span>, <span class="st">"1981 (y81=1)"</span>)</span>
+<span id="cb27-511"><a href="#cb27-511" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(means)</span>
+<span id="cb27-512"><a href="#cb27-512" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-513"><a href="#cb27-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-514"><a href="#cb27-514" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Computing the DID by hand:</span>
+<span id="cb27-515"><a href="#cb27-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-516"><a href="#cb27-516" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-517"><a href="#cb27-517" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-518"><a href="#cb27-518" aria-hidden="true" tabindex="-1"></a>  diff_near <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb27-519"><a href="#cb27-519" aria-hidden="true" tabindex="-1"></a>  diff_far  <span class="ot">&lt;-</span> means[<span class="dv">2</span>, <span class="dv">1</span>] <span class="sc">-</span> means[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb27-520"><a href="#cb27-520" aria-hidden="true" tabindex="-1"></a>  DID <span class="ot">&lt;-</span> diff_near <span class="sc">-</span> diff_far</span>
+<span id="cb27-521"><a href="#cb27-521" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Change (near):"</span>, <span class="fu">round</span>(diff_near), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb27-522"><a href="#cb27-522" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Change (far): "</span>, <span class="fu">round</span>(diff_far), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb27-523"><a href="#cb27-523" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"DID:          "</span>, <span class="fu">round</span>(DID), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb27-524"><a href="#cb27-524" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-525"><a href="#cb27-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-526"><a href="#cb27-526" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID regression</span></span>
+<span id="cb27-527"><a href="#cb27-527" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-528"><a href="#cb27-528" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The DID regression:</span>
+<span id="cb27-529"><a href="#cb27-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-530"><a href="#cb27-530" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-531"><a href="#cb27-531" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-532"><a href="#cb27-532" aria-hidden="true" tabindex="-1"></a>  reg_did <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc, <span class="at">data =</span> kielmc)</span>
+<span id="cb27-533"><a href="#cb27-533" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_did)<span class="sc">$</span>coefficients</span>
+<span id="cb27-534"><a href="#cb27-534" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-535"><a href="#cb27-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-536"><a href="#cb27-536" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`y81nrinc`</span> matches the DID computed from the 2×2 table.</span>
+<span id="cb27-537"><a href="#cb27-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-538"><a href="#cb27-538" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated effect is negative (incinerator reduced nearby prices), but the p-value is around 0.11, so it is not statistically significant at the 5% level.</span>
+<span id="cb27-539"><a href="#cb27-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-540"><a href="#cb27-540" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID with covariates</span></span>
+<span id="cb27-541"><a href="#cb27-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-542"><a href="#cb27-542" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding house characteristics as controls can improve precision:</span>
+<span id="cb27-543"><a href="#cb27-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-544"><a href="#cb27-544" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-545"><a href="#cb27-545" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb27-546"><a href="#cb27-546" aria-hidden="true" tabindex="-1"></a>  reg_did_cov <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb27-547"><a href="#cb27-547" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> kielmc)</span>
+<span id="cb27-548"><a href="#cb27-548" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_did_cov)<span class="sc">$</span>coefficients</span>
+<span id="cb27-549"><a href="#cb27-549" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-550"><a href="#cb27-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-551"><a href="#cb27-551" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>After controlling for house age, the DID estimate becomes larger in magnitude and statistically significant.</span>
+<span id="cb27-552"><a href="#cb27-552" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-553"><a href="#cb27-553" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Controlling for covariates reduces residual variance, leading to more precise estimates.</span>
+<span id="cb27-554"><a href="#cb27-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-555"><a href="#cb27-555" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID and potential outcomes</span></span>
+<span id="cb27-556"><a href="#cb27-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-557"><a href="#cb27-557" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To connect DID with the potential outcomes framework, define **panel potential outcomes**: $Y_{it}(d)$ is the outcome for individual $i$ at time $t$ if assigned to group $d \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$.</span>
+<span id="cb27-558"><a href="#cb27-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-559"><a href="#cb27-559" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The observed outcome is:</span>
+<span id="cb27-560"><a href="#cb27-560" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-561"><a href="#cb27-561" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-562"><a href="#cb27-562" aria-hidden="true" tabindex="-1"></a>  Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).</span>
+<span id="cb27-563"><a href="#cb27-563" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-564"><a href="#cb27-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-565"><a href="#cb27-565" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>What we observe for each group:</span>
+<span id="cb27-566"><a href="#cb27-566" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-567"><a href="#cb27-567" aria-hidden="true" tabindex="-1"></a>  | | Control ($D_i = 0$) | Treatment ($D_i = 1$) |</span>
+<span id="cb27-568"><a href="#cb27-568" aria-hidden="true" tabindex="-1"></a>  |---|---|---|</span>
+<span id="cb27-569"><a href="#cb27-569" aria-hidden="true" tabindex="-1"></a>  | $t = 0$ | $Y_{i0}(0)$ | $Y_{i0}(1)$ |</span>
+<span id="cb27-570"><a href="#cb27-570" aria-hidden="true" tabindex="-1"></a>  | $t = 1$ | $Y_{i1}(0)$ | $Y_{i1}(1)$ |</span>
+<span id="cb27-571"><a href="#cb27-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-572"><a href="#cb27-572" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The treatment effect at time $t = 1$ for the treated group is:</span>
+<span id="cb27-573"><a href="#cb27-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-574"><a href="#cb27-574" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-575"><a href="#cb27-575" aria-hidden="true" tabindex="-1"></a>  \text{ATT} = \E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}.</span>
+<span id="cb27-576"><a href="#cb27-576" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-577"><a href="#cb27-577" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-578"><a href="#cb27-578" aria-hidden="true" tabindex="-1"></a>  The counterfactual $Y_{i1}(0)$ is unobserved for the treated group.</span>
+<span id="cb27-579"><a href="#cb27-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-580"><a href="#cb27-580" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID as a treatment effect</span></span>
+<span id="cb27-581"><a href="#cb27-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-582"><a href="#cb27-582" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Recall that $\beta = \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}$.</span>
+<span id="cb27-583"><a href="#cb27-583" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-584"><a href="#cb27-584" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Substituting observed outcomes with potential outcomes:</span>
+<span id="cb27-585"><a href="#cb27-585" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-586"><a href="#cb27-586" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-587"><a href="#cb27-587" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb27-588"><a href="#cb27-588" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.</span>
+<span id="cb27-589"><a href="#cb27-589" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-590"><a href="#cb27-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-591"><a href="#cb27-591" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To relate $\beta$ to the ATT, add and subtract $\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1}$:</span>
+<span id="cb27-592"><a href="#cb27-592" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-593"><a href="#cb27-593" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-594"><a href="#cb27-594" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \underbrace{\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}_{\text{ATT}} <span class="sc">\\</span></span>
+<span id="cb27-595"><a href="#cb27-595" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \E{Y_{i1}(0) - Y_{i0}(1) \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb27-596"><a href="#cb27-596" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.</span>
+<span id="cb27-597"><a href="#cb27-597" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-598"><a href="#cb27-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-599"><a href="#cb27-599" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For $\beta$ to equal the ATT, we need two additional assumptions.</span>
+<span id="cb27-600"><a href="#cb27-600" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-601"><a href="#cb27-601" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumption 1: no anticipation</span></span>
+<span id="cb27-602"><a href="#cb27-602" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-603"><a href="#cb27-603" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No anticipation:** the outcome at $t = 0$ (before treatment) is not affected by future treatment group assignment:</span>
+<span id="cb27-604"><a href="#cb27-604" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-605"><a href="#cb27-605" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-606"><a href="#cb27-606" aria-hidden="true" tabindex="-1"></a>  \E{Y_{i0}(1) \mid D_i = 1} = \E{Y_{i0}(0) \mid D_i = 1}.</span>
+<span id="cb27-607"><a href="#cb27-607" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-608"><a href="#cb27-608" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-609"><a href="#cb27-609" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Being assigned to the treatment group does not change pre-treatment outcomes in expectation.</span>
+<span id="cb27-610"><a href="#cb27-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-611"><a href="#cb27-611" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the incinerator example: before the incinerator was announced, living near the future site did not affect house prices (relative to what they would have been otherwise).</span>
+<span id="cb27-612"><a href="#cb27-612" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-613"><a href="#cb27-613" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under no anticipation, we can replace $Y_{i0}(1)$ with $Y_{i0}(0)$ in the expression for $\beta$:</span>
+<span id="cb27-614"><a href="#cb27-614" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-615"><a href="#cb27-615" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-616"><a href="#cb27-616" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \text{ATT} + \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb27-617"><a href="#cb27-617" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.</span>
+<span id="cb27-618"><a href="#cb27-618" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-619"><a href="#cb27-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-620"><a href="#cb27-620" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumption 2: parallel trends</span></span>
+<span id="cb27-621"><a href="#cb27-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-622"><a href="#cb27-622" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Parallel trends:** in the absence of treatment, both groups would have experienced the same change over time:</span>
+<span id="cb27-623"><a href="#cb27-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-624"><a href="#cb27-624" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-625"><a href="#cb27-625" aria-hidden="true" tabindex="-1"></a>  \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0} = \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1}.</span>
+<span id="cb27-626"><a href="#cb27-626" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-627"><a href="#cb27-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-628"><a href="#cb27-628" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under both no anticipation and parallel trends:</span>
+<span id="cb27-629"><a href="#cb27-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-630"><a href="#cb27-630" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-631"><a href="#cb27-631" aria-hidden="true" tabindex="-1"></a>  \beta = \text{ATT}.</span>
+<span id="cb27-632"><a href="#cb27-632" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb27-633"><a href="#cb27-633" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-634"><a href="#cb27-634" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The parallel trends assumption cannot be directly tested because $Y_{i1}(0)$ is unobserved for the treated group. However, if pre-treatment data for multiple periods exist, one can check whether trends were parallel before treatment.</span>
+<span id="cb27-635"><a href="#cb27-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-636"><a href="#cb27-636" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parallel trends diagram</span></span>
+<span id="cb27-637"><a href="#cb27-637" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-638"><a href="#cb27-638" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Illustrating the parallel trends assumption:</span>
+<span id="cb27-639"><a href="#cb27-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-640"><a href="#cb27-640" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb27-641"><a href="#cb27-641" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
+<span id="cb27-642"><a href="#cb27-642" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
+<span id="cb27-643"><a href="#cb27-643" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
+<span id="cb27-644"><a href="#cb27-644" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
+<span id="cb27-645"><a href="#cb27-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-646"><a href="#cb27-646" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> <span class="dv">5</span>; delta <span class="ot">&lt;-</span> <span class="dv">2</span>; gamma <span class="ot">&lt;-</span> <span class="fl">1.5</span>; beta_did <span class="ot">&lt;-</span> <span class="fl">2.5</span></span>
+<span id="cb27-647"><a href="#cb27-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-648"><a href="#cb27-648" aria-hidden="true" tabindex="-1"></a>  y_ctrl <span class="ot">&lt;-</span> <span class="fu">c</span>(alpha, alpha <span class="sc">+</span> delta)</span>
+<span id="cb27-649"><a href="#cb27-649" aria-hidden="true" tabindex="-1"></a>  y_treat <span class="ot">&lt;-</span> <span class="fu">c</span>(alpha <span class="sc">+</span> gamma, alpha <span class="sc">+</span> delta <span class="sc">+</span> gamma <span class="sc">+</span> beta_did)</span>
+<span id="cb27-650"><a href="#cb27-650" aria-hidden="true" tabindex="-1"></a>  y_cf <span class="ot">&lt;-</span> <span class="fu">c</span>(alpha <span class="sc">+</span> gamma, alpha <span class="sc">+</span> delta <span class="sc">+</span> gamma)</span>
+<span id="cb27-651"><a href="#cb27-651" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-652"><a href="#cb27-652" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), y_ctrl, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>,</span>
+<span id="cb27-653"><a href="#cb27-653" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time period"</span>, <span class="at">ylab =</span> <span class="st">"Outcome"</span>,</span>
+<span id="cb27-654"><a href="#cb27-654" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">1.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">13</span>),</span>
+<span id="cb27-655"><a href="#cb27-655" aria-hidden="true" tabindex="-1"></a>       <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">main =</span> <span class="st">"Parallel trends assumption"</span>)</span>
+<span id="cb27-656"><a href="#cb27-656" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"t = 0"</span>, <span class="st">"t = 1"</span>))</span>
+<span id="cb27-657"><a href="#cb27-657" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), y_treat, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb27-658"><a href="#cb27-658" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), y_cf, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb27-659"><a href="#cb27-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-660"><a href="#cb27-660" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(<span class="fl">0.45</span>, y_ctrl[<span class="dv">1</span>], <span class="fl">0.45</span>, y_ctrl[<span class="dv">2</span>],</span>
+<span id="cb27-661"><a href="#cb27-661" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.06</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb27-662"><a href="#cb27-662" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">0.35</span>, (y_ctrl[<span class="dv">1</span>] <span class="sc">+</span> y_ctrl[<span class="dv">2</span>]) <span class="sc">/</span> <span class="dv">2</span>, <span class="fu">expression</span>(delta), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb27-663"><a href="#cb27-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-664"><a href="#cb27-664" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(<span class="fl">0.55</span>, y_cf[<span class="dv">1</span>], <span class="fl">0.55</span>, y_cf[<span class="dv">2</span>],</span>
+<span id="cb27-665"><a href="#cb27-665" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.06</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb27-666"><a href="#cb27-666" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">0.65</span>, (y_cf[<span class="dv">1</span>] <span class="sc">+</span> y_cf[<span class="dv">2</span>]) <span class="sc">/</span> <span class="dv">2</span>, <span class="fu">expression</span>(delta), <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"gray50"</span>)</span>
+<span id="cb27-667"><a href="#cb27-667" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-668"><a href="#cb27-668" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(<span class="fl">1.08</span>, y_cf[<span class="dv">2</span>], <span class="fl">1.08</span>, y_treat[<span class="dv">2</span>],</span>
+<span id="cb27-669"><a href="#cb27-669" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.08</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb27-670"><a href="#cb27-670" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">1.25</span>, (y_cf[<span class="dv">2</span>] <span class="sc">+</span> y_treat[<span class="dv">2</span>]) <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb27-671"><a href="#cb27-671" aria-hidden="true" tabindex="-1"></a>       <span class="fu">expression</span>(beta <span class="sc">==</span> ATT), <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
+<span id="cb27-672"><a href="#cb27-672" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-673"><a href="#cb27-673" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="sc">-</span><span class="fl">0.15</span>, y_ctrl[<span class="dv">1</span>], <span class="st">"Control"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
+<span id="cb27-674"><a href="#cb27-674" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="sc">-</span><span class="fl">0.15</span>, y_treat[<span class="dv">1</span>], <span class="st">"Treatment"</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
+<span id="cb27-675"><a href="#cb27-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-676"><a href="#cb27-676" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Treatment (actual)"</span>,</span>
+<span id="cb27-677"><a href="#cb27-677" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Treatment (counterfactual)"</span>),</span>
+<span id="cb27-678"><a href="#cb27-678" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"gray50"</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb27-679"><a href="#cb27-679" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">1</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="fl">0.85</span>)</span>
+<span id="cb27-680"><a href="#cb27-680" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb27-681"><a href="#cb27-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-682"><a href="#cb27-682" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb27-683"><a href="#cb27-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-684"><a href="#cb27-684" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Potential outcomes** $Y_i(1)$ and $Y_i(0)$ formalize causal effects. The individual treatment effect $Y_i(1) - Y_i(0)$ is never fully observed.</span>
+<span id="cb27-685"><a href="#cb27-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-686"><a href="#cb27-686" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **ATE** and **ATT** are population-level summaries of treatment effects.</span>
+<span id="cb27-687"><a href="#cb27-687" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-688"><a href="#cb27-688" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With **random assignment**, a simple regression of $Y_i$ on $D_i$ estimates the ATE.</span>
+<span id="cb27-689"><a href="#cb27-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-690"><a href="#cb27-690" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With **observational data**, controlling for covariates and using the **demeaning trick** (interacting $D_i$ with $X_i - \bar{X}$) allows the coefficient on $D_i$ to estimate the ATE.</span>
+<span id="cb27-691"><a href="#cb27-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-692"><a href="#cb27-692" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Difference-in-differences** uses panel data to compare changes over time between groups:</span>
+<span id="cb27-693"><a href="#cb27-693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-694"><a href="#cb27-694" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb27-695"><a href="#cb27-695" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1} - Y_{i0} \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb27-696"><a href="#cb27-696" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.</span>
+<span id="cb27-697"><a href="#cb27-697" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb27-698"><a href="#cb27-698" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-699"><a href="#cb27-699" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under **no anticipation** and **parallel trends**, the DID estimand $\beta$ equals the ATT.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<script src="326_14_treatment_did_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

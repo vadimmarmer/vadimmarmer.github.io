@@ -1,5 +1,29 @@
 # Session Notes — Econ 326
 
+## 2026-03-17 (session 4)
+
+**Created `326_14_treatment_did.qmd` — Lecture 14: Treatment effects and difference-in-differences (new content, no LaTeX source):**
+- 36 slides across 3 parts: potential outcomes & treatment effects (slides 1–12), regression with covariates & demeaning trick (slides 13–20), difference-in-differences (slides 21–36)
+- Datasets: `jtrain2` (Lalonde NSW experiment) and `kielmc` (Kiel & McClain incinerator example)
+- Base R figures: regression lines with ATE arrow, DID 4-point diagram, parallel trends diagram
+- Proofread: 0 changes (all 10 passes clean)
+- All 3 output formats: 0 errors, 0 KaTeX errors; PDF 87,426 bytes
+- Updated course page `_teaching/2026-01-Econ-326.md` with lecture 14 entry
+
+**File changes:**
+- Created `326_14_treatment_did.qmd` (~700 lines)
+- Created `PLAN_lecture14_treatment_did.md` (plan document)
+- Updated `_teaching/2026-01-Econ-326.md` — added lecture 14
+
+---
+
+## 2026-03-17 (session 3)
+
+**Lecture 14 proofreading (`326_14_treatment_did.qmd`):**
+- Pass 3: fixed incomplete clause "The parallel trends assumption illustrated:" → "Illustrating the parallel trends assumption:"
+- Pass 7: converted all 11 `$$\begin{aligned}...\end{aligned}$$` blocks to `\begin{align*}...\end{align*}`; split 7 long single-line display equations across two lines to prevent RevealJS overflow
+- Rendered all 3 formats: 0 errors, 0 KaTeX errors; PDF 87590 bytes
+
 ## 2026-03-17 (session 2)
 
 **Lecture 12 language tightening (`326_12_mreg_testing.qmd`):**
