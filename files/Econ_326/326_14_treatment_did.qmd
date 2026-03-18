@@ -13,6 +13,7 @@ format:
     theme: cosmo
     smooth-scroll: true
     html-math-method: katex
+    embed-resources: true
   pdf:
     output-file: 326_14_treatment_did.pdf
     pdf-engine: xelatex
@@ -48,12 +49,13 @@ format:
 - Many important questions in economics are **causal**:
   - Does job training increase earnings?
   - Does a new drug improve health outcomes?
-  - Does building an incinerator reduce nearby house prices?
 
 - The **fundamental challenge**: we can never observe the same individual both with and without treatment at the same time.
+- This is modeled using the **potential outcomes framework**: each individual has two potential outcomes, one under treatment and one under control, but we only observe one of them.
 
 ## Potential outcomes
 
+- **Treatment status**: $D_i = 1$ if individual $i$ receives treatment, $D_i = 0$ otherwise.
 - For each individual $i$, define two **potential outcomes**:
   - $Y_i(1)$: outcome if individual $i$ receives treatment ($D_i = 1$),
   - $Y_i(0)$: outcome if individual $i$ does not receive treatment ($D_i = 0$).
@@ -68,7 +70,7 @@ format:
 
 ## The fundamental problem
 
-- Let $D_i \in \{0, 1\}$ denote treatment status. The **observed outcome** is:
+- The **observed outcome** is:
 
   $$
   Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
@@ -113,7 +115,8 @@ format:
   &\quad + \underbrace{\E{Y_i(0) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}}_{\text{Selection bias}}.
   \end{align*}
 
-- **Selection bias** arises when the treatment and control groups differ in their baseline outcomes $Y_i(0)$. For example, people who choose to enroll in job training may differ systematically from those who do not.
+- **Selection bias** arises when the treatment and control groups differ in their baseline outcomes $Y_i(0)$.
+- E.g., people who choose to enroll in job training may differ systematically from those who do not.
 
 ## Random assignment
 
@@ -125,9 +128,10 @@ format:
 
 - The selection bias vanishes, and the simple difference in means equals the ATE:
 
-  $$
-  \E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} = \text{ATE} = \text{ATT}.
-  $$
+  \begin{align*}
+  &\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} \\
+  &= \E{Y_i(1) - Y_i(0)} = \text{ATE} = \text{ATT}.
+  \end{align*}
 
 - Randomized experiments (like the National Supported Work program) achieve this by randomly assigning individuals to treatment and control groups.
 
@@ -162,7 +166,8 @@ format:
   #| message: false
   library(wooldridge)
   data(jtrain2)
-  head(jtrain2[, c("train", "re78", "educ", "age", "black", "married")], n = 10)
+  set.seed(326)
+  jtrain2[sample(nrow(jtrain2), 10), c("train", "re78", "educ", "age", "black", "married")]
   ```
 
 - `train`: 1 if randomly assigned to job training, 0 if assigned to control.
@@ -177,13 +182,15 @@ format:
   summary(lm(re78 ~ train, data = jtrain2))$coefficients
   ```
 
-- The estimated ATE is approximately \$1,800 (recall that `re78` is in thousands): on average, participation in the job training program increased 1978 earnings by about \$1,800.
+- The estimated ATE is approximately \$1,800 (`re78` is in thousands): on average, participation in the job training program increased 1978 earnings by about \$1,800.
 
 ## Observational studies
 
 - In many settings, treatment is **not randomly assigned**. Individuals self-select into treatment.
 
-- Example: workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.
+- E.g., workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.
+
+- Similarly, workers at firms that offer 401(k) plans tend to have higher incomes, so comparing savings between eligible and ineligible workers confounds the plan effect with income differences.
 
 - Self-selection generates **selection bias**, and the simple difference in means no longer estimates the ATE.
 
@@ -201,6 +208,8 @@ format:
   where $\E{U_i(0) \mid X_i, D_i} = 0$ and $\E{U_i(1) \mid X_i, D_i} = 0$.
 
 - These assumptions mean that, after conditioning on $X_i$, treatment assignment $D_i$ is as good as random. This is called **conditional mean independence** (or "selection on observables").
+- While $Y_i(0)$ and $Y_i(1)$ depend on $X_i$ (and thus on $D_i$), the residual terms after controlling for $X_i$, namely $U_i(0)$ and $U_i(1)$, are uncorrelated with both $X_i$ and $D_i$.
+- Note that the effect of $X_i$ on the potential outcomes can differ between the treated and control groups: $\beta_1$ may not equal $\beta_0$.
 
 ## The ATE with a covariate
 
@@ -243,12 +252,12 @@ format:
 
   \begin{align*}
   Y_i &= \alpha_0(1 - D_i) + \alpha_1 D_i \\
-  &\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + \tilde{U}_i \\
+  &\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + U_i \\
   &= \alpha_0 + (\alpha_1 - \alpha_0)D_i \\
-  &\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + \tilde{U}_i,
+  &\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + U_i,
   \end{align*}
 
-  where $\tilde{U}_i = (1 - D_i)U_i(0) + D_i U_i(1)$.
+  where $U_i = (1 - D_i)U_i(0) + D_i U_i(1)$.
 
 - This is a regression of $Y_i$ on $D_i$, $X_i$, and the interaction $X_i D_i$.
 
@@ -267,14 +276,14 @@ format:
 
   \begin{align*}
   Y_i &= \alpha_0 + \Big[(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}\Big] D_i \\
-  &\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i + \tilde{U}_i.
+  &\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i + U_i.
   \end{align*}
 
 - Define $\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$ and $\delta = \beta_1 - \beta_0$:
 
   \begin{align*}
   Y_i &= \alpha_0 + \tau D_i + \beta_0 X_i \\
-  &\quad + \delta(X_i - \E{X_i})D_i + \tilde{U}_i.
+  &\quad + \delta(X_i - \E{X_i})D_i + U_i.
   \end{align*}
 
 - The coefficient $\tau$ on $D_i$ is exactly the **ATE**.
@@ -302,7 +311,7 @@ format:
 
 - This is valid if $\beta_1 = \beta_0$ (the covariate has the same effect in both groups). Then $\delta = 0$, the interaction drops out, and the coefficient on $D_i$ is the ATE.
 
-- If $\beta_1 \neq \beta_0$, the omitted interaction creates bias. The regression with the demeaned interaction nests the simpler model as a special case.
+- If $\beta_1 \neq \beta_0$ (the effect of $X_i$ differs between groups), the omitted interaction creates bias: the interaction $X_iD_i$ affects $Y_i$ and is correlated with $D_i$, so the coefficient on $D_i$ does not equal the ATE.
 
 ## Example: separate regressions
 
@@ -326,19 +335,6 @@ format:
   cat("Sample mean of educ:", round(xbar, 2), "\n")
   cat("Estimated ATE:", round(ATE_manual, 2), "\n")
   ```
-
-## Example: demeaned regression
-
-- Create the demeaned interaction and run the combined regression:
-
-  ```{r}
-  #| echo: true
-  jtrain2$educ_dm <- jtrain2$educ - mean(jtrain2$educ)
-  reg_dm <- lm(re78 ~ train + educ + I(train * educ_dm), data = jtrain2)
-  summary(reg_dm)$coefficients
-  ```
-
-- The coefficient on `train` directly estimates the ATE, matching the result from the separate regressions approach.
 
 ## Example: regression lines
 
@@ -376,6 +372,19 @@ format:
          col = c("blue", "red"), lty = c(1, 2), lwd = 2)
   ```
 
+## Example: demeaned regression
+
+- Create the demeaned interaction and run the combined regression:
+
+  ```{r}
+  #| echo: true
+  jtrain2$educ_dm <- jtrain2$educ - mean(jtrain2$educ)
+  reg_dm <- lm(re78 ~ train + educ + I(train * educ_dm), data = jtrain2)
+  summary(reg_dm)$coefficients
+  ```
+
+- The coefficient on `train` directly estimates the ATE, matching the result from the separate regressions approach.
+
 ## Example: adding more covariates
 
 - So far, we used only `educ` as the control. The dataset contains more pre-treatment characteristics: `age`, `black`, `married`.
@@ -390,22 +399,28 @@ format:
 
 ## Comparison: simple vs. controlled
 
-- Compare the estimated ATE and its standard error across specifications:
+- Compare the estimated ATE and its standard error across specifications, including one with demeaned interactions:
 
   ```{r}
   #| echo: true
   m1 <- lm(re78 ~ train, data = jtrain2)
   m2 <- lm(re78 ~ train + educ + age + black + married, data = jtrain2)
+  covs <- c("educ", "age", "black", "married")
+  for (v in covs) jtrain2[[paste0(v, "_dm")]] <- jtrain2[[v]] - mean(jtrain2[[v]])
+  m3 <- lm(re78 ~ train + educ + age + black + married +
+             I(train * educ_dm) + I(train * age_dm) +
+             I(train * black_dm) + I(train * married_dm), data = jtrain2)
+  make_row <- function(m) c(Estimate = coef(m)["train"],
+                            SE = summary(m)$coef["train", "Std. Error"])
   tab <- rbind(
-    "No controls"   = c(Estimate = coef(m1)["train"],
-                        SE       = summary(m1)$coef["train", "Std. Error"]),
-    "With controls" = c(Estimate = coef(m2)["train"],
-                        SE       = summary(m2)$coef["train", "Std. Error"])
+    "No controls"            = make_row(m1),
+    "Controls, equal slopes"  = make_row(m2),
+    "Demeaned interactions"   = make_row(m3)
   )
-  round(tab, 0)
+  round(tab, 2)
   ```
 
-- The estimated ATE barely changes. The standard error shrinks when controls are added.
+- All three estimates are nearly identical. The demeaned interactions barely matter because randomization ensures approximately equal slopes across groups.
 
 ## Why do controls change little here?
 
@@ -413,427 +428,112 @@ format:
 
 - Because of balance, including $X_i$ does not change the coefficient on $D_i$: there is no selection bias to remove.
 
-## Why does the standard error shrink?
+- The NSW program recruited a narrow, disadvantaged population: long-term unemployed, high-school dropouts, former drug users, ex-offenders.
 
-- From lecture 11, the variance of the coefficient on $D_i$ in a multiple regression is
+- Within this homogeneous group, covariates like `educ`, `age`, `black`, and `married` vary little and have limited predictive power for earnings.
 
-  $$\Vhat{\hat{\tau}} = \frac{s^2}{SSR_D},$$
+- Both the point estimate and the standard error are nearly unchanged because the controls add almost no information beyond the treatment dummy.
 
-  where $SSR_D = \sum_{i=1}^{n}\tilde{D}_i^2$ is the RSS from regressing $D_i$ on all controls.
+## Example: 401(k) eligibility and savings
 
-- By the definition of $R^2$: $R_D^2 = 1 - SSR_D / SST_D$, where $SST_D = \sum_{i=1}^{n}(D_i-\bar{D})^2$. Solving for $SSR_D$:
-
-  $$SSR_D = \sum_{i=1}^{n}(D_i - \bar{D})^2\,(1 - R_D^2).$$
-
-- Substituting into the variance formula:
-
-  $$\Vhat{\hat{\tau}} = \frac{s^2}{\sum_{i=1}^{n}(D_i - \bar{D})^2\,(1 - R_D^2)}.$$
-
-- **Denominator effect:** with randomization, $D_i$ is nearly uncorrelated with the controls, so $R_D^2 \approx 0$ — the denominator is unchanged.
-
-- **Numerator effect:** controls that predict $Y_i$ reduce the residual variance $s^2$. Since $\se{\hat{\tau}} \propto s$, the standard error shrinks.
-
-- In short: **adding covariates under randomization buys precision without changing the point estimate**.
-
-## Example: observational data (jtrain3)
-
-- Lalonde (1986) asked: what if we had no experiment and instead compared the NSW trainees to ordinary workers?
-
-- The `jtrain3` dataset keeps the **same 185 NSW trainees** as the treated group but replaces the experimental control group with **2,490 respondents from the Current Population Survey (CPS)**, a nationally representative survey of American workers.
+- The `k401ksubs` dataset (from the `wooldridge` package) contains 9,275 households from the 1991 Survey of Income and Program Participation.
 
   ```{r}
   #| echo: true
-  data(jtrain3)
-  cat("n =", nrow(jtrain3), " (NSW trainees:", sum(jtrain3$train == 1),
-      ", CPS controls:", sum(jtrain3$train == 0), ")\n")
+  data(k401ksubs)
+  cat("n =", nrow(k401ksubs), "\n")
+  set.seed(326)
+  k401ksubs[sample(nrow(k401ksubs), 8), c("e401k", "nettfa", "inc", "age", "marr")]
   ```
 
-- CPS respondents were not selected for being disadvantaged. They are typical American workers with higher education, higher earnings, and more stable employment than NSW participants.
+- **Treatment**: `e401k` = 1 if the worker's employer offers a 401(k) plan, 0 otherwise.
+- **Outcome**: `nettfa` = net total financial assets (\$1000s).
+- **Key covariate**: `inc` = family income (\$1000s).
 
-## The selection problem in jtrain3
+- This is **observational**: eligibility depends on the employer, and higher-income workers tend to work at firms offering 401(k) plans.
 
-- The two groups have very different baseline characteristics:
+## The selection problem
+
+- Group means by eligibility status:
 
   ```{r}
   #| echo: true
-  grp <- split(jtrain3, jtrain3$train)
+  grp <- split(k401ksubs, k401ksubs$e401k)
   tab <- rbind(
-    "NSW trainees (train=1)" = colMeans(grp[["1"]][, c("re78","re75","educ","age","black","married")]),
-    "CPS controls (train=0)" = colMeans(grp[["0"]][, c("re78","re75","educ","age","black","married")])
+    "Ineligible (e401k=0)" = colMeans(grp[["0"]][, c("nettfa", "inc", "age")]),
+    "Eligible (e401k=1)"   = colMeans(grp[["1"]][, c("nettfa", "inc", "age")])
   )
   round(tab, 1)
   ```
 
-- CPS workers earn about \$21,500 in 1978; NSW trainees earn about \$6,300. This gap is not a treatment effect — it reflects the very different populations.
+- Eligible workers have much higher income and much higher savings. The raw gap in savings is **not** a treatment effect — it partly reflects income differences.
 
-## Observational: without controls
+## Separate regressions
 
-- A simple regression of earnings on the training dummy:
+- Estimate separate regressions of `nettfa` on `inc` for each group:
 
   ```{r}
   #| echo: true
-  obs1 <- lm(re78 ~ train, data = jtrain3)
-  round(summary(obs1)$coefficients, 3)
+  reg0 <- lm(nettfa ~ inc, data = k401ksubs, subset = (e401k == 0))
+  reg1 <- lm(nettfa ~ inc, data = k401ksubs, subset = (e401k == 1))
+  cbind(Ineligible = coef(reg0), Eligible = coef(reg1))
   ```
 
-- The estimated "effect" is **large and negative**: trainees appear to earn about \$15,200 less than CPS workers.
-
-- This is pure **selection bias**: the NSW program recruited disadvantaged workers who would have earned less than CPS respondents regardless of training.
-
-## Observational: with controls
-
-- Adding covariates dramatically changes the estimate:
+- Compute the estimated ATE from the two-regression formula:
 
   ```{r}
   #| echo: true
-  obs2 <- lm(re78 ~ train + educ + age + black + hisp + married + re74 + re75,
-              data = jtrain3)
-  round(summary(obs2)$coefficients, 3)
+  xbar <- mean(k401ksubs$inc)
+  a0 <- coef(reg0)[1]; b0 <- coef(reg0)[2]
+  a1 <- coef(reg1)[1]; b1 <- coef(reg1)[2]
+  ATE_manual <- (a1 - a0) + (b1 - b0) * xbar
+  cat("Sample mean of inc:", round(xbar, 2), "\n")
+  cat("Estimated ATE:", round(ATE_manual, 2), "\n")
   ```
 
-- The coefficient on `train` shifts from about $-$15.2 to about $+$0.9 (thousands), much closer to the experimental benchmark of $+$1.8.
+## Demeaned regression
 
-## Experimental vs. observational
-
-- Side-by-side comparison:
+- Create the demeaned interaction and run the combined regression:
 
   ```{r}
   #| echo: true
-  make_row <- function(m) c(Estimate = coef(m)["train"],
-                            SE = summary(m)$coef["train", "Std. Error"])
+  k401ksubs$inc_dm <- k401ksubs$inc - mean(k401ksubs$inc)
+  reg_dm <- lm(nettfa ~ e401k + inc + I(e401k * inc_dm), data = k401ksubs)
+  summary(reg_dm)$coefficients
+  ```
+
+- The coefficient on `e401k` directly estimates the ATE, matching the result from the separate regressions.
+
+## Comparison across specifications
+
+- Four specifications for the effect of 401(k) eligibility on net financial assets:
+
+  ```{r}
+  #| echo: true
+  m_none <- lm(nettfa ~ e401k, data = k401ksubs)
+  m_inc  <- lm(nettfa ~ e401k + inc, data = k401ksubs)
+  m_int  <- lm(nettfa ~ e401k + inc + I(e401k * inc), data = k401ksubs)
+
+  make_row <- function(m) c(Estimate = coef(m)["e401k"],
+                            SE = summary(m)$coef["e401k", "Std. Error"])
   tab <- rbind(
-    "Experimental: no controls"   = make_row(m1),
-    "Experimental: with controls" = make_row(m2),
-    "Observational: no controls"  = make_row(obs1),
-    "Observational: with controls"= make_row(obs2)
+    "No controls"             = make_row(m_none),
+    "Income, no interaction"  = make_row(m_inc),
+    "Interaction (demeaned)"     = make_row(reg_dm),
+    "Interaction (not demeaned)" = make_row(m_int)
   )
-  round(tab, 3)
+  round(tab, 2)
   ```
 
-- **Experimental data:** controls barely change the estimate (1.79 vs. 1.68); standard errors shrink.
-
-- **Observational data:** controls remove most of the selection bias ($-$15.2 → $+$0.9); covariates are essential for a credible estimate.
-
-## From cross-sections to panel data
-
-- So far, we used **cross-sectional** data and assumed selection on observables: after controlling for $X_i$, treatment is as good as random.
-
-- In some settings, this assumption is hard to justify. An alternative approach exploits **panel data** (repeated observations on the same units over time).
-
-- The **difference-in-differences (DID)** method compares changes over time between a treatment group and a control group.
-
-## DID setup
-
-- Two time periods: $t \in \{0, 1\}$ (before and after treatment).
-
-- Two groups: $D_i \in \{0, 1\}$ (control and treatment).
-
-- Treatment occurs between periods 0 and 1, and only the treatment group ($D_i = 1$) is affected.
-
-- We observe $Y_{it}$: the outcome for individual $i$ at time $t$.
-
-## DID regression model
-
-- The DID regression is:
+- **No controls**: selection bias inflates the estimate — eligible workers earn more and save more regardless of 401(k) access.
+- **Income, no interaction**: removes much of the bias but constrains the model to equal slopes.
+- **Interaction (demeaned)**: the coefficient on `e401k` is the ATE evaluated at mean income, showing 401(k) eligibility increases savings by about \$5,400.
+- **Interaction (not demeaned)**: the coefficient on `e401k` is the **CATE** (conditional average treatment effect) evaluated at `inc = 0`:
 
   $$
-  Y_{it} = \alpha + \delta \cdot t + \gamma D_i + \beta(t \cdot D_i) + U_{it},
+  \text{CATE}(x) = \E{Y_i(1) - Y_i(0) \mid X_i = x} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)x.
   $$
 
-  where $\E{U_{it} \mid D_i} = 0$.
+  At $x = 0$ (zero income), this is an extrapolation far outside the data range — the **sign flips** to negative.
+- Contrast with `jtrain2`: there, controls barely mattered because randomization already eliminated selection bias. Here, controls and the demeaning trick are essential.
 
-- The 2×2 table of conditional means:
-
-  | | $D_i = 0$ (Control) | $D_i = 1$ (Treatment) |
-  |---|---|---|
-  | $t = 0$ | $\alpha$ | $\alpha + \gamma$ |
-  | $t = 1$ | $\alpha + \delta$ | $\alpha + \delta + \gamma + \beta$ |
-
-## Interpreting the coefficients
-
-- $\alpha$: baseline expected outcome (control group, before treatment).
-
-- $\delta$: **time effect** — the change in the control group's outcome from $t = 0$ to $t = 1$. This captures common trends (e.g., inflation, economic growth).
-
-- $\gamma$: **group difference** at baseline — the pre-existing difference between treatment and control groups at $t = 0$.
-
-- $\beta$: **DID estimand** — the additional change in the treatment group's outcome, beyond what the control group experienced.
-
-## Deriving the DID estimand
-
-- For each combination of $t$ and $D_i$, take expectations using $\E{U_{it} \mid D_i} = 0$:
-
-  \begin{align*}
-  t = 0,\ D_i = 0: \quad & \E{Y_{i0} \mid D_i = 0} = \alpha, \\
-  t = 1,\ D_i = 0: \quad & \E{Y_{i1} \mid D_i = 0} = \alpha + \delta, \\
-  t = 0,\ D_i = 1: \quad & \E{Y_{i0} \mid D_i = 1} = \alpha + \gamma, \\
-  t = 1,\ D_i = 1: \quad & \E{Y_{i1} \mid D_i = 1} = \alpha + \delta + \gamma + \beta.
-  \end{align*}
-
-- Subtracting the control group change from the treatment group change:
-
-  \begin{align*}
-  \beta &= \Big(\E{Y_{i1} \mid D_i = 1} - \E{Y_{i0} \mid D_i = 1}\Big) \\
-  &\quad - \Big(\E{Y_{i1} \mid D_i = 0} - \E{Y_{i0} \mid D_i = 0}\Big).
-  \end{align*}
-
-- The DID estimand is the **difference in within-group changes** over time:
-
-  \begin{align*}
-  \beta &= \E{Y_{i1} - Y_{i0} \mid D_i = 1} \\
-  &\quad - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.
-  \end{align*}
-
-## DID diagram
-
-- The classic DID diagram shows the control group, treatment group, and counterfactual:
-
-  ```{r}
-  #| echo: false
-  #| fig-align: center
-  #| fig-width: 8
-  #| fig-height: 5.5
-
-  alpha <- 5; delta <- 2; gamma <- 1; beta_did <- 3
-
-  y_ctrl <- c(alpha, alpha + delta)
-  y_treat <- c(alpha + gamma, alpha + delta + gamma + beta_did)
-  y_cf <- c(alpha + gamma, alpha + delta + gamma)
-
-  plot(c(0, 1), y_ctrl, type = "b", pch = 16, lwd = 2, col = "blue",
-       xlab = "Time period", ylab = "Outcome",
-       xlim = c(-0.1, 1.3), ylim = c(3, 13),
-       xaxt = "n", main = "Difference-in-differences")
-  axis(1, at = c(0, 1), labels = c("t = 0\n(Before)", "t = 1\n(After)"))
-  lines(c(0, 1), y_treat, type = "b", pch = 16, lwd = 2, col = "red")
-  lines(c(0, 1), y_cf, type = "b", pch = 1, lwd = 2, col = "gray50", lty = 2)
-
-  arrows(1.05, y_cf[2], 1.05, y_treat[2],
-         code = 3, length = 0.08, lwd = 1.5)
-  text(1.15, (y_cf[2] + y_treat[2]) / 2, expression(beta), cex = 1.3)
-
-  text(1.05, y_ctrl[2], "Control", pos = 4, col = "blue", cex = 0.9)
-  text(1.05, y_treat[2] + 0.3, "Treatment", pos = 4, col = "red", cex = 0.9)
-  text(1.05, y_cf[2] - 0.3, "Counterfactual", pos = 4, col = "gray50", cex = 0.9)
-
-  arrows(-0.05, y_ctrl[1], -0.05, y_ctrl[2],
-         code = 3, length = 0.08, lwd = 1, col = "blue")
-  text(-0.1, (y_ctrl[1] + y_ctrl[2]) / 2, expression(delta), cex = 1,
-       col = "blue", pos = 2)
-  ```
-
-## Example: incinerator and house prices
-
-- Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts.
-
-- We use the `kielmc` dataset from the `wooldridge` package:
-
-  ```{r}
-  #| echo: true
-  data(kielmc)
-  head(kielmc[, c("rprice", "y81", "nearinc", "y81nrinc", "age")], n = 10)
-  ```
-
-- `rprice`: house price in 1978 dollars.
-- `y81`: 1 if year is 1981 (after incinerator announced), 0 if 1978.
-- `nearinc`: 1 if house is near the incinerator site.
-- `y81nrinc`: interaction `y81 * nearinc`.
-
-## The 2×2 table of means
-
-- Compute the four group means:
-
-  ```{r}
-  #| echo: true
-  means <- tapply(kielmc$rprice, list(kielmc$y81, kielmc$nearinc), mean)
-  colnames(means) <- c("Far (nearinc=0)", "Near (nearinc=1)")
-  rownames(means) <- c("1978 (y81=0)", "1981 (y81=1)")
-  round(means)
-  ```
-
-- Computing the DID by hand:
-
-  ```{r}
-  #| echo: true
-  diff_near <- means[2, 2] - means[1, 2]
-  diff_far  <- means[2, 1] - means[1, 1]
-  DID <- diff_near - diff_far
-  cat("Change (near):", round(diff_near), "\n")
-  cat("Change (far): ", round(diff_far), "\n")
-  cat("DID:          ", round(DID), "\n")
-  ```
-
-## DID regression
-
-- The DID regression:
-
-  ```{r}
-  #| echo: true
-  reg_did <- lm(rprice ~ y81 + nearinc + y81nrinc, data = kielmc)
-  summary(reg_did)$coefficients
-  ```
-
-- The coefficient on `y81nrinc` matches the DID computed from the 2×2 table.
-
-- The estimated effect is negative (incinerator reduced nearby prices), but the p-value is around 0.11, so it is not statistically significant at the 5% level.
-
-## DID with covariates
-
-- Adding house characteristics as controls can improve precision:
-
-  ```{r}
-  #| echo: true
-  reg_did_cov <- lm(rprice ~ y81 + nearinc + y81nrinc + age + I(age^2),
-                     data = kielmc)
-  summary(reg_did_cov)$coefficients
-  ```
-
-- After controlling for house age, the DID estimate becomes larger in magnitude and statistically significant.
-
-- Controlling for covariates reduces residual variance, leading to more precise estimates.
-
-## DID and potential outcomes
-
-- To connect DID with the potential outcomes framework, define **panel potential outcomes**: $Y_{it}(d)$ is the outcome for individual $i$ at time $t$ if assigned to group $d \in \{0, 1\}$.
-
-- The observed outcome is:
-
-  $$
-  Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
-  $$
-
-- What we observe for each group:
-
-  | | Control ($D_i = 0$) | Treatment ($D_i = 1$) |
-  |---|---|---|
-  | $t = 0$ | $Y_{i0}(0)$ | $Y_{i0}(1)$ |
-  | $t = 1$ | $Y_{i1}(0)$ | $Y_{i1}(1)$ |
-
-- The treatment effect at time $t = 1$ for the treated group is:
-
-  $$
-  \text{ATT} = \E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}.
-  $$
-
-  The counterfactual $Y_{i1}(0)$ is unobserved for the treated group.
-
-## DID as a treatment effect
-
-- Recall that $\beta = \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}$.
-
-- Substituting observed outcomes with potential outcomes:
-
-  \begin{align*}
-  \beta &= \E{Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1} \\
-  &\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.
-  \end{align*}
-
-- To relate $\beta$ to the ATT, add and subtract $\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1}$:
-
-  \begin{align*}
-  \beta &= \underbrace{\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}_{\text{ATT}} \\
-  &\quad + \E{Y_{i1}(0) - Y_{i0}(1) \mid D_i = 1} \\
-  &\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.
-  \end{align*}
-
-- For $\beta$ to equal the ATT, we need two additional assumptions.
-
-## Assumption 1: no anticipation
-
-- **No anticipation:** the outcome at $t = 0$ (before treatment) is not affected by future treatment group assignment:
-
-  $$
-  \E{Y_{i0}(1) \mid D_i = 1} = \E{Y_{i0}(0) \mid D_i = 1}.
-  $$
-
-- Being assigned to the treatment group does not change pre-treatment outcomes in expectation.
-
-- In the incinerator example: before the incinerator was announced, living near the future site did not affect house prices (relative to what they would have been otherwise).
-
-- Under no anticipation, we can replace $Y_{i0}(1)$ with $Y_{i0}(0)$ in the expression for $\beta$:
-
-  \begin{align*}
-  \beta &= \text{ATT} + \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} \\
-  &\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.
-  \end{align*}
-
-## Assumption 2: parallel trends
-
-- **Parallel trends:** in the absence of treatment, both groups would have experienced the same change over time:
-
-  $$
-  \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0} = \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1}.
-  $$
-
-- Under both no anticipation and parallel trends:
-
-  $$
-  \beta = \text{ATT}.
-  $$
-
-- The parallel trends assumption cannot be directly tested because $Y_{i1}(0)$ is unobserved for the treated group. However, if pre-treatment data for multiple periods exist, one can check whether trends were parallel before treatment.
-
-## Parallel trends diagram
-
-- Illustrating the parallel trends assumption:
-
-  ```{r}
-  #| echo: false
-  #| fig-align: center
-  #| fig-width: 8
-  #| fig-height: 5.5
-
-  alpha <- 5; delta <- 2; gamma <- 1.5; beta_did <- 2.5
-
-  y_ctrl <- c(alpha, alpha + delta)
-  y_treat <- c(alpha + gamma, alpha + delta + gamma + beta_did)
-  y_cf <- c(alpha + gamma, alpha + delta + gamma)
-
-  plot(c(0, 1), y_ctrl, type = "b", pch = 16, lwd = 2, col = "blue",
-       xlab = "Time period", ylab = "Outcome",
-       xlim = c(-0.2, 1.5), ylim = c(3, 13),
-       xaxt = "n", main = "Parallel trends assumption")
-  axis(1, at = c(0, 1), labels = c("t = 0", "t = 1"))
-  lines(c(0, 1), y_treat, type = "b", pch = 16, lwd = 2, col = "red")
-  lines(c(0, 1), y_cf, type = "b", pch = 1, lwd = 2, col = "gray50", lty = 2)
-
-  arrows(0.45, y_ctrl[1], 0.45, y_ctrl[2],
-         code = 3, length = 0.06, lwd = 1, col = "blue")
-  text(0.35, (y_ctrl[1] + y_ctrl[2]) / 2, expression(delta), cex = 1, col = "blue")
-
-  arrows(0.55, y_cf[1], 0.55, y_cf[2],
-         code = 3, length = 0.06, lwd = 1, col = "gray50")
-  text(0.65, (y_cf[1] + y_cf[2]) / 2, expression(delta), cex = 1, col = "gray50")
-
-  arrows(1.08, y_cf[2], 1.08, y_treat[2],
-         code = 3, length = 0.08, lwd = 2)
-  text(1.25, (y_cf[2] + y_treat[2]) / 2,
-       expression(beta == ATT), cex = 1.1)
-
-  text(-0.15, y_ctrl[1], "Control", col = "blue", cex = 0.9)
-  text(-0.15, y_treat[1], "Treatment", col = "red", cex = 0.9)
-
-  legend("topleft", legend = c("Control", "Treatment (actual)",
-         "Treatment (counterfactual)"),
-         col = c("blue", "red", "gray50"), lty = c(1, 1, 2),
-         pch = c(16, 16, 1), lwd = 2, cex = 0.85)
-  ```
-
-## Summary
-
-- **Potential outcomes** $Y_i(1)$ and $Y_i(0)$ formalize causal effects. The individual treatment effect $Y_i(1) - Y_i(0)$ is never fully observed.
-
-- The **ATE** and **ATT** are population-level summaries of treatment effects.
-
-- With **random assignment**, a simple regression of $Y_i$ on $D_i$ estimates the ATE.
-
-- With **observational data**, controlling for covariates and using the **demeaning trick** (interacting $D_i$ with $X_i - \bar{X}$) allows the coefficient on $D_i$ to estimate the ATE.
-
-- **Difference-in-differences** uses panel data to compare changes over time between groups:
-
-  \begin{align*}
-  \beta &= \E{Y_{i1} - Y_{i0} \mid D_i = 1} \\
-  &\quad - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.
-  \end{align*}
-
-- Under **no anticipation** and **parallel trends**, the DID estimand $\beta$ equals the ATT.
