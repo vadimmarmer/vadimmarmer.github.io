@@ -277,3 +277,31 @@
 - Pass 8 (reveal order): All display math and code chunks properly indented under parent bullets; no loose text between bullet items
 
 **Compilation:** All three formats (HTML, PDF, RevealJS) render cleanly with 0 KaTeX errors.
+
+## 2026-03-19
+
+### Lecture 16: Asymptotics — merged 3 LaTeX lectures into 1 QMD
+
+**Files created:**
+- `326_16_asy.qmd` (~890 lines) — merged from LaTeX sources `326_16_asy.tex`, `326_17_asy_norm.tex`, `326_18_asy_var.tex`
+- Output: `output/326_16_asy.html`, `output/326_16_asy.pdf`, `output/326_16_asy_slides.html`
+
+**Files modified:**
+- `CLAUDE.md` — updated lectures table: LaTeX 16+17+18 merged into QMD 16, total lectures 19→17, "Lectures 01–16 are converted"
+
+**Structure:**
+- Part I: Consistency (20 slides) — convergence in probability, LLN, Markov/Chebyshev, OLS consistency, omitted variable bias
+- Part II: Asymptotic Normality (13 slides) — convergence in distribution, CLT, OLS asymptotic normality + proof
+- Part III: Asymptotic Variance (14 slides) — variance estimation, t-test, heteroskedasticity, HC estimator
+
+**Key decisions:**
+- KaTeX (no `\fragment` machinery)
+- Stata `regress ... robust` example → R with `lmtest::coeftest()` + `sandwich::vcovHC()` using `wage1` dataset (`eval: false`)
+- Three `#` level-1 headings for major TOC sections
+
+**Verification:**
+- `quarto render` clean (all 3 formats)
+- 0 KaTeX errors in HTML and slides
+- 54 section tags in slides HTML
+- `proofread-326` agent: ~70+ fixes (spelling, grammar, `\E{}` macro consistency, overflow, slide titles)
+- `revealjs-check` agent: 6 reveal-order fixes; 13 long-math-line flags remain (advisory)

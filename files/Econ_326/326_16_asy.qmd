@@ -1,0 +1,898 @@
+---
+title: "Lecture 16: Asymptotics"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_16_asy.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+    embed-resources: true
+  pdf:
+    output-file: 326_16_asy.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_16_asy_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+# Part I: Consistency
+
+## Why we need large-sample theory
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- The OLS estimator $\hat{\beta}$ has desirable properties:
+
+  - $\hat{\beta}$ is unbiased if the errors are **strongly exogenous**: $\E{U \mid X} =0.$
+
+  - If in addition the errors are **homoskedastic**, then $\Vhat{\hat{\beta}}=s^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}$ is an unbiased estimator of the conditional variance of $\hat{\beta}$.
+
+  - If in addition the errors are **normally** distributed (given $X$), then $T=\left( \hat{\beta}-\beta \right) /\sqrt{\Vhat{\hat{\beta}}}$ has a $t$ distribution which can be used for hypothesis testing.
+
+## Why we need large-sample theory
+
+- If the errors are only **weakly exogenous**:
+  $$
+  \E{X_{i}U_{i}} =0,
+  $$
+  the OLS estimator is in general biased.
+
+- If the errors are **heteroskedastic**:
+  $$
+  \E{U_{i}^{2} \mid X_{i}} =h\left( X_{i}\right),
+  $$
+  the "usual" variance formula is invalid; we also do not have an unbiased estimator for the variance in this case.
+
+- If the errors are **not normally distributed** conditional on $X$, then $T$- and $F$-statistics do not have $t$ and $F$ distributions under the null hypothesis.
+
+- Asymptotic (large-sample) theory allows us to derive **approximate** properties and distributions of estimators and test statistics by assuming that the sample size $n$ is very large.
+
+## Convergence in probability and LLN
+
+- Let $\theta _{n}$ be a sequence of random variables indexed by the sample size $n.$ We say that $\theta _{n}$ **converges in probability** if
+  $$
+  \lim_{n\rightarrow \infty }P\left( \left\vert \theta _{n}-\theta \right\vert \geq \varepsilon \right) =0\text{ for all }\varepsilon >0.
+  $$
+
+- We denote this as $\theta _{n}\rightarrow _{p}\theta$ or $p\lim \theta _{n}=\theta.$
+
+- An example of convergence in probability is a Law of Large Numbers (LLN):
+
+  Let $X_{1},X_{2},\ldots ,X_{n}$ be a random sample such that $\E{X_{i}} =\mu$ for all $i=1,\ldots ,n,$ and define $\bar{X}_{n}=\frac{1}{n}\sum_{i=1}^{n}X_{i}.$ Then, under certain conditions,
+  $$
+  \bar{X}_{n}\rightarrow _{p}\mu.
+  $$
+
+## LLN
+
+- Let $X_{1},\ldots ,X_{n}$ be a sample of **independent identically distributed** (**iid**) random variables. Let $\E{X_{i}}=\mu$. If $\Var{X_{i}}=\sigma ^{2}<\infty$, then
+  $$
+  \bar{X}_{n}\rightarrow _{p}\mu.
+  $$
+
+- In fact when the data are **iid**, the LLN holds if
+  $$
+  \E{\left\vert X_{i}\right\vert} <\infty,
+  $$
+  but we prove the result under a stronger assumption that $\Var{X_{i}}<\infty.$
+
+## Markov's inequality
+
+- **Markov's inequality.** Let $W$ be a random variable. For $\varepsilon >0$ and $r>0$,
+  $$
+  P\left( \left\vert W\right\vert \geq \varepsilon \right) \leq \frac{\E{\left\vert W\right\vert ^{r}}}{\varepsilon ^{r}}.
+  $$
+
+- With $r=2,$ we have **Chebyshev's inequality**. Suppose that $\E{X}=\mu.$ Take $W\equiv X-\mu$ and apply Markov's inequality with $r=2$. For $\varepsilon >0,$
+
+  $$
+  \begin{aligned}
+  P\left( \left\vert X-\mu \right\vert \geq \varepsilon \right) &\leq \frac{\E{\left\vert X-\mu \right\vert ^{2}}}{\varepsilon ^{2}} \\
+  &= \frac{\Var{X}}{\varepsilon ^{2}}.
+  \end{aligned}
+  $$
+
+- The probability of observing an outlier (a large deviation of $X$ from its mean $\mu$) can be bounded by the variance.
+
+## Proof of the LLN
+
+Fix $\varepsilon >0$ and apply Markov's inequality with $r=2:$
+
+$$
+\begin{aligned}
+P\left( \left\vert \bar{X}_{n}-\mu \right\vert \geq \varepsilon \right)
+&= P\left( \left\vert \frac{1}{n}\sum_{i=1}^{n}X_{i}-\mu \right\vert \geq \varepsilon \right)  \\
+&= P\left( \left\vert \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \right\vert \geq \varepsilon \right)  \\
+&\leq \frac{\E{\left( \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \right) ^{2}}}{\varepsilon ^{2}} \\
+&= \frac{1}{n^{2}\varepsilon ^{2}}\left( \sum_{i=1}^{n}\E{\left( X_{i}-\mu \right) ^{2}}+\sum_{i=1}^{n}\sum_{j\neq i}\E{\left( X_{i}-\mu \right) \left( X_{j}-\mu \right)} \right)  \\
+&= \frac{1}{n^{2}\varepsilon ^{2}}\left( \sum_{i=1}^{n}\Var{X_{i}}+\sum_{i=1}^{n}\sum_{j\neq i}\Cov{X_{i},X_{j}}\right)  \\
+&= \frac{n\sigma ^{2}}{n^{2}\varepsilon ^{2}} = \frac{\sigma ^{2}}{n\varepsilon ^{2}} \rightarrow 0 \text{ as }n\rightarrow \infty \text{ for all }\varepsilon >0.
+\end{aligned}
+$$
+
+## Averaging and variance reduction
+
+- Let $X_{1},\ldots ,X_{n}$ be a sample and suppose that
+
+  $$
+  \begin{aligned}
+  \E{X_{i}} &= \mu \text{ for all }i=1,\ldots ,n, \\
+  \Var{X_{i}} &= \sigma ^{2}\text{ for all }i=1,\ldots ,n, \\
+  \Cov{X_{i},X_{j}} &= 0\text{ for all }j\neq i.
+  \end{aligned}
+  $$
+
+- The mean of the sample average:
+
+  $$
+  \begin{aligned}
+  \E{\bar{X}_{n}} &= \E{\frac{1}{n}\sum_{i=1}^{n}X_{i}} \\
+  &= \frac{1}{n}\sum_{i=1}^{n}\E{X_{i}} \\
+  &= \frac{1}{n}\sum_{i=1}^{n}\mu = \frac{1}{n}n\mu =\mu.
+  \end{aligned}
+  $$
+
+## Averaging and variance reduction
+
+- The variance of the sample average:
+
+  $$
+  \begin{aligned}
+  \Var{\bar{X}_{n}} &= \Var{\frac{1}{n}\sum_{i=1}^{n}X_{i}} \\
+  &= \frac{1}{n^{2}}\Var{\sum_{i=1}^{n}X_{i}} \\
+  &= \frac{1}{n^{2}}\left( \sum_{i=1}^{n}\Var{X_{i}}+\sum_{i=1}^{n}\sum_{j\neq i}\Cov{X_{i},X_{j}}\right) \\
+  &= \frac{1}{n^{2}}\left( \sum_{i=1}^{n}\sigma ^{2}+\sum_{i=1}^{n}\sum_{j\neq i}0\right) \\
+  &= \frac{1}{n^{2}}n\sigma ^{2}=\frac{\sigma ^{2}}{n}.
+  \end{aligned}
+  $$
+
+- The variance of the average approaches zero as $n\rightarrow \infty$ if the observations are **uncorrelated**.
+
+## Convergence in probability: properties
+
+- **Slutsky's Lemma.** Suppose that $\theta _{n}\rightarrow _{p}\theta,$ and let $g$ be a function continuous at $\theta.$ Then,
+  $$
+  g\left( \theta _{n}\right) \rightarrow _{p}g\left( \theta \right).
+  $$
+
+  - If $\theta _{n}\rightarrow _{p}\theta,$ then $\theta _{n}^{2}\rightarrow _{p}\theta ^{2}.$
+
+  - If $\theta _{n}\rightarrow _{p}\theta$ and $\theta \neq 0,$ then $1/\theta _{n}\rightarrow _{p}1/\theta.$
+
+- Suppose that $\theta _{n}\rightarrow _{p}\theta$ and $\lambda _{n}\rightarrow _{p}\lambda.$ Then,
+
+  - $\theta _{n}+\lambda _{n}\rightarrow _{p}\theta +\lambda.$
+
+  - $\theta _{n}\lambda _{n}\rightarrow _{p}\theta \lambda.$
+
+  - $\theta _{n}/\lambda _{n}\rightarrow _{p}\theta /\lambda$ provided that $\lambda \neq 0.$
+
+## Consistency
+
+- Let $\hat{\beta}_{n}$ be an estimator of $\beta$ based on a sample of size $n.$
+
+- We say that $\hat{\beta}_{n}$ is a **consistent** estimator of $\beta$ if as $n\rightarrow \infty,$
+  $$
+  \hat{\beta}_{n}\rightarrow _{p}\beta.
+  $$
+
+- Consistency means that the **probability** of the event that the distance between $\hat{\beta}_{n}$ and $\beta$ exceeds $\varepsilon >0$ can be made arbitrarily small by increasing the sample size.
+
+## Consistency of OLS
+
+- Suppose that:
+
+  1. The data $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}$ are iid.
+
+  2. $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},$ where $\E{U_{i}} =0.$
+
+  3. $\E{X_{i}U_{i}} =0.$
+
+  4. $0<\Var{X_{i}}<\infty.$
+
+- Let $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ be the OLS estimators of $\beta _{0}$ and $\beta _{1}$ based on a sample of size $n$. Under Assumptions 1--4,
+  $$
+  \begin{aligned}
+  \hat{\beta}_{0,n} &\rightarrow _{p}\beta _{0}, \\
+  \hat{\beta}_{1,n} &\rightarrow _{p}\beta _{1}.
+  \end{aligned}
+  $$
+
+- The key identifying assumption is Assumption 3: $\Cov{X_{i},U_{i}}=0.$
+
+## Proof of consistency
+
+- Write
+
+  $$
+  \begin{aligned}
+  \hat{\beta}_{1,n} = \frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}
+  &= \beta _{1}+\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}} \\
+  &= \beta _{1}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.
+  \end{aligned}
+  $$
+
+- We will show that
+  $$
+  \begin{aligned}
+  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i} &\rightarrow _{p}0, \\
+  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2} &\rightarrow _{p}\Var{X_{i}},
+  \end{aligned}
+  $$
+
+- Since $\Var{X_{i}}\neq 0,$
+  $$
+  \hat{\beta}_{1,n} = \beta _{1}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}} \rightarrow _{p} \beta _{1}+\frac{0}{\Var{X_{i}}}= \beta _{1}.
+  $$
+
+## Numerator converges to zero
+
+$$
+\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i} = \frac{1}{n}\sum_{i=1}^{n}X_{i}U_{i}-\bar{X}_{n}\left( \frac{1}{n}\sum_{i=1}^{n}U_{i}\right).
+$$
+
+By the LLN,
+
+$$
+\begin{aligned}
+\frac{1}{n}\sum_{i=1}^{n}X_{i}U_{i} &\rightarrow _{p}\E{X_{i}U_{i}} =0, \\
+\bar{X}_{n} &\rightarrow _{p}\E{X_{i}}, \\
+\frac{1}{n}\sum_{i=1}^{n}U_{i} &\rightarrow _{p}\E{U_{i}} =0.
+\end{aligned}
+$$
+
+Hence,
+
+$$
+\begin{aligned}
+\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i} &= \frac{1}{n}\sum_{i=1}^{n}X_{i}U_{i}-\bar{X}_{n}\left( \frac{1}{n}\sum_{i=1}^{n}U_{i}\right) \\
+&\rightarrow _{p}0-\E{X_{i}} \cdot 0 = 0.
+\end{aligned}
+$$
+
+## Denominator converges to $\Var{X_i}$
+
+- First,
+
+  $$
+  \begin{aligned}
+  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}
+  &= \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}^{2}-2\bar{X}_{n}X_{i}+\bar{X}_{n}^{2}\right) \\
+  &= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\frac{1}{n}\sum_{i=1}^{n}X_{i}+\bar{X}_{n}^{2} \\
+  &= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\bar{X}_{n}+\bar{X}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
+  \end{aligned}
+  $$
+
+- By the LLN, $\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\rightarrow _{p}\E{X_{i}^{2}}$ and $\bar{X}_{n}\rightarrow _{p}\E{X_{i}}.$
+
+- By Slutsky's Lemma, $\bar{X}_{n}^{2}\rightarrow _{p}\left( \E{X_{i}}\right) ^{2}.$
+
+- Thus,
+  $$
+  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}=\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}\rightarrow _{p}\E{X_{i}^{2}} -\left( \E{X_{i}}\right) ^{2}=\Var{X_{i}}.
+  $$
+
+## Multiple regression
+
+- Under similar conditions to 1--4, one can establish consistency of OLS for the multiple linear regression model:
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\ldots +\beta _{k}X_{k,i}+U_{i},
+  $$
+  where $\E{U_{i}}=0.$
+
+- The key assumption is that the errors and regressors are uncorrelated:
+  $$
+  \E{X_{1,i}U_{i}} =\ldots =\E{X_{k,i}U_{i}} =0.
+  $$
+
+## Omitted variables and OLS inconsistency
+
+- Suppose that the true model has two regressors:
+  $$
+  \begin{aligned}
+  &Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}, \\
+  &\E{X_{1,i}U_{i}} =\E{X_{2,i}U_{i}} =0.
+  \end{aligned}
+  $$
+
+- Suppose that the econometrician includes **only** $X_{1}$ in the regression when estimating $\beta _{1}$:
+
+  $$
+  \begin{aligned}
+  \tilde{\beta}_{1,n} &= \frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \\
+  &= \frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) \left( \beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}\right) }{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \\
+  &= \beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+  \end{aligned}
+  $$
+
+## Omitted variables and OLS inconsistency
+
+- From the previous slide:
+  $$
+  \tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+  $$
+
+- As before,
+
+  $$
+  \begin{aligned}
+  \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}U_{i}-\bar{X}_{1,n}\bar{U}_{n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
+  &\rightarrow _{p}\frac{0}{\E{X_{1,i}^{2}}-\left( \E{X_{1,i}}\right) ^{2}} \\
+  &= \frac{0}{\Var{X_{1,i}}}=0.
+  \end{aligned}
+  $$
+
+## Omitted variables and OLS inconsistency
+
+- From the previous slide:
+  $$
+  \tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+  $$
+
+- However,
+
+  $$
+  \begin{aligned}
+  \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}X_{2,i}-\bar{X}_{1,n}\bar{X}_{2,n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
+  &\rightarrow _{p}\frac{\E{X_{1,i}X_{2,i}} -\E{X_{1,i}} \E{X_{2,i}}}{\E{X_{1,i}^{2}}-\left( \E{X_{1,i}}\right) ^{2}} \\
+  &= \frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.
+  \end{aligned}
+  $$
+
+## Omitted variables and OLS inconsistency
+
+- We have
+
+  $$
+  \begin{aligned}
+  \tilde{\beta}_{1,n} &= \beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \\
+  &\rightarrow _{p}\beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}+\frac{0}{\Var{X_{1,i}}} \\
+  &= \beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.
+  \end{aligned}
+  $$
+
+- Thus, $\tilde{\beta}_{1,n}$ is **inconsistent** unless:
+
+  1. $\beta _{2}=0$ (the model is correctly specified).
+
+  2. $\Cov{X_{1,i},X_{2,i}}=0$ (the omitted variable is **uncorrelated** with the included regressor).
+
+## Omitted variables and OLS inconsistency
+
+- In this example, the model contains two regressors:
+  $$
+  \begin{aligned}
+  &Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}, \\
+  &\E{X_{1,i}U_{i}} =\E{X_{2,i}U_{i}} =0.
+  \end{aligned}
+  $$
+
+- However, since $X_{2}$ is not controlled for, it goes into the error term:
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta _{0}+\beta _{1}X_{1,i}+V_{i},\text{ where} \\
+  V_{i} &= \beta _{2}X_{2,i}+U_{i}.
+  \end{aligned}
+  $$
+
+- For consistency of $\tilde{\beta}_{1,n}$ we need $\Cov{X_{1,i},V_{i}} = 0$; however,
+
+  $$
+  \begin{aligned}
+  \Cov{X_{1,i},V_{i}} &= \Cov{X_{1,i},\beta _{2}X_{2,i}+U_{i}} \\
+  &= \Cov{X_{1,i},\beta _{2}X_{2,i}}+\Cov{X_{1,i},U_{i}} \\
+  &= \beta _{2}\Cov{X_{1,i},X_{2,i}}+0 \\
+  &\neq 0\text{, unless }\beta _{2}=0\text{ or }\Cov{X_{1,i},X_{2,i}}=0.
+  \end{aligned}
+  $$
+
+# Part II: Asymptotic Normality
+
+## Why do we need asymptotic normality?
+
+- In the previous lectures, we showed that the OLS estimator has an **exact** normal distribution when the **errors are normally distributed**.
+
+  - The same assumption is needed to show that the $T$ statistic has a $t$-distribution and the $F$ statistic has an $F$-distribution.
+
+- In this lecture, we argue that even when the errors are **not** normally distributed, the OLS estimator has an **approximately normal distribution** in large samples, provided that some additional conditions hold.
+
+  - This property is used for hypothesis testing: in large samples, the $T$ statistic has a standard normal distribution and the $F$ statistic has a $\chi^{2}$ distribution (approximately).
+
+## Asymptotic normality
+
+- Let $W_{n}$ be a sequence of random variables indexed by the sample size $n.$
+
+  - Typically, $W_{n}$ will be a function of some estimator, such as $W_{n}=\sqrt{n}\left( \hat{\beta}_{n}-\beta \right)$.
+
+- We say that $W_{n}$ has an **asymptotically** normal distribution if its **CDF** converges to a **normal CDF**.
+
+- Let $W$ be any random variable with a normal $N\left( 0,\sigma^{2}\right)$ distribution. We say that $W_{n}$ has an asymptotically normal distribution if for all $x\in \mathbb{R}$:
+
+  $$
+  F_{n}\left( x\right) =P\left( W_{n}\leq x\right) \rightarrow P\left( W\leq x\right) =F\left( x\right) \text{ as }n\rightarrow \infty .
+  $$
+
+  - We denote this as $W_{n}\rightarrow _{d}W$ or $W_{n}\rightarrow _{d}N\left( 0,\sigma ^{2}\right).$
+
+## Convergence in distribution
+
+- Asymptotic normality is an example of convergence in distribution.
+
+- We say that a sequence of random variables $W_{n}$ converges in distribution to $W$ (denoted as $W_{n}\rightarrow _{d}W$) if the CDF of $W_{n}$ converges to the CDF of $W$ at all points where the CDF of $W$ is continuous.
+
+- Convergence in distribution is convergence of the **CDFs**.
+
+## Central Limit Theorem (CLT)
+
+- An example of convergence in distribution is a CLT.
+
+- Let $X_{1},\ldots ,X_{n}$ be a sample of **iid** random variables such that $\E{X_{i}} =0$ and $\Var{X_{i}} =\sigma ^{2}>0$ (finite). Then, as $n\rightarrow \infty,$
+
+  $$
+  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}X_{i}\rightarrow _{d}N\left( 0,\sigma^{2}\right) .
+  $$
+
+## CLT
+
+- For the CLT we impose 3 assumptions: **(1)** iid; **(2)** Mean zero; **(3)** Finite variance different from zero.
+
+- If $X_{1},\ldots ,X_{n}$ are iid but $\E{X_{i}} =\mu \neq 0,$ then consider $X_{i}-\mu.$ Since $\E{X_{i}-\mu} =0,$ we have
+
+  $$
+  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \rightarrow_{d}N\left( 0,\Var{X_{i}} \right) .
+  $$
+
+  Then
+
+  $$
+  \begin{aligned}
+  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) &= \sqrt{n}\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \\
+  &= \sqrt{n}\left( \frac{1}{n}\sum_{i=1}^{n}X_{i}-\frac{1}{n}\sum_{i=1}^{n}\mu \right) \\
+  &= \sqrt{n}\left( \bar{X}_{n}-\mu \right) .
+  \end{aligned}
+  $$
+
+## CLT
+
+- From the previous slide:
+  $$
+  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) = \sqrt{n}\left( \bar{X}_{n}-\mu \right) .
+  $$
+
+- Thus, the CLT can be stated as
+
+  $$
+  \sqrt{n}\left( \bar{X}_{n}-\mu \right) \rightarrow _{d}N\left( 0,\Var{X_{i}} \right) .
+  $$
+
+- By the LLN,
+
+  $$
+  \bar{X}_{n}-\mu \rightarrow _{p}0,
+  $$
+
+  and
+
+  $$
+  \Var{\sqrt{n}\left( \bar{X}_{n}-\mu \right)} = n\Var{\bar{X}_{n}} = n\frac{\Var{X_{i}}}{n} = \Var{X_{i}}.
+  $$
+
+## Properties
+
+- Suppose that $W_{n}\rightarrow _{d}N\left( 0,\sigma ^{2}\right)$ and $\theta _{n}\rightarrow _{p}\theta.$ Then,
+
+  $$
+  \theta _{n}W_{n}\rightarrow _{d}\theta N\left( 0,\sigma ^{2}\right) \stackrel{d}{=} N\left( 0,\theta ^{2}\sigma ^{2}\right) ,
+  $$
+
+  and
+
+  $$
+  \theta _{n}+W_{n}\rightarrow _{d}\theta +N\left( 0,\sigma ^{2}\right) \stackrel{d}{=} N\left( \theta ,\sigma ^{2}\right) .
+  $$
+
+- Suppose that $Z_{n}\rightarrow _{d}Z\sim N\left( 0,1\right).$ Then,
+
+  $$
+  Z_{n}^{2}\rightarrow _{d}Z^{2}\equiv \chi _{1}^{2}.
+  $$
+
+- If $W_{n}\rightarrow _{d}c=$ constant, then $W_{n}\rightarrow _{p}c.$
+
+## Asymptotic normality of OLS
+
+- Suppose that:
+
+  1. The data $\left\{ \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right\}$ are iid.
+  2. $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},$ where $\E{U_{i}} =0.$
+  3. $\E{X_{i}U_{i}} =0.$
+  4. $0<\Var{X_{i}} <\infty.$
+  5. $0<\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} <\infty$ and $0<\E{U_{i}^{2}} <\infty.$
+
+- Let $\hat{\beta}_{1,n}$ be the OLS estimator of $\beta _{1}.$ Then,
+
+  $$
+  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \rightarrow _{d}N\left( 0,\frac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}\right).
+  $$
+
+- $V=\dfrac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}$ is called the **asymptotic variance** of $\hat{\beta}_{1,n}.$
+
+## Asymptotic normality of OLS
+
+- Let $\overset{a}{\sim}$ denote "approximately in large samples."
+
+- The asymptotic normality
+
+  $$
+  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \rightarrow _{d}N\left(0,V\right)
+  $$
+
+  can be viewed as the following large-sample **approximation**:
+
+  $$
+  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \overset{a}{\sim} N\left(0,V\right) ,
+  $$
+
+  or
+
+  $$
+  \hat{\beta}_{1,n}\overset{a}{\sim} N\left( \beta _{1},V/n\right) .
+  $$
+
+## Proof
+
+Write
+
+$$
+\hat{\beta}_{1,n}=\beta _{1}+\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.
+$$
+
+Now
+
+$$
+\hat{\beta}_{1,n}-\beta _{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}},
+$$
+
+and
+
+$$
+\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.
+$$
+
+## Proof
+
+$$
+\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.
+$$
+
+In Part I, we established
+
+$$
+\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}\rightarrow_{p}\Var{X_{i}}.
+$$
+
+We will show that
+
+$$
+\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}\rightarrow _{d}N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right)^{2}U_{i}^{2}} \right),
+$$
+
+so that
+
+\begin{align*}
+\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) &= \frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}} \\
+&\rightarrow _{d}\frac{N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} \right)}{\Var{X_{i}}} \\
+&\stackrel{d}{=} N\left( 0,\frac{\E{\left( X_{i}-\E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}\right).
+\end{align*}
+
+## Proof: numerator CLT
+
+$$
+\begin{aligned}
+\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i} &= \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}+\E{X_{i}}-\bar{X}_{n}\right) U_{i} \\
+&= \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}\right) U_{i}+\left( \E{X_{i}}-\bar{X}_{n}\right) \frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}.
+\end{aligned}
+$$
+
+We have
+
+$$
+\E{\left( X_{i}-\E{X_{i}}\right) U_{i}} = \E{X_{i}U_{i}}-\E{X_{i}}\E{U_{i}}=0,
+$$
+
+and $0<\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} <\infty,$ so by the CLT,
+
+$$
+\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}\right) U_{i}\rightarrow_{d}N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}\right).
+$$
+
+## Proof: second term vanishes
+
+It is left to show that
+
+$$
+\left( \E{X_{i}}-\bar{X}_{n}\right) \frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}\rightarrow _{p}0.
+$$
+
+We have $\E{U_{i}}=0$ and $0<\E{U_{i}^{2}}<\infty.$ By the CLT,
+
+$$
+\frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}\rightarrow _{d}N\left(0,\E{U_{i}^{2}}\right).
+$$
+
+By the LLN,
+
+$$
+\E{X_{i}}-\bar{X}_{n}\rightarrow _{p}0.
+$$
+
+Hence, the result follows.
+
+# Part III: Asymptotic Variance
+
+## Asymptotic variance
+
+- In Part II, we showed that when the data are iid and the regressors are exogenous,
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta_{0} + \beta_{1}X_{i} + U_{i}, \\
+  \E{U_{i}} &= \E{X_{i}U_{i}} = 0,
+  \end{aligned}
+  $$
+  the OLS estimator of $\beta_{1}$ is asymptotically normal:
+  $$
+  \begin{aligned}
+  \sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) &\rightarrow_{d} N\left(0, V\right), \\
+  V &= \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}.
+  \end{aligned}
+  $$
+
+- For hypothesis testing, we need a **consistent** estimator of the asymptotic variance $V$:
+  $$
+  \hat{V}_{n} \rightarrow_{p} V.
+  $$
+
+## Homoskedastic errors
+
+- Assume that the errors are **homoskedastic**:
+  $$
+  \E{U_{i}^{2} \mid X_{i}} = \sigma^{2} \text{ for all } X_{i}\text{'s.}
+  $$
+
+- In this case, the asymptotic variance can be simplified using the Law of Iterated Expectation:
+  $$
+  \begin{aligned}
+  \E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}} &= \E{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2} \mid X_{i}}} \\
+  &= \E{\left(X_{i} - \E{X_{i}}\right)^{2} \E{U_{i}^{2} \mid X_{i}}} \\
+  &= \E{\left(X_{i} - \E{X_{i}}\right)^{2} \sigma^{2}} \\
+  &= \sigma^{2}\,\E{\left(X_{i} - \E{X_{i}}\right)^{2}} = \sigma^{2}\Var{X_{i}}.
+  \end{aligned}
+  $$
+
+## Homoskedastic errors
+
+- Thus, when the errors are homoskedastic with $\E{U_{i}^{2}} = \sigma^{2},$
+  $$
+  V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}} = \frac{\sigma^{2}\Var{X_{i}}}{\left(\Var{X_{i}}\right)^{2}} = \frac{\sigma^{2}}{\Var{X_{i}}}.
+  $$
+
+- Let $\hat{U}_{i} = Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i}$, where $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ are the OLS estimators of $\beta_{0}$ and $\beta_{1}.$
+
+- A consistent estimator for the asymptotic variance can be constructed using the **Method of Moments**:
+  $$
+  \begin{aligned}
+  \hat{\sigma}_{n}^{2} &= \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2}, \\
+  \Vhat{X_{i}} &= \frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}, \text{ and} \\
+  \hat{V}_{n} &= \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.
+  \end{aligned}
+  $$
+
+## Homoskedastic errors
+
+- From the previous slide:
+  $$
+  \hat{V}_{n} = \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}},\quad \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2},\quad \hat{U}_{i} = Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i}.
+  $$
+
+- When proving the consistency of OLS (Part I), we showed that
+  $$
+  \frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2} \rightarrow_{p} \Var{X_{i}},
+  $$
+  and to establish $\hat{V}_{n} \rightarrow_{p} V,$ we need to show that $\hat{\sigma}_{n}^{2} \rightarrow_{p} \sigma^{2}.$
+
+- The LLN **cannot** be applied directly to
+  $$
+  \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2}
+  $$
+  because the $\hat{U}_{i}$'s are not iid: they are **dependent** through $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}.$
+
+## Proof of $\hat{\sigma}^{2}_{n} \rightarrow_{p} \sigma^{2}$
+
+- First, write
+  $$
+  \begin{aligned}
+  \hat{U}_{i} &= Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i} \\
+  &= \left(\beta_{0} + \beta_{1}X_{i} + U_{i}\right) - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i} \\
+  &= U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}.
+  \end{aligned}
+  $$
+
+- Now,
+  $$
+  \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2} = \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2}.
+  $$
+
+## Proof of $\hat{\sigma}^{2}_{n} \rightarrow_{p} \sigma^{2}$
+
+- We have
+  $$
+  \begin{aligned}
+  \hat{\sigma}_{n}^{2} &= \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2} \\
+  &= \frac{1}{n}\sum_{i=1}^{n}U_{i}^{2} + \left(\hat{\beta}_{0,n} - \beta_{0}\right)^{2} + \left(\hat{\beta}_{1,n} - \beta_{1}\right)^{2}\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2} \\
+  &\quad -2\left(\hat{\beta}_{0,n} - \beta_{0}\right)\frac{1}{n}\sum_{i=1}^{n}U_{i} - 2\left(\hat{\beta}_{1,n} - \beta_{1}\right)\frac{1}{n}\sum_{i=1}^{n}U_{i}X_{i} \\
+  &\quad +2\left(\hat{\beta}_{0,n} - \beta_{0}\right)\left(\hat{\beta}_{1,n} - \beta_{1}\right)\frac{1}{n}\sum_{i=1}^{n}X_{i}.
+  \end{aligned}
+  $$
+
+- By the LLN,
+  $$
+  \frac{1}{n}\sum_{i=1}^{n}U_{i}^{2} \rightarrow_{p} \E{U_{i}^{2}} = \sigma^{2}.
+  $$
+
+- Because $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ are consistent,
+  $$
+  \hat{\beta}_{0,n} - \beta_{0} \rightarrow_{p} 0 \text{ and } \hat{\beta}_{1,n} - \beta_{1} \rightarrow_{p} 0.
+  $$
+
+## Homoskedastic errors
+
+- Thus, when the errors are homoskedastic,
+  $$
+  \hat{V}_{n} = \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}, \text{ with } \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2},
+  $$
+  is a consistent estimator of $V = \frac{\sigma^{2}}{\Var{X_{i}}}.$
+
+- Similarly,
+  $$
+  s^{2} = \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \rightarrow_{p} \sigma^{2},
+  $$
+  and therefore
+  $$
+  \hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}
+  $$
+  is also a consistent estimator of $V = \frac{\sigma^{2}}{\Var{X_{i}}}.$
+
+- This version has an advantage over the one with $\hat{\sigma}_{n}^{2}$: in addition to being consistent, $s^{2}$ is also an unbiased estimator of $\sigma^{2}$ if the regressors are strongly exogenous.
+
+## Asymptotic approximation
+
+- The result $\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) \rightarrow_{d} N\left(0, V\right)$ is used as the following **approximation**:
+  $$
+  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{V}{n}\right),
+  $$
+  where $\overset{a}{\sim}$ denotes approximately in large samples. Thus, the variance of $\hat{\beta}_{1,n}$ can be taken as approximately $V/n.$
+
+- With $\hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}$ we have
+  $$
+  \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} \cdot \frac{1}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.
+  $$
+
+## Asymptotic approximation
+
+- From the previous slide:
+  $$
+  \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}
+  $$
+
+- Thus, in the case of homoskedastic errors we have the following asymptotic approximation:
+  $$
+  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}\right).
+  $$
+
+- In finite samples, we have the same result **exactly**, when the regressors are **strongly exogenous** and the errors are **normal**.
+
+## Asymptotic $T$-test
+
+- Consider testing $H_{0}: \beta_{1} = \beta_{1,0}$ vs $H_{1}: \beta_{1} \neq \beta_{1,0}.$
+
+- Consider the behavior of the $T$ statistic **under $H_{0}: \beta_{1} = \beta_{1,0}$**. Since
+  $$
+  \sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) \rightarrow_{d} N\left(0, V\right) \text{ and } \hat{V}_{n} \rightarrow_{p} V,
+  $$
+  we have
+  $$
+  \begin{aligned}
+  T = \frac{\hat{\beta}_{1,n} - \beta_{1,0}}{\sqrt{\hat{V}_{n}/n}} &= \frac{\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1,0}\right)}{\sqrt{\hat{V}_{n}}} \\
+  &\overset{H_{0}}{=} \frac{\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right)}{\sqrt{\hat{V}_{n}}} \\
+  &\rightarrow_{d} \frac{N\left(0, V\right)}{\sqrt{V}} \stackrel{d}{=} N\left(0, 1\right).
+  \end{aligned}
+  $$
+
+## Asymptotic $T$-test
+
+- Under $H_{0}: \beta_{1} = \beta_{1,0},$
+  $$
+  T = \frac{\hat{\beta}_{1,n} - \beta_{1,0}}{\sqrt{\hat{V}_{n}/n}} \rightarrow_{d} N\left(0, 1\right),
+  $$
+  provided that $\hat{V}_{n} \rightarrow_{p} V$ (the asymptotic variance of $\hat{\beta}_{1,n}$).
+
+- An asymptotic size $\alpha$ test rejects $H_{0}: \beta_{1} = \beta_{1,0}$ against $H_{1}: \beta_{1} \neq \beta_{1,0}$ when
+  $$
+  \left|T\right| > z_{1-\alpha/2},
+  $$
+  where $z_{1-\alpha/2}$ is a **standard normal** critical value.
+
+- Asymptotically, the variance of the OLS estimator is known; we behave as if the variance were known.
+
+## Heteroskedastic errors
+
+- In general, the **errors are heteroskedastic**: $\E{U_{i}^{2} \mid X_{i}}$ is not constant and changes with $X_{i}.$
+
+- In this case, $\hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}$ is **not** a consistent estimator of the asymptotic variance $V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}$:
+  $$
+  \begin{aligned}
+  \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} &\rightarrow_{p} \frac{\E{U_{i}^{2}}}{\Var{X_{i}}} \\
+  &= \frac{\Var{X_{i}}\cdot\E{U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}} \\
+  &\neq \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}.
+  \end{aligned}
+  $$
+
+## HC estimator of asymptotic variance
+
+- In the case of heteroskedastic errors, a consistent estimator of $V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}$ can be constructed as follows:
+  $$
+  \hat{V}_{n}^{HC} = \frac{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}\hat{U}_{i}^{2}}{\left(\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}\right)^{2}}.
+  $$
+
+- One can show that $\hat{V}_{n}^{HC} \rightarrow_{p} V$ whether the errors are heteroskedastic or homoskedastic.
+
+- We have the following asymptotic approximation:
+  $$
+  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{\hat{V}_{n}^{HC}}{n}\right),
+  $$
+  and the standard errors can be computed as $\se{\hat{\beta}_{1,n}} = \sqrt{\hat{V}_{n}^{HC}/n}.$
+
+## HC standard errors in R
+
+- In R, the HC estimator of standard errors can be obtained using the `sandwich` package:
+
+  ```{r}
+  #| echo: true
+  #| eval: false
+  library(wooldridge)
+  library(lmtest)
+  library(sandwich)
+  data("wage1")
+  reg <- lm(wage ~ educ + exper + tenure, data = wage1)
+  # Standard (homoskedastic) SEs
+  coeftest(reg)
+  # HC (robust) SEs
+  coeftest(reg, vcov = vcovHC(reg, type = "HC1"))
+  ```

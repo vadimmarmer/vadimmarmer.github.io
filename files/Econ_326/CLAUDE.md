@@ -14,21 +14,19 @@ Converting LaTeX Beamer lecture slides for Economics 326 (Introduction to Econom
 | Course page | `/_teaching/2026-01-Econ-326.md` |
 | Slide CSS | `/files/Econ_326/slides_no_caps.css` |
 
-## Lectures (19 total, after merging and skipping)
+## Lectures (17 total, after merging and skipping)
 
-Lectures 01–12 are converted. Lectures 08 and 09 (both hypothesis testing) were merged into a single lecture 08. Lecture 14 (`mreg_testing_2`) is skipped. Remaining:
+Lectures 01–16 are converted. Lectures 08 and 09 (both hypothesis testing) were merged into a single lecture 08. Lecture 14 (`mreg_testing_2`) is skipped. Lectures 16–18 (consistency, asymptotic normality, asymptotic variance) were merged into a single lecture 16. Remaining:
 
 | # | File stem (LaTeX source) | QMD lecture # | Topic |
 |---|---|---|---|
 | 15 | `326_15_dummy` | 13 | Dummy variables |
-| 16 | `326_16_asy` | 14 | Asymptotics |
-| 17 | `326_17_asy_norm` | 15 | Asymptotic normality |
-| 18 | `326_18_asy_var` | 16 | Asymptotic variance |
+| 16+17+18 | `326_16_asy` + `326_17_asy_norm` + `326_18_asy_var` | 16 | Asymptotics (merged) |
 | 19 | `326_19_misspec` | 17 | Misspecification |
 | 20 | `326_20_IV` | 18 | Instrumental variables |
 | 21 | `326_21_2SLS` | 19 | Two-stage least squares |
 
-**Numbering note:** The original LaTeX lectures 08 and 09 were merged into QMD lecture 08; LaTeX lecture 14 (`mreg_testing_2`) is skipped. For LaTeX N ≥ 10: QMD # = N−1 (lectures 10–13), QMD # = N−2 (lectures 15–21). Total: 19 lectures (down from 21).
+**Numbering note:** The original LaTeX lectures 08 and 09 were merged into QMD lecture 08; LaTeX lecture 14 (`mreg_testing_2`) is skipped; LaTeX lectures 16–18 were merged into QMD lecture 16. For LaTeX N ≥ 10: QMD # = N−1 (lectures 10–13); QMD 14 = LaTeX 15 (DID); QMD 15 = LaTeX 15 (DID); QMD 16 = LaTeX 16+17+18 (asymptotics); QMD 17–19 = LaTeX 19–21. Total: 17 lectures (down from 21).
 
 ## Output format conventions
 
@@ -111,6 +109,11 @@ Include `\Vhat` and `\se` macros in any lecture that uses estimated variances or
 - **Variable names in math mode:** Multi-letter variable names in regression equations must be wrapped in `\text{...}` to render upright. Examples: `$\text{Wage}_{i}$`, `$\text{Experience}_{i}$`, `$\text{Exper}_{i}^{2}$`, `$\text{PrevExperience}_{i}$`. Do **not** use `\mathit{...}` or bare multi-letter names (which render as a product of italic letters). Single-letter variables ($X$, $Y$, $U$, $L$, $K$) remain italic as usual.
 
 ## Conversion rules
+
+### Filler phrases
+- Drop filler phrases that waste space on slides: "for example", "for instance", "recall that", "note that", "notice that", "observe that", "clearly", "obviously", "it is easy to see/show/check that".
+- Rewrite the sentence to flow without the filler. If a "recall that" precedes a formula, just state the formula directly.
+- When an example reference is genuinely needed, use "e.g." (parenthetical) instead of "for example".
 
 ### Strip from LaTeX source
 - All `%TCIMACRO{...}%`, `%BeginExpansion`, `%EndExpansion` blocks
