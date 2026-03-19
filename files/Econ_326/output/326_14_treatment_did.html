@@ -2263,7 +2263,7 @@ window.Quarto = {
   <li><a href="#motivation-causal-questions" id="toc-motivation-causal-questions" class="nav-link active" data-scroll-target="#motivation-causal-questions">Motivation: causal questions</a></li>
   <li><a href="#potential-outcomes" id="toc-potential-outcomes" class="nav-link" data-scroll-target="#potential-outcomes">Potential outcomes</a></li>
   <li><a href="#the-fundamental-problem" id="toc-the-fundamental-problem" class="nav-link" data-scroll-target="#the-fundamental-problem">The fundamental problem</a></li>
-  <li><a href="#average-treatment-effects" id="toc-average-treatment-effects" class="nav-link" data-scroll-target="#average-treatment-effects">Average treatment effects</a></li>
+  <li><a href="#causal-parameters-of-interest" id="toc-causal-parameters-of-interest" class="nav-link" data-scroll-target="#causal-parameters-of-interest">Causal parameters of interest</a></li>
   <li><a href="#selection-bias" id="toc-selection-bias" class="nav-link" data-scroll-target="#selection-bias">Selection bias</a></li>
   <li><a href="#random-assignment" id="toc-random-assignment" class="nav-link" data-scroll-target="#random-assignment">Random assignment</a></li>
   <li><a href="#regression-with-a-treatment-dummy" id="toc-regression-with-a-treatment-dummy" class="nav-link" data-scroll-target="#regression-with-a-treatment-dummy">Regression with a treatment dummy</a></li>
@@ -2288,6 +2288,7 @@ window.Quarto = {
   <li><a href="#separate-regressions" id="toc-separate-regressions" class="nav-link" data-scroll-target="#separate-regressions">Separate regressions</a></li>
   <li><a href="#demeaned-regression" id="toc-demeaned-regression" class="nav-link" data-scroll-target="#demeaned-regression">Demeaned regression</a></li>
   <li><a href="#comparison-across-specifications" id="toc-comparison-across-specifications" class="nav-link" data-scroll-target="#comparison-across-specifications">Comparison across specifications</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_14_treatment_did.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_14_treatment_did_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -2362,10 +2363,9 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <li><p>We can never observe both potential outcomes for the same individual. This is the <strong>fundamental problem of causal inference</strong>.</p></li>
 </ul>
 </section>
-<section id="average-treatment-effects" class="level2">
-<h2 class="anchored" data-anchor-id="average-treatment-effects">Average treatment effects</h2>
+<section id="causal-parameters-of-interest" class="level2">
+<h2 class="anchored" data-anchor-id="causal-parameters-of-interest">Causal parameters of interest</h2>
 <ul>
-<li><p>Since individual treatment effects <span class="math inline">Y_i(1) - Y_i(0)</span> are unobservable, we focus on averages.</p></li>
 <li><p><strong>Average Treatment Effect (ATE):</strong></p>
 <p><span class="math display">
 \text{ATE} = \mathrm{E}\left[Y_i(1) - Y_i(0)\right].
@@ -2380,7 +2380,9 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <section id="selection-bias" class="level2">
 <h2 class="anchored" data-anchor-id="selection-bias">Selection bias</h2>
 <ul>
-<li><p>A naive comparison of treated and untreated outcomes yields:</p>
+<li><p>Since we cannot observe the counterfactual for each individual, a natural idea is to use the outcomes of <strong>other people</strong> as stand-ins: compare average outcomes of the treated group to average outcomes of the untreated group.</p></li>
+<li><p>Can we estimate ATE by simply comparing group averages, <span class="math inline">\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right]</span>?</p></li>
+<li><p>Comparing group averages seems natural, but it conflates the treatment effect with pre-existing differences between groups:</p>
 <p><span class="math display">\begin{align*}
 &amp;\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right] \\
 &amp;= \mathrm{E}\left[Y_i(1) \mid D_i = 1\right] - \mathrm{E}\left[Y_i(0) \mid D_i = 0\right].
@@ -2397,6 +2399,7 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <section id="random-assignment" class="level2">
 <h2 class="anchored" data-anchor-id="random-assignment">Random assignment</h2>
 <ul>
+<li><p><strong>Randomization</strong> solves the selection problem: by randomly assigning treatment, we ensure the treated and control groups are comparable in expectation.</p></li>
 <li><p>Under <strong>random assignment</strong>, treatment <span class="math inline">D_i</span> is independent of potential outcomes:</p>
 <p><span class="math display">
 \mathrm{E}\left[Y_i(0) \mid D_i = 1\right] = \mathrm{E}\left[Y_i(0) \mid D_i = 0\right] = \mathrm{E}\left[Y_i(0)\right].
@@ -2471,25 +2474,24 @@ train       1.794343  0.6328536  2.835321 4.787524e-03</code></pre>
 <section id="observational-studies" class="level2">
 <h2 class="anchored" data-anchor-id="observational-studies">Observational studies</h2>
 <ul>
-<li><p>In many settings, treatment is <strong>not randomly assigned</strong>. Individuals self-select into treatment.</p></li>
-<li><p>E.g., workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.</p></li>
-<li><p>Similarly, workers at firms that offer 401(k) plans tend to have higher incomes, so comparing savings between eligible and ineligible workers confounds the plan effect with income differences.</p></li>
-<li><p>Self-selection generates <strong>selection bias</strong>, and the simple difference in means no longer estimates the ATE.</p></li>
-<li><p>To estimate treatment effects from observational data, we need to <strong>control for covariates</strong> that affect both treatment selection and outcomes.</p></li>
+<li><p>In many settings, randomization is not feasible or ethical. Treatment is determined by individual choices or institutional rules.</p></li>
+<li><p>Self-selection generates <strong>selection bias</strong>: workers who voluntarily enroll in job training may be more motivated; workers at firms offering 401(k) plans tend to have higher incomes.</p></li>
+<li><p><strong>Key idea</strong>: if we can identify covariates <span class="math inline">X_i</span> that explain why some individuals are treated and others are not, then <strong>after controlling for <span class="math inline">X_i</span></strong>, treatment may be as good as random.</p></li>
+<li><p>This is the <strong>selection on observables</strong> assumption: all confounding factors are captured by observable covariates.</p></li>
 </ul>
 </section>
 <section id="potential-outcomes-with-a-covariate" class="level2">
 <h2 class="anchored" data-anchor-id="potential-outcomes-with-a-covariate">Potential outcomes with a covariate</h2>
 <ul>
+<li><p>The selection on observables assumption can be formalized as follows: after conditioning on <span class="math inline">X_i</span>, treatment assignment <span class="math inline">D_i</span> is as good as random.</p></li>
 <li><p>Suppose the potential outcomes depend linearly on a covariate <span class="math inline">X_i</span>:</p>
 <p><span class="math display">\begin{align*}
 Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), \\
 Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),
 \end{align*}</span></p>
 <p>where <span class="math inline">\mathrm{E}\left[U_i(0) \mid X_i, D_i\right] = 0</span> and <span class="math inline">\mathrm{E}\left[U_i(1) \mid X_i, D_i\right] = 0</span>.</p></li>
-<li><p>These assumptions mean that, after conditioning on <span class="math inline">X_i</span>, treatment assignment <span class="math inline">D_i</span> is as good as random. This is called <strong>conditional mean independence</strong> (or “selection on observables”).</p></li>
-<li><p>While <span class="math inline">Y_i(0)</span> and <span class="math inline">Y_i(1)</span> depend on <span class="math inline">X_i</span> (and thus on <span class="math inline">D_i</span>), the residual terms after controlling for <span class="math inline">X_i</span>, namely <span class="math inline">U_i(0)</span> and <span class="math inline">U_i(1)</span>, are uncorrelated with both <span class="math inline">X_i</span> and <span class="math inline">D_i</span>.</p></li>
-<li><p>Note that the effect of <span class="math inline">X_i</span> on the potential outcomes can differ between the treated and control groups: <span class="math inline">\beta_1</span> may not equal <span class="math inline">\beta_0</span>.</p></li>
+<li><p>These conditions are called <strong>conditional mean independence</strong>: while <span class="math inline">Y_i(0)</span> and <span class="math inline">Y_i(1)</span> depend on <span class="math inline">X_i</span> (and thus on <span class="math inline">D_i</span>), the residual terms after controlling for <span class="math inline">X_i</span>, namely <span class="math inline">U_i(0)</span> and <span class="math inline">U_i(1)</span>, are uncorrelated with both <span class="math inline">X_i</span> and <span class="math inline">D_i</span>.</p></li>
+<li><p>The effect of <span class="math inline">X_i</span> on the potential outcomes can differ between the treated and control groups: <span class="math inline">\beta_1</span> may not equal <span class="math inline">\beta_0</span>.</p></li>
 </ul>
 </section>
 <section id="the-ate-with-a-covariate" class="level2">
@@ -2540,21 +2542,18 @@ Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i \\
 <section id="the-demeaning-trick" class="level2">
 <h2 class="anchored" data-anchor-id="the-demeaning-trick">The demeaning trick</h2>
 <ul>
-<li><p>Write <span class="math inline">X_i = \mathrm{E}\left[X_i\right] + (X_i - \mathrm{E}\left[X_i\right])</span>. Then the interaction term becomes:</p>
+<li><p>The coefficient on <span class="math inline">D_i</span> is <span class="math inline">\alpha_1 - \alpha_0</span>, not the ATE. To fix this, <strong>add and subtract</strong> <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]D_i</span>:</p>
 <p><span class="math display">\begin{align*}
-(\beta_1 - \beta_0)X_i D_i &amp;= (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right] D_i \\
-&amp;\quad + (\beta_1 - \beta_0)(X_i - \mathrm{E}\left[X_i\right])D_i.
+Y_i &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i + U_i \\
+&amp;= \alpha_0 + \big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]}\big]D_i \\
+&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i {\color{red}{}- (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]D_i} + U_i \\
+&amp;= \alpha_0 + \underbrace{\big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]}\big]}_{\text{ATE}} D_i \\
+&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0){\color{red}(X_i - \mathrm{E}\left[X_i\right])}D_i + U_i.
 \end{align*}</span></p></li>
-<li><p>Substituting into the regression:</p>
-<p><span class="math display">\begin{align*}
-Y_i &amp;= \alpha_0 + \Big[(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]\Big] D_i \\
-&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \mathrm{E}\left[X_i\right])D_i + U_i.
-\end{align*}</span></p></li>
-<li><p>Define <span class="math inline">\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> and <span class="math inline">\delta = \beta_1 - \beta_0</span>:</p>
-<p><span class="math display">\begin{align*}
-Y_i &amp;= \alpha_0 + \tau D_i + \beta_0 X_i \\
-&amp;\quad + \delta(X_i - \mathrm{E}\left[X_i\right])D_i + U_i.
-\end{align*}</span></p></li>
+<li><p>Defining <span class="math inline">\tau = \text{ATE}</span> and <span class="math inline">\delta = \beta_1 - \beta_0</span>:</p>
+<p><span class="math display">
+Y_i = \alpha_0 + \tau D_i + \beta_0 X_i + \delta(X_i - \mathrm{E}\left[X_i\right])D_i + U_i.
+</span></p></li>
 <li><p>The coefficient <span class="math inline">\tau</span> on <span class="math inline">D_i</span> is exactly the <strong>ATE</strong>.</p></li>
 </ul>
 </section>
@@ -2841,6 +2840,17 @@ Interaction (not demeaned)         -10.37 2.53</code></pre>
 </span></p>
 <p>At <span class="math inline">x = 0</span> (zero income), this is an extrapolation far outside the data range — the <strong>sign flips</strong> to negative.</p></li>
 <li><p>Contrast with <code>jtrain2</code>: there, controls barely mattered because randomization already eliminated selection bias. Here, controls and the demeaning trick are essential.</p></li>
+</ul>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ul>
+<li><p>The <strong>fundamental problem of causal inference</strong> is that we never observe both potential outcomes <span class="math inline">Y_i(1)</span> and <span class="math inline">Y_i(0)</span> for the same individual.</p></li>
+<li><p>Comparing group averages <span class="math inline">\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right]</span> does not generally yield the ATE because of <strong>selection bias</strong>: treated and control groups may differ in their baseline characteristics.</p></li>
+<li><p><strong>Randomization</strong> eliminates selection bias by making treatment independent of potential outcomes. The simple difference in means then equals the ATE, which can be estimated by regressing <span class="math inline">Y_i</span> on a treatment dummy <span class="math inline">D_i</span>.</p></li>
+<li><p>In <strong>observational studies</strong>, treatment is not randomly assigned. Under <strong>selection on observables</strong>, controlling for covariates <span class="math inline">X_i</span> restores the “as good as random” property of treatment assignment.</p></li>
+<li><p>With covariates, <span class="math inline">\text{ATE} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> depends on both intercept and slope differences.</p></li>
+<li><p>The <strong>demeaning trick</strong> makes the ATE appear directly as the coefficient on <span class="math inline">D_i</span>: interact <span class="math inline">D_i</span> with <span class="math inline">(X_i - \bar{X})</span> instead of <span class="math inline">X_i</span>. This absorbs the <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> component into the <span class="math inline">D_i</span> coefficient.</p></li>
 </ul>
 <!-- -->
 
@@ -3381,9 +3391,9 @@ Interaction (not demeaned)         -10.37 2.53</code></pre>
 <span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We can never observe both potential outcomes for the same individual. This is the **fundamental problem of causal inference**.</span>
 <span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-84"><a href="#cb33-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Average treatment effects</span></span>
+<span id="cb33-84"><a href="#cb33-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-85"><a href="#cb33-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-86"><a href="#cb33-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since individual treatment effects $Y_i(1) - Y_i(0)$ are unobservable, we focus on averages.</span>
+<span id="cb33-86"><a href="#cb33-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## Causal parameters of interest</span></span>
 <span id="cb33-87"><a href="#cb33-87" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-88"><a href="#cb33-88" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Average Treatment Effect (ATE):**</span>
 <span id="cb33-89"><a href="#cb33-89" aria-hidden="true" tabindex="-1"></a></span>
@@ -3399,443 +3409,459 @@ Interaction (not demeaned)         -10.37 2.53</code></pre>
 <span id="cb33-99"><a href="#cb33-99" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-100"><a href="#cb33-100" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ATE averages over the entire population; ATT averages only over those who actually receive treatment.</span>
 <span id="cb33-101"><a href="#cb33-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-102"><a href="#cb33-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Selection bias</span></span>
+<span id="cb33-102"><a href="#cb33-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-103"><a href="#cb33-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-104"><a href="#cb33-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A naive comparison of treated and untreated outcomes yields:</span>
+<span id="cb33-104"><a href="#cb33-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Selection bias</span></span>
 <span id="cb33-105"><a href="#cb33-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-106"><a href="#cb33-106" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-107"><a href="#cb33-107" aria-hidden="true" tabindex="-1"></a>  &amp;\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} <span class="sc">\\</span></span>
-<span id="cb33-108"><a href="#cb33-108" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_i(1) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}.</span>
-<span id="cb33-109"><a href="#cb33-109" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-110"><a href="#cb33-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-111"><a href="#cb33-111" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Add and subtract $\E{Y_i(0) \mid D_i = 1}$:</span>
-<span id="cb33-112"><a href="#cb33-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-114"><a href="#cb33-114" aria-hidden="true" tabindex="-1"></a>  &amp;= \underbrace{\E{Y_i(1) - Y_i(0) \mid D_i = 1}}_{\text{ATT}} <span class="sc">\\</span></span>
-<span id="cb33-115"><a href="#cb33-115" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{\E{Y_i(0) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}}_{\text{Selection bias}}.</span>
-<span id="cb33-116"><a href="#cb33-116" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-117"><a href="#cb33-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-118"><a href="#cb33-118" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Selection bias** arises when the treatment and control groups differ in their baseline outcomes $Y_i(0)$.</span>
-<span id="cb33-119"><a href="#cb33-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>E.g., people who choose to enroll in job training may differ systematically from those who do not.</span>
-<span id="cb33-120"><a href="#cb33-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-121"><a href="#cb33-121" aria-hidden="true" tabindex="-1"></a><span class="fu">## Random assignment</span></span>
-<span id="cb33-122"><a href="#cb33-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-123"><a href="#cb33-123" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under **random assignment**, treatment $D_i$ is independent of potential outcomes:</span>
-<span id="cb33-124"><a href="#cb33-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(0) \mid D_i = 1} = \E{Y_i(0) \mid D_i = 0} = \E{Y_i(0)}.</span>
-<span id="cb33-127"><a href="#cb33-127" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-106"><a href="#cb33-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since we cannot observe the counterfactual for each individual, a natural idea is to use the outcomes of **other people** as stand-ins: compare average outcomes of the treated group to average outcomes of the untreated group.</span>
+<span id="cb33-107"><a href="#cb33-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-108"><a href="#cb33-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can we estimate ATE by simply comparing group averages, $\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0}$?</span>
+<span id="cb33-109"><a href="#cb33-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-110"><a href="#cb33-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Comparing group averages seems natural, but it conflates the treatment effect with pre-existing differences between groups:</span>
+<span id="cb33-111"><a href="#cb33-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-112"><a href="#cb33-112" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a>  &amp;\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} <span class="sc">\\</span></span>
+<span id="cb33-114"><a href="#cb33-114" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_i(1) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}.</span>
+<span id="cb33-115"><a href="#cb33-115" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-116"><a href="#cb33-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-117"><a href="#cb33-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Add and subtract $\E{Y_i(0) \mid D_i = 1}$:</span>
+<span id="cb33-118"><a href="#cb33-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-119"><a href="#cb33-119" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-120"><a href="#cb33-120" aria-hidden="true" tabindex="-1"></a>  &amp;= \underbrace{\E{Y_i(1) - Y_i(0) \mid D_i = 1}}_{\text{ATT}} <span class="sc">\\</span></span>
+<span id="cb33-121"><a href="#cb33-121" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{\E{Y_i(0) \mid D_i = 1} - \E{Y_i(0) \mid D_i = 0}}_{\text{Selection bias}}.</span>
+<span id="cb33-122"><a href="#cb33-122" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-123"><a href="#cb33-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-124"><a href="#cb33-124" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Selection bias** arises when the treatment and control groups differ in their baseline outcomes $Y_i(0)$.</span>
+<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>E.g., people who choose to enroll in job training may differ systematically from those who do not.</span>
+<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-127"><a href="#cb33-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## Random assignment</span></span>
 <span id="cb33-128"><a href="#cb33-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-129"><a href="#cb33-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The selection bias vanishes, and the simple difference in means equals the ATE:</span>
+<span id="cb33-129"><a href="#cb33-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Randomization** solves the selection problem: by randomly assigning treatment, we ensure the treated and control groups are comparable in expectation.</span>
 <span id="cb33-130"><a href="#cb33-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-131"><a href="#cb33-131" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a>  &amp;\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} <span class="sc">\\</span></span>
-<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_i(1) - Y_i(0)} = \text{ATE} = \text{ATT}.</span>
-<span id="cb33-134"><a href="#cb33-134" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-135"><a href="#cb33-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-136"><a href="#cb33-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Randomized experiments (like the National Supported Work program) achieve this by randomly assigning individuals to treatment and control groups.</span>
-<span id="cb33-137"><a href="#cb33-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-138"><a href="#cb33-138" aria-hidden="true" tabindex="-1"></a><span class="fu">## Regression with a treatment dummy</span></span>
-<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-140"><a href="#cb33-140" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With random assignment, the ATE can be estimated by regressing $Y_i$ on a treatment dummy:</span>
-<span id="cb33-141"><a href="#cb33-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-142"><a href="#cb33-142" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-143"><a href="#cb33-143" aria-hidden="true" tabindex="-1"></a>  Y_i = \alpha + \tau D_i + U_i,</span>
-<span id="cb33-144"><a href="#cb33-144" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-131"><a href="#cb33-131" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under **random assignment**, treatment $D_i$ is independent of potential outcomes:</span>
+<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-134"><a href="#cb33-134" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(0) \mid D_i = 1} = \E{Y_i(0) \mid D_i = 0} = \E{Y_i(0)}.</span>
+<span id="cb33-135"><a href="#cb33-135" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-136"><a href="#cb33-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-137"><a href="#cb33-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The selection bias vanishes, and the simple difference in means equals the ATE:</span>
+<span id="cb33-138"><a href="#cb33-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-140"><a href="#cb33-140" aria-hidden="true" tabindex="-1"></a>  &amp;\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} <span class="sc">\\</span></span>
+<span id="cb33-141"><a href="#cb33-141" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_i(1) - Y_i(0)} = \text{ATE} = \text{ATT}.</span>
+<span id="cb33-142"><a href="#cb33-142" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-143"><a href="#cb33-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-144"><a href="#cb33-144" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Randomized experiments (like the National Supported Work program) achieve this by randomly assigning individuals to treatment and control groups.</span>
 <span id="cb33-145"><a href="#cb33-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-146"><a href="#cb33-146" aria-hidden="true" tabindex="-1"></a>  where $\E{U_i \mid D_i} = 0$ under randomization.</span>
+<span id="cb33-146"><a href="#cb33-146" aria-hidden="true" tabindex="-1"></a><span class="fu">## Regression with a treatment dummy</span></span>
 <span id="cb33-147"><a href="#cb33-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimate of $\tau$ equals the difference in sample means:</span>
+<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With random assignment, the ATE can be estimated by regressing $Y_i$ on a treatment dummy:</span>
 <span id="cb33-149"><a href="#cb33-149" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-150"><a href="#cb33-150" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-151"><a href="#cb33-151" aria-hidden="true" tabindex="-1"></a>  \hat{\tau} = \bar{Y}_1 - \bar{Y}_0,</span>
+<span id="cb33-151"><a href="#cb33-151" aria-hidden="true" tabindex="-1"></a>  Y_i = \alpha + \tau D_i + U_i,</span>
 <span id="cb33-152"><a href="#cb33-152" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-153"><a href="#cb33-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-154"><a href="#cb33-154" aria-hidden="true" tabindex="-1"></a>  where $\bar{Y}_1$ and $\bar{Y}_0$ are the sample averages for the treated and control groups.</span>
+<span id="cb33-154"><a href="#cb33-154" aria-hidden="true" tabindex="-1"></a>  where $\E{U_i \mid D_i} = 0$ under randomization.</span>
 <span id="cb33-155"><a href="#cb33-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-156"><a href="#cb33-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: Lalonde data</span></span>
+<span id="cb33-156"><a href="#cb33-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimate of $\tau$ equals the difference in sample means:</span>
 <span id="cb33-157"><a href="#cb33-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-158"><a href="#cb33-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **National Supported Work (NSW)** demonstration recruited disadvantaged workers (long-term unemployed, high-school dropouts, former drug users, ex-offenders).</span>
-<span id="cb33-159"><a href="#cb33-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-160"><a href="#cb33-160" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Among eligible applicants, some were **randomly assigned** to receive job training (treated group), and the rest formed the **experimental control group**. Both groups come from the same disadvantaged population.</span>
+<span id="cb33-158"><a href="#cb33-158" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-159"><a href="#cb33-159" aria-hidden="true" tabindex="-1"></a>  \hat{\tau} = \bar{Y}_1 - \bar{Y}_0,</span>
+<span id="cb33-160"><a href="#cb33-160" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-161"><a href="#cb33-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-162"><a href="#cb33-162" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We use the <span class="in">`jtrain2`</span> dataset from the <span class="in">`wooldridge`</span> package, based on the Lalonde (1986) study:</span>
+<span id="cb33-162"><a href="#cb33-162" aria-hidden="true" tabindex="-1"></a>  where $\bar{Y}_1$ and $\bar{Y}_0$ are the sample averages for the treated and control groups.</span>
 <span id="cb33-163"><a href="#cb33-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-164"><a href="#cb33-164" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-165"><a href="#cb33-165" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-166"><a href="#cb33-166" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| message: false</span></span>
-<span id="cb33-167"><a href="#cb33-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
-<span id="cb33-168"><a href="#cb33-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(jtrain2)</span>
-<span id="cb33-169"><a href="#cb33-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">326</span>)</span>
-<span id="cb33-170"><a href="#cb33-170" aria-hidden="true" tabindex="-1"></a>  jtrain2[<span class="fu">sample</span>(<span class="fu">nrow</span>(jtrain2), <span class="dv">10</span>), <span class="fu">c</span>(<span class="st">&quot;train&quot;</span>, <span class="st">&quot;re78&quot;</span>, <span class="st">&quot;educ&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;married&quot;</span>)]</span>
-<span id="cb33-171"><a href="#cb33-171" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-172"><a href="#cb33-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-173"><a href="#cb33-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`train`</span>: 1 if randomly assigned to job training, 0 if assigned to control.</span>
-<span id="cb33-174"><a href="#cb33-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`re78`</span>: real earnings in 1978 (thousands of dollars).</span>
-<span id="cb33-175"><a href="#cb33-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-176"><a href="#cb33-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating the ATE</span></span>
-<span id="cb33-177"><a href="#cb33-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-178"><a href="#cb33-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since treatment was randomly assigned, the coefficient on <span class="in">`train`</span> estimates the ATE:</span>
-<span id="cb33-179"><a href="#cb33-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-180"><a href="#cb33-180" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-181"><a href="#cb33-181" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-182"><a href="#cb33-182" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain2))<span class="sc">$</span>coefficients</span>
-<span id="cb33-183"><a href="#cb33-183" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-184"><a href="#cb33-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-185"><a href="#cb33-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated ATE is approximately \$1,800 (<span class="in">`re78`</span> is in thousands): on average, participation in the job training program increased 1978 earnings by about \$1,800.</span>
-<span id="cb33-186"><a href="#cb33-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-187"><a href="#cb33-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## Observational studies</span></span>
-<span id="cb33-188"><a href="#cb33-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-189"><a href="#cb33-189" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In many settings, treatment is **not randomly assigned**. Individuals self-select into treatment.</span>
-<span id="cb33-190"><a href="#cb33-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-191"><a href="#cb33-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>E.g., workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.</span>
+<span id="cb33-164"><a href="#cb33-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: Lalonde data</span></span>
+<span id="cb33-165"><a href="#cb33-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-166"><a href="#cb33-166" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **National Supported Work (NSW)** demonstration recruited disadvantaged workers (long-term unemployed, high-school dropouts, former drug users, ex-offenders).</span>
+<span id="cb33-167"><a href="#cb33-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-168"><a href="#cb33-168" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Among eligible applicants, some were **randomly assigned** to receive job training (treated group), and the rest formed the **experimental control group**. Both groups come from the same disadvantaged population.</span>
+<span id="cb33-169"><a href="#cb33-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-170"><a href="#cb33-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We use the <span class="in">`jtrain2`</span> dataset from the <span class="in">`wooldridge`</span> package, based on the Lalonde (1986) study:</span>
+<span id="cb33-171"><a href="#cb33-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-172"><a href="#cb33-172" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-173"><a href="#cb33-173" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-174"><a href="#cb33-174" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| message: false</span></span>
+<span id="cb33-175"><a href="#cb33-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
+<span id="cb33-176"><a href="#cb33-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(jtrain2)</span>
+<span id="cb33-177"><a href="#cb33-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">326</span>)</span>
+<span id="cb33-178"><a href="#cb33-178" aria-hidden="true" tabindex="-1"></a>  jtrain2[<span class="fu">sample</span>(<span class="fu">nrow</span>(jtrain2), <span class="dv">10</span>), <span class="fu">c</span>(<span class="st">&quot;train&quot;</span>, <span class="st">&quot;re78&quot;</span>, <span class="st">&quot;educ&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;married&quot;</span>)]</span>
+<span id="cb33-179"><a href="#cb33-179" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb33-180"><a href="#cb33-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-181"><a href="#cb33-181" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`train`</span>: 1 if randomly assigned to job training, 0 if assigned to control.</span>
+<span id="cb33-182"><a href="#cb33-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`re78`</span>: real earnings in 1978 (thousands of dollars).</span>
+<span id="cb33-183"><a href="#cb33-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-184"><a href="#cb33-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating the ATE</span></span>
+<span id="cb33-185"><a href="#cb33-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-186"><a href="#cb33-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since treatment was randomly assigned, the coefficient on <span class="in">`train`</span> estimates the ATE:</span>
+<span id="cb33-187"><a href="#cb33-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-188"><a href="#cb33-188" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-189"><a href="#cb33-189" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-190"><a href="#cb33-190" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain2))<span class="sc">$</span>coefficients</span>
+<span id="cb33-191"><a href="#cb33-191" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-192"><a href="#cb33-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-193"><a href="#cb33-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Similarly, workers at firms that offer 401(k) plans tend to have higher incomes, so comparing savings between eligible and ineligible workers confounds the plan effect with income differences.</span>
+<span id="cb33-193"><a href="#cb33-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated ATE is approximately \$1,800 (<span class="in">`re78`</span> is in thousands): on average, participation in the job training program increased 1978 earnings by about \$1,800.</span>
 <span id="cb33-194"><a href="#cb33-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-195"><a href="#cb33-195" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Self-selection generates **selection bias**, and the simple difference in means no longer estimates the ATE.</span>
+<span id="cb33-195"><a href="#cb33-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## Observational studies</span></span>
 <span id="cb33-196"><a href="#cb33-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-197"><a href="#cb33-197" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To estimate treatment effects from observational data, we need to **control for covariates** that affect both treatment selection and outcomes.</span>
+<span id="cb33-197"><a href="#cb33-197" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In many settings, randomization is not feasible or ethical. Treatment is determined by individual choices or institutional rules.</span>
 <span id="cb33-198"><a href="#cb33-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-199"><a href="#cb33-199" aria-hidden="true" tabindex="-1"></a><span class="fu">## Potential outcomes with a covariate</span></span>
+<span id="cb33-199"><a href="#cb33-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Self-selection generates **selection bias**: workers who voluntarily enroll in job training may be more motivated; workers at firms offering 401(k) plans tend to have higher incomes.</span>
 <span id="cb33-200"><a href="#cb33-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-201"><a href="#cb33-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose the potential outcomes depend linearly on a covariate $X_i$:</span>
+<span id="cb33-201"><a href="#cb33-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Key idea**: if we can identify covariates $X_i$ that explain why some individuals are treated and others are not, then **after controlling for $X_i$**, treatment may be as good as random.</span>
 <span id="cb33-202"><a href="#cb33-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-203"><a href="#cb33-203" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-204"><a href="#cb33-204" aria-hidden="true" tabindex="-1"></a>  Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), <span class="sc">\\</span></span>
-<span id="cb33-205"><a href="#cb33-205" aria-hidden="true" tabindex="-1"></a>  Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),</span>
-<span id="cb33-206"><a href="#cb33-206" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-207"><a href="#cb33-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-208"><a href="#cb33-208" aria-hidden="true" tabindex="-1"></a>  where $\E{U_i(0) \mid X_i, D_i} = 0$ and $\E{U_i(1) \mid X_i, D_i} = 0$.</span>
-<span id="cb33-209"><a href="#cb33-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-210"><a href="#cb33-210" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These assumptions mean that, after conditioning on $X_i$, treatment assignment $D_i$ is as good as random. This is called **conditional mean independence** (or &quot;selection on observables&quot;).</span>
-<span id="cb33-211"><a href="#cb33-211" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>While $Y_i(0)$ and $Y_i(1)$ depend on $X_i$ (and thus on $D_i$), the residual terms after controlling for $X_i$, namely $U_i(0)$ and $U_i(1)$, are uncorrelated with both $X_i$ and $D_i$.</span>
-<span id="cb33-212"><a href="#cb33-212" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Note that the effect of $X_i$ on the potential outcomes can differ between the treated and control groups: $\beta_1$ may not equal $\beta_0$.</span>
-<span id="cb33-213"><a href="#cb33-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-214"><a href="#cb33-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## The ATE with a covariate</span></span>
+<span id="cb33-203"><a href="#cb33-203" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is the **selection on observables** assumption: all confounding factors are captured by observable covariates.</span>
+<span id="cb33-204"><a href="#cb33-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-205"><a href="#cb33-205" aria-hidden="true" tabindex="-1"></a><span class="fu">## Potential outcomes with a covariate</span></span>
+<span id="cb33-206"><a href="#cb33-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-207"><a href="#cb33-207" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The selection on observables assumption can be formalized as follows: after conditioning on $X_i$, treatment assignment $D_i$ is as good as random.</span>
+<span id="cb33-208"><a href="#cb33-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-209"><a href="#cb33-209" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose the potential outcomes depend linearly on a covariate $X_i$:</span>
+<span id="cb33-210"><a href="#cb33-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-211"><a href="#cb33-211" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-212"><a href="#cb33-212" aria-hidden="true" tabindex="-1"></a>  Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), <span class="sc">\\</span></span>
+<span id="cb33-213"><a href="#cb33-213" aria-hidden="true" tabindex="-1"></a>  Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),</span>
+<span id="cb33-214"><a href="#cb33-214" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb33-215"><a href="#cb33-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-216"><a href="#cb33-216" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Taking expectations of the potential outcomes:</span>
+<span id="cb33-216"><a href="#cb33-216" aria-hidden="true" tabindex="-1"></a>  where $\E{U_i(0) \mid X_i, D_i} = 0$ and $\E{U_i(1) \mid X_i, D_i} = 0$.</span>
 <span id="cb33-217"><a href="#cb33-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-218"><a href="#cb33-218" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-219"><a href="#cb33-219" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(1)} &amp;= \alpha_1 + \beta_1 \E{X_i}, <span class="sc">\\</span></span>
-<span id="cb33-220"><a href="#cb33-220" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(0)} &amp;= \alpha_0 + \beta_0 \E{X_i}.</span>
-<span id="cb33-221"><a href="#cb33-221" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-218"><a href="#cb33-218" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These conditions are called **conditional mean independence**: while $Y_i(0)$ and $Y_i(1)$ depend on $X_i$ (and thus on $D_i$), the residual terms after controlling for $X_i$, namely $U_i(0)$ and $U_i(1)$, are uncorrelated with both $X_i$ and $D_i$.</span>
+<span id="cb33-219"><a href="#cb33-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The effect of $X_i$ on the potential outcomes can differ between the treated and control groups: $\beta_1$ may not equal $\beta_0$.</span>
+<span id="cb33-220"><a href="#cb33-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-221"><a href="#cb33-221" aria-hidden="true" tabindex="-1"></a><span class="fu">## The ATE with a covariate</span></span>
 <span id="cb33-222"><a href="#cb33-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-223"><a href="#cb33-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The ATE is:</span>
+<span id="cb33-223"><a href="#cb33-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Taking expectations of the potential outcomes:</span>
 <span id="cb33-224"><a href="#cb33-224" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-225"><a href="#cb33-225" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-226"><a href="#cb33-226" aria-hidden="true" tabindex="-1"></a>  \text{ATE} &amp;= \E{Y_i(1) - Y_i(0)} <span class="sc">\\</span></span>
-<span id="cb33-227"><a href="#cb33-227" aria-hidden="true" tabindex="-1"></a>  &amp;= (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}.</span>
+<span id="cb33-226"><a href="#cb33-226" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(1)} &amp;= \alpha_1 + \beta_1 \E{X_i}, <span class="sc">\\</span></span>
+<span id="cb33-227"><a href="#cb33-227" aria-hidden="true" tabindex="-1"></a>  \E{Y_i(0)} &amp;= \alpha_0 + \beta_0 \E{X_i}.</span>
 <span id="cb33-228"><a href="#cb33-228" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb33-229"><a href="#cb33-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-230"><a href="#cb33-230" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The ATE depends on the difference in intercepts **and** the difference in slopes, weighted by the population mean of $X_i$.</span>
+<span id="cb33-230"><a href="#cb33-230" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The ATE is:</span>
 <span id="cb33-231"><a href="#cb33-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-232"><a href="#cb33-232" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two separate regressions</span></span>
-<span id="cb33-233"><a href="#cb33-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-234"><a href="#cb33-234" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One approach: estimate separate regressions for each group.</span>
-<span id="cb33-235"><a href="#cb33-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-236"><a href="#cb33-236" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Control group** ($D_i = 0$): $Y_i = \alpha_0 + \beta_0 X_i + U_i(0).$</span>
-<span id="cb33-237"><a href="#cb33-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-238"><a href="#cb33-238" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Treatment group** ($D_i = 1$): $Y_i = \alpha_1 + \beta_1 X_i + U_i(1).$</span>
-<span id="cb33-239"><a href="#cb33-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-240"><a href="#cb33-240" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated ATE is:</span>
-<span id="cb33-241"><a href="#cb33-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-242"><a href="#cb33-242" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-243"><a href="#cb33-243" aria-hidden="true" tabindex="-1"></a>  \widehat{\text{ATE}} &amp;= (\hat{\alpha}_1 - \hat{\alpha}_0) <span class="sc">\\</span></span>
-<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + (\hat{\beta}_1 - \hat{\beta}_0)\bar{X},</span>
-<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-232"><a href="#cb33-232" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-233"><a href="#cb33-233" aria-hidden="true" tabindex="-1"></a>  \text{ATE} &amp;= \E{Y_i(1) - Y_i(0)} <span class="sc">\\</span></span>
+<span id="cb33-234"><a href="#cb33-234" aria-hidden="true" tabindex="-1"></a>  &amp;= (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}.</span>
+<span id="cb33-235"><a href="#cb33-235" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-236"><a href="#cb33-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-237"><a href="#cb33-237" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The ATE depends on the difference in intercepts **and** the difference in slopes, weighted by the population mean of $X_i$.</span>
+<span id="cb33-238"><a href="#cb33-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-239"><a href="#cb33-239" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two separate regressions</span></span>
+<span id="cb33-240"><a href="#cb33-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-241"><a href="#cb33-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One approach: estimate separate regressions for each group.</span>
+<span id="cb33-242"><a href="#cb33-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-243"><a href="#cb33-243" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Control group** ($D_i = 0$): $Y_i = \alpha_0 + \beta_0 X_i + U_i(0).$</span>
+<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Treatment group** ($D_i = 1$): $Y_i = \alpha_1 + \beta_1 X_i + U_i(1).$</span>
 <span id="cb33-246"><a href="#cb33-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-247"><a href="#cb33-247" aria-hidden="true" tabindex="-1"></a>  where $\bar{X}$ is the overall sample mean of $X_i$.</span>
+<span id="cb33-247"><a href="#cb33-247" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated ATE is:</span>
 <span id="cb33-248"><a href="#cb33-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-249"><a href="#cb33-249" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combined regression with interactions</span></span>
-<span id="cb33-250"><a href="#cb33-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-251"><a href="#cb33-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The observed outcome $Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)$ can be written as a single regression. Expanding:</span>
-<span id="cb33-252"><a href="#cb33-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-253"><a href="#cb33-253" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-254"><a href="#cb33-254" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i <span class="sc">\\</span></span>
-<span id="cb33-255"><a href="#cb33-255" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + U_i <span class="sc">\\</span></span>
-<span id="cb33-256"><a href="#cb33-256" aria-hidden="true" tabindex="-1"></a>  &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i <span class="sc">\\</span></span>
-<span id="cb33-257"><a href="#cb33-257" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + U_i,</span>
-<span id="cb33-258"><a href="#cb33-258" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-249"><a href="#cb33-249" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-250"><a href="#cb33-250" aria-hidden="true" tabindex="-1"></a>  \widehat{\text{ATE}} &amp;= (\hat{\alpha}_1 - \hat{\alpha}_0) <span class="sc">\\</span></span>
+<span id="cb33-251"><a href="#cb33-251" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + (\hat{\beta}_1 - \hat{\beta}_0)\bar{X},</span>
+<span id="cb33-252"><a href="#cb33-252" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-253"><a href="#cb33-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-254"><a href="#cb33-254" aria-hidden="true" tabindex="-1"></a>  where $\bar{X}$ is the overall sample mean of $X_i$.</span>
+<span id="cb33-255"><a href="#cb33-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-256"><a href="#cb33-256" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combined regression with interactions</span></span>
+<span id="cb33-257"><a href="#cb33-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-258"><a href="#cb33-258" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The observed outcome $Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)$ can be written as a single regression. Expanding:</span>
 <span id="cb33-259"><a href="#cb33-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-260"><a href="#cb33-260" aria-hidden="true" tabindex="-1"></a>  where $U_i = (1 - D_i)U_i(0) + D_i U_i(1)$.</span>
-<span id="cb33-261"><a href="#cb33-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-262"><a href="#cb33-262" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is a regression of $Y_i$ on $D_i$, $X_i$, and the interaction $X_i D_i$.</span>
-<span id="cb33-263"><a href="#cb33-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-264"><a href="#cb33-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, which is **not** the ATE (unless $\beta_1 = \beta_0$).</span>
-<span id="cb33-265"><a href="#cb33-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-266"><a href="#cb33-266" aria-hidden="true" tabindex="-1"></a><span class="fu">## The demeaning trick</span></span>
-<span id="cb33-267"><a href="#cb33-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-268"><a href="#cb33-268" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Write $X_i = \E{X_i} + (X_i - \E{X_i})$. Then the interaction term becomes:</span>
-<span id="cb33-269"><a href="#cb33-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-270"><a href="#cb33-270" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-271"><a href="#cb33-271" aria-hidden="true" tabindex="-1"></a>  (\beta_1 - \beta_0)X_i D_i &amp;= (\beta_1 - \beta_0)\E{X_i} D_i <span class="sc">\\</span></span>
-<span id="cb33-272"><a href="#cb33-272" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i.</span>
-<span id="cb33-273"><a href="#cb33-273" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-260"><a href="#cb33-260" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-261"><a href="#cb33-261" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i <span class="sc">\\</span></span>
+<span id="cb33-262"><a href="#cb33-262" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + U_i <span class="sc">\\</span></span>
+<span id="cb33-263"><a href="#cb33-263" aria-hidden="true" tabindex="-1"></a>  &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i <span class="sc">\\</span></span>
+<span id="cb33-264"><a href="#cb33-264" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + U_i,</span>
+<span id="cb33-265"><a href="#cb33-265" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-266"><a href="#cb33-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-267"><a href="#cb33-267" aria-hidden="true" tabindex="-1"></a>  where $U_i = (1 - D_i)U_i(0) + D_i U_i(1)$.</span>
+<span id="cb33-268"><a href="#cb33-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-269"><a href="#cb33-269" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is a regression of $Y_i$ on $D_i$, $X_i$, and the interaction $X_i D_i$.</span>
+<span id="cb33-270"><a href="#cb33-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-271"><a href="#cb33-271" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, which is **not** the ATE (unless $\beta_1 = \beta_0$).</span>
+<span id="cb33-272"><a href="#cb33-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-273"><a href="#cb33-273" aria-hidden="true" tabindex="-1"></a><span class="fu">## The demeaning trick</span></span>
 <span id="cb33-274"><a href="#cb33-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-275"><a href="#cb33-275" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Substituting into the regression:</span>
+<span id="cb33-275"><a href="#cb33-275" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, not the ATE. To fix this, **add and subtract** $(\beta_1 - \beta_0)\E{X_i}D_i$:</span>
 <span id="cb33-276"><a href="#cb33-276" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-277"><a href="#cb33-277" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-278"><a href="#cb33-278" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0 + \Big<span class="co">[</span><span class="ot">(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}\Big</span><span class="co">]</span> D_i <span class="sc">\\</span></span>
-<span id="cb33-279"><a href="#cb33-279" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i + U_i.</span>
-<span id="cb33-280"><a href="#cb33-280" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-281"><a href="#cb33-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-282"><a href="#cb33-282" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define $\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$ and $\delta = \beta_1 - \beta_0$:</span>
-<span id="cb33-283"><a href="#cb33-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-284"><a href="#cb33-284" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-285"><a href="#cb33-285" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0 + \tau D_i + \beta_0 X_i <span class="sc">\\</span></span>
-<span id="cb33-286"><a href="#cb33-286" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \delta(X_i - \E{X_i})D_i + U_i.</span>
-<span id="cb33-287"><a href="#cb33-287" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-288"><a href="#cb33-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-289"><a href="#cb33-289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient $\tau$ on $D_i$ is exactly the **ATE**.</span>
+<span id="cb33-278"><a href="#cb33-278" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i + U_i <span class="sc">\\</span></span>
+<span id="cb33-279"><a href="#cb33-279" aria-hidden="true" tabindex="-1"></a>  &amp;= \alpha_0 + \big<span class="co">[</span><span class="ot">(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\E{X_i}}\big</span><span class="co">]</span>D_i <span class="sc">\\</span></span>
+<span id="cb33-280"><a href="#cb33-280" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i {\color{red}{}- (\beta_1 - \beta_0)\E{X_i}D_i} + U_i <span class="sc">\\</span></span>
+<span id="cb33-281"><a href="#cb33-281" aria-hidden="true" tabindex="-1"></a>  &amp;= \alpha_0 + \underbrace{\big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\E{X_i}}\big]}_{\text{ATE}} D_i <span class="sc">\\</span></span>
+<span id="cb33-282"><a href="#cb33-282" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0){\color{red}(X_i - \E{X_i})}D_i + U_i.</span>
+<span id="cb33-283"><a href="#cb33-283" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
+<span id="cb33-284"><a href="#cb33-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-285"><a href="#cb33-285" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Defining $\tau = \text{ATE}$ and $\delta = \beta_1 - \beta_0$:</span>
+<span id="cb33-286"><a href="#cb33-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-287"><a href="#cb33-287" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-288"><a href="#cb33-288" aria-hidden="true" tabindex="-1"></a>  Y_i = \alpha_0 + \tau D_i + \beta_0 X_i + \delta(X_i - \E{X_i})D_i + U_i.</span>
+<span id="cb33-289"><a href="#cb33-289" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-290"><a href="#cb33-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-291"><a href="#cb33-291" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating the ATE with covariates</span></span>
+<span id="cb33-291"><a href="#cb33-291" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient $\tau$ on $D_i$ is exactly the **ATE**.</span>
 <span id="cb33-292"><a href="#cb33-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-293"><a href="#cb33-293" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In practice, replace $\E{X_i}$ with the sample mean $\bar{X}$ and run the regression:</span>
+<span id="cb33-293"><a href="#cb33-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating the ATE with covariates</span></span>
 <span id="cb33-294"><a href="#cb33-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-295"><a href="#cb33-295" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb33-296"><a href="#cb33-296" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \hat{\alpha}_0 + \hat{\tau} D_i + \hat{\beta}_0 X_i <span class="sc">\\</span></span>
-<span id="cb33-297"><a href="#cb33-297" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \hat{\delta}(X_i - \bar{X})D_i + \text{residual}.</span>
-<span id="cb33-298"><a href="#cb33-298" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
-<span id="cb33-299"><a href="#cb33-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-300"><a href="#cb33-300" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient $\hat{\tau}$ on $D_i$ directly estimates the ATE.</span>
+<span id="cb33-295"><a href="#cb33-295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In practice, replace $\E{X_i}$ with the sample mean $\bar{X}$ and run the regression:</span>
+<span id="cb33-296"><a href="#cb33-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-297"><a href="#cb33-297" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
+<span id="cb33-298"><a href="#cb33-298" aria-hidden="true" tabindex="-1"></a>  Y_i &amp;= \hat{\alpha}_0 + \hat{\tau} D_i + \hat{\beta}_0 X_i <span class="sc">\\</span></span>
+<span id="cb33-299"><a href="#cb33-299" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \hat{\delta}(X_i - \bar{X})D_i + \text{residual}.</span>
+<span id="cb33-300"><a href="#cb33-300" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb33-301"><a href="#cb33-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-302"><a href="#cb33-302" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This works because demeaning the interaction &quot;absorbs&quot; the $(\beta_1 - \beta_0)\E{X_i}$ part of the ATE into the coefficient on $D_i$.</span>
+<span id="cb33-302"><a href="#cb33-302" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient $\hat{\tau}$ on $D_i$ directly estimates the ATE.</span>
 <span id="cb33-303"><a href="#cb33-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-304"><a href="#cb33-304" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why not regress $Y_i$ on $D_i$ and $X_i$?</span></span>
+<span id="cb33-304"><a href="#cb33-304" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This works because demeaning the interaction &quot;absorbs&quot; the $(\beta_1 - \beta_0)\E{X_i}$ part of the ATE into the coefficient on $D_i$.</span>
 <span id="cb33-305"><a href="#cb33-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-306"><a href="#cb33-306" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A simpler regression omits the interaction:</span>
+<span id="cb33-306"><a href="#cb33-306" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why not regress $Y_i$ on $D_i$ and $X_i$?</span></span>
 <span id="cb33-307"><a href="#cb33-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-308"><a href="#cb33-308" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-309"><a href="#cb33-309" aria-hidden="true" tabindex="-1"></a>  Y_i = a + \tau D_i + b X_i + V_i.</span>
+<span id="cb33-308"><a href="#cb33-308" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A simpler regression omits the interaction:</span>
+<span id="cb33-309"><a href="#cb33-309" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-310"><a href="#cb33-310" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-311"><a href="#cb33-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-312"><a href="#cb33-312" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is valid if $\beta_1 = \beta_0$ (the covariate has the same effect in both groups). Then $\delta = 0$, the interaction drops out, and the coefficient on $D_i$ is the ATE.</span>
+<span id="cb33-311"><a href="#cb33-311" aria-hidden="true" tabindex="-1"></a>  Y_i = a + \tau D_i + b X_i + V_i.</span>
+<span id="cb33-312"><a href="#cb33-312" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb33-313"><a href="#cb33-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-314"><a href="#cb33-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\beta_1 \neq \beta_0$ (the effect of $X_i$ differs between groups), the omitted interaction creates bias: the interaction $X_iD_i$ affects $Y_i$ and is correlated with $D_i$, so the coefficient on $D_i$ does not equal the ATE.</span>
+<span id="cb33-314"><a href="#cb33-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is valid if $\beta_1 = \beta_0$ (the covariate has the same effect in both groups). Then $\delta = 0$, the interaction drops out, and the coefficient on $D_i$ is the ATE.</span>
 <span id="cb33-315"><a href="#cb33-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-316"><a href="#cb33-316" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: separate regressions</span></span>
+<span id="cb33-316"><a href="#cb33-316" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\beta_1 \neq \beta_0$ (the effect of $X_i$ differs between groups), the omitted interaction creates bias: the interaction $X_iD_i$ affects $Y_i$ and is correlated with $D_i$, so the coefficient on $D_i$ does not equal the ATE.</span>
 <span id="cb33-317"><a href="#cb33-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-318"><a href="#cb33-318" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate separate regressions of <span class="in">`re78`</span> on <span class="in">`educ`</span> for the treatment and control groups:</span>
+<span id="cb33-318"><a href="#cb33-318" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: separate regressions</span></span>
 <span id="cb33-319"><a href="#cb33-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-321"><a href="#cb33-321" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a>  reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">0</span>))</span>
-<span id="cb33-323"><a href="#cb33-323" aria-hidden="true" tabindex="-1"></a>  reg1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">1</span>))</span>
-<span id="cb33-324"><a href="#cb33-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="at">Control =</span> <span class="fu">coef</span>(reg0), <span class="at">Treatment =</span> <span class="fu">coef</span>(reg1))</span>
-<span id="cb33-325"><a href="#cb33-325" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute the estimated ATE:</span>
+<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate separate regressions of <span class="in">`re78`</span> on <span class="in">`educ`</span> for the treatment and control groups:</span>
+<span id="cb33-321"><a href="#cb33-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-323"><a href="#cb33-323" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-324"><a href="#cb33-324" aria-hidden="true" tabindex="-1"></a>  reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">0</span>))</span>
+<span id="cb33-325"><a href="#cb33-325" aria-hidden="true" tabindex="-1"></a>  reg1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> educ, <span class="at">data =</span> jtrain2, <span class="at">subset =</span> (train <span class="sc">==</span> <span class="dv">1</span>))</span>
+<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="at">Control =</span> <span class="fu">coef</span>(reg0), <span class="at">Treatment =</span> <span class="fu">coef</span>(reg1))</span>
+<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-328"><a href="#cb33-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
-<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>  a0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>]; b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>]</span>
-<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>]; b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>]</span>
-<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>  ATE_manual <span class="ot">&lt;-</span> (a1 <span class="sc">-</span> a0) <span class="sc">+</span> (b1 <span class="sc">-</span> b0) <span class="sc">*</span> xbar</span>
-<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Sample mean of educ:&quot;</span>, <span class="fu">round</span>(xbar, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Estimated ATE:&quot;</span>, <span class="fu">round</span>(ATE_manual, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: regression lines</span></span>
+<span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute the estimated ATE:</span>
+<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>  a0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>]; b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>]</span>
+<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>]; b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>]</span>
+<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a>  ATE_manual <span class="ot">&lt;-</span> (a1 <span class="sc">-</span> a0) <span class="sc">+</span> (b1 <span class="sc">-</span> b0) <span class="sc">*</span> xbar</span>
+<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Sample mean of educ:&quot;</span>, <span class="fu">round</span>(xbar, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Estimated ATE:&quot;</span>, <span class="fu">round</span>(ATE_manual, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The two regression lines, with a vertical line at $\bar{X}$ and the ATE marked as the gap:</span>
+<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: regression lines</span></span>
 <span id="cb33-342"><a href="#cb33-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
-<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
-<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
-<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
-<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a>  educ_range <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">18</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
-<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a>  yhat0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>] <span class="sc">*</span> educ_range</span>
-<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a>  yhat1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>] <span class="sc">*</span> educ_range</span>
-<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(educ_range, yhat0, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">&quot;Education (years)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Earnings in 1978 ($)&quot;</span>,</span>
-<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(yhat0, yhat1)),</span>
-<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">&quot;Separate regression lines by treatment group&quot;</span>)</span>
-<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(educ_range, yhat1, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Vertical line at xbar</span></span>
-<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
-<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> xbar, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;gray50&quot;</span>)</span>
-<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ATE arrow at xbar</span></span>
-<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a>  y0_at_xbar <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>] <span class="sc">*</span> xbar</span>
-<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a>  y1_at_xbar <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>] <span class="sc">*</span> xbar</span>
-<span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(xbar <span class="sc">+</span> <span class="fl">0.3</span>, y0_at_xbar, xbar <span class="sc">+</span> <span class="fl">0.3</span>, y1_at_xbar,</span>
-<span id="cb33-367"><a href="#cb33-367" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.1</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)</span>
-<span id="cb33-368"><a href="#cb33-368" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(xbar <span class="sc">+</span> <span class="fl">0.7</span>, (y0_at_xbar <span class="sc">+</span> y1_at_xbar) <span class="sc">/</span> <span class="dv">2</span>, <span class="st">&quot;ATE&quot;</span>, <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
-<span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(xbar, <span class="fu">min</span>(yhat0, yhat1) <span class="sc">-</span> <span class="dv">300</span>, <span class="fu">expression</span>(<span class="fu">bar</span>(X)), <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
-<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Control (train = 0)&quot;</span>, <span class="st">&quot;Treatment (train = 1)&quot;</span>),</span>
-<span id="cb33-372"><a href="#cb33-372" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb33-373"><a href="#cb33-373" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: demeaned regression</span></span>
+<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The two regression lines, with a vertical line at $\bar{X}$ and the ATE marked as the gap:</span>
+<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
+<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-align: center</span></span>
+<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-width: 8</span></span>
+<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| fig-height: 5.5</span></span>
+<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a>  educ_range <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">18</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a>  yhat0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>] <span class="sc">*</span> educ_range</span>
+<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a>  yhat1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>] <span class="sc">*</span> educ_range</span>
+<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(educ_range, yhat0, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">&quot;Education (years)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Earnings in 1978 ($)&quot;</span>,</span>
+<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(yhat0, yhat1)),</span>
+<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">&quot;Separate regression lines by treatment group&quot;</span>)</span>
+<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(educ_range, yhat1, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Vertical line at xbar</span></span>
+<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> xbar, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;gray50&quot;</span>)</span>
+<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ATE arrow at xbar</span></span>
+<span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a>  y0_at_xbar <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>] <span class="sc">*</span> xbar</span>
+<span id="cb33-367"><a href="#cb33-367" aria-hidden="true" tabindex="-1"></a>  y1_at_xbar <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>] <span class="sc">*</span> xbar</span>
+<span id="cb33-368"><a href="#cb33-368" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(xbar <span class="sc">+</span> <span class="fl">0.3</span>, y0_at_xbar, xbar <span class="sc">+</span> <span class="fl">0.3</span>, y1_at_xbar,</span>
+<span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="dv">3</span>, <span class="at">length =</span> <span class="fl">0.1</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(xbar <span class="sc">+</span> <span class="fl">0.7</span>, (y0_at_xbar <span class="sc">+</span> y1_at_xbar) <span class="sc">/</span> <span class="dv">2</span>, <span class="st">&quot;ATE&quot;</span>, <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
+<span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(xbar, <span class="fu">min</span>(yhat0, yhat1) <span class="sc">-</span> <span class="dv">300</span>, <span class="fu">expression</span>(<span class="fu">bar</span>(X)), <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
+<span id="cb33-372"><a href="#cb33-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-373"><a href="#cb33-373" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Control (train = 0)&quot;</span>, <span class="st">&quot;Treatment (train = 1)&quot;</span>),</span>
+<span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create the demeaned interaction and run the combined regression:</span>
+<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: demeaned regression</span></span>
 <span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a>  jtrain2<span class="sc">$</span>educ_dm <span class="ot">&lt;-</span> jtrain2<span class="sc">$</span>educ <span class="sc">-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
-<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a>  reg_dm <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> educ_dm), <span class="at">data =</span> jtrain2)</span>
-<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_dm)<span class="sc">$</span>coefficients</span>
-<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`train`</span> directly estimates the ATE, matching the result from the separate regressions approach.</span>
+<span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create the demeaned interaction and run the combined regression:</span>
+<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a>  jtrain2<span class="sc">$</span>educ_dm <span class="ot">&lt;-</span> jtrain2<span class="sc">$</span>educ <span class="sc">-</span> <span class="fu">mean</span>(jtrain2<span class="sc">$</span>educ)</span>
+<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a>  reg_dm <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> educ_dm), <span class="at">data =</span> jtrain2)</span>
+<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_dm)<span class="sc">$</span>coefficients</span>
+<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: adding more covariates</span></span>
+<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`train`</span> directly estimates the ATE, matching the result from the separate regressions approach.</span>
 <span id="cb33-389"><a href="#cb33-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>So far, we used only <span class="in">`educ`</span> as the control. The dataset contains more pre-treatment characteristics: <span class="in">`age`</span>, <span class="in">`black`</span>, <span class="in">`married`</span>.</span>
+<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: adding more covariates</span></span>
 <span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With random assignment, slopes are approximately equal across groups, so we can add controls directly without demeaned interactions:</span>
+<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>So far, we used only <span class="in">`educ`</span> as the control. The dataset contains more pre-treatment characteristics: <span class="in">`age`</span>, <span class="in">`black`</span>, <span class="in">`married`</span>.</span>
 <span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a>  reg_X <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> married, <span class="at">data =</span> jtrain2)</span>
-<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">summary</span>(reg_X)<span class="sc">$</span>coefficients, <span class="dv">1</span>)</span>
-<span id="cb33-398"><a href="#cb33-398" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-399"><a href="#cb33-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparison: simple vs. controlled</span></span>
+<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With random assignment, slopes are approximately equal across groups, so we can add controls directly without demeaned interactions:</span>
+<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-398"><a href="#cb33-398" aria-hidden="true" tabindex="-1"></a>  reg_X <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> married, <span class="at">data =</span> jtrain2)</span>
+<span id="cb33-399"><a href="#cb33-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">summary</span>(reg_X)<span class="sc">$</span>coefficients, <span class="dv">1</span>)</span>
+<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-401"><a href="#cb33-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compare the estimated ATE and its standard error across specifications, including one with demeaned interactions:</span>
+<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparison: simple vs. controlled</span></span>
 <span id="cb33-403"><a href="#cb33-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain2)</span>
-<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> married, <span class="at">data =</span> jtrain2)</span>
-<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a>  covs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;educ&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;married&quot;</span>)</span>
-<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (v <span class="cf">in</span> covs) jtrain2[[<span class="fu">paste0</span>(v, <span class="st">&quot;_dm&quot;</span>)]] <span class="ot">&lt;-</span> jtrain2[[v]] <span class="sc">-</span> <span class="fu">mean</span>(jtrain2[[v]])</span>
-<span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a>  m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> married <span class="sc">+</span></span>
-<span id="cb33-411"><a href="#cb33-411" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(train <span class="sc">*</span> educ_dm) <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> age_dm) <span class="sc">+</span></span>
-<span id="cb33-412"><a href="#cb33-412" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(train <span class="sc">*</span> black_dm) <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> married_dm), <span class="at">data =</span> jtrain2)</span>
-<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a>  make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(m) <span class="fu">c</span>(<span class="at">Estimate =</span> <span class="fu">coef</span>(m)[<span class="st">&quot;train&quot;</span>],</span>
-<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a>                            <span class="at">SE =</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coef[<span class="st">&quot;train&quot;</span>, <span class="st">&quot;Std. Error&quot;</span>])</span>
-<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No controls&quot;</span>            <span class="ot">=</span> <span class="fu">make_row</span>(m1),</span>
-<span id="cb33-417"><a href="#cb33-417" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Controls, equal slopes&quot;</span>  <span class="ot">=</span> <span class="fu">make_row</span>(m2),</span>
-<span id="cb33-418"><a href="#cb33-418" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Demeaned interactions&quot;</span>   <span class="ot">=</span> <span class="fu">make_row</span>(m3)</span>
-<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(tab, <span class="dv">2</span>)</span>
-<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-423"><a href="#cb33-423" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All three estimates are nearly identical. The demeaned interactions barely matter because randomization ensures approximately equal slopes across groups.</span>
+<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compare the estimated ATE and its standard error across specifications, including one with demeaned interactions:</span>
+<span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train, <span class="at">data =</span> jtrain2)</span>
+<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> married, <span class="at">data =</span> jtrain2)</span>
+<span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a>  covs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;educ&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;married&quot;</span>)</span>
+<span id="cb33-411"><a href="#cb33-411" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (v <span class="cf">in</span> covs) jtrain2[[<span class="fu">paste0</span>(v, <span class="st">&quot;_dm&quot;</span>)]] <span class="ot">&lt;-</span> jtrain2[[v]] <span class="sc">-</span> <span class="fu">mean</span>(jtrain2[[v]])</span>
+<span id="cb33-412"><a href="#cb33-412" aria-hidden="true" tabindex="-1"></a>  m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> train <span class="sc">+</span> educ <span class="sc">+</span> age <span class="sc">+</span> black <span class="sc">+</span> married <span class="sc">+</span></span>
+<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(train <span class="sc">*</span> educ_dm) <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> age_dm) <span class="sc">+</span></span>
+<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(train <span class="sc">*</span> black_dm) <span class="sc">+</span> <span class="fu">I</span>(train <span class="sc">*</span> married_dm), <span class="at">data =</span> jtrain2)</span>
+<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a>  make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(m) <span class="fu">c</span>(<span class="at">Estimate =</span> <span class="fu">coef</span>(m)[<span class="st">&quot;train&quot;</span>],</span>
+<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a>                            <span class="at">SE =</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coef[<span class="st">&quot;train&quot;</span>, <span class="st">&quot;Std. Error&quot;</span>])</span>
+<span id="cb33-417"><a href="#cb33-417" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb33-418"><a href="#cb33-418" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No controls&quot;</span>            <span class="ot">=</span> <span class="fu">make_row</span>(m1),</span>
+<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Controls, equal slopes&quot;</span>  <span class="ot">=</span> <span class="fu">make_row</span>(m2),</span>
+<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Demeaned interactions&quot;</span>   <span class="ot">=</span> <span class="fu">make_row</span>(m3)</span>
+<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(tab, <span class="dv">2</span>)</span>
+<span id="cb33-423"><a href="#cb33-423" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-424"><a href="#cb33-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-425"><a href="#cb33-425" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why do controls change little here?</span></span>
+<span id="cb33-425"><a href="#cb33-425" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All three estimates are nearly identical. The demeaned interactions barely matter because randomization ensures approximately equal slopes across groups.</span>
 <span id="cb33-426"><a href="#cb33-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under **random assignment**, $D_i$ is independent of all covariates: the treatment and control groups are balanced in expectation.</span>
+<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why do controls change little here?</span></span>
 <span id="cb33-428"><a href="#cb33-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Because of balance, including $X_i$ does not change the coefficient on $D_i$: there is no selection bias to remove.</span>
+<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under **random assignment**, $D_i$ is independent of all covariates: the treatment and control groups are balanced in expectation.</span>
 <span id="cb33-430"><a href="#cb33-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The NSW program recruited a narrow, disadvantaged population: long-term unemployed, high-school dropouts, former drug users, ex-offenders.</span>
+<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Because of balance, including $X_i$ does not change the coefficient on $D_i$: there is no selection bias to remove.</span>
 <span id="cb33-432"><a href="#cb33-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-433"><a href="#cb33-433" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Within this homogeneous group, covariates like <span class="in">`educ`</span>, <span class="in">`age`</span>, <span class="in">`black`</span>, and <span class="in">`married`</span> vary little and have limited predictive power for earnings.</span>
+<span id="cb33-433"><a href="#cb33-433" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The NSW program recruited a narrow, disadvantaged population: long-term unemployed, high-school dropouts, former drug users, ex-offenders.</span>
 <span id="cb33-434"><a href="#cb33-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-435"><a href="#cb33-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Both the point estimate and the standard error are nearly unchanged because the controls add almost no information beyond the treatment dummy.</span>
+<span id="cb33-435"><a href="#cb33-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Within this homogeneous group, covariates like <span class="in">`educ`</span>, <span class="in">`age`</span>, <span class="in">`black`</span>, and <span class="in">`married`</span> vary little and have limited predictive power for earnings.</span>
 <span id="cb33-436"><a href="#cb33-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: 401(k) eligibility and savings</span></span>
+<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Both the point estimate and the standard error are nearly unchanged because the controls add almost no information beyond the treatment dummy.</span>
 <span id="cb33-438"><a href="#cb33-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`k401ksubs`</span> dataset (from the <span class="in">`wooldridge`</span> package) contains 9,275 households from the 1991 Survey of Income and Program Participation.</span>
+<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: 401(k) eligibility and savings</span></span>
 <span id="cb33-440"><a href="#cb33-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(k401ksubs)</span>
-<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;n =&quot;</span>, <span class="fu">nrow</span>(k401ksubs), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">326</span>)</span>
-<span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a>  k401ksubs[<span class="fu">sample</span>(<span class="fu">nrow</span>(k401ksubs), <span class="dv">8</span>), <span class="fu">c</span>(<span class="st">&quot;e401k&quot;</span>, <span class="st">&quot;nettfa&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;marr&quot;</span>)]</span>
-<span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Treatment**: <span class="in">`e401k`</span> = 1 if the worker&#39;s employer offers a 401(k) plan, 0 otherwise.</span>
-<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Outcome**: <span class="in">`nettfa`</span> = net total financial assets (\$1000s).</span>
-<span id="cb33-451"><a href="#cb33-451" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Key covariate**: <span class="in">`inc`</span> = family income (\$1000s).</span>
-<span id="cb33-452"><a href="#cb33-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-453"><a href="#cb33-453" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is **observational**: eligibility depends on the employer, and higher-income workers tend to work at firms offering 401(k) plans.</span>
+<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`k401ksubs`</span> dataset (from the <span class="in">`wooldridge`</span> package) contains 9,275 households from the 1991 Survey of Income and Program Participation.</span>
+<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(k401ksubs)</span>
+<span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;n =&quot;</span>, <span class="fu">nrow</span>(k401ksubs), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">326</span>)</span>
+<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a>  k401ksubs[<span class="fu">sample</span>(<span class="fu">nrow</span>(k401ksubs), <span class="dv">8</span>), <span class="fu">c</span>(<span class="st">&quot;e401k&quot;</span>, <span class="st">&quot;nettfa&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;marr&quot;</span>)]</span>
+<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-451"><a href="#cb33-451" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Treatment**: <span class="in">`e401k`</span> = 1 if the worker&#39;s employer offers a 401(k) plan, 0 otherwise.</span>
+<span id="cb33-452"><a href="#cb33-452" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Outcome**: <span class="in">`nettfa`</span> = net total financial assets (\$1000s).</span>
+<span id="cb33-453"><a href="#cb33-453" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Key covariate**: <span class="in">`inc`</span> = family income (\$1000s).</span>
 <span id="cb33-454"><a href="#cb33-454" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-455"><a href="#cb33-455" aria-hidden="true" tabindex="-1"></a><span class="fu">## The selection problem</span></span>
+<span id="cb33-455"><a href="#cb33-455" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is **observational**: eligibility depends on the employer, and higher-income workers tend to work at firms offering 401(k) plans.</span>
 <span id="cb33-456"><a href="#cb33-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-457"><a href="#cb33-457" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Group means by eligibility status:</span>
+<span id="cb33-457"><a href="#cb33-457" aria-hidden="true" tabindex="-1"></a><span class="fu">## The selection problem</span></span>
 <span id="cb33-458"><a href="#cb33-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-459"><a href="#cb33-459" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-460"><a href="#cb33-460" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-461"><a href="#cb33-461" aria-hidden="true" tabindex="-1"></a>  grp <span class="ot">&lt;-</span> <span class="fu">split</span>(k401ksubs, k401ksubs<span class="sc">$</span>e401k)</span>
-<span id="cb33-462"><a href="#cb33-462" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb33-463"><a href="#cb33-463" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Ineligible (e401k=0)&quot;</span> <span class="ot">=</span> <span class="fu">colMeans</span>(grp[[<span class="st">&quot;0&quot;</span>]][, <span class="fu">c</span>(<span class="st">&quot;nettfa&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;age&quot;</span>)]),</span>
-<span id="cb33-464"><a href="#cb33-464" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Eligible (e401k=1)&quot;</span>   <span class="ot">=</span> <span class="fu">colMeans</span>(grp[[<span class="st">&quot;1&quot;</span>]][, <span class="fu">c</span>(<span class="st">&quot;nettfa&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;age&quot;</span>)])</span>
-<span id="cb33-465"><a href="#cb33-465" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb33-466"><a href="#cb33-466" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(tab, <span class="dv">1</span>)</span>
-<span id="cb33-467"><a href="#cb33-467" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-468"><a href="#cb33-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-469"><a href="#cb33-469" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eligible workers have much higher income and much higher savings. The raw gap in savings is **not** a treatment effect — it partly reflects income differences.</span>
+<span id="cb33-459"><a href="#cb33-459" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Group means by eligibility status:</span>
+<span id="cb33-460"><a href="#cb33-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-461"><a href="#cb33-461" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-462"><a href="#cb33-462" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-463"><a href="#cb33-463" aria-hidden="true" tabindex="-1"></a>  grp <span class="ot">&lt;-</span> <span class="fu">split</span>(k401ksubs, k401ksubs<span class="sc">$</span>e401k)</span>
+<span id="cb33-464"><a href="#cb33-464" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb33-465"><a href="#cb33-465" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Ineligible (e401k=0)&quot;</span> <span class="ot">=</span> <span class="fu">colMeans</span>(grp[[<span class="st">&quot;0&quot;</span>]][, <span class="fu">c</span>(<span class="st">&quot;nettfa&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;age&quot;</span>)]),</span>
+<span id="cb33-466"><a href="#cb33-466" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Eligible (e401k=1)&quot;</span>   <span class="ot">=</span> <span class="fu">colMeans</span>(grp[[<span class="st">&quot;1&quot;</span>]][, <span class="fu">c</span>(<span class="st">&quot;nettfa&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;age&quot;</span>)])</span>
+<span id="cb33-467"><a href="#cb33-467" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-468"><a href="#cb33-468" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(tab, <span class="dv">1</span>)</span>
+<span id="cb33-469"><a href="#cb33-469" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-470"><a href="#cb33-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-471"><a href="#cb33-471" aria-hidden="true" tabindex="-1"></a><span class="fu">## Separate regressions</span></span>
+<span id="cb33-471"><a href="#cb33-471" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eligible workers have much higher income and much higher savings. The raw gap in savings is **not** a treatment effect — it partly reflects income differences.</span>
 <span id="cb33-472"><a href="#cb33-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-473"><a href="#cb33-473" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate separate regressions of <span class="in">`nettfa`</span> on <span class="in">`inc`</span> for each group:</span>
+<span id="cb33-473"><a href="#cb33-473" aria-hidden="true" tabindex="-1"></a><span class="fu">## Separate regressions</span></span>
 <span id="cb33-474"><a href="#cb33-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-475"><a href="#cb33-475" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-476"><a href="#cb33-476" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-477"><a href="#cb33-477" aria-hidden="true" tabindex="-1"></a>  reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> inc, <span class="at">data =</span> k401ksubs, <span class="at">subset =</span> (e401k <span class="sc">==</span> <span class="dv">0</span>))</span>
-<span id="cb33-478"><a href="#cb33-478" aria-hidden="true" tabindex="-1"></a>  reg1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> inc, <span class="at">data =</span> k401ksubs, <span class="at">subset =</span> (e401k <span class="sc">==</span> <span class="dv">1</span>))</span>
-<span id="cb33-479"><a href="#cb33-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="at">Ineligible =</span> <span class="fu">coef</span>(reg0), <span class="at">Eligible =</span> <span class="fu">coef</span>(reg1))</span>
-<span id="cb33-480"><a href="#cb33-480" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-481"><a href="#cb33-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-482"><a href="#cb33-482" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute the estimated ATE from the two-regression formula:</span>
+<span id="cb33-475"><a href="#cb33-475" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimate separate regressions of <span class="in">`nettfa`</span> on <span class="in">`inc`</span> for each group:</span>
+<span id="cb33-476"><a href="#cb33-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-477"><a href="#cb33-477" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-478"><a href="#cb33-478" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-479"><a href="#cb33-479" aria-hidden="true" tabindex="-1"></a>  reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> inc, <span class="at">data =</span> k401ksubs, <span class="at">subset =</span> (e401k <span class="sc">==</span> <span class="dv">0</span>))</span>
+<span id="cb33-480"><a href="#cb33-480" aria-hidden="true" tabindex="-1"></a>  reg1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> inc, <span class="at">data =</span> k401ksubs, <span class="at">subset =</span> (e401k <span class="sc">==</span> <span class="dv">1</span>))</span>
+<span id="cb33-481"><a href="#cb33-481" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="at">Ineligible =</span> <span class="fu">coef</span>(reg0), <span class="at">Eligible =</span> <span class="fu">coef</span>(reg1))</span>
+<span id="cb33-482"><a href="#cb33-482" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-483"><a href="#cb33-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-484"><a href="#cb33-484" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-485"><a href="#cb33-485" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-486"><a href="#cb33-486" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(k401ksubs<span class="sc">$</span>inc)</span>
-<span id="cb33-487"><a href="#cb33-487" aria-hidden="true" tabindex="-1"></a>  a0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>]; b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>]</span>
-<span id="cb33-488"><a href="#cb33-488" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>]; b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>]</span>
-<span id="cb33-489"><a href="#cb33-489" aria-hidden="true" tabindex="-1"></a>  ATE_manual <span class="ot">&lt;-</span> (a1 <span class="sc">-</span> a0) <span class="sc">+</span> (b1 <span class="sc">-</span> b0) <span class="sc">*</span> xbar</span>
-<span id="cb33-490"><a href="#cb33-490" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Sample mean of inc:&quot;</span>, <span class="fu">round</span>(xbar, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb33-491"><a href="#cb33-491" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Estimated ATE:&quot;</span>, <span class="fu">round</span>(ATE_manual, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb33-492"><a href="#cb33-492" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-493"><a href="#cb33-493" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-494"><a href="#cb33-494" aria-hidden="true" tabindex="-1"></a><span class="fu">## Demeaned regression</span></span>
+<span id="cb33-484"><a href="#cb33-484" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compute the estimated ATE from the two-regression formula:</span>
+<span id="cb33-485"><a href="#cb33-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-486"><a href="#cb33-486" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-487"><a href="#cb33-487" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-488"><a href="#cb33-488" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(k401ksubs<span class="sc">$</span>inc)</span>
+<span id="cb33-489"><a href="#cb33-489" aria-hidden="true" tabindex="-1"></a>  a0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">1</span>]; b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg0)[<span class="dv">2</span>]</span>
+<span id="cb33-490"><a href="#cb33-490" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">1</span>]; b1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg1)[<span class="dv">2</span>]</span>
+<span id="cb33-491"><a href="#cb33-491" aria-hidden="true" tabindex="-1"></a>  ATE_manual <span class="ot">&lt;-</span> (a1 <span class="sc">-</span> a0) <span class="sc">+</span> (b1 <span class="sc">-</span> b0) <span class="sc">*</span> xbar</span>
+<span id="cb33-492"><a href="#cb33-492" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Sample mean of inc:&quot;</span>, <span class="fu">round</span>(xbar, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb33-493"><a href="#cb33-493" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Estimated ATE:&quot;</span>, <span class="fu">round</span>(ATE_manual, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb33-494"><a href="#cb33-494" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-495"><a href="#cb33-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-496"><a href="#cb33-496" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create the demeaned interaction and run the combined regression:</span>
+<span id="cb33-496"><a href="#cb33-496" aria-hidden="true" tabindex="-1"></a><span class="fu">## Demeaned regression</span></span>
 <span id="cb33-497"><a href="#cb33-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a>  k401ksubs<span class="sc">$</span>inc_dm <span class="ot">&lt;-</span> k401ksubs<span class="sc">$</span>inc <span class="sc">-</span> <span class="fu">mean</span>(k401ksubs<span class="sc">$</span>inc)</span>
-<span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a>  reg_dm <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k <span class="sc">+</span> inc <span class="sc">+</span> <span class="fu">I</span>(e401k <span class="sc">*</span> inc_dm), <span class="at">data =</span> k401ksubs)</span>
-<span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_dm)<span class="sc">$</span>coefficients</span>
-<span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-504"><a href="#cb33-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-505"><a href="#cb33-505" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`e401k`</span> directly estimates the ATE, matching the result from the separate regressions.</span>
+<span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create the demeaned interaction and run the combined regression:</span>
+<span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a>  k401ksubs<span class="sc">$</span>inc_dm <span class="ot">&lt;-</span> k401ksubs<span class="sc">$</span>inc <span class="sc">-</span> <span class="fu">mean</span>(k401ksubs<span class="sc">$</span>inc)</span>
+<span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a>  reg_dm <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k <span class="sc">+</span> inc <span class="sc">+</span> <span class="fu">I</span>(e401k <span class="sc">*</span> inc_dm), <span class="at">data =</span> k401ksubs)</span>
+<span id="cb33-504"><a href="#cb33-504" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_dm)<span class="sc">$</span>coefficients</span>
+<span id="cb33-505"><a href="#cb33-505" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb33-506"><a href="#cb33-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-507"><a href="#cb33-507" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparison across specifications</span></span>
+<span id="cb33-507"><a href="#cb33-507" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`e401k`</span> directly estimates the ATE, matching the result from the separate regressions.</span>
 <span id="cb33-508"><a href="#cb33-508" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-509"><a href="#cb33-509" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Four specifications for the effect of 401(k) eligibility on net financial assets:</span>
+<span id="cb33-509"><a href="#cb33-509" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparison across specifications</span></span>
 <span id="cb33-510"><a href="#cb33-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-511"><a href="#cb33-511" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb33-512"><a href="#cb33-512" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb33-513"><a href="#cb33-513" aria-hidden="true" tabindex="-1"></a>  m_none <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k, <span class="at">data =</span> k401ksubs)</span>
-<span id="cb33-514"><a href="#cb33-514" aria-hidden="true" tabindex="-1"></a>  m_inc  <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k <span class="sc">+</span> inc, <span class="at">data =</span> k401ksubs)</span>
-<span id="cb33-515"><a href="#cb33-515" aria-hidden="true" tabindex="-1"></a>  m_int  <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k <span class="sc">+</span> inc <span class="sc">+</span> <span class="fu">I</span>(e401k <span class="sc">*</span> inc), <span class="at">data =</span> k401ksubs)</span>
-<span id="cb33-516"><a href="#cb33-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-517"><a href="#cb33-517" aria-hidden="true" tabindex="-1"></a>  make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(m) <span class="fu">c</span>(<span class="at">Estimate =</span> <span class="fu">coef</span>(m)[<span class="st">&quot;e401k&quot;</span>],</span>
-<span id="cb33-518"><a href="#cb33-518" aria-hidden="true" tabindex="-1"></a>                            <span class="at">SE =</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coef[<span class="st">&quot;e401k&quot;</span>, <span class="st">&quot;Std. Error&quot;</span>])</span>
-<span id="cb33-519"><a href="#cb33-519" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb33-520"><a href="#cb33-520" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No controls&quot;</span>             <span class="ot">=</span> <span class="fu">make_row</span>(m_none),</span>
-<span id="cb33-521"><a href="#cb33-521" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Income, no interaction&quot;</span>  <span class="ot">=</span> <span class="fu">make_row</span>(m_inc),</span>
-<span id="cb33-522"><a href="#cb33-522" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Interaction (demeaned)&quot;</span>     <span class="ot">=</span> <span class="fu">make_row</span>(reg_dm),</span>
-<span id="cb33-523"><a href="#cb33-523" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Interaction (not demeaned)&quot;</span> <span class="ot">=</span> <span class="fu">make_row</span>(m_int)</span>
-<span id="cb33-524"><a href="#cb33-524" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb33-525"><a href="#cb33-525" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(tab, <span class="dv">2</span>)</span>
-<span id="cb33-526"><a href="#cb33-526" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb33-527"><a href="#cb33-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-528"><a href="#cb33-528" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No controls**: selection bias inflates the estimate — eligible workers earn more and save more regardless of 401(k) access.</span>
-<span id="cb33-529"><a href="#cb33-529" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Income, no interaction**: removes much of the bias but constrains the model to equal slopes.</span>
-<span id="cb33-530"><a href="#cb33-530" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interaction (demeaned)**: the coefficient on <span class="in">`e401k`</span> is the ATE evaluated at mean income, showing 401(k) eligibility increases savings by about \$5,400.</span>
-<span id="cb33-531"><a href="#cb33-531" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interaction (not demeaned)**: the coefficient on `e401k` is the **CATE** (conditional average treatment effect) evaluated at <span class="in">`inc = 0`</span>:</span>
-<span id="cb33-532"><a href="#cb33-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-533"><a href="#cb33-533" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-534"><a href="#cb33-534" aria-hidden="true" tabindex="-1"></a>  \text{CATE}(x) = \E{Y_i(1) - Y_i(0) \mid X_i = x} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)x.</span>
+<span id="cb33-511"><a href="#cb33-511" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Four specifications for the effect of 401(k) eligibility on net financial assets:</span>
+<span id="cb33-512"><a href="#cb33-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-513"><a href="#cb33-513" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb33-514"><a href="#cb33-514" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb33-515"><a href="#cb33-515" aria-hidden="true" tabindex="-1"></a>  m_none <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k, <span class="at">data =</span> k401ksubs)</span>
+<span id="cb33-516"><a href="#cb33-516" aria-hidden="true" tabindex="-1"></a>  m_inc  <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k <span class="sc">+</span> inc, <span class="at">data =</span> k401ksubs)</span>
+<span id="cb33-517"><a href="#cb33-517" aria-hidden="true" tabindex="-1"></a>  m_int  <span class="ot">&lt;-</span> <span class="fu">lm</span>(nettfa <span class="sc">~</span> e401k <span class="sc">+</span> inc <span class="sc">+</span> <span class="fu">I</span>(e401k <span class="sc">*</span> inc), <span class="at">data =</span> k401ksubs)</span>
+<span id="cb33-518"><a href="#cb33-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-519"><a href="#cb33-519" aria-hidden="true" tabindex="-1"></a>  make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(m) <span class="fu">c</span>(<span class="at">Estimate =</span> <span class="fu">coef</span>(m)[<span class="st">&quot;e401k&quot;</span>],</span>
+<span id="cb33-520"><a href="#cb33-520" aria-hidden="true" tabindex="-1"></a>                            <span class="at">SE =</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coef[<span class="st">&quot;e401k&quot;</span>, <span class="st">&quot;Std. Error&quot;</span>])</span>
+<span id="cb33-521"><a href="#cb33-521" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb33-522"><a href="#cb33-522" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;No controls&quot;</span>             <span class="ot">=</span> <span class="fu">make_row</span>(m_none),</span>
+<span id="cb33-523"><a href="#cb33-523" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Income, no interaction&quot;</span>  <span class="ot">=</span> <span class="fu">make_row</span>(m_inc),</span>
+<span id="cb33-524"><a href="#cb33-524" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Interaction (demeaned)&quot;</span>     <span class="ot">=</span> <span class="fu">make_row</span>(reg_dm),</span>
+<span id="cb33-525"><a href="#cb33-525" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Interaction (not demeaned)&quot;</span> <span class="ot">=</span> <span class="fu">make_row</span>(m_int)</span>
+<span id="cb33-526"><a href="#cb33-526" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-527"><a href="#cb33-527" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(tab, <span class="dv">2</span>)</span>
+<span id="cb33-528"><a href="#cb33-528" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb33-529"><a href="#cb33-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-530"><a href="#cb33-530" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No controls**: selection bias inflates the estimate — eligible workers earn more and save more regardless of 401(k) access.</span>
+<span id="cb33-531"><a href="#cb33-531" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Income, no interaction**: removes much of the bias but constrains the model to equal slopes.</span>
+<span id="cb33-532"><a href="#cb33-532" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interaction (demeaned)**: the coefficient on <span class="in">`e401k`</span> is the ATE evaluated at mean income, showing 401(k) eligibility increases savings by about \$5,400.</span>
+<span id="cb33-533"><a href="#cb33-533" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interaction (not demeaned)**: the coefficient on `e401k` is the **CATE** (conditional average treatment effect) evaluated at <span class="in">`inc = 0`</span>:</span>
+<span id="cb33-534"><a href="#cb33-534" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-535"><a href="#cb33-535" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb33-536"><a href="#cb33-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-537"><a href="#cb33-537" aria-hidden="true" tabindex="-1"></a>  At $x = 0$ (zero income), this is an extrapolation far outside the data range — the **sign flips** to negative.</span>
-<span id="cb33-538"><a href="#cb33-538" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Contrast with <span class="in">`jtrain2`</span>: there, controls barely mattered because randomization already eliminated selection bias. Here, controls and the demeaning trick are essential.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb33-536"><a href="#cb33-536" aria-hidden="true" tabindex="-1"></a>  \text{CATE}(x) = \E{Y_i(1) - Y_i(0) \mid X_i = x} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)x.</span>
+<span id="cb33-537"><a href="#cb33-537" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb33-538"><a href="#cb33-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-539"><a href="#cb33-539" aria-hidden="true" tabindex="-1"></a>  At $x = 0$ (zero income), this is an extrapolation far outside the data range — the **sign flips** to negative.</span>
+<span id="cb33-540"><a href="#cb33-540" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Contrast with <span class="in">`jtrain2`</span>: there, controls barely mattered because randomization already eliminated selection bias. Here, controls and the demeaning trick are essential.</span>
+<span id="cb33-541"><a href="#cb33-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-542"><a href="#cb33-542" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb33-543"><a href="#cb33-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-544"><a href="#cb33-544" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **fundamental problem of causal inference** is that we never observe both potential outcomes $Y_i(1)$ and $Y_i(0)$ for the same individual.</span>
+<span id="cb33-545"><a href="#cb33-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-546"><a href="#cb33-546" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Comparing group averages $\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0}$ does not generally yield the ATE because of **selection bias**: treated and control groups may differ in their baseline characteristics.</span>
+<span id="cb33-547"><a href="#cb33-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-548"><a href="#cb33-548" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Randomization** eliminates selection bias by making treatment independent of potential outcomes. The simple difference in means then equals the ATE, which can be estimated by regressing $Y_i$ on a treatment dummy $D_i$.</span>
+<span id="cb33-549"><a href="#cb33-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-550"><a href="#cb33-550" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In **observational studies**, treatment is not randomly assigned. Under **selection on observables**, controlling for covariates $X_i$ restores the &quot;as good as random&quot; property of treatment assignment.</span>
+<span id="cb33-551"><a href="#cb33-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-552"><a href="#cb33-552" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With covariates, $\text{ATE} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$ depends on both intercept and slope differences.</span>
+<span id="cb33-553"><a href="#cb33-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-554"><a href="#cb33-554" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **demeaning trick** makes the ATE appear directly as the coefficient on $D_i$: interact $D_i$ with $(X_i - \bar{X})$ instead of $X_i$. This absorbs the $(\beta_1 - \beta_0)\E{X_i}$ component into the $D_i$ coefficient.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

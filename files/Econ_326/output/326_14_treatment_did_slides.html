@@ -1184,10 +1184,9 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <li class="fragment"><p>We can never observe both potential outcomes for the same individual. This is the <strong>fundamental problem of causal inference</strong>.</p></li>
 </ul>
 </section>
-<section id="average-treatment-effects" class="slide level2">
-<h2>Average treatment effects</h2>
+<section id="causal-parameters-of-interest" class="slide level2">
+<h2>Causal parameters of interest</h2>
 <ul>
-<li class="fragment"><p>Since individual treatment effects <span class="math inline">Y_i(1) - Y_i(0)</span> are unobservable, we focus on averages.</p></li>
 <li class="fragment"><p><strong>Average Treatment Effect (ATE):</strong></p>
 <p><span class="math display">
 \text{ATE} = \mathrm{E}\left[Y_i(1) - Y_i(0)\right].
@@ -1202,7 +1201,9 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <section id="selection-bias" class="slide level2">
 <h2>Selection bias</h2>
 <ul>
-<li class="fragment"><p>A naive comparison of treated and untreated outcomes yields:</p>
+<li class="fragment"><p>Since we cannot observe the counterfactual for each individual, a natural idea is to use the outcomes of <strong>other people</strong> as stand-ins: compare average outcomes of the treated group to average outcomes of the untreated group.</p></li>
+<li class="fragment"><p>Can we estimate ATE by simply comparing group averages, <span class="math inline">\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right]</span>?</p></li>
+<li class="fragment"><p>Comparing group averages seems natural, but it conflates the treatment effect with pre-existing differences between groups:</p>
 <p><span class="math display">\begin{align*}
 &amp;\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right] \\
 &amp;= \mathrm{E}\left[Y_i(1) \mid D_i = 1\right] - \mathrm{E}\left[Y_i(0) \mid D_i = 0\right].
@@ -1219,6 +1220,7 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <section id="random-assignment" class="slide level2">
 <h2>Random assignment</h2>
 <ul>
+<li class="fragment"><p><strong>Randomization</strong> solves the selection problem: by randomly assigning treatment, we ensure the treated and control groups are comparable in expectation.</p></li>
 <li class="fragment"><p>Under <strong>random assignment</strong>, treatment <span class="math inline">D_i</span> is independent of potential outcomes:</p>
 <p><span class="math display">
 \mathrm{E}\left[Y_i(0) \mid D_i = 1\right] = \mathrm{E}\left[Y_i(0) \mid D_i = 0\right] = \mathrm{E}\left[Y_i(0)\right].
@@ -1293,25 +1295,24 @@ train       1.794343  0.6328536  2.835321 4.787524e-03</code></pre>
 <section id="observational-studies" class="slide level2">
 <h2>Observational studies</h2>
 <ul>
-<li class="fragment"><p>In many settings, treatment is <strong>not randomly assigned</strong>. Individuals self-select into treatment.</p></li>
-<li class="fragment"><p>E.g., workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.</p></li>
-<li class="fragment"><p>Similarly, workers at firms that offer 401(k) plans tend to have higher incomes, so comparing savings between eligible and ineligible workers confounds the plan effect with income differences.</p></li>
-<li class="fragment"><p>Self-selection generates <strong>selection bias</strong>, and the simple difference in means no longer estimates the ATE.</p></li>
-<li class="fragment"><p>To estimate treatment effects from observational data, we need to <strong>control for covariates</strong> that affect both treatment selection and outcomes.</p></li>
+<li class="fragment"><p>In many settings, randomization is not feasible or ethical. Treatment is determined by individual choices or institutional rules.</p></li>
+<li class="fragment"><p>Self-selection generates <strong>selection bias</strong>: workers who voluntarily enroll in job training may be more motivated; workers at firms offering 401(k) plans tend to have higher incomes.</p></li>
+<li class="fragment"><p><strong>Key idea</strong>: if we can identify covariates <span class="math inline">X_i</span> that explain why some individuals are treated and others are not, then <strong>after controlling for <span class="math inline">X_i</span></strong>, treatment may be as good as random.</p></li>
+<li class="fragment"><p>This is the <strong>selection on observables</strong> assumption: all confounding factors are captured by observable covariates.</p></li>
 </ul>
 </section>
 <section id="potential-outcomes-with-a-covariate" class="slide level2">
 <h2>Potential outcomes with a covariate</h2>
 <ul>
+<li class="fragment"><p>The selection on observables assumption can be formalized as follows: after conditioning on <span class="math inline">X_i</span>, treatment assignment <span class="math inline">D_i</span> is as good as random.</p></li>
 <li class="fragment"><p>Suppose the potential outcomes depend linearly on a covariate <span class="math inline">X_i</span>:</p>
 <p><span class="math display">\begin{align*}
 Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), \\
 Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),
 \end{align*}</span></p>
 <p>where <span class="math inline">\mathrm{E}\left[U_i(0) \mid X_i, D_i\right] = 0</span> and <span class="math inline">\mathrm{E}\left[U_i(1) \mid X_i, D_i\right] = 0</span>.</p></li>
-<li class="fragment"><p>These assumptions mean that, after conditioning on <span class="math inline">X_i</span>, treatment assignment <span class="math inline">D_i</span> is as good as random. This is called <strong>conditional mean independence</strong> (or “selection on observables”).</p></li>
-<li class="fragment"><p>While <span class="math inline">Y_i(0)</span> and <span class="math inline">Y_i(1)</span> depend on <span class="math inline">X_i</span> (and thus on <span class="math inline">D_i</span>), the residual terms after controlling for <span class="math inline">X_i</span>, namely <span class="math inline">U_i(0)</span> and <span class="math inline">U_i(1)</span>, are uncorrelated with both <span class="math inline">X_i</span> and <span class="math inline">D_i</span>.</p></li>
-<li class="fragment"><p>Note that the effect of <span class="math inline">X_i</span> on the potential outcomes can differ between the treated and control groups: <span class="math inline">\beta_1</span> may not equal <span class="math inline">\beta_0</span>.</p></li>
+<li class="fragment"><p>These conditions are called <strong>conditional mean independence</strong>: while <span class="math inline">Y_i(0)</span> and <span class="math inline">Y_i(1)</span> depend on <span class="math inline">X_i</span> (and thus on <span class="math inline">D_i</span>), the residual terms after controlling for <span class="math inline">X_i</span>, namely <span class="math inline">U_i(0)</span> and <span class="math inline">U_i(1)</span>, are uncorrelated with both <span class="math inline">X_i</span> and <span class="math inline">D_i</span>.</p></li>
+<li class="fragment"><p>The effect of <span class="math inline">X_i</span> on the potential outcomes can differ between the treated and control groups: <span class="math inline">\beta_1</span> may not equal <span class="math inline">\beta_0</span>.</p></li>
 </ul>
 </section>
 <section id="the-ate-with-a-covariate" class="slide level2">
@@ -1362,21 +1363,18 @@ Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i \\
 <section id="the-demeaning-trick" class="slide level2">
 <h2>The demeaning trick</h2>
 <ul>
-<li class="fragment"><p>Write <span class="math inline">X_i = \mathrm{E}\left[X_i\right] + (X_i - \mathrm{E}\left[X_i\right])</span>. Then the interaction term becomes:</p>
+<li class="fragment"><p>The coefficient on <span class="math inline">D_i</span> is <span class="math inline">\alpha_1 - \alpha_0</span>, not the ATE. To fix this, <strong>add and subtract</strong> <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]D_i</span>:</p>
 <p><span class="math display">\begin{align*}
-(\beta_1 - \beta_0)X_i D_i &amp;= (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right] D_i \\
-&amp;\quad + (\beta_1 - \beta_0)(X_i - \mathrm{E}\left[X_i\right])D_i.
+Y_i &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i + U_i \\
+&amp;= \alpha_0 + \big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]}\big]D_i \\
+&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i {\color{red}{}- (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]D_i} + U_i \\
+&amp;= \alpha_0 + \underbrace{\big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]}\big]}_{\text{ATE}} D_i \\
+&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0){\color{red}(X_i - \mathrm{E}\left[X_i\right])}D_i + U_i.
 \end{align*}</span></p></li>
-<li class="fragment"><p>Substituting into the regression:</p>
-<p><span class="math display">\begin{align*}
-Y_i &amp;= \alpha_0 + \Big[(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]\Big] D_i \\
-&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \mathrm{E}\left[X_i\right])D_i + U_i.
-\end{align*}</span></p></li>
-<li class="fragment"><p>Define <span class="math inline">\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> and <span class="math inline">\delta = \beta_1 - \beta_0</span>:</p>
-<p><span class="math display">\begin{align*}
-Y_i &amp;= \alpha_0 + \tau D_i + \beta_0 X_i \\
-&amp;\quad + \delta(X_i - \mathrm{E}\left[X_i\right])D_i + U_i.
-\end{align*}</span></p></li>
+<li class="fragment"><p>Defining <span class="math inline">\tau = \text{ATE}</span> and <span class="math inline">\delta = \beta_1 - \beta_0</span>:</p>
+<p><span class="math display">
+Y_i = \alpha_0 + \tau D_i + \beta_0 X_i + \delta(X_i - \mathrm{E}\left[X_i\right])D_i + U_i.
+</span></p></li>
 <li class="fragment"><p>The coefficient <span class="math inline">\tau</span> on <span class="math inline">D_i</span> is exactly the <strong>ATE</strong>.</p></li>
 </ul>
 </section>
@@ -1663,6 +1661,17 @@ Interaction (not demeaned)         -10.37 2.53</code></pre>
 </span></p>
 <p>At <span class="math inline">x = 0</span> (zero income), this is an extrapolation far outside the data range — the <strong>sign flips</strong> to negative.</p></li>
 <li class="fragment"><p>Contrast with <code>jtrain2</code>: there, controls barely mattered because randomization already eliminated selection bias. Here, controls and the demeaning trick are essential.</p></li>
+</ul>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li class="fragment"><p>The <strong>fundamental problem of causal inference</strong> is that we never observe both potential outcomes <span class="math inline">Y_i(1)</span> and <span class="math inline">Y_i(0)</span> for the same individual.</p></li>
+<li class="fragment"><p>Comparing group averages <span class="math inline">\mathrm{E}\left[Y_i \mid D_i = 1\right] - \mathrm{E}\left[Y_i \mid D_i = 0\right]</span> does not generally yield the ATE because of <strong>selection bias</strong>: treated and control groups may differ in their baseline characteristics.</p></li>
+<li class="fragment"><p><strong>Randomization</strong> eliminates selection bias by making treatment independent of potential outcomes. The simple difference in means then equals the ATE, which can be estimated by regressing <span class="math inline">Y_i</span> on a treatment dummy <span class="math inline">D_i</span>.</p></li>
+<li class="fragment"><p>In <strong>observational studies</strong>, treatment is not randomly assigned. Under <strong>selection on observables</strong>, controlling for covariates <span class="math inline">X_i</span> restores the “as good as random” property of treatment assignment.</p></li>
+<li class="fragment"><p>With covariates, <span class="math inline">\text{ATE} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> depends on both intercept and slope differences.</p></li>
+<li class="fragment"><p>The <strong>demeaning trick</strong> makes the ATE appear directly as the coefficient on <span class="math inline">D_i</span>: interact <span class="math inline">D_i</span> with <span class="math inline">(X_i - \bar{X})</span> instead of <span class="math inline">X_i</span>. This absorbs the <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span> component into the <span class="math inline">D_i</span> coefficient.</p></li>
 </ul>
 
 </section>

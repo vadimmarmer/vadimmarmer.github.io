@@ -81,9 +81,9 @@ format:
 
 - We can never observe both potential outcomes for the same individual. This is the **fundamental problem of causal inference**.
 
-## Average treatment effects
 
-- Since individual treatment effects $Y_i(1) - Y_i(0)$ are unobservable, we focus on averages.
+
+## Causal parameters of interest
 
 - **Average Treatment Effect (ATE):**
 
@@ -99,9 +99,15 @@ format:
 
 - ATE averages over the entire population; ATT averages only over those who actually receive treatment.
 
+
+
 ## Selection bias
 
-- A naive comparison of treated and untreated outcomes yields:
+- Since we cannot observe the counterfactual for each individual, a natural idea is to use the outcomes of **other people** as stand-ins: compare average outcomes of the treated group to average outcomes of the untreated group.
+
+- Can we estimate ATE by simply comparing group averages, $\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0}$?
+
+- Comparing group averages seems natural, but it conflates the treatment effect with pre-existing differences between groups:
 
   \begin{align*}
   &\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0} \\
@@ -119,6 +125,8 @@ format:
 - E.g., people who choose to enroll in job training may differ systematically from those who do not.
 
 ## Random assignment
+
+- **Randomization** solves the selection problem: by randomly assigning treatment, we ensure the treated and control groups are comparable in expectation.
 
 - Under **random assignment**, treatment $D_i$ is independent of potential outcomes:
 
@@ -186,17 +194,17 @@ format:
 
 ## Observational studies
 
-- In many settings, treatment is **not randomly assigned**. Individuals self-select into treatment.
+- In many settings, randomization is not feasible or ethical. Treatment is determined by individual choices or institutional rules.
 
-- E.g., workers who voluntarily enroll in job training may be more motivated or have lower baseline earnings than those who do not enroll.
+- Self-selection generates **selection bias**: workers who voluntarily enroll in job training may be more motivated; workers at firms offering 401(k) plans tend to have higher incomes.
 
-- Similarly, workers at firms that offer 401(k) plans tend to have higher incomes, so comparing savings between eligible and ineligible workers confounds the plan effect with income differences.
+- **Key idea**: if we can identify covariates $X_i$ that explain why some individuals are treated and others are not, then **after controlling for $X_i$**, treatment may be as good as random.
 
-- Self-selection generates **selection bias**, and the simple difference in means no longer estimates the ATE.
-
-- To estimate treatment effects from observational data, we need to **control for covariates** that affect both treatment selection and outcomes.
+- This is the **selection on observables** assumption: all confounding factors are captured by observable covariates.
 
 ## Potential outcomes with a covariate
+
+- The selection on observables assumption can be formalized as follows: after conditioning on $X_i$, treatment assignment $D_i$ is as good as random.
 
 - Suppose the potential outcomes depend linearly on a covariate $X_i$:
 
@@ -207,9 +215,8 @@ format:
 
   where $\E{U_i(0) \mid X_i, D_i} = 0$ and $\E{U_i(1) \mid X_i, D_i} = 0$.
 
-- These assumptions mean that, after conditioning on $X_i$, treatment assignment $D_i$ is as good as random. This is called **conditional mean independence** (or "selection on observables").
-- While $Y_i(0)$ and $Y_i(1)$ depend on $X_i$ (and thus on $D_i$), the residual terms after controlling for $X_i$, namely $U_i(0)$ and $U_i(1)$, are uncorrelated with both $X_i$ and $D_i$.
-- Note that the effect of $X_i$ on the potential outcomes can differ between the treated and control groups: $\beta_1$ may not equal $\beta_0$.
+- These conditions are called **conditional mean independence**: while $Y_i(0)$ and $Y_i(1)$ depend on $X_i$ (and thus on $D_i$), the residual terms after controlling for $X_i$, namely $U_i(0)$ and $U_i(1)$, are uncorrelated with both $X_i$ and $D_i$.
+- The effect of $X_i$ on the potential outcomes can differ between the treated and control groups: $\beta_1$ may not equal $\beta_0$.
 
 ## The ATE with a covariate
 
@@ -265,26 +272,21 @@ format:
 
 ## The demeaning trick
 
-- Write $X_i = \E{X_i} + (X_i - \E{X_i})$. Then the interaction term becomes:
+- The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, not the ATE. To fix this, **add and subtract** $(\beta_1 - \beta_0)\E{X_i}D_i$:
 
   \begin{align*}
-  (\beta_1 - \beta_0)X_i D_i &= (\beta_1 - \beta_0)\E{X_i} D_i \\
-  &\quad + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i.
+  Y_i &= \alpha_0 + (\alpha_1 - \alpha_0)D_i + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i + U_i \\
+  &= \alpha_0 + \big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\E{X_i}}\big]D_i \\
+  &\quad + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i {\color{red}{}- (\beta_1 - \beta_0)\E{X_i}D_i} + U_i \\
+  &= \alpha_0 + \underbrace{\big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\E{X_i}}\big]}_{\text{ATE}} D_i \\
+  &\quad + \beta_0 X_i + (\beta_1 - \beta_0){\color{red}(X_i - \E{X_i})}D_i + U_i.
   \end{align*}
 
-- Substituting into the regression:
+- Defining $\tau = \text{ATE}$ and $\delta = \beta_1 - \beta_0$:
 
-  \begin{align*}
-  Y_i &= \alpha_0 + \Big[(\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}\Big] D_i \\
-  &\quad + \beta_0 X_i + (\beta_1 - \beta_0)(X_i - \E{X_i})D_i + U_i.
-  \end{align*}
-
-- Define $\tau = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$ and $\delta = \beta_1 - \beta_0$:
-
-  \begin{align*}
-  Y_i &= \alpha_0 + \tau D_i + \beta_0 X_i \\
-  &\quad + \delta(X_i - \E{X_i})D_i + U_i.
-  \end{align*}
+  $$
+  Y_i = \alpha_0 + \tau D_i + \beta_0 X_i + \delta(X_i - \E{X_i})D_i + U_i.
+  $$
 
 - The coefficient $\tau$ on $D_i$ is exactly the **ATE**.
 
@@ -536,4 +538,18 @@ format:
 
   At $x = 0$ (zero income), this is an extrapolation far outside the data range — the **sign flips** to negative.
 - Contrast with `jtrain2`: there, controls barely mattered because randomization already eliminated selection bias. Here, controls and the demeaning trick are essential.
+
+## Summary
+
+- The **fundamental problem of causal inference** is that we never observe both potential outcomes $Y_i(1)$ and $Y_i(0)$ for the same individual.
+
+- Comparing group averages $\E{Y_i \mid D_i = 1} - \E{Y_i \mid D_i = 0}$ does not generally yield the ATE because of **selection bias**: treated and control groups may differ in their baseline characteristics.
+
+- **Randomization** eliminates selection bias by making treatment independent of potential outcomes. The simple difference in means then equals the ATE, which can be estimated by regressing $Y_i$ on a treatment dummy $D_i$.
+
+- In **observational studies**, treatment is not randomly assigned. Under **selection on observables**, controlling for covariates $X_i$ restores the "as good as random" property of treatment assignment.
+
+- With covariates, $\text{ATE} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$ depends on both intercept and slope differences.
+
+- The **demeaning trick** makes the ATE appear directly as the coefficient on $D_i$: interact $D_i$ with $(X_i - \bar{X})$ instead of $X_i$. This absorbs the $(\beta_1 - \beta_0)\E{X_i}$ component into the $D_i$ coefficient.
 
