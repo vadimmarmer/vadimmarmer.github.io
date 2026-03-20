@@ -1,0 +1,233 @@
+---
+title: "Lecture 18: Misspecification"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_18_misspec.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+    embed-resources: true
+  pdf:
+    output-file: 326_18_misspec.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_18_misspec_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Strong exogeneity and the conditional expectation function (CEF)
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+:::
+
+- Consider the linear regression model
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.
+  $$
+
+- When the errors are **strongly exogenous**, i.e. $\E{U_{i} \mid X_{i}} = 0$, the linear regression model defines the **CEF** of $Y$ conditional on $X$:
+
+$$
+\begin{aligned}
+\mathrm{CEF}_{Y}\left( X_{i}\right) &\equiv \E{Y_{i} \mid X_{i}} \\
+&= \E{\beta _{0}+\beta _{1}X_{i}+U_{i} \mid X_{i}} \\
+&= \beta _{0}+\beta _{1}X_{i}+\E{U_{i} \mid X_{i}} \\
+&= \beta _{0}+\beta _{1}X_{i}.
+\end{aligned}
+$$
+
+## Weak exogeneity
+
+$$
+\begin{aligned}
+Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
+\E{U_{i}} &= 0
+\end{aligned}
+$$
+
+- Suppose the errors are only **weakly exogenous**:
+  $$
+  \E{U_{i}X_{i}} = 0.
+  $$
+
+- In this case,
+  $$
+  \mathrm{CEF}_{Y}\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.
+  $$
+
+- **Question:** What does the econometrician estimate when running a linear regression and the regressors are *not* strongly exogenous?
+
+## Linear regression as a misspecified CEF
+
+- Suppose that
+  $$
+  \E{Y_{i} \mid X_{i}} = g\left( X_{i}\right),
+  $$
+  where $g$ is some unknown *nonlinear* function. Thus, the **true** CEF is $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.$
+
+- Define
+  $$
+  V_{i}=Y_{i}-\E{Y_{i} \mid X_{i}},
+  $$
+  so we can write the true model as
+  $$
+  \begin{aligned}
+  Y_{i} &= g\left( X_{i}\right) +V_{i}, \\
+  \E{V_{i} \mid X_{i}} &= 0.
+  \end{aligned}
+  $$
+
+## Linear regression as a misspecified CEF
+
+- Write
+
+$$
+\begin{aligned}
+Y_{i} &= g\left( X_{i}\right) +V_{i} \\
+&= \beta _{0}+\beta _{1}X_{i}-\beta _{0}-\beta _{1}X_{i}+g\left( X_{i}\right) +V_{i}
+\end{aligned}
+$$
+
+- or
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},
+  $$
+  where
+  $$
+  U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
+  $$
+
+- Can we find $\beta _{0}$ and $\beta _{1}$ so that $\E{U_{i}} = 0$ and $\E{X_{i}U_{i}} = 0$? If yes, how can we interpret such $\beta _{0}$ and $\beta _{1}$?
+
+## Linear regression as a misspecified CEF
+
+$$
+U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
+$$
+
+- Note that
+
+$$
+\begin{aligned}
+\E{U_{i}}
+&= \E{V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} \\
+&= \E{V_{i}}+\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} \\
+&= \E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}},
+\end{aligned}
+$$
+
+- and
+
+$$
+\begin{aligned}
+\E{U_{i}X_{i}}
+&= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} \\
+&= \E{V_{i}X_{i}}+\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} \\
+&= \E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}}.
+\end{aligned}
+$$
+
+- Thus, to have $\E{U_{i}} = \E{U_{i}X_{i}} = 0$, we need to find $\beta _{0}$ and $\beta _{1}$ such that
+
+$$
+\begin{aligned}
+\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} &= 0, \\
+\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} &= 0.
+\end{aligned}
+$$
+
+## Linear approximation of the CEF
+
+- Consider the following approximation problem:
+  $$
+  \min_{b_{0},b_{1}}\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.
+  $$
+
+- We are approximating the CEF by linear functions.
+
+- Among the linear functions, we are looking for the **best** linear approximation in the **mean squared error (MSE)** sense.
+
+## Linear approximation of the CEF
+
+$$
+\begin{aligned}
+&\min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right), \\
+&\text{MSE}\left( b_{0},b_{1}\right) =\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.
+\end{aligned}
+$$
+
+- Let $\beta _{0}$ and $\beta _{1}$ denote the solution: $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right).$
+
+- The first-order conditions are:
+
+$$
+\begin{aligned}
+\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{0}} &= -2\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} = 0. \\
+\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{1}} &= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.
+\end{aligned}
+$$
+
+## Linear regression as the best linear approximation of the CEF
+
+- We have
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
+  U_{i} &= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
+  \end{aligned}
+  $$
+
+- With $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}},$
+  $$
+  \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.
+  $$
+
+- Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).
+
+## Misspecification and heteroskedasticity
+
+- We have
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
+  U_{i} &= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
+  \end{aligned}
+  $$
+
+- Suppose that the "true" error $V_{i}$ is homoskedastic: $\E{V_{i}^{2} \mid X_{i}} = \sigma _{V}^{2}$ for all $X_{i}.$
+
+- $U_{i}$ is **heteroskedastic** if $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X$:
+
+$$
+\begin{aligned}
+\E{U_{i}^{2} \mid X_{i}}
+&= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} \\
+&= \E{V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2} \mid X_{i}} \\
+&\quad + \E{2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}} \\
+&= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2}.
+\end{aligned}
+$$
