@@ -13,6 +13,7 @@ format:
     theme: cosmo
     smooth-scroll: true
     html-math-method: katex
+    embed-resources: true
   pdf:
     output-file: 326_11_mreg_properties.pdf
     pdf-engine: xelatex
@@ -379,3 +380,53 @@ $$\begin{aligned}
   \Vhat{\hat{\beta}_{1}} &=\frac{s^{2}}{SSR_{1}}, \\
   \widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right) &=s^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{SSR_{1} \cdot SSR_{2}}.
   \end{aligned}$$
+
+## Standard errors in terms of R-squared
+
+- **Auxiliary $R^{2}$:** Let $R_{1}^{2}$ be the R-squared from regressing $X_{1}$ on a constant and $X_{2},\ldots,X_{k}$. By definition of R-squared,
+
+  $$
+  SSR_{1} = SST_{1}(1 - R_{1}^{2}), \quad \text{where } SST_{1} = \sum_{i=1}^{n}(X_{1,i} - \bar{X}_{1})^{2}.
+  $$
+
+- **Adjusted $R^{2}$:** From $s^{2} = s_{Y}^{2}(1 - \bar{R}^{2})$, where $s_{Y}^{2} = SST/(n-1)$ is the sample variance of $Y$,
+
+  $$\begin{aligned}
+  \se{\hat{\beta}_{1}} &= \sqrt{\frac{s^{2}}{SSR_{1}}} = \sqrt{\frac{s_{Y}^{2}(1 - \bar{R}^{2})}{SST_{1}(1 - R_{1}^{2})}}.
+  \end{aligned}$$
+
+- Define $s_{X_{1}} = \sqrt{SST_{1}/(n-1)}$. Then
+
+  $$
+  \se{\hat{\beta}_{1}} = \frac{s_{Y}}{s_{X_{1}}} \cdot \frac{1}{\sqrt{n - 1}} \cdot \sqrt{\frac{1 - \bar{R}^{2}}{1 - R_{1}^{2}}}.
+  $$
+
+## Three factors behind standard errors
+
+- The SE formula has three interpretable factors:
+
+  $$
+  \se{\hat{\beta}_{1}} = \underbrace{\frac{s_{Y}}{s_{X_{1}}}}_{\text{scaling}} \cdot \underbrace{\frac{1}{\sqrt{n - 1}}}_{\text{sample size}} \cdot \underbrace{\sqrt{\frac{1 - \bar{R}^{2}}{1 - R_{1}^{2}}}}_{\text{fit vs. collinearity}}
+  $$
+
+  1. $s_{Y}/s_{X_{1}}$ — scaling: the ratio of sample standard deviations of $Y$ and $X_{1}$
+  2. $1/\sqrt{n - 1}$ — sample size effect; more data reduces SE
+  3. $\sqrt{(1 - \bar{R}^{2})/(1 - R_{1}^{2})}$ — fit vs. multicollinearity trade-off:
+     - $(1 - \bar{R}^{2})$: unexplained variation in $Y$ (adjusted for degrees of freedom); higher $\bar{R}^{2}$ reduces SE
+     - $(1 - R_{1}^{2})$: unique variation in $X_{1}$; more collinearity (higher $R_{1}^{2}$) inflates SE
+
+## Connection to Cases A, B, C
+
+- The SE formula clarifies the three cases:
+
+  - **Case A** (irrelevant regressor): $\bar{R}^{2}$ decreases, $R_{1}^{2}$ may increase $\Longrightarrow$ SE increases
+  - **Case B** (relevant, uncorrelated with $X_{1}$): $\bar{R}^{2}$ increases, $R_{1}^{2} \approx$ unchanged $\Longrightarrow$ SE decreases
+  - **Case C** (relevant, correlated with $X_{1}$): $\bar{R}^{2}$ increases but $R_{1}^{2}$ also increases $\Longrightarrow$ ambiguous
+
+- **Remark.** An equivalent expression uses the unadjusted $R^{2}$:
+
+  $$
+  \se{\hat{\beta}_{1}} = \frac{s_{Y}}{s_{X_{1}}} \cdot \frac{1}{\sqrt{n - k - 1}} \cdot \sqrt{\frac{1 - R^{2}}{1 - R_{1}^{2}}}.
+  $$
+
+  This follows from $s^{2} = SST(1 - R^{2})/(n - k - 1)$, which keeps $R^{2}$ and the degrees-of-freedom correction separate.

@@ -1376,6 +1376,57 @@ s^{2}=\frac{1}{n-k-1}\sum_{i=1}^{n}\hat{U}_{i}^{2}.
 \widehat{\mathrm{Cov}}\left(\hat{\beta}_{1},\hat{\beta}_{2}\right) &amp;=s^{2}\frac{\sum_{i=1}^{n}\tilde{X}_{1,i}\tilde{X}_{2,i}}{SSR_{1} \cdot SSR_{2}}.
 \end{aligned}</span></p></li>
 </ul>
+</section>
+<section id="standard-errors-in-terms-of-r-squared" class="slide level2">
+<h2>Standard errors in terms of R-squared</h2>
+<ul>
+<li class="fragment"><p><strong>Auxiliary <span class="math inline">R^{2}</span>:</strong> Let <span class="math inline">R_{1}^{2}</span> be the R-squared from regressing <span class="math inline">X_{1}</span> on a constant and <span class="math inline">X_{2},\ldots,X_{k}</span>. By definition of R-squared,</p>
+<p><span class="math display">
+SSR_{1} = SST_{1}(1 - R_{1}^{2}), \quad \text{where } SST_{1} = \sum_{i=1}^{n}(X_{1,i} - \bar{X}_{1})^{2}.
+</span></p></li>
+<li class="fragment"><p><strong>Adjusted <span class="math inline">R^{2}</span>:</strong> From <span class="math inline">s^{2} = s_{Y}^{2}(1 - \bar{R}^{2})</span>, where <span class="math inline">s_{Y}^{2} = SST/(n-1)</span> is the sample variance of <span class="math inline">Y</span>,</p>
+<p><span class="math display">\begin{aligned}
+\mathrm{se}\left(\hat{\beta}_{1}\right) &amp;= \sqrt{\frac{s^{2}}{SSR_{1}}} = \sqrt{\frac{s_{Y}^{2}(1 - \bar{R}^{2})}{SST_{1}(1 - R_{1}^{2})}}.
+\end{aligned}</span></p></li>
+<li class="fragment"><p>Define <span class="math inline">s_{X_{1}} = \sqrt{SST_{1}/(n-1)}</span>. Then</p>
+<p><span class="math display">
+\mathrm{se}\left(\hat{\beta}_{1}\right) = \frac{s_{Y}}{s_{X_{1}}} \cdot \frac{1}{\sqrt{n - 1}} \cdot \sqrt{\frac{1 - \bar{R}^{2}}{1 - R_{1}^{2}}}.
+</span></p></li>
+</ul>
+</section>
+<section id="three-factors-behind-standard-errors" class="slide level2 scrollable">
+<h2>Three factors behind standard errors</h2>
+<ul>
+<li class="fragment"><p>The SE formula has three interpretable factors:</p>
+<p><span class="math display">
+\mathrm{se}\left(\hat{\beta}_{1}\right) = \underbrace{\frac{s_{Y}}{s_{X_{1}}}}_{\text{scaling}} \cdot \underbrace{\frac{1}{\sqrt{n - 1}}}_{\text{sample size}} \cdot \underbrace{\sqrt{\frac{1 - \bar{R}^{2}}{1 - R_{1}^{2}}}}_{\text{fit vs. collinearity}}
+</span></p>
+<ol type="1">
+<li class="fragment"><span class="math inline">s_{Y}/s_{X_{1}}</span> — scaling: the ratio of sample standard deviations of <span class="math inline">Y</span> and <span class="math inline">X_{1}</span></li>
+<li class="fragment"><span class="math inline">1/\sqrt{n - 1}</span> — sample size effect; more data reduces SE</li>
+<li class="fragment"><span class="math inline">\sqrt{(1 - \bar{R}^{2})/(1 - R_{1}^{2})}</span> — fit vs. multicollinearity trade-off:
+<ul>
+<li class="fragment"><span class="math inline">(1 - \bar{R}^{2})</span>: unexplained variation in <span class="math inline">Y</span> (adjusted for degrees of freedom); higher <span class="math inline">\bar{R}^{2}</span> reduces SE</li>
+<li class="fragment"><span class="math inline">(1 - R_{1}^{2})</span>: unique variation in <span class="math inline">X_{1}</span>; more collinearity (higher <span class="math inline">R_{1}^{2}</span>) inflates SE</li>
+</ul></li>
+</ol></li>
+</ul>
+</section>
+<section id="connection-to-cases-a-b-c" class="slide level2">
+<h2>Connection to Cases A, B, C</h2>
+<ul>
+<li class="fragment"><p>The SE formula clarifies the three cases:</p>
+<ul>
+<li class="fragment"><strong>Case A</strong> (irrelevant regressor): <span class="math inline">\bar{R}^{2}</span> decreases, <span class="math inline">R_{1}^{2}</span> may increase <span class="math inline">\Longrightarrow</span> SE increases</li>
+<li class="fragment"><strong>Case B</strong> (relevant, uncorrelated with <span class="math inline">X_{1}</span>): <span class="math inline">\bar{R}^{2}</span> increases, <span class="math inline">R_{1}^{2} \approx</span> unchanged <span class="math inline">\Longrightarrow</span> SE decreases</li>
+<li class="fragment"><strong>Case C</strong> (relevant, correlated with <span class="math inline">X_{1}</span>): <span class="math inline">\bar{R}^{2}</span> increases but <span class="math inline">R_{1}^{2}</span> also increases <span class="math inline">\Longrightarrow</span> ambiguous</li>
+</ul></li>
+<li class="fragment"><p><strong>Remark.</strong> An equivalent expression uses the unadjusted <span class="math inline">R^{2}</span>:</p>
+<p><span class="math display">
+\mathrm{se}\left(\hat{\beta}_{1}\right) = \frac{s_{Y}}{s_{X_{1}}} \cdot \frac{1}{\sqrt{n - k - 1}} \cdot \sqrt{\frac{1 - R^{2}}{1 - R_{1}^{2}}}.
+</span></p>
+<p>This follows from <span class="math inline">s^{2} = SST(1 - R^{2})/(n - k - 1)</span>, which keeps <span class="math inline">R^{2}</span> and the degrees-of-freedom correction separate.</p></li>
+</ul>
 
 </section>
     </div>
