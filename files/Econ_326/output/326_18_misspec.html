@@ -2388,10 +2388,10 @@ U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{
 \frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0, \\
 \frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
 \end{align*}</span></p></li>
-<li><p>These are the conditions for weak exogeneity derived earlier, so <span class="math display">
+<li><p>OLS chooses <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is <strong>uncorrelated with the specification error</strong> <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span>, yielding the best linear approximation of the CEF in the MSE sense.</p></li>
+<li><p>Since <span class="math inline">U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)</span>, this also gives <span class="math display">
 \mathrm{E}\left[U_{i}\right] = 0\text{ and }\mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
-<li><p>OLS chooses <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is <strong>uncorrelated with the specification error</strong> <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span> (and hence with <span class="math inline">U_{i}</span>), yielding the best linear approximation of the CEF in the MSE sense.</p></li>
 </ul>
 </section>
 <section id="misspecification-and-heteroskedasticity" class="level2">
@@ -3013,12 +3013,12 @@ U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{
 <span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  \frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.</span>
 <span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These are the conditions for weak exogeneity derived earlier, so</span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$, yielding the best linear approximation of the CEF in the MSE sense.</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)$, this also gives</span>
 <span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$ (and hence with $U_{i}$), yielding the best linear approximation of the CEF in the MSE sense.</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Misspecification and heteroskedasticity</span></span>
 <span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>

@@ -149,12 +149,12 @@ format:
   \frac{\partial \text{MSE}}{\partial b_{1}} &= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.
   \end{align*}
 
-- These are the conditions for weak exogeneity derived earlier, so
+- OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$, yielding the best linear approximation of the CEF in the MSE sense.
+
+- Since $U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)$, this also gives
   $$
   \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.
   $$
-
-- OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$ (and hence with $U_{i}$), yielding the best linear approximation of the CEF in the MSE sense.
 
 ## Misspecification and heteroskedasticity
 

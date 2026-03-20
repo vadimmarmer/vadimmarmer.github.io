@@ -1165,10 +1165,10 @@ U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{
 \frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0, \\
 \frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
 \end{align*}</span></p></li>
-<li class="fragment"><p>These are the conditions for weak exogeneity derived earlier, so <span class="math display">
+<li class="fragment"><p>OLS chooses <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is <strong>uncorrelated with the specification error</strong> <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span>, yielding the best linear approximation of the CEF in the MSE sense.</p></li>
+<li class="fragment"><p>Since <span class="math inline">U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)</span>, this also gives <span class="math display">
 \mathrm{E}\left[U_{i}\right] = 0\text{ and }\mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
-<li class="fragment"><p>OLS chooses <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is <strong>uncorrelated with the specification error</strong> <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span> (and hence with <span class="math inline">U_{i}</span>), yielding the best linear approximation of the CEF in the MSE sense.</p></li>
 </ul>
 </section>
 <section id="misspecification-and-heteroskedasticity" class="slide level2">
