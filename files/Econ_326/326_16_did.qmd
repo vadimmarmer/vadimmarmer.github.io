@@ -1,11 +1,11 @@
 ---
-title: "Lecture 15: Difference-in-differences"
+title: "Lecture 16: Difference-in-differences"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:
   html:
-    output-file: 326_15_did.html
+    output-file: 326_16_did.html
     toc: true
     toc-depth: 3
     toc-location: right
@@ -15,7 +15,7 @@ format:
     html-math-method: katex
     embed-resources: true
   pdf:
-    output-file: 326_15_did.pdf
+    output-file: 326_16_did.pdf
     pdf-engine: xelatex
     geometry: margin=0.75in
     fontsize: 10pt
@@ -23,7 +23,7 @@ format:
     toc: false
     classoption: fleqn
   revealjs:
-    output-file: 326_15_did_slides.html
+    output-file: 326_16_did_slides.html
     theme: solarized
     css: slides_no_caps.css
     smaller: true

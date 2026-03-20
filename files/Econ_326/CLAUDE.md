@@ -14,19 +14,20 @@ Converting LaTeX Beamer lecture slides for Economics 326 (Introduction to Econom
 | Course page | `/_teaching/2026-01-Econ-326.md` |
 | Slide CSS | `/files/Econ_326/slides_no_caps.css` |
 
-## Lectures (17 total, after merging and skipping)
+## Lectures (18 total, after merging)
 
-Lectures 01–16 are converted. Lectures 08 and 09 (both hypothesis testing) were merged into a single lecture 08. Lecture 14 (`mreg_testing_2`) is skipped. Lectures 16–18 (consistency, asymptotic normality, asymptotic variance) were merged into a single lecture 16. Remaining:
+Lectures 01–17 are converted. Lectures 08 and 09 (both hypothesis testing) were merged into a single lecture 08. Lectures 16–18 (consistency, asymptotic normality, asymptotic variance) were merged into a single lecture 17. Remaining:
 
 | # | File stem (LaTeX source) | QMD lecture # | Topic |
 |---|---|---|---|
-| 15 | `326_15_dummy` | 13 | Dummy variables |
-| 16+17+18 | `326_16_asy` + `326_17_asy_norm` + `326_18_asy_var` | 16 | Asymptotics (merged) |
-| 19 | `326_19_misspec` | 17 | Misspecification |
-| 20 | `326_20_IV` | 18 | Instrumental variables |
-| 21 | `326_21_2SLS` | 19 | Two-stage least squares |
+| 14 | `326_14_mreg_testing_2` | 13 | Testing multiple restrictions |
+| 15 | `326_15_dummy` | 14 | Dummy variables |
+| 16+17+18 | `326_16_asy` + `326_17_asy_norm` + `326_18_asy_var` | 17 | Asymptotics (merged) |
+| 19 | `326_19_misspec` | 18 | Misspecification |
+| 20 | `326_20_IV` | 19 | Instrumental variables |
+| 21 | `326_21_2SLS` | 20 | Two-stage least squares |
 
-**Numbering note:** The original LaTeX lectures 08 and 09 were merged into QMD lecture 08; LaTeX lecture 14 (`mreg_testing_2`) is skipped; LaTeX lectures 16–18 were merged into QMD lecture 16. For LaTeX N ≥ 10: QMD # = N−1 (lectures 10–13); QMD 14 = LaTeX 15 (DID); QMD 15 = LaTeX 15 (DID); QMD 16 = LaTeX 16+17+18 (asymptotics); QMD 17–19 = LaTeX 19–21. Total: 17 lectures (down from 21).
+**Numbering note:** The original LaTeX lectures 08 and 09 were merged into QMD lecture 08; LaTeX lectures 16–18 were merged into QMD lecture 17. For LaTeX N ≥ 10: QMD # = N−1 (lectures 10–13); QMD 13 = LaTeX 14 (testing multiple restrictions); QMD 14 = LaTeX 15 (dummy); QMD 15 = LaTeX 15 (causal inference); QMD 16 = LaTeX 15 (DID); QMD 17 = LaTeX 16+17+18 (asymptotics); QMD 18–20 = LaTeX 19–21. Total: 18 lectures (down from 21).
 
 ## Output format conventions
 

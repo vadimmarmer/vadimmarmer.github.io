@@ -1,0 +1,531 @@
+---
+title: "Lecture 13: Testing multiple restrictions"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_13_mreg_testing_2.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+    embed-resources: true
+  pdf:
+    output-file: 326_13_mreg_testing_2.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_13_mreg_testing_2_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Multiple restrictions
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- Consider the model:
+
+  \begin{align*}
+  \ln\left(\text{Wage}_{i}\right) = {} & \beta_{0} + \beta_{1}\text{Experience}_{i} + \beta_{2}\text{Experience}_{i}^{2} \\
+  & + \beta_{3}\text{PrevExperience}_{i} + \beta_{4}\text{PrevExperience}_{i}^{2} \\
+  & + \beta_{5}\text{Education}_{i} + U_{i},
+  \end{align*}
+
+  where $\text{Experience}$ is the experience at the current job and $\text{PrevExperience}$ is the previous experience.
+
+- We test whether, after controlling for the experience at the current job and education, previous experience has no effect on wage:
+
+  $$
+  H_{0}: \beta_{3} = 0,\; \beta_{4} = 0.
+  $$
+
+- We have **two** restrictions on the model parameters.
+
+- The alternative hypothesis is that at least one of the coefficients, $\beta_{3}$ or $\beta_{4}$, is different from zero:
+
+  $$
+  H_{1}: \beta_{3} \neq 0 \text{ or } \beta_{4} \neq 0.
+  $$
+
+## Testing coefficients separately
+
+- Let $T_{3}$ and $T_{4}$ be the $t$-statistics associated with the coefficients of $\text{PrevExperience}$ and $\text{PrevExperience}^{2}$:
+
+  $$
+  T_{3} = \frac{\hat{\beta}_{3}}{\se{\hat{\beta}_{3}}} \quad \text{and} \quad T_{4} = \frac{\hat{\beta}_{4}}{\se{\hat{\beta}_{4}}}.
+  $$
+
+- We can use $T_{3}$ and $T_{4}$ to test the significance of $\beta_{3}$ and $\beta_{4}$ **separately** using two **size $\alpha$** tests:
+
+  - Reject $H_{0,3}: \beta_{3} = 0$ in favor of $H_{1,3}: \beta_{3} \neq 0$ when $\left\lvert T_{3} \right\rvert > t_{n-k-1,1-\alpha/2}.$
+
+  - Reject $H_{0,4}: \beta_{4} = 0$ in favor of $H_{1,4}: \beta_{4} \neq 0$ when $\left\lvert T_{4} \right\rvert > t_{n-k-1,1-\alpha/2}.$
+
+## Why combining $t$-tests fails
+
+- Rejecting $H_{0}: \beta_{3} = 0,\, \beta_{4} = 0$ in favor of $H_{1}: \beta_{3} \neq 0$ or $\beta_{4} \neq 0$ when **at least** one of the two coefficients is significant at **level $\alpha$**, i.e., when
+
+  $$
+  \left\lvert T_{3} \right\rvert > t_{n-k-1,1-\alpha/2} \quad \text{or} \quad \left\lvert T_{4} \right\rvert > t_{n-k-1,1-\alpha/2},
+  $$
+
+  is **not** a **size $\alpha$ test**!
+
+  - If $A$ and $B$ are two events, then $(A \cap B) \subset A$ and therefore $P(A \cap B) \leq P(A)$.
+
+  - **When $\beta_{3} = \beta_{4} = 0$**:
+
+    $$
+    \begin{aligned}
+    & P\!\left(\text{Reject } H_{0,3} \text{ or } H_{0,4}\right) \\
+    &= P\!\big(\left\lvert T_{3}\right\rvert > t_{n-k-1,1-\alpha/2} \;\textbf{or}\; \left\lvert T_{4}\right\rvert > t_{n-k-1,1-\alpha/2}\big) \\
+    &= P\!\big(\left\lvert T_{3}\right\rvert > t_{n-k-1,1-\alpha/2}\big) \\
+    &\quad + P\!\big(\left\lvert T_{4}\right\rvert > t_{n-k-1,1-\alpha/2}\big) \\
+    &\quad - P\!\big(\left\lvert T_{3}\right\rvert > t_{n-k-1,1-\alpha/2} \;\textbf{and}\; \left\lvert T_{4}\right\rvert > t_{n-k-1,1-\alpha/2}\big) \\
+    &= 2\alpha - P\!\big(\text{both reject}\big) \\
+    &\geq \alpha.
+    \end{aligned}
+    $$
+
+## Testing multiple exclusion restrictions
+
+- Consider the model
+
+  \begin{align*}
+  Y_{i} = {} & \beta_{0} + \beta_{1}X_{1,i} + \ldots + \beta_{q}X_{q,i} \\
+  & + \beta_{q+1}X_{q+1,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  \end{align*}
+
+  We test whether the first $q$ regressors have no effect on $Y$ (after controlling for the other regressors).
+
+- The null hypothesis has $q$ **exclusion** restrictions:
+
+  $$
+  H_{0}: \beta_{1} = 0,\, \beta_{2} = 0,\, \ldots,\, \beta_{q} = 0.
+  $$
+
+- The alternative hypothesis is that at least one of the restrictions in $H_{0}$ is false:
+
+  $$
+  H_{1}: \beta_{1} \neq 0 \text{ or } \beta_{2} \neq 0 \text{ or } \ldots \text{ or } \beta_{q} \neq 0.
+  $$
+
+## $F$-statistic
+
+- The idea of the test is to compare the **fit** of the **unrestricted model** with that of the **null-restricted model**.
+
+- Let $SSR_{ur}$ denote the Residual Sum-of-Squares of the **unrestricted model**:
+
+  \begin{align*}
+  Y_{i} = {} & \beta_{0} + \beta_{1}X_{1,i} + \ldots + \beta_{q}X_{q,i} \\
+  & + \beta_{q+1}X_{q+1,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  \end{align*}
+
+- The **restricted model** given $H_{0}: \beta_{1} = 0, \ldots, \beta_{q} = 0$ is
+
+  $$
+  Y_{i} = \beta_{0} + \beta_{q+1}X_{q+1,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+  - Let $SSR_{r}$ denote the Residual Sum-of-Squares of the **restricted model**.
+
+- The $F$-statistic:
+
+  $$
+  F = \frac{(SSR_{r} - SSR_{ur})/q}{SSR_{ur}/(n - k - 1)}.
+  $$
+
+  - $q$ = **number of restrictions**;
+  - $n - k - 1$ = **unrestricted residual df**, where $k$ is the number of regressors in the **unrestricted model**.
+
+## $F$-statistic (intuition)
+
+- $$
+  F = \frac{(SSR_{r} - SSR_{ur})/q}{SSR_{ur}/(n - k - 1)}.
+  $$
+
+- Since $SSR$ can only increase when we drop regressors,
+
+  $$
+  SSR_{r} - SSR_{ur} \geq 0,
+  $$
+
+  and therefore **$F \geq 0$**.
+
+- If the null restrictions are **true**, the excluded variables do not contribute to explaining $Y$ (in population), so we should expect that $SSR_{r} - SSR_{ur}$ is small and **$F$ is close to zero**.
+
+- If the null restrictions are **false**, the imposed restrictions should substantially worsen the fit, so we should expect that $SSR_{r} - SSR_{ur}$ is large and **$F$ is far from zero**.
+
+- We should reject $H_{0}$ when $F > c$ where $c$ is some positive constant.
+
+## $F$ distribution under $H_0$
+
+- $$
+  F = \frac{(SSR_{r} - SSR_{ur})/q}{SSR_{ur}/(n - k - 1)}.
+  $$
+
+- We should reject $H_{0}$ when $F > c$.
+
+- There is a probability that $F > c$ even when $H_{0}$ is true, so we need to choose $c$ such that $P(F > c \mid H_{0} \text{ is true}) = \alpha$.
+
+- Under $H_{0}$ and conditional on $\mathbf{X}$, the $F$-statistic has the $F$ distribution with two parameters: the numerator df ($q$) and the denominator df ($n - k - 1$):
+
+  $$
+  F \mid \mathbf{X} \sim F_{q,\, n-k-1}.
+  $$
+
+- Similarly to the standard normal and $t$ distributions, the $F$ distribution has been tabulated and its critical values are available in statistical tables and statistical software such as R.
+
+## $F$ test: decision rule and p-value
+
+- When $H_{0}$ is true, conditional on $\mathbf{X}$:
+
+  $$
+  F = \frac{(SSR_{r} - SSR_{ur})/q}{SSR_{ur}/(n - k - 1)} \sim F_{q,\, n-k-1}.
+  $$
+
+- Let $F_{q,n-k-1,\tau}$ be the $\tau$-th quantile of the $F_{q,n-k-1}$ distribution.
+
+- A size $\alpha$ test of $H_{0}: \beta_{1} = 0, \ldots, \beta_{q} = 0$ against $H_{1}: \beta_{1} \neq 0$ or $\ldots$ or $\beta_{q} \neq 0$ is
+
+  $$
+  \text{Reject } H_{0} \text{ when } F > F_{q,\, n-k-1,\, 1-\alpha}.
+  $$
+
+- The p-value can be found as $\tau$ such that $F = F_{q,n-k-1,1-\tau}$. The p-value equals $\tau$.
+
+## $F$ distribution in R
+
+- To compute $F$ critical values, use `qf()`:
+
+  $$
+  F_{q,\, n-k-1,\, 1-\alpha} = \texttt{qf(1 - alpha, df1 = q, df2 = n - k - 1)}.
+  $$
+
+- To compute p-values from the $F$ distribution, use `pf()`:
+
+  $$
+  \text{p-value} = 1 - \texttt{pf(F, df1 = q, df2 = n - k - 1)}.
+  $$
+
+## Example: data and model
+
+- Consider the model:
+
+  \begin{align*}
+  \ln\left(\text{Wage}_{i}\right) = {} & \beta_{0} + \beta_{1}\text{Experience}_{i} + \beta_{2}\text{Experience}_{i}^{2} \\
+  & + \beta_{3}\text{PrevExperience}_{i} + \beta_{4}\text{PrevExperience}_{i}^{2} \\
+  & + \beta_{5}\text{Education}_{i} + U_{i}.
+  \end{align*}
+
+- We test
+
+  $$
+  H_{0}: \beta_{3} = 0,\; \beta_{4} = 0 \quad \text{against} \quad H_{1}: \beta_{3} \neq 0 \text{ or } \beta_{4} \neq 0.
+  $$
+
+- $q = 2$.
+
+- $\alpha = 0.05$.
+
+- Data: `wage1` from the `wooldridge` R package ($n = 526$).
+
+  ```{r}
+  #| echo: true
+  library(wooldridge)
+  data(wage1)
+  wage1$Experience <- wage1$tenure
+  wage1$Experience2 <- wage1$tenure^2
+  wage1$PrevExperience <- wage1$exper - wage1$tenure
+  wage1$PrevExperience2 <- (wage1$exper - wage1$tenure)^2
+  wage1$Education <- wage1$educ
+  ```
+
+## Example: unrestricted model
+
+- The unrestricted model includes all five regressors:
+
+  ```{r}
+  #| echo: true
+  fit_ur <- lm(lwage ~ Education + Experience + Experience2
+               + PrevExperience + PrevExperience2,
+               data = wage1)
+  summary(fit_ur)
+  ```
+
+- The residual sum-of-squares of the unrestricted model:
+
+  ```{r}
+  #| echo: true
+  SSR_ur <- sum(resid(fit_ur)^2)
+  SSR_ur
+  ```
+
+- $SSR_{ur} \approx 96.998$; $n - k - 1 = 526 - 5 - 1 = 520$.
+
+## Example: restricted model
+
+- The restricted model drops $\text{PrevExperience}$ and $\text{PrevExperience}^{2}$:
+
+  ```{r}
+  #| echo: true
+  fit_r <- lm(lwage ~ Education + Experience + Experience2,
+              data = wage1)
+  summary(fit_r)
+  ```
+
+- The residual sum-of-squares of the restricted model:
+
+  ```{r}
+  #| echo: true
+  SSR_r <- sum(resid(fit_r)^2)
+  SSR_r
+  ```
+
+- $SSR_{r} \approx 99.463$.
+
+## Example: $F$-statistic
+
+- Computing the $F$-statistic manually:
+
+  ```{r}
+  #| echo: true
+  q <- 2
+  n <- nrow(wage1)
+  k <- 5
+  df_denom <- n - k - 1
+
+  F_stat <- ((SSR_r - SSR_ur) / q) / (SSR_ur / df_denom)
+  F_stat
+  ```
+
+- The critical value $F_{2,520,0.95}$:
+
+  ```{r}
+  #| echo: true
+  cv <- qf(0.95, df1 = q, df2 = df_denom)
+  cv
+  ```
+
+- Since $F \approx 6.61 > 3.01$, at the 5% significance level we reject $H_{0}$ that previous experience has no effect on wage.
+
+- The p-value:
+
+  ```{r}
+  #| echo: true
+  p_val <- 1 - pf(F_stat, df1 = q, df2 = df_denom)
+  p_val
+  ```
+
+- We reject $H_{0}$ for any $\alpha > 0.00147$.
+
+## Example: `linearHypothesis()`
+
+- Instead of running two models (restricted and unrestricted), we can use `linearHypothesis()` from the `car` package after estimating the **unrestricted model**.
+
+- Testing whether previous experience has no effect ($\beta_{3} = 0,\, \beta_{4} = 0$):
+
+  ```{r}
+  #| echo: true
+  #| message: false
+  library(car)
+  linearHypothesis(fit_ur, c("PrevExperience = 0",
+                             "PrevExperience2 = 0"))
+  ```
+
+- Testing whether the experience profiles are identical ($\beta_{1} = \beta_{3}$ and $\beta_{2} = \beta_{4}$):
+
+  ```{r}
+  #| echo: true
+  linearHypothesis(fit_ur,
+                   c("Experience = PrevExperience",
+                     "Experience2 = PrevExperience2"))
+  ```
+
+## $F$ and $R^{2}$
+
+- Let $R_{ur}^{2}$ denote the $R^{2}$ of the unrestricted model:
+
+  \begin{align*}
+  Y_{i} = {} & \beta_{0} + \beta_{1}X_{1,i} + \ldots + \beta_{q}X_{q,i} \\
+  & + \beta_{q+1}X_{q+1,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  \end{align*}
+
+- Let $R_{r}^{2}$ denote the $R^{2}$ of the restricted model:
+
+  $$
+  Y_{i} = \beta_{0} + \beta_{q+1}X_{q+1,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+- The two models have the same dependent variable and therefore the same Total Sum-of-Squares:
+
+  $$
+  SST = \sum_{i=1}^{n}(Y_{i} - \bar{Y})^{2} = SST_{ur} = SST_{r}.
+  $$
+
+## $F$-statistic in terms of $R^{2}$
+
+- Since $SSR/SST = 1 - R^{2}$:
+
+  \begin{align*}
+  F &= \frac{(SSR_{r} - SSR_{ur})/q}{SSR_{ur}/(n - k - 1)} \\
+  &= \frac{\left(\frac{SSR_{r}}{SST} - \frac{SSR_{ur}}{SST}\right)/q}{\frac{SSR_{ur}}{SST}/(n - k - 1)} \\
+  &= \frac{\left((1 - R_{r}^{2}) - (1 - R_{ur}^{2})\right)/q}{(1 - R_{ur}^{2})/(n - k - 1)} \\
+  &= \frac{(R_{ur}^{2} - R_{r}^{2})/q}{(1 - R_{ur}^{2})/(n - k - 1)}.
+  \end{align*}
+
+- Verification with the wage example:
+
+  ```{r}
+  #| echo: true
+  R2_ur <- summary(fit_ur)$r.squared
+  R2_r  <- summary(fit_r)$r.squared
+  F_from_R2 <- ((R2_ur - R2_r) / q) / ((1 - R2_ur) / df_denom)
+  cat("F from SSR formula:", F_stat,
+      "\nF from R2 formula: ", F_from_R2, "\n")
+  ```
+
+## Testing $\beta_1 = 1$
+
+- Suppose we want to test $H_{0}: \beta_{1} = 1$ against $H_{1}: \beta_{1} \neq 1$ in
+
+  $$
+  Y_{i} = \beta_{0} + \beta_{1}X_{1,i} + \beta_{2}X_{2,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+- The **restricted** model is
+
+  $$
+  Y_{i} = \beta_{0} + X_{1,i} + \beta_{2}X_{2,i} + \ldots + \beta_{k}X_{k,i} + U_{i},
+  $$
+
+  or
+
+  $$
+  Y_{i} - X_{1,i} = \beta_{0} + \beta_{2}X_{2,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+  1. Generate a new dependent variable $Y_{i}^{*} = Y_{i} - X_{1,i}$.
+  2. Regress $Y^{*}$ on a constant, $X_{2}, \ldots, X_{k}$ to obtain $SSR_{r}$.
+  3. Estimate the unrestricted model to obtain $SSR_{ur}$.
+  4. Compute $F = \dfrac{(SSR_{r} - SSR_{ur})/1}{SSR_{ur}/(n - k - 1)}$.
+
+## Testing $\beta_1 + \beta_2 = 1$
+
+- Suppose we want to test $H_{0}: \beta_{1} + \beta_{2} = 1$ against $H_{1}: \beta_{1} + \beta_{2} \neq 1$ in
+
+  $$
+  Y_{i} = \beta_{0} + \beta_{1}X_{1,i} + \beta_{2}X_{2,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+- The **restricted** model is
+
+  $$
+  Y_{i} = \beta_{0} + (1 - \beta_{2})X_{1,i} + \beta_{2}X_{2,i} + \ldots + \beta_{k}X_{k,i} + U_{i},
+  $$
+
+  or
+
+  $$
+  Y_{i} - X_{1,i} = \beta_{0} + \beta_{2}(X_{2,i} - X_{1,i}) + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+  1. Generate a new dependent variable $Y_{i}^{*} = Y_{i} - X_{1,i}$.
+  2. Generate a new regressor $X_{2,i}^{*} = X_{2,i} - X_{1,i}$.
+  3. Regress $Y^{*}$ on a constant, $X_{2}^{*}, X_{3}, \ldots, X_{k}$ to obtain $SSR_{r}$.
+  4. Estimate the unrestricted model to obtain $SSR_{ur}$.
+  5. Compute $F = \dfrac{(SSR_{r} - SSR_{ur})/1}{SSR_{ur}/(n - k - 1)}$.
+
+## Relationship between $F$ and $t$
+
+- The $F$ statistic can also be used for testing a single restriction.
+
+- For a single restriction, the $F$ test and the $t$ test lead to the **same outcome** because
+
+  $$
+  t_{n-k-1}^{2} = F_{1,\, n-k-1}.
+  $$
+
+## Overall significance test
+
+- Consider the model
+
+  $$
+  Y_{i} = \beta_{0} + \beta_{1}X_{1,i} + \ldots + \beta_{k}X_{k,i} + U_{i}.
+  $$
+
+- Suppose we want to test whether none of the regressors explain $Y$:
+
+  \begin{align*}
+  H_{0} &: \beta_{1} = \beta_{2} = \ldots = \beta_{k} = 0 \quad (k \text{ restrictions}), \\
+  H_{1} &: \beta_{j} \neq 0 \text{ for some } j = 1, \ldots, k.
+  \end{align*}
+
+- The restricted model is $Y_{i} = \beta_{0} + U_{i}$, and since $\hat{\beta}_{0} = \bar{Y}$ in this model,
+
+  $$
+  SSR_{r} = \sum_{i=1}^{n}(Y_{i} - \bar{Y})^{2} = SST \quad \text{and} \quad SSR_{ur} = SSR.
+  $$
+
+## Overall significance: $F$-statistic
+
+- The $F$ statistic for the overall significance test is
+
+  \begin{align*}
+  F &= \frac{(SSR_{r} - SSR_{ur})/k}{SSR_{ur}/(n - k - 1)} \\
+  &= \frac{(SST - SSR)/k}{SSR/(n - k - 1)} \\
+  &= \frac{SSE/k}{SSR/(n - k - 1)} \\
+  &= \frac{R^{2}/k}{(1 - R^{2})/(n - k - 1)}.
+  \end{align*}
+
+- The $F$ statistic for the overall significance test and its p-value are reported in the top part of R regression output:
+
+  ```{r}
+  #| echo: true
+  summary(fit_ur)
+  ```
+
+## Summary
+
+- Individual $t$-tests cannot be combined to test joint hypotheses. Rejecting when **at least one** individual $t$-test rejects leads to a test with size greater than $\alpha$.
+
+- The $F$-statistic compares the fit of the unrestricted model to the restricted model:
+
+  $$
+  F = \frac{(SSR_{r} - SSR_{ur})/q}{SSR_{ur}/(n - k - 1)}.
+  $$
+
+- Under $H_{0}$, $F \mid \mathbf{X} \sim F_{q,\, n-k-1}$. Reject $H_{0}$ when $F > F_{q,\, n-k-1,\, 1-\alpha}$.
+
+- Equivalently, in terms of $R^{2}$:
+
+  $$
+  F = \frac{(R_{ur}^{2} - R_{r}^{2})/q}{(1 - R_{ur}^{2})/(n - k - 1)}.
+  $$
+
+- For a single restriction ($q = 1$), $F = T^{2}$ and the $F$ test is equivalent to the two-sided $t$-test.
+
+- The overall significance test ($H_{0}: \beta_{1} = \ldots = \beta_{k} = 0$) is a special case with $F = \frac{R^{2}/k}{(1 - R^{2})/(n - k - 1)}$.

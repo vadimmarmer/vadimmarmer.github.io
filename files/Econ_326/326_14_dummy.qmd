@@ -1,11 +1,11 @@
 ---
-title: "Lecture 13: Dummy variables"
+title: "Lecture 14: Dummy variables"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:
   html:
-    output-file: 326_13_dummy.html
+    output-file: 326_14_dummy.html
     toc: true
     toc-depth: 3
     toc-location: right
@@ -15,7 +15,7 @@ format:
     html-math-method: katex
     embed-resources: true
   pdf:
-    output-file: 326_13_dummy.pdf
+    output-file: 326_14_dummy.pdf
     pdf-engine: xelatex
     geometry: margin=0.75in
     fontsize: 10pt
@@ -23,7 +23,7 @@ format:
     toc: false
     classoption: fleqn
   revealjs:
-    output-file: 326_13_dummy_slides.html
+    output-file: 326_14_dummy_slides.html
     theme: solarized
     css: slides_no_caps.css
     smaller: true

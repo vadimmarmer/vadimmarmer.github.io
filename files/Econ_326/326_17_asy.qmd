@@ -1,11 +1,11 @@
 ---
-title: "Lecture 16: Asymptotics"
+title: "Lecture 17: Asymptotics"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
 format:
   html:
-    output-file: 326_16_asy.html
+    output-file: 326_17_asy.html
     toc: true
     toc-depth: 3
     toc-location: right
@@ -15,7 +15,7 @@ format:
     html-math-method: katex
     embed-resources: true
   pdf:
-    output-file: 326_16_asy.pdf
+    output-file: 326_17_asy.pdf
     pdf-engine: xelatex
     geometry: margin=0.75in
     fontsize: 10pt
@@ -23,7 +23,7 @@ format:
     toc: false
     classoption: fleqn
   revealjs:
-    output-file: 326_16_asy_slides.html
+    output-file: 326_17_asy_slides.html
     theme: solarized
     css: slides_no_caps.css
     smaller: true
@@ -56,7 +56,7 @@ format:
 
   - If in addition the errors are **normally** distributed (given $X$), then $T=\left( \hat{\beta}-\beta \right) /\sqrt{\Vhat{\hat{\beta}}}$ has a $t$ distribution which can be used for hypothesis testing.
 
-## Why we need large-sample theory
+## Limitations of finite-sample theory
 
 - If the errors are only **weakly exogenous**:
   $$
@@ -159,7 +159,7 @@ $$
   \end{aligned}
   $$
 
-## Averaging and variance reduction
+## Variance of the sample average
 
 - The variance of the sample average:
 
@@ -332,7 +332,7 @@ $$
   \end{aligned}
   $$
 
-## Omitted variables and OLS inconsistency
+## Inconsistency proof: noise term
 
 - From the previous slide:
   $$
@@ -349,7 +349,7 @@ $$
   \end{aligned}
   $$
 
-## Omitted variables and OLS inconsistency
+## Inconsistency proof: bias term
 
 - From the previous slide:
   $$
@@ -366,7 +366,7 @@ $$
   \end{aligned}
   $$
 
-## Omitted variables and OLS inconsistency
+## Omitted variable bias formula
 
 - We have
 
@@ -384,7 +384,7 @@ $$
 
   2. $\Cov{X_{1,i},X_{2,i}}=0$ (the omitted variable is **uncorrelated** with the included regressor).
 
-## Omitted variables and OLS inconsistency
+## OVB through the composite error
 
 - In this example, the model contains two regressors:
   $$
@@ -459,7 +459,7 @@ $$
   \frac{1}{\sqrt{n}}\sum_{i=1}^{n}X_{i}\rightarrow _{d}N\left( 0,\sigma^{2}\right) .
   $$
 
-## CLT
+## CLT with non-zero mean
 
 - For the CLT we impose 3 assumptions: **(1)** iid; **(2)** Mean zero; **(3)** Finite variance different from zero.
 
@@ -479,7 +479,7 @@ $$
   \end{aligned}
   $$
 
-## CLT
+## CLT for the sample average
 
 - From the previous slide:
   $$
@@ -544,7 +544,7 @@ $$
 
 - $V=\dfrac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}$ is called the **asymptotic variance** of $\hat{\beta}_{1,n}.$
 
-## Asymptotic normality of OLS
+## Large-sample approximation for OLS
 
 - Let $\overset{a}{\sim}$ denote "approximately in large samples."
 
@@ -566,7 +566,7 @@ $$
   \hat{\beta}_{1,n}\overset{a}{\sim} N\left( \beta _{1},V/n\right) .
   $$
 
-## Proof
+## Proof: decomposition
 
 Write
 
@@ -586,7 +586,7 @@ $$
 \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.
 $$
 
-## Proof
+## Proof: combining the limits
 
 $$
 \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.
@@ -679,7 +679,7 @@ Hence, the result follows.
   \hat{V}_{n} \rightarrow_{p} V.
   $$
 
-## Homoskedastic errors
+## Simplifying $V$ under homoskedasticity
 
 - Assume that the errors are **homoskedastic**:
   $$
@@ -696,7 +696,7 @@ Hence, the result follows.
   \end{aligned}
   $$
 
-## Homoskedastic errors
+## Estimating $V$: method of moments
 
 - Thus, when the errors are homoskedastic with $\E{U_{i}^{2}} = \sigma^{2},$
   $$
@@ -714,7 +714,7 @@ Hence, the result follows.
   \end{aligned}
   $$
 
-## Homoskedastic errors
+## Why the LLN does not apply directly
 
 - From the previous slide:
   $$
@@ -749,7 +749,7 @@ Hence, the result follows.
   \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2} = \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2}.
   $$
 
-## Proof of $\hat{\sigma}^{2}_{n} \rightarrow_{p} \sigma^{2}$
+## Completing the consistency proof
 
 - We have
   $$
@@ -771,7 +771,7 @@ Hence, the result follows.
   \hat{\beta}_{0,n} - \beta_{0} \rightarrow_{p} 0 \text{ and } \hat{\beta}_{1,n} - \beta_{1} \rightarrow_{p} 0.
   $$
 
-## Homoskedastic errors
+## Using $s^2$ instead of $\hat{\sigma}^2_n$
 
 - Thus, when the errors are homoskedastic,
   $$
@@ -804,7 +804,7 @@ Hence, the result follows.
   \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} \cdot \frac{1}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.
   $$
 
-## Asymptotic approximation
+## Connection to the exact result
 
 - From the previous slide:
   $$
@@ -835,7 +835,7 @@ Hence, the result follows.
   \end{aligned}
   $$
 
-## Asymptotic $T$-test
+## Asymptotic $T$-test: rejection rule
 
 - Under $H_{0}: \beta_{1} = \beta_{1,0},$
   $$
@@ -885,14 +885,23 @@ Hence, the result follows.
 
   ```{r}
   #| echo: true
-  #| eval: false
   library(wooldridge)
   library(lmtest)
   library(sandwich)
   data("wage1")
   reg <- lm(wage ~ educ + exper + tenure, data = wage1)
-  # Standard (homoskedastic) SEs
+  ```
+
+- **Standard (homoskedastic) standard errors:**
+
+  ```{r}
+  #| echo: true
   coeftest(reg)
-  # HC (robust) SEs
+  ```
+
+- **HC (robust) standard errors:**
+
+  ```{r}
+  #| echo: true
   coeftest(reg, vcov = vcovHC(reg, type = "HC1"))
   ```
