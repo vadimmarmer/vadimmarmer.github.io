@@ -9,57 +9,102 @@ redirect_from:
 ---
 
 
-## Recent publications
+## Publications
 
-- [Modeling Long Cycles](/publication/2024-long) (with Natasha Kang)<br> *Journal of Econometrics*, 2024 
-- [Inference on Individual Treatment Effects in Nonseparable Triangular Models](/publication/2023-inference) (with Jun Ma and Zhengfei Yu)<br> *Journal of Econometrics*, 2023
-- [Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions](/publication/2021-monotonicity) (with Jun Ma, Artyom Shneyerov, and Pai Xu)<br> *Econometric Reviews*, 2021
-- [Limit Theorems for Network Dependent Random Variables](/publication/2021-limit) (with Denis Kojevnikov and Kyungchul Song)<br> *Journal of Econometrics*, 2021
+**[Modeling Long Cycles](https://doi.org/10.1016/j.jeconom.2024.105751)**<br>
+(with D.N. Kang)<br>
+*Journal of Econometrics*, 2024.<br>
+[Working paper](https://arxiv.org/pdf/2010.13877.pdf)
 
-## Working papers
+**[Inference on Individual Treatment Effects in Nonseparable Triangular Models](https://doi.org/10.1016/j.jeconom.2023.02.011)**<br>
+(with J. Ma and Z. Yu)<br>
+*Journal of Econometrics*, 2023.<br>
+[Working paper](https://arxiv.org/pdf/2107.05559.pdf) | [Supplement](/files/ITE_Supp_Rev_V13.pdf)
 
-- [Policy Learning with Compliance Guarantee](/files/Policy_Learning_With_Compliance_Guarantee.pdf) (with Thomas Chan and Kyungchul Song)
-- [Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://www.arxiv.org/pdf/2509.15401) (with Jun Ma and Zhengfei Yu)
-- [Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf) (with Jun Ma and Pai Xu)
-- [Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction](https://economics.ubc.ca/wp-content/uploads/sites/38/2013/05/pdf_paper_vadim_marmer-instrumental-variables-estimation-weak-indentification-robust.pdf) (with Shinichi Sakata)
+**[Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions](https://doi.org/10.1080/07474938.2021.1889198)**<br>
+(with J. Ma, A. Shneyerov, and P. Xu)<br>
+*Econometric Reviews*, 2021.<br>
+[Working paper](https://arxiv.org/pdf/1909.12974.pdf)
 
-<!-- This is the front page of a website that is powered by the [academicpages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub pages. [GitHub pages](https://pages.github.com) is a free service in which websites are built and hosted from code and data stored in a GitHub repository, automatically updating when a new commit is made to the respository. This template was forked from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/) created by Michael Rose, and then extended to support the kinds of content that academics have: publications, talks, teaching, a portfolio, blog posts, and a dynamically-generated CV. You can fork [this repository](https://github.com/academicpages/academicpages.github.io) right now, modify the configuration and markdown files, add your own PDFs and other content, and have your own site for free, with no ads! An older version of this template powers my own personal website at [stuartgeiger.com](http://stuartgeiger.com), which uses [this Github repository](https://github.com/staeiou/staeiou.github.io).
+**[Limit Theorems for Network Dependent Random Variables](https://doi.org/10.1016/j.jeconom.2020.05.019)**<br>
+(with D. Kojevnikov and K. Song)<br>
+*Journal of Econometrics*, 2021.<br>
+[Working paper](https://arxiv.org/pdf/1903.01059.pdf)
 
-A data-driven personal website
-======
-Like many other Jekyll-based GitHub Pages templates, academicpages makes you separate the website's content from its form. The content & metadata of your website are in structured markdown files, while various other files constitute the theme, specifying how to transform that content & metadata into HTML pages. You keep these various markdown (.md), YAML (.yml), HTML, and CSS files in a public GitHub repository. Each time you commit and push an update to the repository, the [GitHub pages](https://pages.github.com/) service creates static HTML pages based on these files, which are hosted on GitHub's servers free of charge.
+**[Inference for First-Price Auctions with Guerre, Perrigne, and Vuong's Estimator](https://doi.org/10.1016/j.jeconom.2019.02.006)**<br>
+(with J. Ma and A. Shneyerov)<br>
+*Journal of Econometrics*, 2019.<br>
+[Working paper](https://arxiv.org/pdf/1903.06401.pdf)
 
-Many of the features of dynamic content management systems (like Wordpress) can be achieved in this fashion, using a fraction of the computational resources and with far less vulnerability to hacking and DDoSing. You can also modify the theme to your heart's content without touching the content of your site. If you get to a point where you've broken something in Jekyll/HTML/CSS beyond repair, your markdown files describing your talks, publications, etc. are safe. You can rollback the changes or even delete the repository and start over -- just be sure to save the markdown files! Finally, you can also write scripts that process the structured data on the site, such as [this one](https://github.com/academicpages/academicpages.github.io/blob/master/talkmap.ipynb) that analyzes metadata in pages about talks to display [a map of every location you've given a talk](https://academicpages.github.io/talkmap.html).
+**[On Optimal Inference in the Linear IV Model](https://doi.org/10.3982/QE1082)**<br>
+(with D.W.K. Andrews and Z. Yu)<br>
+*Quantitative Economics*, 2019.
 
-Getting started
-======
-1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
-1. Fork [this repository](https://github.com/academicpages/academicpages.github.io) by clicking the "fork" button in the top right. 
-1. Go to the repository's settings (rightmost item in the tabs that start with "Code", should be below "Unwatch"). Rename the repository "[your GitHub username].github.io", which will also be your website's URL.
-1. Set site-wide configuration and create content & metadata (see below -- also see [this set of diffs](http://archive.is/3TPas) showing what files were changed to set up [an example site](https://getorg-testacct.github.io) for a user with the username "getorg-testacct")
-1. Upload any files (like PDFs, .zip files, etc.) to the files/ directory. They will appear at https://[your GitHub username].github.io/files/example.pdf.  
-1. Check status by going to the repository settings, in the "GitHub pages" section
+**[Investment and Uncertainty with Time to Build: Evidence from Entry into U.S. Copper Mining](https://doi.org/10.1016/j.jedc.2018.09.001)**<br>
+(with M. Slade)<br>
+*Journal of Economic Dynamics and Control*, 2018.<br>
+[Working paper](/files/TTBJEDC2.pdf)
 
-Site-wide configuration
-------
-The main configuration file for the site is in the base directory in [_config.yml](https://github.com/academicpages/academicpages.github.io/blob/master/_config.yml), which defines the content in the sidebars and other site-wide features. You will need to replace the default variables with ones about yourself and your site's github repository. The configuration file for the top menu is in [_data/navigation.yml](https://github.com/academicpages/academicpages.github.io/blob/master/_data/navigation.yml). For example, if you don't have a portfolio or blog posts, you can remove those items from that navigation.yml file to remove them from the header. 
+**[Weak Identification in Fuzzy Regression Discontinuity Designs](https://doi.org/10.1080/07350015.2015.1024836)**<br>
+(with D. Feir and T. Lemieux)<br>
+*Journal of Business & Economic Statistics*, 2016.<br>
+[Working paper](/files/wfrd28_with%20supplement_8.pdf) | [Supplement](/files/wfrd_supplement_9_JBES.pdf)
 
-Create content & metadata
-------
-For site content, there is one markdown file for each type of content, which are stored in directories like _publications, _talks, _posts, _teaching, or _pages. For example, each talk is a markdown file in the [_talks directory](https://github.com/academicpages/academicpages.github.io/tree/master/_talks). At the top of each markdown file is structured data in YAML about the talk, which the theme will parse to do lots of cool stuff. The same structured data about a talk is used to generate the list of talks on the [Talks page](https://academicpages.github.io/talks), each [individual page](https://academicpages.github.io/talks/2012-03-01-talk-1) for specific talks, the talks section for the [CV page](https://academicpages.github.io/cv), and the [map of places you've given a talk](https://academicpages.github.io/talkmap.html) (if you run this [python file](https://github.com/academicpages/academicpages.github.io/blob/master/talkmap.py) or [Jupyter notebook](https://github.com/academicpages/academicpages.github.io/blob/master/talkmap.ipynb), which creates the HTML for the map based on the contents of the _talks directory).
+**[Limited Participation in International Business Cycle Models: A Formal Evaluation](https://doi.org/10.1016/j.jedc.2013.12.006)**<br>
+(with X. Gao and V. Hnatkovska)<br>
+*Journal of Economic Dynamics and Control*, 2014.<br>
+[Working paper](/files/intbc19_with_supplement.pdf) | [Supplement](/files/intbc_supplement.pdf)
 
-**Markdown generator**
+**[What Model for Entry in First-Price Auctions? A Nonparametric Approach](https://doi.org/10.1016/j.jeconom.2013.04.005)**<br>
+(with A. Shneyerov and P. Xu)<br>
+*Journal of Econometrics*, 2013.<br>
+[Working paper](/files/selectentry_joe_revision_12.pdf) | [Supplement](/files/selectentry_joe_suppl_03.pdf)
 
-I have also created [a set of Jupyter notebooks](https://github.com/academicpages/academicpages.github.io/tree/master/markdown_generator
-) that converts a CSV containing structured data about talks or presentations into individual markdown files that will be properly formatted for the academicpages template. The sample CSVs in that directory are the ones I used to create my own personal website at stuartgeiger.com. My usual workflow is that I keep a spreadsheet of my publications and talks, then run the code in these notebooks to generate the markdown files, then commit and push them to the GitHub repository.
+**[Optimal Comparison of Misspecified Moment Restriction Models under a Chosen Measure of Fit](https://doi.org/10.1016/j.jeconom.2012.05.021)**<br>
+(with T. Otsu)<br>
+*Journal of Econometrics*, 2012.<br>
+[Working paper](https://cowles.yale.edu/sites/default/files/2022-08/d1724.pdf)
 
-How to edit your site's GitHub repository
-------
-Many people use a git client to create files on their local computer and then push them to GitHub's servers. If you are not familiar with git, you can directly edit these configuration and markdown files directly in the github.com interface. Navigate to a file (like [this one](https://github.com/academicpages/academicpages.github.io/blob/master/_talks/2012-03-01-talk-1.md) and click the pencil icon in the top right of the content preview (to the right of the "Raw | Blame | History" buttons). You can delete a file by clicking the trashcan icon to the right of the pencil icon. You can also create new files or upload files by navigating to a directory and clicking the "Create new file" or "Upload files" buttons. 
+**[Comparison of Misspecified Calibrated Models: The Minimum Distance Approach](https://doi.org/10.1016/j.jeconom.2012.01.007)**<br>
+(with V. Hnatkovska and Y. Tang)<br>
+*Journal of Econometrics*, 2012.<br>
+[Working paper](/files/calibr36.pdf) | [Supplement](/files/calibr_supplement_4.pdf)
 
-Example: editing a markdown file for a talk
-![Editing a markdown file for a talk](/images/editing-talk.png)
+**[Quantile-Based Nonparametric Inference for First-Price Auctions](https://doi.org/10.1016/j.jeconom.2011.09.020)**<br>
+(with A. Shneyerov)<br>
+*Journal of Econometrics*, 2012.<br>
+[Working paper](/files/auc-pdf_31.pdf) | [Supplement](/files/auc-pdf-suppl-11.pdf) | [Matlab code](/files/auc-pdf_codes_and_paper.zip)
 
-For more info
-------
-More info about configuring academicpages can be found in [the guide](https://academicpages.github.io/markdown/). The [guides for the Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes/docs/configuration/) (which this theme was forked from) might also be helpful. -->
+**[Testing the Null Hypothesis of No Regime Switching with an Application to GDP Growth Rates](https://link.springer.com/article/10.1007/s00181-007-0145-2)**<br>
+*Empirical Economics*, 2008.
+
+**[Exactly Distribution-Free Inference in Instrumental Variables Regression with Possibly Weak Instruments](https://doi.org/10.1016/j.jeconom.2007.05.012)**<br>
+(with D.W.K. Andrews)<br>
+*Journal of Econometrics*, 2008.<br>
+[Working paper](https://elischolar.library.yale.edu/cowles-discussion-paper-series/1783)
+
+**[Nonlinearity, Nonstationarity, and Spurious Forecasts](https://doi.org/10.1016/j.jeconom.2007.03.002)**<br>
+*Journal of Econometrics*, 2008.<br>
+[Working paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3824487)
+
+**[Bottlenecks in Regional Markets for Natural Gas Transmission Services](https://doi.org/10.1016/j.eneco.2005.09.005)**<br>
+(with D. Shapiro and P. MacAvoy)<br>
+*Energy Economics*, 2007.
+
+**[Higher-Order Improvements of the Parametric Bootstrap for Long-Memory Gaussian Processes](https://doi.org/10.1016/j.jeconom.2005.06.010)**<br>
+(with D.W.K. Andrews and O. Lieberman)<br>
+*Journal of Econometrics*, 2006.
+
+## Working Papers
+
+**[Policy Learning with Compliance Guarantee](/files/Policy_Learning_With_Compliance_Guarantee.pdf)**<br>
+(with T. Chan and K. Song)
+
+**[Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://www.arxiv.org/pdf/2509.15401)**<br>
+(with J. Ma and Z. Yu)
+
+**[Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf)**<br>
+(with J. Ma and P. Xu)
+
+**[Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction](https://economics.ubc.ca/wp-content/uploads/sites/38/2013/05/pdf_paper_vadim_marmer-instrumental-variables-estimation-weak-indentification-robust.pdf)**<br>
+(with S. Sakata)
