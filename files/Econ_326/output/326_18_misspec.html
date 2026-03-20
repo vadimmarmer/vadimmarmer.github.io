@@ -2385,8 +2385,8 @@ U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{
 \text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].
 </span></p></li>
 <li><p>The first-order conditions are: <span class="math display">\begin{align*}
-\frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\mathrm{E}\left[\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\Delta(X_{i})}\right] = 0, \\
-\frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\mathrm{E}\left[\underbrace{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right)}_{\Delta(X_{i})} X_{i}\right] = 0.
+\frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\,\mathrm{E}\bigl[\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\Delta(X_{i})}\bigr] = 0, \\
+\frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\,\mathrm{E}\bigl[\underbrace{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right)}_{\Delta(X_{i})} X_{i}\bigr] = 0.
 \end{align*}</span></p></li>
 <li><p>OLS chooses <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is <strong>uncorrelated with the specification error</strong> <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span>, yielding the best linear approximation of the CEF in the MSE sense.</p></li>
 <li><p>Since <span class="math inline">U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)</span>, this also gives <span class="math display">
@@ -3009,8 +3009,8 @@ U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{
 <span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The first-order conditions are:</span>
 <span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  \frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\E{\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\Delta(X_{i})}} = 0, <span class="sc">\\</span></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  \frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\E{\underbrace{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right)}_{\Delta(X_{i})} X_{i}} = 0.</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  \frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\,\mathrm{E}\bigl[\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\Delta(X_{i})}\bigr] = 0, <span class="sc">\\</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>  \frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\,\mathrm{E}\bigl[\underbrace{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right)}_{\Delta(X_{i})} X_{i}\bigr] = 0.</span>
 <span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$, yielding the best linear approximation of the CEF in the MSE sense.</span>
