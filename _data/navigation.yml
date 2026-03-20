@@ -2,9 +2,12 @@
 main:
   - title: "CV"
     url: /cv/
-  
+
+  - title: "Research"
+    url: /research/
+
   #- title: "Talks"
-  #  url: /talks/    
+  #  url: /talks/
 
   - title: "Teaching"
     url: /teaching/    

@@ -41,8 +41,16 @@
 @import "print";
 
 /* Custom: tighter spacing between teaching entries */
-.page__content .list__item + .list__item .archive__item-title {
-  margin-top: 0.25em;
+.page__content .list__item {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.page__content .list__item .archive__item-title {
+  margin-top: 0.4em;
+  margin-bottom: 0.1em;
+}
+.page__content .list__item .archive__item-excerpt {
+  display: none;
 }
 
 /* Custom: wider spacing between paper entries */

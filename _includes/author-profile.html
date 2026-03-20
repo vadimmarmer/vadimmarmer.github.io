@@ -34,6 +34,9 @@
       {% if author.email %}
         <li><a href="mailto:{{ author.email }}"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].email_label | default: "Email" }}</a></li>
       {% endif %}
+      {% if author.official_page %}
+        <li><a href="{{ author.official_page }}"><i class="fas fa-fw fa-globe-americas" aria-hidden="true"></i> UBC Profile</a></li>
+      {% endif %}
       {% if author.keybase %}
         <li><a href="https://keybase.io/{{ author.keybase }}"><i class="fas fa-fw fa-key" aria-hidden="true"></i> Keybase</a></li>
       {% endif %}
@@ -117,9 +120,6 @@
       {% endif %}
       {% if author.ideas_repec %}
         <li><a href="{{ author.ideas_repec }}"><i class="ai ai-ideas-repec" aria-hidden="true"></i> IDEAS RePEc</a></li>
-      {% endif %}
-      {% if author.official_page %}
-        <li><a href="{{ author.official_page }}"><i class="fas fa-fw fa-globe-americas" aria-hidden="true"></i> UBC Profile</a></li>  
       {% endif %}
       {% if author.wikipedia %}
         <li><a href="https://en.wikipedia.org/wiki/User:{{ author.wikipedia }}"><i class="fab fa-fw fa-wikipedia-w" aria-hidden="true"></i> Wikipedia</a></li>

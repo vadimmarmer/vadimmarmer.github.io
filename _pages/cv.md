@@ -7,6 +7,8 @@ redirect_from:
   - /resume
 ---
 
+Updated: March 19, 2026
+
 [Download PDF](/files/vadim_marmer_CV.pdf)
 
 Vancouver School of Economics<br>
@@ -31,7 +33,7 @@ Personal website: [vadimmarmer.com](https://vadimmarmer.com)
 
 - 2005 Ph.D., Economics, Yale University
   - Dissertation Title: Nonlinearities in Econometric Forecasting and Inference
-  - Dissertation Committee: Donald W.K. Andrews (chair), Peter C.B. Phillips, Yuichi Kitamura
+  - Dissertation Committee: Donald W.K. Andrews (supervisor), Peter C.B. Phillips, Yuichi Kitamura
 - 2002 M.Phil., Economics, Yale University
 - 2001 M.A., Economics, Yale University
 - 1999 M.A., Economics, Hebrew University, Jerusalem
