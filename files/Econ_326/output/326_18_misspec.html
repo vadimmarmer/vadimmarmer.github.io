@@ -2260,14 +2260,12 @@ window.Quarto = {
     <h2 id="toc-title">Table of Contents</h2>
    
   <ul>
-  <li><a href="#strong-exogeneity-and-the-conditional-expectation-function-cef" id="toc-strong-exogeneity-and-the-conditional-expectation-function-cef" class="nav-link active" data-scroll-target="#strong-exogeneity-and-the-conditional-expectation-function-cef">Strong exogeneity and the conditional expectation function (CEF)</a></li>
+  <li><a href="#strong-exogeneity-and-the-cef" id="toc-strong-exogeneity-and-the-cef" class="nav-link active" data-scroll-target="#strong-exogeneity-and-the-cef">Strong exogeneity and the CEF</a></li>
   <li><a href="#weak-exogeneity" id="toc-weak-exogeneity" class="nav-link" data-scroll-target="#weak-exogeneity">Weak exogeneity</a></li>
-  <li><a href="#linear-regression-as-a-misspecified-cef" id="toc-linear-regression-as-a-misspecified-cef" class="nav-link" data-scroll-target="#linear-regression-as-a-misspecified-cef">Linear regression as a misspecified CEF</a></li>
-  <li><a href="#linear-regression-as-a-misspecified-cef-1" id="toc-linear-regression-as-a-misspecified-cef-1" class="nav-link" data-scroll-target="#linear-regression-as-a-misspecified-cef-1">Linear regression as a misspecified CEF</a></li>
-  <li><a href="#linear-regression-as-a-misspecified-cef-2" id="toc-linear-regression-as-a-misspecified-cef-2" class="nav-link" data-scroll-target="#linear-regression-as-a-misspecified-cef-2">Linear regression as a misspecified CEF</a></li>
+  <li><a href="#misspecified-cef-and-the-regression-error" id="toc-misspecified-cef-and-the-regression-error" class="nav-link" data-scroll-target="#misspecified-cef-and-the-regression-error">Misspecified CEF and the regression error</a></li>
+  <li><a href="#conditions-for-weak-exogeneity" id="toc-conditions-for-weak-exogeneity" class="nav-link" data-scroll-target="#conditions-for-weak-exogeneity">Conditions for weak exogeneity</a></li>
   <li><a href="#linear-approximation-of-the-cef" id="toc-linear-approximation-of-the-cef" class="nav-link" data-scroll-target="#linear-approximation-of-the-cef">Linear approximation of the CEF</a></li>
-  <li><a href="#linear-approximation-of-the-cef-1" id="toc-linear-approximation-of-the-cef-1" class="nav-link" data-scroll-target="#linear-approximation-of-the-cef-1">Linear approximation of the CEF</a></li>
-  <li><a href="#linear-regression-as-the-best-linear-approximation-of-the-cef" id="toc-linear-regression-as-the-best-linear-approximation-of-the-cef" class="nav-link" data-scroll-target="#linear-regression-as-the-best-linear-approximation-of-the-cef">Linear regression as the best linear approximation of the CEF</a></li>
+  <li><a href="#regression-as-best-linear-approximation" id="toc-regression-as-best-linear-approximation" class="nav-link" data-scroll-target="#regression-as-best-linear-approximation">Regression as best linear approximation</a></li>
   <li><a href="#misspecification-and-heteroskedasticity" id="toc-misspecification-and-heteroskedasticity" class="nav-link" data-scroll-target="#misspecification-and-heteroskedasticity">Misspecification and heteroskedasticity</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_18_misspec.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_18_misspec_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -2300,8 +2298,8 @@ window.Quarto = {
 </header>
 
 
-<section id="strong-exogeneity-and-the-conditional-expectation-function-cef" class="level2">
-<h2 class="anchored" data-anchor-id="strong-exogeneity-and-the-conditional-expectation-function-cef">Strong exogeneity and the conditional expectation function (CEF)</h2>
+<section id="strong-exogeneity-and-the-cef" class="level2">
+<h2 class="anchored" data-anchor-id="strong-exogeneity-and-the-cef">Strong exogeneity and the CEF</h2>
 <div class="hidden">
 
 </div>
@@ -2338,26 +2336,14 @@ Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
 <li><p><strong>Question:</strong> What does the econometrician estimate when running a linear regression and the regressors are <em>not</em> strongly exogenous?</p></li>
 </ul>
 </section>
-<section id="linear-regression-as-a-misspecified-cef" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression-as-a-misspecified-cef">Linear regression as a misspecified CEF</h2>
+<section id="misspecified-cef-and-the-regression-error" class="level2">
+<h2 class="anchored" data-anchor-id="misspecified-cef-and-the-regression-error">Misspecified CEF and the regression error</h2>
 <ul>
 <li><p>Suppose that <span class="math display">
 \mathrm{E}\left[Y_{i} \mid X_{i}\right] = g\left( X_{i}\right),
 </span> where <span class="math inline">g</span> is some unknown <em>nonlinear</em> function. Thus, the <strong>true</strong> CEF is <span class="math inline">g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.</span></p></li>
-<li><p>Define <span class="math display">
-V_{i}=Y_{i}-\mathrm{E}\left[Y_{i} \mid X_{i}\right],
-</span> so we can write the true model as <span class="math display">
-\begin{aligned}
-Y_{i} &amp;= g\left( X_{i}\right) +V_{i}, \\
-\mathrm{E}\left[V_{i} \mid X_{i}\right] &amp;= 0.
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="linear-regression-as-a-misspecified-cef-1" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression-as-a-misspecified-cef-1">Linear regression as a misspecified CEF</h2>
-<ul>
-<li>Write</li>
+<li><p>Define <span class="math inline">V_{i}=Y_{i}-\mathrm{E}\left[Y_{i} \mid X_{i}\right]</span>, so the true model is <span class="math inline">Y_{i} = g\left( X_{i}\right) +V_{i}</span> with <span class="math inline">\mathrm{E}\left[V_{i} \mid X_{i}\right] = 0</span>.</p></li>
+<li><p>Adding and subtracting <span class="math inline">\beta _{0}+\beta _{1}X_{i}</span>:</p></li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
@@ -2366,16 +2352,14 @@ Y_{i} &amp;= g\left( X_{i}\right) +V_{i} \\
 \end{aligned}
 </span></p>
 <ul>
-<li><p>or <span class="math display">
-Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},
-</span> where <span class="math display">
+<li><p>or <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span>, where <span class="math display">
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 </span></p></li>
 <li><p>Can we find <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span> and <span class="math inline">\mathrm{E}\left[X_{i}U_{i}\right] = 0</span>? If yes, how can we interpret such <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>?</p></li>
 </ul>
 </section>
-<section id="linear-regression-as-a-misspecified-cef-2" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression-as-a-misspecified-cef-2">Linear regression as a misspecified CEF</h2>
+<section id="conditions-for-weak-exogeneity" class="level2">
+<h2 class="anchored" data-anchor-id="conditions-for-weak-exogeneity">Conditions for weak exogeneity</h2>
 <p><span class="math display">
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 </span></p>
@@ -2421,35 +2405,20 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <li><p>Among the linear functions, we are looking for the <strong>best</strong> linear approximation in the <strong>mean squared error (MSE)</strong> sense.</p></li>
 </ul>
 </section>
-<section id="linear-approximation-of-the-cef-1" class="level2">
-<h2 class="anchored" data-anchor-id="linear-approximation-of-the-cef-1">Linear approximation of the CEF</h2>
-<p><span class="math display">
-\begin{aligned}
-&amp;\min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right), \\
-&amp;\text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].
-\end{aligned}
-</span></p>
+<section id="regression-as-best-linear-approximation" class="level2">
+<h2 class="anchored" data-anchor-id="regression-as-best-linear-approximation">Regression as best linear approximation</h2>
 <ul>
-<li><p>Let <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> denote the solution: <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right).</span></p></li>
+<li><p>Let <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)</span>, where <span class="math inline">\text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].</span></p></li>
 <li><p>The first-order conditions are:</p></li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
-\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0. \\
-\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
+\frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0, \\
+\frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
 \end{aligned}
 </span></p>
-</section>
-<section id="linear-regression-as-the-best-linear-approximation-of-the-cef" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression-as-the-best-linear-approximation-of-the-cef">Linear regression as the best linear approximation of the CEF</h2>
 <ul>
-<li><p>We have <span class="math display">
-\begin{aligned}
-Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
-U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
-\end{aligned}
-</span></p></li>
-<li><p>With <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right],</span> <span class="math display">
+<li><p>These are exactly the conditions for weak exogeneity derived earlier, so <span class="math display">
 \mathrm{E}\left[U_{i}\right] = 0\text{ and }\mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
 <li><p>Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).</p></li>
@@ -2970,7 +2939,7 @@ U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">    transition: none</span></span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Strong exogeneity and the conditional expectation function (CEF)</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Strong exogeneity and the CEF</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>::: {.hidden}</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>\gdef\E#1{\mathrm{E}\left<span class="co">[</span><span class="ot">#1\right</span><span class="co">]</span>}</span>
@@ -3015,7 +2984,7 @@ U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Question:** What does the econometrician estimate when running a linear regression and the regressors are *not* strongly exogenous?</span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear regression as a misspecified CEF</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Misspecified CEF and the regression error</span></span>
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>  $$</span>
@@ -3023,148 +2992,115 @@ U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  where $g$ is some unknown *nonlinear* function. Thus, the **true** CEF is $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.$</span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  V_{i}=Y_{i}-\E{Y_{i} \mid X_{i}},</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  so we can write the true model as</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= g\left( X_{i}\right) +V_{i}, <span class="sc">\\</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  \E{V_{i} \mid X_{i}} &amp;= 0.</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear regression as a misspecified CEF</span></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Write</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Define $V_{i}=Y_{i}-\E{Y_{i} \mid X_{i}}$, so the true model is $Y_{i} = g\left( X_{i}\right) +V_{i}$ with $\E{V_{i} \mid X_{i}} = 0$.</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding and subtracting $\beta _{0}+\beta _{1}X_{i}$:</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>Y_{i} &amp;= g\left( X_{i}\right) +V_{i} <span class="sc">\\</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>&amp;= \beta _{0}+\beta _{1}X_{i}-\beta _{0}-\beta _{1}X_{i}+g\left( X_{i}\right) +V_{i}</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>or $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, where</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>Y_{i} &amp;= g\left( X_{i}\right) +V_{i} <span class="sc">\\</span></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>&amp;= \beta _{0}+\beta _{1}X_{i}-\beta _{0}-\beta _{1}X_{i}+g\left( X_{i}\right) +V_{i}</span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>or</span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>  Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>  where</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>  U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can we find $\beta _{0}$ and $\beta _{1}$ so that $\E{U_{i}} = 0$ and $\E{X_{i}U_{i}} = 0$? If yes, how can we interpret such $\beta _{0}$ and $\beta _{1}$?</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear regression as a misspecified CEF</span></span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Note that</span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>\E{U_{i}}</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}}+\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>&amp;= \E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}},</span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>and</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can we find $\beta _{0}$ and $\beta _{1}$ so that $\E{U_{i}} = 0$ and $\E{X_{i}U_{i}} = 0$? If yes, how can we interpret such $\beta _{0}$ and $\beta _{1}$?</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conditions for weak exogeneity</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Note that</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>\E{U_{i}}</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}}+\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>&amp;= \E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}},</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>and</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>\E{U_{i}X_{i}}</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>&amp;= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}X_{i}}+\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>&amp;= \E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}}.</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, to have $\E{U_{i}} = \E{U_{i}X_{i}} = 0$, we need to find $\beta _{0}$ and $\beta _{1}$ such that</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} &amp;= 0, <span class="sc">\\</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} &amp;= 0.</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
 <span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>\E{U_{i}X_{i}}</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>&amp;= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}X_{i}}+\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>&amp;= \E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}}.</span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear approximation of the CEF</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the following approximation problem:</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>  \min_{b_{0},b_{1}}\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, to have $\E{U_{i}} = \E{U_{i}X_{i}} = 0$, we need to find $\beta _{0}$ and $\beta _{1}$ such that</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We are approximating the CEF by linear functions.</span>
 <span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} &amp;= 0, <span class="sc">\\</span></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} &amp;= 0.</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear approximation of the CEF</span></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the following approximation problem:</span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>  \min_{b_{0},b_{1}}\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.</span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We are approximating the CEF by linear functions.</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Among the linear functions, we are looking for the **best** linear approximation in the **mean squared error (MSE)** sense.</span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear approximation of the CEF</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Among the linear functions, we are looking for the **best** linear approximation in the **mean squared error (MSE)** sense.</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## Regression as best linear approximation</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)$, where $\text{MSE}\left( b_{0},b_{1}\right) =\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.$</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The first-order conditions are:</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>\frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} = 0, <span class="sc">\\</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>\frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These are exactly the conditions for weak exogeneity derived earlier, so</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>&amp;\min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right), <span class="sc">\\</span></span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>&amp;\text{MSE}\left( b_{0},b_{1}\right) =\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\beta _{0}$ and $\beta _{1}$ denote the solution: $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right).$</span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The first-order conditions are:</span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{0}} &amp;= -2\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} = 0. <span class="sc">\\</span></span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{1}} &amp;= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.</span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Misspecification and heteroskedasticity</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, <span class="sc">\\</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>  U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that the &quot;true&quot; error $V_{i}$ is homoskedastic: $\E{V_{i}^{2} \mid X_{i}} = \sigma _{V}^{2}$ for all $X_{i}.$</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$U_{i}$ is **heteroskedastic** if $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X$:</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear regression as the best linear approximation of the CEF</span></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have</span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, <span class="sc">\\</span></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>  U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}},$</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.</span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).</span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a><span class="fu">## Misspecification and heteroskedasticity</span></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have</span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, <span class="sc">\\</span></span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>  U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.</span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that the &quot;true&quot; error $V_{i}$ is homoskedastic: $\E{V_{i}^{2} \mid X_{i}} = \sigma _{V}^{2}$ for all $X_{i}.$</span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$U_{i}$ is **heteroskedastic** if $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X$:</span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>\E{U_{i}^{2} \mid X_{i}}</span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>&amp;= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2} \mid X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>&amp;\quad + \E{2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}} <span class="sc">\\</span></span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>&amp;= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2}.</span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>$$</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>\E{U_{i}^{2} \mid X_{i}}</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>&amp;= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>&amp;= \E{V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2} \mid X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>&amp;\quad + \E{2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}} <span class="sc">\\</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>&amp;= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2}.</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>$$</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

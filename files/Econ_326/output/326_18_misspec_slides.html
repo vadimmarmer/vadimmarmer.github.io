@@ -1075,8 +1075,8 @@ Vadim Marmer, UBC
 </div>
 
 </section>
-<section id="strong-exogeneity-and-the-conditional-expectation-function-cef" class="slide level2">
-<h2>Strong exogeneity and the conditional expectation function (CEF)</h2>
+<section id="strong-exogeneity-and-the-cef" class="slide level2">
+<h2>Strong exogeneity and the CEF</h2>
 <div class="hidden">
 
 </div>
@@ -1113,26 +1113,14 @@ Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
 <li class="fragment"><p><strong>Question:</strong> What does the econometrician estimate when running a linear regression and the regressors are <em>not</em> strongly exogenous?</p></li>
 </ul>
 </section>
-<section id="linear-regression-as-a-misspecified-cef" class="slide level2">
-<h2>Linear regression as a misspecified CEF</h2>
+<section id="misspecified-cef-and-the-regression-error" class="slide level2">
+<h2>Misspecified CEF and the regression error</h2>
 <ul>
 <li class="fragment"><p>Suppose that <span class="math display">
 \mathrm{E}\left[Y_{i} \mid X_{i}\right] = g\left( X_{i}\right),
 </span> where <span class="math inline">g</span> is some unknown <em>nonlinear</em> function. Thus, the <strong>true</strong> CEF is <span class="math inline">g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.</span></p></li>
-<li class="fragment"><p>Define <span class="math display">
-V_{i}=Y_{i}-\mathrm{E}\left[Y_{i} \mid X_{i}\right],
-</span> so we can write the true model as <span class="math display">
-\begin{aligned}
-Y_{i} &amp;= g\left( X_{i}\right) +V_{i}, \\
-\mathrm{E}\left[V_{i} \mid X_{i}\right] &amp;= 0.
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="linear-regression-as-a-misspecified-cef-1" class="slide level2">
-<h2>Linear regression as a misspecified CEF</h2>
-<ul>
-<li class="fragment">Write</li>
+<li class="fragment"><p>Define <span class="math inline">V_{i}=Y_{i}-\mathrm{E}\left[Y_{i} \mid X_{i}\right]</span>, so the true model is <span class="math inline">Y_{i} = g\left( X_{i}\right) +V_{i}</span> with <span class="math inline">\mathrm{E}\left[V_{i} \mid X_{i}\right] = 0</span>.</p></li>
+<li class="fragment"><p>Adding and subtracting <span class="math inline">\beta _{0}+\beta _{1}X_{i}</span>:</p></li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
@@ -1141,16 +1129,14 @@ Y_{i} &amp;= g\left( X_{i}\right) +V_{i} \\
 \end{aligned}
 </span></p>
 <ul>
-<li class="fragment"><p>or <span class="math display">
-Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},
-</span> where <span class="math display">
+<li class="fragment"><p>or <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span>, where <span class="math display">
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 </span></p></li>
 <li class="fragment"><p>Can we find <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span> and <span class="math inline">\mathrm{E}\left[X_{i}U_{i}\right] = 0</span>? If yes, how can we interpret such <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>?</p></li>
 </ul>
 </section>
-<section id="linear-regression-as-a-misspecified-cef-2" class="slide level2">
-<h2>Linear regression as a misspecified CEF</h2>
+<section id="conditions-for-weak-exogeneity" class="slide level2">
+<h2>Conditions for weak exogeneity</h2>
 <p><span class="math display">
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 </span></p>
@@ -1196,35 +1182,20 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <li class="fragment"><p>Among the linear functions, we are looking for the <strong>best</strong> linear approximation in the <strong>mean squared error (MSE)</strong> sense.</p></li>
 </ul>
 </section>
-<section id="linear-approximation-of-the-cef-1" class="slide level2">
-<h2>Linear approximation of the CEF</h2>
-<p><span class="math display">
-\begin{aligned}
-&amp;\min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right), \\
-&amp;\text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].
-\end{aligned}
-</span></p>
+<section id="regression-as-best-linear-approximation" class="slide level2">
+<h2>Regression as best linear approximation</h2>
 <ul>
-<li class="fragment"><p>Let <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> denote the solution: <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right).</span></p></li>
+<li class="fragment"><p>Let <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)</span>, where <span class="math inline">\text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].</span></p></li>
 <li class="fragment"><p>The first-order conditions are:</p></li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
-\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0. \\
-\frac{\partial \text{MSE}\left( \beta _{0},\beta _{1}\right) }{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
+\frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0, \\
+\frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
 \end{aligned}
 </span></p>
-</section>
-<section id="linear-regression-as-the-best-linear-approximation-of-the-cef" class="slide level2">
-<h2>Linear regression as the best linear approximation of the CEF</h2>
 <ul>
-<li class="fragment"><p>We have <span class="math display">
-\begin{aligned}
-Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
-U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>With <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right],</span> <span class="math display">
+<li class="fragment"><p>These are exactly the conditions for weak exogeneity derived earlier, so <span class="math display">
 \mathrm{E}\left[U_{i}\right] = 0\text{ and }\mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
 <li class="fragment"><p>Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).</p></li>
