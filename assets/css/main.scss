@@ -39,3 +39,17 @@
 @import "vendor/font-awesome/brands";
 @import "vendor/magnific-popup/magnific-popup";
 @import "print";
+
+/* Custom: tighter spacing between teaching entries */
+.page__content .list__item + .list__item .archive__item-title {
+  margin-top: 0.25em;
+}
+
+/* Custom: wider spacing between paper entries */
+.paper-list + p,
+.paper-list ~ p {
+  margin-bottom: 1.8em;
+}
+.paper-list ~ h2 {
+  margin-top: 2.5em;
+}

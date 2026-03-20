@@ -1,0 +1,52 @@
+name: Render CV PDF
+
+on:
+  push:
+    paths:
+      - '_pages/cv.md'
+  workflow_dispatch:
+
+jobs:
+  render-cv:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pandoc and xelatex
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended
+
+      - name: Build PDF from cv.md
+        run: |
+          # Strip Jekyll front matter
+          sed '1{/^---$/!q;};1,/^---$/d' _pages/cv.md > cv_body.md
+          # Remove "Download PDF" link (HTML-only)
+          sed -i '/^\[Download PDF\]/d' cv_body.md
+          # Convert <br> to pandoc line breaks (backslash at end of line)
+          sed -i 's/<br>$/\\/g' cv_body.md
+          # Prepend pandoc metadata
+          cat > cv_render.md << 'HEADER'
+---
+title: "Vadim Marmer"
+subtitle: "Curriculum Vitae"
+geometry: margin=0.8in
+fontsize: 11pt
+colorlinks: true
+---
+
+HEADER
+          cat cv_body.md >> cv_render.md
+          pandoc cv_render.md -o files/vadim_marmer_CV.pdf --pdf-engine=xelatex
+          rm cv_body.md cv_render.md
+
+      - name: Commit rendered PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add files/vadim_marmer_CV.pdf
+          git diff --staged --quiet || git commit -m "Auto-render CV PDF"
+          git push
