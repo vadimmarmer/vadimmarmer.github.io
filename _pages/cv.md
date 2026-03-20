@@ -115,7 +115,9 @@ Competition Bureau Canada, 2020
 
 3. Ma, J., V. Marmer, and P. Xu: "Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?"
 
-4. Marmer, V., and S. Sakata: "Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction."
+## Inactive Working Papers
+
+1. Marmer, V., and S. Sakata: "Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction."
 
 ## Non-Refereed Publications
 
