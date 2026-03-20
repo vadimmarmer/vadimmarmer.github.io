@@ -15,7 +15,8 @@ with T. Chan and K. Song
 with J. Ma and Z. Yu
 
 **[Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf)**<br>
-with J. Ma and P. Xu
+with J. Ma and P. Xu<br>
+[Supplement](/files/auction-supp-v12.pdf)
 
 ## Publications
 {: .paper-list}
