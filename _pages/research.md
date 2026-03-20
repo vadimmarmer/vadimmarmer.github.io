@@ -105,7 +105,7 @@ with D. Shapiro and P. MacAvoy<br>
 with D.W.K. Andrews and O. Lieberman<br>
 *Journal of Econometrics*, 2006
 
-## Inactive Working Papers
+## Inactive Papers
 {: .paper-list}
 
 **[Instrumental Variables Estimation and Weak-Identification-Robust Inference Based on a Conditional Quantile Restriction](https://economics.ubc.ca/wp-content/uploads/sites/38/2013/05/pdf_paper_vadim_marmer-instrumental-variables-estimation-weak-indentification-robust.pdf)**<br>
