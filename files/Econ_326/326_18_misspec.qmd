@@ -145,8 +145,8 @@ format:
 
 - The first-order conditions are:
   \begin{align*}
-  \frac{\partial \text{MSE}}{\partial b_{0}} &= -2\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} = 0, \\
-  \frac{\partial \text{MSE}}{\partial b_{1}} &= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.
+  \frac{\partial \text{MSE}}{\partial b_{0}} &= -2\E{\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\Delta(X_{i})}} = 0, \\
+  \frac{\partial \text{MSE}}{\partial b_{1}} &= -2\E{\underbrace{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right)}_{\Delta(X_{i})} X_{i}} = 0.
   \end{align*}
 
 - OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$, yielding the best linear approximation of the CEF in the MSE sense.
