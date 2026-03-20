@@ -1084,29 +1084,21 @@ Vadim Marmer, UBC
 <li class="fragment"><p>Consider the linear regression model <span class="math display">
 Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.
 </span></p></li>
-<li class="fragment"><p>When the errors are <strong>strongly exogenous</strong>, i.e., <span class="math inline">\mathrm{E}\left[U_{i} \mid X_{i}\right] = 0</span>, the linear regression model defines the <strong>CEF</strong> of <span class="math inline">Y</span> conditional on <span class="math inline">X</span>:</p></li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
+<li class="fragment"><p>When the errors are <strong>strongly exogenous</strong>, i.e., <span class="math inline">\mathrm{E}\left[U_{i} \mid X_{i}\right] = 0</span>, the linear regression model defines the <strong>CEF</strong> of <span class="math inline">Y</span> conditional on <span class="math inline">X</span>: <span class="math display">\begin{align*}
 \mathrm{CEF}_{Y}\left( X_{i}\right) &amp;\equiv \mathrm{E}\left[Y_{i} \mid X_{i}\right] \\
 &amp;= \mathrm{E}\left[\beta _{0}+\beta _{1}X_{i}+U_{i} \mid X_{i}\right] \\
 &amp;= \beta _{0}+\beta _{1}X_{i}+\mathrm{E}\left[U_{i} \mid X_{i}\right] \\
 &amp;= \beta _{0}+\beta _{1}X_{i}.
-\end{aligned}
-</span></p>
+\end{align*}</span></p></li>
+</ul>
 </section>
 <section id="weak-exogeneity" class="slide level2">
 <h2>Weak exogeneity</h2>
 <ul>
-<li class="fragment">Consider the linear regression model with <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span>:</li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
+<li class="fragment"><p>Consider the linear regression model with <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span>: <span class="math display">\begin{align*}
 Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
 \mathrm{E}\left[U_{i}\right] &amp;= 0
-\end{aligned}
-</span></p>
-<ul>
+\end{align*}</span></p></li>
 <li class="fragment"><p>Suppose the errors are only <strong>weakly exogenous</strong>: <span class="math display">
 \mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
@@ -1122,58 +1114,36 @@ Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
 <li class="fragment"><p>Suppose that <span class="math display">
 \mathrm{E}\left[Y_{i} \mid X_{i}\right] = g\left( X_{i}\right),
 </span> where <span class="math inline">g</span> is some unknown <em>nonlinear</em> function. Thus, the <strong>true</strong> CEF is <span class="math inline">g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.</span></p></li>
-<li class="fragment"><p>Define <span class="math inline">V_{i}=Y_{i}-\mathrm{E}\left[Y_{i} \mid X_{i}\right]</span>, so the true model is <span class="math inline">Y_{i} = g\left( X_{i}\right) +V_{i}</span> with <span class="math inline">\mathrm{E}\left[V_{i} \mid X_{i}\right] = 0</span>.</p></li>
-<li class="fragment"><p>Adding and subtracting <span class="math inline">\beta _{0}+\beta _{1}X_{i}</span>:</p></li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
-Y_{i} &amp;= g\left( X_{i}\right) +V_{i} \\
-&amp;= \beta _{0}+\beta _{1}X_{i}-\beta _{0}-\beta _{1}X_{i}+g\left( X_{i}\right) +V_{i}
-\end{aligned}
-</span></p>
-<ul>
-<li class="fragment"><p>Rearranging, <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span>, where <span class="math display">
-U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
+<li class="fragment"><p>Define <span class="math inline">\varepsilon_{i}=Y_{i}-\mathrm{E}\left[Y_{i} \mid X_{i}\right]</span>, so the true model is <span class="math inline">Y_{i} = g\left( X_{i}\right) +\varepsilon_{i}</span> with <span class="math inline">\mathrm{E}\left[\varepsilon_{i} \mid X_{i}\right] = 0</span>.</p></li>
+<li class="fragment"><p>Adding and subtracting <span class="math inline">\beta _{0}+\beta _{1}X_{i}</span>: <span class="math display">\begin{align*}
+Y_{i} &amp;= g\left( X_{i}\right) +\varepsilon_{i} \\
+&amp;= \beta _{0}+\beta _{1}X_{i} \\
+&amp;\quad +\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\text{specification error}}
++\varepsilon_{i}
+\end{align*}</span></p></li>
+<li class="fragment"><p>Rearranging, <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span>, where the regression error <span class="math inline">U_{i}</span> combines the true error and the <strong>specification error</strong>: <span class="math display">
+U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\text{specification error}}.
 </span></p></li>
-<li class="fragment"><p>Can we find <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span> and <span class="math inline">\mathrm{E}\left[X_{i}U_{i}\right] = 0</span>? If yes, how can we interpret such <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>?</p></li>
+<li class="fragment"><p>Can we find <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is uncorrelated with <span class="math inline">U_{i}</span>, i.e., <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span> and <span class="math inline">\mathrm{E}\left[X_{i}U_{i}\right] = 0</span>?</p></li>
 </ul>
 </section>
 <section id="conditions-for-weak-exogeneity" class="slide level2">
 <h2>Conditions for weak exogeneity</h2>
-<p><span class="math display">
-U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
-</span></p>
 <ul>
-<li class="fragment">Evaluating <span class="math inline">\mathrm{E}\left[U_i\right]</span>:</li>
+<li class="fragment"><p>Denote the specification error by <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span>, so <span class="math inline">U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)</span>.</p></li>
+<li class="fragment"><p>Since <span class="math inline">\mathrm{E}\left[\varepsilon_{i} \mid X_{i}\right] = 0</span>, the law of iterated expectations gives <span class="math display">\begin{align*}
+\mathrm{E}\left[\varepsilon_{i}\right] &amp;= \mathrm{E}\left[\mathrm{E}\left[\varepsilon_{i} \mid X_{i}\right]\right] = 0, \\
+\mathrm{E}\left[\varepsilon_{i}X_{i}\right] &amp;= \mathrm{E}\left[X_{i}\,\mathrm{E}\left[\varepsilon_{i} \mid X_{i}\right]\right] = 0.
+\end{align*}</span></p></li>
+<li class="fragment"><p>Therefore <span class="math display">\begin{align*}
+\mathrm{E}\left[U_{i}\right] &amp;= \mathrm{E}\left[\varepsilon_{i}\right] + \mathrm{E}\left[\Delta\left( X_{i}\right)\right] = \mathrm{E}\left[\Delta\left( X_{i}\right)\right], \\
+\mathrm{E}\left[U_{i}X_{i}\right] &amp;= \mathrm{E}\left[\varepsilon_{i}X_{i}\right] + \mathrm{E}\left[\Delta\left( X_{i}\right) X_{i}\right] = \mathrm{E}\left[\Delta\left( X_{i}\right) X_{i}\right].
+\end{align*}</span></p></li>
+<li class="fragment"><p>The conditions <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span> and <span class="math inline">\mathrm{E}\left[U_{i}X_{i}\right] = 0</span> reduce to conditions on the <strong>specification error</strong> alone: <span class="math display">\begin{align*}
+\mathrm{E}\left[\Delta\left( X_{i}\right)\right] &amp;= 0, \\
+\mathrm{E}\left[\Delta\left( X_{i}\right) X_{i}\right] &amp;= 0.
+\end{align*}</span> That is, we need <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> such that the specification error has <strong>mean zero</strong> and is <strong>uncorrelated with <span class="math inline">X_{i}</span></strong>.</p></li>
 </ul>
-<p><span class="math display">
-\begin{aligned}
-\mathrm{E}\left[U_{i}\right]
-&amp;= \mathrm{E}\left[V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] \\
-&amp;= \mathrm{E}\left[V_{i}\right]+\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] \\
-&amp;= \mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right],
-\end{aligned}
-</span></p>
-<ul>
-<li class="fragment">For the covariance condition:</li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
-\mathrm{E}\left[U_{i}X_{i}\right]
-&amp;= \mathrm{E}\left[\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] \\
-&amp;= \mathrm{E}\left[V_{i}X_{i}\right]+\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] \\
-&amp;= \mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right].
-\end{aligned}
-</span></p>
-<ul>
-<li class="fragment">Thus, to have <span class="math inline">\mathrm{E}\left[U_{i}\right] = \mathrm{E}\left[U_{i}X_{i}\right] = 0</span>, we need to find <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> such that</li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
-\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] &amp;= 0, \\
-\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] &amp;= 0.
-\end{aligned}
-</span></p>
 </section>
 <section id="linear-approximation-of-the-cef" class="slide level2">
 <h2>Linear approximation of the CEF</h2>
@@ -1188,43 +1158,31 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <section id="regression-as-best-linear-approximation" class="slide level2">
 <h2>Regression as best linear approximation</h2>
 <ul>
-<li class="fragment"><p>Let <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)</span>, where <span class="math inline">\text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].</span></p></li>
-<li class="fragment"><p>The first-order conditions are:</p></li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
+<li class="fragment"><p>Let <span class="math inline">\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)</span>, where <span class="math display">
+\text{MSE}\left( b_{0},b_{1}\right) =\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].
+</span></p></li>
+<li class="fragment"><p>The first-order conditions are: <span class="math display">\begin{align*}
 \frac{\partial \text{MSE}}{\partial b_{0}} &amp;= -2\mathrm{E}\left[g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right] = 0, \\
 \frac{\partial \text{MSE}}{\partial b_{1}} &amp;= -2\mathrm{E}\left[\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}\right] = 0.
-\end{aligned}
-</span></p>
-<ul>
+\end{align*}</span></p></li>
 <li class="fragment"><p>These are the conditions for weak exogeneity derived earlier, so <span class="math display">
 \mathrm{E}\left[U_{i}\right] = 0\text{ and }\mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
-<li class="fragment"><p>Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).</p></li>
+<li class="fragment"><p>OLS chooses <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">X_{i}</span> is <strong>uncorrelated with the specification error</strong> <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span> (and hence with <span class="math inline">U_{i}</span>), yielding the best linear approximation of the CEF in the MSE sense.</p></li>
 </ul>
 </section>
 <section id="misspecification-and-heteroskedasticity" class="slide level2">
 <h2>Misspecification and heteroskedasticity</h2>
 <ul>
-<li class="fragment"><p>We have <span class="math display">
-\begin{aligned}
-Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
-U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>Suppose that the “true” error <span class="math inline">V_{i}</span> is homoskedastic: <span class="math inline">\mathrm{E}\left[V_{i}^{2} \mid X_{i}\right] = \sigma _{V}^{2}</span> for all <span class="math inline">X_{i}.</span></p></li>
-<li class="fragment"><p><span class="math inline">U_{i}</span> is <strong>heteroskedastic</strong> if <span class="math inline">g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}</span>:</p></li>
-</ul>
-<p><span class="math display">
-\begin{aligned}
+<li class="fragment"><p>Recall <span class="math inline">U_{i} = \varepsilon_{i} + \Delta\left( X_{i}\right)</span>, where <span class="math inline">\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}</span> is the specification error.</p></li>
+<li class="fragment"><p>Suppose the true error <span class="math inline">\varepsilon_{i}</span> is homoskedastic: <span class="math inline">\mathrm{E}\left[\varepsilon_{i}^{2} \mid X_{i}\right] = \sigma _{\varepsilon}^{2}</span> for all <span class="math inline">X_{i}.</span></p></li>
+<li class="fragment"><p>When the specification error is nonzero, <span class="math inline">U_{i}</span> is <strong>heteroskedastic</strong>: <span class="math display">\begin{align*}
 \mathrm{E}\left[U_{i}^{2} \mid X_{i}\right]
-&amp;= \mathrm{E}\left[\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}\right] \\
-&amp;= \mathrm{E}\left[V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}\right] \\
-&amp;\quad + \mathrm{E}\left[2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}\right] \\
-&amp;= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2}.
-\end{aligned}
-</span></p>
+&amp;= \mathrm{E}\left[\left( \varepsilon_{i}+\Delta\left( X_{i}\right) \right) ^{2} \mid X_{i}\right] \\
+&amp;= \mathrm{E}\left[\varepsilon_{i}^{2} \mid X_{i}\right]+\Delta\left( X_{i}\right) ^{2}+2\,\Delta\left( X_{i}\right) \mathrm{E}\left[\varepsilon_{i} \mid X_{i}\right] \\
+&amp;= \sigma _{\varepsilon}^{2}+\Delta\left( X_{i}\right) ^{2}.
+\end{align*}</span></p></li>
+</ul>
 
 </section>
     </div>

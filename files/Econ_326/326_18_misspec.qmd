@@ -50,26 +50,20 @@ format:
   $$
 
 - When the errors are **strongly exogenous**, i.e., $\E{U_{i} \mid X_{i}} = 0$, the linear regression model defines the **CEF** of $Y$ conditional on $X$:
-
-$$
-\begin{aligned}
-\mathrm{CEF}_{Y}\left( X_{i}\right) &\equiv \E{Y_{i} \mid X_{i}} \\
-&= \E{\beta _{0}+\beta _{1}X_{i}+U_{i} \mid X_{i}} \\
-&= \beta _{0}+\beta _{1}X_{i}+\E{U_{i} \mid X_{i}} \\
-&= \beta _{0}+\beta _{1}X_{i}.
-\end{aligned}
-$$
+  \begin{align*}
+  \mathrm{CEF}_{Y}\left( X_{i}\right) &\equiv \E{Y_{i} \mid X_{i}} \\
+  &= \E{\beta _{0}+\beta _{1}X_{i}+U_{i} \mid X_{i}} \\
+  &= \beta _{0}+\beta _{1}X_{i}+\E{U_{i} \mid X_{i}} \\
+  &= \beta _{0}+\beta _{1}X_{i}.
+  \end{align*}
 
 ## Weak exogeneity
 
 - Consider the linear regression model with $\E{U_{i}} = 0$:
-
-$$
-\begin{aligned}
-Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
-\E{U_{i}} &= 0
-\end{aligned}
-$$
+  \begin{align*}
+  Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
+  \E{U_{i}} &= 0
+  \end{align*}
 
 - Suppose the errors are only **weakly exogenous**:
   $$
@@ -91,60 +85,45 @@ $$
   $$
   where $g$ is some unknown *nonlinear* function. Thus, the **true** CEF is $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}.$
 
-- Define $V_{i}=Y_{i}-\E{Y_{i} \mid X_{i}}$, so the true model is $Y_{i} = g\left( X_{i}\right) +V_{i}$ with $\E{V_{i} \mid X_{i}} = 0$.
+- Define $\varepsilon_{i}=Y_{i}-\E{Y_{i} \mid X_{i}}$, so the true model is $Y_{i} = g\left( X_{i}\right) +\varepsilon_{i}$ with $\E{\varepsilon_{i} \mid X_{i}} = 0$.
 
 - Adding and subtracting $\beta _{0}+\beta _{1}X_{i}$:
+  \begin{align*}
+  Y_{i} &= g\left( X_{i}\right) +\varepsilon_{i} \\
+  &= \beta _{0}+\beta _{1}X_{i} \\
+  &\quad +\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\text{specification error}}
+  +\varepsilon_{i}
+  \end{align*}
 
-$$
-\begin{aligned}
-Y_{i} &= g\left( X_{i}\right) +V_{i} \\
-&= \beta _{0}+\beta _{1}X_{i}-\beta _{0}-\beta _{1}X_{i}+g\left( X_{i}\right) +V_{i}
-\end{aligned}
-$$
-
-- Rearranging, $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, where
+- Rearranging, $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, where the regression error $U_{i}$ combines the true error and the **specification error**:
   $$
-  U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
+  U_{i}=\varepsilon_{i}+\underbrace{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}}_{\text{specification error}}.
   $$
 
-- Can we find $\beta _{0}$ and $\beta _{1}$ so that $\E{U_{i}} = 0$ and $\E{X_{i}U_{i}} = 0$? If yes, how can we interpret such $\beta _{0}$ and $\beta _{1}$?
+- Can we find $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is uncorrelated with $U_{i}$, i.e., $\E{U_{i}} = 0$ and $\E{X_{i}U_{i}} = 0$?
 
 ## Conditions for weak exogeneity
 
-$$
-U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
-$$
+- Denote the specification error by $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$, so $U_{i}=\varepsilon_{i}+\Delta\left( X_{i}\right)$.
 
-- Evaluating $\E{U_i}$:
+- Since $\E{\varepsilon_{i} \mid X_{i}} = 0$, the law of iterated expectations gives
+  \begin{align*}
+  \E{\varepsilon_{i}} &= \E{\E{\varepsilon_{i} \mid X_{i}}} = 0, \\
+  \E{\varepsilon_{i}X_{i}} &= \E{X_{i}\,\E{\varepsilon_{i} \mid X_{i}}} = 0.
+  \end{align*}
 
-$$
-\begin{aligned}
-\E{U_{i}}
-&= \E{V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} \\
-&= \E{V_{i}}+\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} \\
-&= \E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}},
-\end{aligned}
-$$
+- Therefore
+  \begin{align*}
+  \E{U_{i}} &= \E{\varepsilon_{i}} + \E{\Delta\left( X_{i}\right)} = \E{\Delta\left( X_{i}\right)}, \\
+  \E{U_{i}X_{i}} &= \E{\varepsilon_{i}X_{i}} + \E{\Delta\left( X_{i}\right) X_{i}} = \E{\Delta\left( X_{i}\right) X_{i}}.
+  \end{align*}
 
-- For the covariance condition:
-
-$$
-\begin{aligned}
-\E{U_{i}X_{i}}
-&= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} \\
-&= \E{V_{i}X_{i}}+\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} \\
-&= \E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}}.
-\end{aligned}
-$$
-
-- Thus, to have $\E{U_{i}} = \E{U_{i}X_{i}} = 0$, we need to find $\beta _{0}$ and $\beta _{1}$ such that
-
-$$
-\begin{aligned}
-\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} &= 0, \\
-\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} &= 0.
-\end{aligned}
-$$
+- The conditions $\E{U_{i}} = 0$ and $\E{U_{i}X_{i}} = 0$ reduce to conditions on the **specification error** alone:
+  \begin{align*}
+  \E{\Delta\left( X_{i}\right)} &= 0, \\
+  \E{\Delta\left( X_{i}\right) X_{i}} &= 0.
+  \end{align*}
+  That is, we need $\beta _{0}$ and $\beta _{1}$ such that the specification error has **mean zero** and is **uncorrelated with $X_{i}$**.
 
 ## Linear approximation of the CEF
 
@@ -159,44 +138,34 @@ $$
 
 ## Regression as best linear approximation
 
-- Let $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)$, where $\text{MSE}\left( b_{0},b_{1}\right) =\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.$
+- Let $\left( \beta _{0},\beta _{1}\right) =\arg \min_{b_{0},b_{1}}\text{MSE}\left( b_{0},b_{1}\right)$, where
+  $$
+  \text{MSE}\left( b_{0},b_{1}\right) =\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.
+  $$
 
 - The first-order conditions are:
-
-$$
-\begin{aligned}
-\frac{\partial \text{MSE}}{\partial b_{0}} &= -2\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} = 0, \\
-\frac{\partial \text{MSE}}{\partial b_{1}} &= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.
-\end{aligned}
-$$
+  \begin{align*}
+  \frac{\partial \text{MSE}}{\partial b_{0}} &= -2\E{g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}} = 0, \\
+  \frac{\partial \text{MSE}}{\partial b_{1}} &= -2\E{\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) X_{i}} = 0.
+  \end{align*}
 
 - These are the conditions for weak exogeneity derived earlier, so
   $$
   \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.
   $$
 
-- Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).
+- OLS chooses $\beta _{0}$ and $\beta _{1}$ so that $X_{i}$ is **uncorrelated with the specification error** $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$ (and hence with $U_{i}$), yielding the best linear approximation of the CEF in the MSE sense.
 
 ## Misspecification and heteroskedasticity
 
-- We have
-  $$
-  \begin{aligned}
-  Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
-  U_{i} &= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
-  \end{aligned}
-  $$
+- Recall $U_{i} = \varepsilon_{i} + \Delta\left( X_{i}\right)$, where $\Delta\left( X_{i}\right) = g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}$ is the specification error.
 
-- Suppose that the "true" error $V_{i}$ is homoskedastic: $\E{V_{i}^{2} \mid X_{i}} = \sigma _{V}^{2}$ for all $X_{i}.$
+- Suppose the true error $\varepsilon_{i}$ is homoskedastic: $\E{\varepsilon_{i}^{2} \mid X_{i}} = \sigma _{\varepsilon}^{2}$ for all $X_{i}.$
 
-- $U_{i}$ is **heteroskedastic** if $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}$:
-
-$$
-\begin{aligned}
-\E{U_{i}^{2} \mid X_{i}}
-&= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} \\
-&= \E{V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} \\
-&\quad + \E{2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}} \\
-&= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2}.
-\end{aligned}
-$$
+- When the specification error is nonzero, $U_{i}$ is **heteroskedastic**:
+  \begin{align*}
+  \E{U_{i}^{2} \mid X_{i}}
+  &= \E{\left( \varepsilon_{i}+\Delta\left( X_{i}\right) \right) ^{2} \mid X_{i}} \\
+  &= \E{\varepsilon_{i}^{2} \mid X_{i}}+\Delta\left( X_{i}\right) ^{2}+2\,\Delta\left( X_{i}\right) \E{\varepsilon_{i} \mid X_{i}} \\
+  &= \sigma _{\varepsilon}^{2}+\Delta\left( X_{i}\right) ^{2}.
+  \end{align*}
