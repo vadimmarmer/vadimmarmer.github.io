@@ -31,12 +31,23 @@ jobs:
           sed -i '/^Updated:/d' cv_body.md
           # Convert <br> to pandoc line breaks (backslash at end of line)
           sed -i 's/<br>$/\\/g' cv_body.md
-          # Prepend pandoc metadata (unquoted HEADER for variable expansion)
-          cat > cv_render.md << HEADER
+          # LaTeX header: put "Updated" date in top-left of first page
+          cat > cv_header.tex << TEXHEADER
+          \usepackage{fancyhdr}
+          \usepackage{etoolbox}
+          \fancypagestyle{firstpage}{%
+            \fancyhf{}%
+            \fancyhead[L]{\footnotesize ${UPDATED}}%
+            \fancyfoot[C]{\thepage}%
+            \renewcommand{\headrulewidth}{0pt}%
+          }
+          \apptocmd{\maketitle}{\thispagestyle{firstpage}}{}{}
+          TEXHEADER
+          # Prepend pandoc metadata
+          cat > cv_render.md << 'HEADER'
 ---
 title: "Vadim Marmer"
 subtitle: "Curriculum Vitae"
-date: "${UPDATED}"
 geometry: margin=0.8in
 fontsize: 11pt
 colorlinks: true
@@ -44,8 +55,8 @@ colorlinks: true
 
 HEADER
           cat cv_body.md >> cv_render.md
-          pandoc cv_render.md -o files/vadim_marmer_CV.pdf --pdf-engine=xelatex
-          rm cv_body.md cv_render.md
+          pandoc cv_render.md -o files/vadim_marmer_CV.pdf --pdf-engine=xelatex -H cv_header.tex
+          rm cv_body.md cv_render.md cv_header.tex
 
       - name: Commit rendered PDF
         run: |
