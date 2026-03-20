@@ -10,6 +10,12 @@ sed -i '' 's/<br>$/\\/g' /tmp/cv_body.md
 cat > /tmp/cv_header.tex << TEXHEADER
 \usepackage{fancyhdr}
 \usepackage{etoolbox}
+\usepackage{titling}
+\setlength{\droptitle}{-5em}
+\preauthor{}
+\postauthor{}
+\predate{}
+\postdate{\vspace{-2em}}
 \fancypagestyle{firstpage}{%
   \fancyhf{}%
   \fancyhead[L]{\footnotesize ${UPDATED}}%
@@ -21,7 +27,6 @@ TEXHEADER
 cat > /tmp/cv_render.md << 'HEADER'
 ---
 title: "Vadim Marmer"
-subtitle: "Curriculum Vitae"
 geometry: margin=0.8in
 fontsize: 11pt
 colorlinks: true
