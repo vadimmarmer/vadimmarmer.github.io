@@ -1084,7 +1084,7 @@ Vadim Marmer, UBC
 <li class="fragment"><p>Consider the linear regression model <span class="math display">
 Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.
 </span></p></li>
-<li class="fragment"><p>When the errors are <strong>strongly exogenous</strong>, i.e. <span class="math inline">\mathrm{E}\left[U_{i} \mid X_{i}\right] = 0</span>, the linear regression model defines the <strong>CEF</strong> of <span class="math inline">Y</span> conditional on <span class="math inline">X</span>:</p></li>
+<li class="fragment"><p>When the errors are <strong>strongly exogenous</strong>, i.e., <span class="math inline">\mathrm{E}\left[U_{i} \mid X_{i}\right] = 0</span>, the linear regression model defines the <strong>CEF</strong> of <span class="math inline">Y</span> conditional on <span class="math inline">X</span>:</p></li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
@@ -1097,6 +1097,9 @@ Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.
 </section>
 <section id="weak-exogeneity" class="slide level2">
 <h2>Weak exogeneity</h2>
+<ul>
+<li class="fragment">Consider the linear regression model with <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span>:</li>
+</ul>
 <p><span class="math display">
 \begin{aligned}
 Y_{i} &amp;= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
@@ -1129,7 +1132,7 @@ Y_{i} &amp;= g\left( X_{i}\right) +V_{i} \\
 \end{aligned}
 </span></p>
 <ul>
-<li class="fragment"><p>or <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span>, where <span class="math display">
+<li class="fragment"><p>Rearranging, <span class="math inline">Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}</span>, where <span class="math display">
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 </span></p></li>
 <li class="fragment"><p>Can we find <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span> so that <span class="math inline">\mathrm{E}\left[U_{i}\right] = 0</span> and <span class="math inline">\mathrm{E}\left[X_{i}U_{i}\right] = 0</span>? If yes, how can we interpret such <span class="math inline">\beta _{0}</span> and <span class="math inline">\beta _{1}</span>?</p></li>
@@ -1141,7 +1144,7 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 </span></p>
 <ul>
-<li class="fragment">Note that</li>
+<li class="fragment">Evaluating <span class="math inline">\mathrm{E}\left[U_i\right]</span>:</li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
@@ -1152,7 +1155,7 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 \end{aligned}
 </span></p>
 <ul>
-<li class="fragment">and</li>
+<li class="fragment">For the covariance condition:</li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
@@ -1178,7 +1181,7 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 <li class="fragment"><p>Consider the following approximation problem: <span class="math display">
 \min_{b_{0},b_{1}}\mathrm{E}\left[\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}\right].
 </span></p></li>
-<li class="fragment"><p>We are approximating the CEF by linear functions.</p></li>
+<li class="fragment"><p>We are approximating the CEF with a linear function.</p></li>
 <li class="fragment"><p>Among the linear functions, we are looking for the <strong>best</strong> linear approximation in the <strong>mean squared error (MSE)</strong> sense.</p></li>
 </ul>
 </section>
@@ -1195,7 +1198,7 @@ U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 \end{aligned}
 </span></p>
 <ul>
-<li class="fragment"><p>These are exactly the conditions for weak exogeneity derived earlier, so <span class="math display">
+<li class="fragment"><p>These are the conditions for weak exogeneity derived earlier, so <span class="math display">
 \mathrm{E}\left[U_{i}\right] = 0\text{ and }\mathrm{E}\left[U_{i}X_{i}\right] = 0.
 </span></p></li>
 <li class="fragment"><p>Thus, the linear regression model gives us the best linear approximation of the CEF (in the MSE sense).</p></li>
@@ -1211,15 +1214,15 @@ U_{i} &amp;= V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Suppose that the “true” error <span class="math inline">V_{i}</span> is homoskedastic: <span class="math inline">\mathrm{E}\left[V_{i}^{2} \mid X_{i}\right] = \sigma _{V}^{2}</span> for all <span class="math inline">X_{i}.</span></p></li>
-<li class="fragment"><p><span class="math inline">U_{i}</span> is <strong>heteroskedastic</strong> if <span class="math inline">g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X</span>:</p></li>
+<li class="fragment"><p><span class="math inline">U_{i}</span> is <strong>heteroskedastic</strong> if <span class="math inline">g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}</span>:</p></li>
 </ul>
 <p><span class="math display">
 \begin{aligned}
 \mathrm{E}\left[U_{i}^{2} \mid X_{i}\right]
 &amp;= \mathrm{E}\left[\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}\right] \\
-&amp;= \mathrm{E}\left[V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2} \mid X_{i}\right] \\
+&amp;= \mathrm{E}\left[V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}\right] \\
 &amp;\quad + \mathrm{E}\left[2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}\right] \\
-&amp;= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2}.
+&amp;= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2}.
 \end{aligned}
 </span></p>
 

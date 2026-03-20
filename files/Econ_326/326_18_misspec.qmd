@@ -49,7 +49,7 @@ format:
   Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}.
   $$
 
-- When the errors are **strongly exogenous**, i.e. $\E{U_{i} \mid X_{i}} = 0$, the linear regression model defines the **CEF** of $Y$ conditional on $X$:
+- When the errors are **strongly exogenous**, i.e., $\E{U_{i} \mid X_{i}} = 0$, the linear regression model defines the **CEF** of $Y$ conditional on $X$:
 
 $$
 \begin{aligned}
@@ -61,6 +61,8 @@ $$
 $$
 
 ## Weak exogeneity
+
+- Consider the linear regression model with $\E{U_{i}} = 0$:
 
 $$
 \begin{aligned}
@@ -100,7 +102,7 @@ Y_{i} &= g\left( X_{i}\right) +V_{i} \\
 \end{aligned}
 $$
 
-- or $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, where
+- Rearranging, $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$, where
   $$
   U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
   $$
@@ -113,7 +115,7 @@ $$
 U_{i}=V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}.
 $$
 
-- Note that
+- Evaluating $\E{U_i}$:
 
 $$
 \begin{aligned}
@@ -124,7 +126,7 @@ $$
 \end{aligned}
 $$
 
-- and
+- For the covariance condition:
 
 $$
 \begin{aligned}
@@ -151,7 +153,7 @@ $$
   \min_{b_{0},b_{1}}\E{\left( g\left( X_{i}\right) -b_{0}-b_{1}X_{i}\right) ^{2}}.
   $$
 
-- We are approximating the CEF by linear functions.
+- We are approximating the CEF with a linear function.
 
 - Among the linear functions, we are looking for the **best** linear approximation in the **mean squared error (MSE)** sense.
 
@@ -168,7 +170,7 @@ $$
 \end{aligned}
 $$
 
-- These are exactly the conditions for weak exogeneity derived earlier, so
+- These are the conditions for weak exogeneity derived earlier, so
   $$
   \E{U_{i}} = 0\text{ and }\E{U_{i}X_{i}} = 0.
   $$
@@ -187,14 +189,14 @@ $$
 
 - Suppose that the "true" error $V_{i}$ is homoskedastic: $\E{V_{i}^{2} \mid X_{i}} = \sigma _{V}^{2}$ for all $X_{i}.$
 
-- $U_{i}$ is **heteroskedastic** if $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X$:
+- $U_{i}$ is **heteroskedastic** if $g\left( X_{i}\right) \neq \beta _{0}+\beta _{1}X_{i}$:
 
 $$
 \begin{aligned}
 \E{U_{i}^{2} \mid X_{i}}
 &= \E{\left( V_{i}+g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} \\
-&= \E{V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2} \mid X_{i}} \\
+&= \E{V_{i}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2} \mid X_{i}} \\
 &\quad + \E{2V_{i}\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) \mid X_{i}} \\
-&= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X\right) ^{2}.
+&= \sigma _{V}^{2}+\left( g\left( X_{i}\right) -\beta _{0}-\beta _{1}X_{i}\right) ^{2}.
 \end{aligned}
 $$
