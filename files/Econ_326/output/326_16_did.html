@@ -2454,20 +2454,20 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 <li><p><span class="math inline">\beta = \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 0\right]</span>.</p></li>
 <li><p>Substituting observed outcomes with potential outcomes:</p>
 <p><span class="math display">\begin{align*}
-\beta &amp;= \mathrm{E}\left[Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1\right] \\
-&amp;\quad - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right].
+\beta &amp;= \mathrm{E}\left[Y_{i1}(1) {\color{red}- Y_{i0}(1)} \mid D_i = 1\right] \\
+&amp;\quad {\color{blue}- \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}.
 \end{align*}</span></p></li>
 <li><p>To relate <span class="math inline">\beta</span> to the ATT, add and subtract <span class="math inline">\mathrm{E}\left[Y_{i1}(0) \mid D_i = 1\right]</span> and <span class="math inline">\mathrm{E}\left[Y_{i0}(0) \mid D_i = 1\right]</span> inside the first expectation:</p>
 <p><span class="math display">\begin{align*}
-\beta &amp;= \mathrm{E}\left[Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right] \\
-&amp;= \mathrm{E}\left[Y_{i1}(1) \underbrace{- Y_{i1}(0) + Y_{i1}(0)}_{= \, 0} \underbrace{- Y_{i0}(0) + Y_{i0}(0)}_{= \, 0} - Y_{i0}(1) \mid D_i = 1\right] \\
-&amp;\quad - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right].
+\beta &amp;= \mathrm{E}\left[Y_{i1}(1) {\color{red}- Y_{i0}(1)} \mid D_i = 1\right] {\color{blue}- \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]} \\
+&amp;= \mathrm{E}\left[Y_{i1}(1) \underbrace{- Y_{i1}(0) {\color{blue}+ Y_{i1}(0)}}_{= \, 0} \underbrace{{\color{blue}- Y_{i0}(0)} {\color{red}+ Y_{i0}(0)}}_{= \, 0} {\color{red}- Y_{i0}(1)} \mid D_i = 1\right] \\
+&amp;\quad {\color{blue}- \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}.
 \end{align*}</span></p></li>
 <li><p>Rearranging and splitting the expectation:</p>
 <p><span class="math display">\begin{align*}
 \beta &amp;= \underbrace{\mathrm{E}\left[Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1\right]}_{\text{ATT}} \\
-&amp;\quad + \underbrace{\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}_{\text{difference in trends}} \\
-&amp;\quad + \underbrace{\mathrm{E}\left[Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1\right]}_{\text{anticipation effect}}.
+&amp;\quad + \underbrace{{\color{blue}\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}}_{\color{blue}\text{difference in trends}} \\
+&amp;\quad + \underbrace{{\color{red}\mathrm{E}\left[Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1\right]}}_{\color{red}\text{anticipation effect}}.
 \end{align*}</span></p></li>
 <li><p>For <span class="math inline">\beta</span> to equal the ATT, the last two terms must be zero. This requires two assumptions.</p></li>
 </ul>
@@ -3268,24 +3268,24 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Substituting observed outcomes with potential outcomes:</span>
 <span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1} <span class="sc">\\</span></span>
-<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.</span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1}(1) {\color{red}- Y_{i0}(1)} \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>  &amp;\quad {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}.</span>
 <span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To relate $\beta$ to the ATT, add and subtract $\E{Y_{i1}(0) \mid D_i = 1}$ and $\E{Y_{i0}(0) \mid D_i = 1}$ inside the first expectation:</span>
 <span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
-<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1}(1) - Y_{i0}(1) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0} <span class="sc">\\</span></span>
-<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_{i1}(1) \underbrace{- Y_{i1}(0) + Y_{i1}(0)}_{= \, 0} \underbrace{- Y_{i0}(0) + Y_{i0}(0)}_{= \, 0} - Y_{i0}(1) \mid D_i = 1} <span class="sc">\\</span></span>
-<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>  &amp;\quad - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.</span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \E{Y_{i1}(1) {\color{red}- Y_{i0}(1)} \mid D_i = 1} {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}} <span class="sc">\\</span></span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{Y_{i1}(1) \underbrace{- Y_{i1}(0) {\color{blue}+ Y_{i1}(0)}}_{= \, 0} \underbrace{{\color{blue}- Y_{i0}(0)} {\color{red}+ Y_{i0}(0)}}_{= \, 0} {\color{red}- Y_{i0}(1)} \mid D_i = 1} <span class="sc">\\</span></span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>  &amp;\quad {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}.</span>
 <span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rearranging and splitting the expectation:</span>
 <span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
 <span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>  \beta &amp;= \underbrace{\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}_{\text{ATT}} <span class="sc">\\</span></span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}_{\text{difference in trends}} <span class="sc">\\</span></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}_{\text{anticipation effect}}.</span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}} <span class="sc">\\</span></span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{{\color{red}\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}}_{\color{red}\text{anticipation effect}}.</span>
 <span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For $\beta$ to equal the ATT, the last two terms must be zero. This requires two assumptions.</span>
