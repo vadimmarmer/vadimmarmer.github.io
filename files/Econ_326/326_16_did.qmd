@@ -320,9 +320,11 @@ format:
 
 ## DID with covariates
 
-- The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates parallel trends and biases the DID estimate.
+- The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates unconditional parallel trends.
 
-- Adding covariates addresses this: if parallel trends holds *conditional* on house characteristics, controlling for them removes the bias. It also reduces residual variance, improving precision.
+- Omitting age from the regression biases the estimated common trend ${\color{blue}\delta}$, which in turn biases the DID estimate ${\color{teal}\beta}$.
+
+- Adding covariates addresses this under a weaker assumption: **parallel trends holds conditional on house age**. Among houses of the same age, near and far houses would have followed the same price trend absent the incinerator.
 
   ```{r}
   #| echo: true
@@ -333,7 +335,7 @@ format:
 
 - After controlling for house age, the DID estimate is $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large and highly significant.
 
-- The change in the estimate suggests that the basic DID was biased: older houses near the incinerator appreciated differently than houses farther away, masking part of the incinerator's negative effect.
+- The change in the estimate suggests that the basic DID was biased: omitting age biased the estimated trend, which in turn biased ${\color{teal}\hat{\beta}}$.
 
 ## Where does the bias come from?
 

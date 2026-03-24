@@ -1440,8 +1440,9 @@ y81nrinc    -11863.90   7456.646 -1.5911   0.1126</code></pre>
 <section id="did-with-covariates" class="slide level2">
 <h2>DID with covariates</h2>
 <ul>
-<li class="fragment"><p>The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates parallel trends and biases the DID estimate.</p></li>
-<li class="fragment"><p>Adding covariates addresses this: if parallel trends holds <em>conditional</em> on house characteristics, controlling for them removes the bias. It also reduces residual variance, improving precision.</p>
+<li class="fragment"><p>The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates unconditional parallel trends.</p></li>
+<li class="fragment"><p>Omitting age from the regression biases the estimated common trend <span class="math inline">{\color{blue}\delta}</span>, which in turn biases the DID estimate <span class="math inline">{\color{teal}\beta}</span>.</p></li>
+<li class="fragment"><p>Adding covariates addresses this under a weaker assumption: <strong>parallel trends holds conditional on house age</strong>. Among houses of the same age, near and far houses would have followed the same price trend absent the incinerator.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href></a>reg_did_cov <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>),</span>
 <span id="cb13-2"><a href></a>                   <span class="at">data =</span> kielmc)</span>
@@ -1457,7 +1458,7 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 </div>
 </div></li>
 <li class="fragment"><p>After controlling for house age, the DID estimate is <span class="math inline">\hat{\beta} = -\$21{,}920</span> (SE <span class="math inline">= 6{,}360</span>, <span class="math inline">p = 0.0006</span>) — nearly twice as large and highly significant.</p></li>
-<li class="fragment"><p>The change in the estimate suggests that the basic DID was biased: older houses near the incinerator appreciated differently than houses farther away, masking part of the incinerator’s negative effect.</p></li>
+<li class="fragment"><p>The change in the estimate suggests that the basic DID was biased: omitting age biased the estimated trend, which in turn biased <span class="math inline">{\color{teal}\hat{\beta}}</span>.</p></li>
 </ul>
 </section>
 <section id="where-does-the-bias-come-from" class="slide level2">
