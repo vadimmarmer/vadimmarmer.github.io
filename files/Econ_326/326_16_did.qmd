@@ -334,3 +334,37 @@ format:
 - After controlling for house age, the DID estimate is $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large and highly significant.
 
 - The change in the estimate suggests that the basic DID was biased: older houses near the incinerator appreciated differently than houses farther away, masking part of the incinerator's negative effect.
+
+## Where does the bias come from?
+
+- Under no anticipation, the decomposition from the earlier slide gives:
+
+  $$
+  {\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}}.
+  $$
+
+- **No anticipation is plausible:** the incinerator was not publicly known in 1978, so there is no reason for 1978 prices to already reflect the future incinerator.
+
+- The bias must come from the ${\color{blue}\text{difference in trends}}$: a violation of **parallel trends**.
+
+- Houses near the incinerator are systematically older:
+
+  ```{r}
+  #| echo: true
+  #| fig-width: 5
+  #| fig-height: 3.5
+  #| fig-align: center
+  boxplot(age ~ nearinc, data = kielmc,
+          names = c("Far (D=0)", "Near (D=1)"),
+          ylab = "House age (years)",
+          col = c("lightblue", "salmon"))
+  ```
+
+- Since house age affects price trends nonlinearly, the near and far groups would have had **different price trends even without the incinerator**.
+
+- The estimated bias is approximately $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$: the age-driven trend difference partially masked the incinerator's negative effect.
+
+  | Assumption | Violated? | Reasoning |
+  |---|---|---|
+  | No anticipation | No | Incinerator not yet announced in 1978 |
+  | Parallel trends | Yes (unconditionally) | Near houses are older; older houses had different price trends |
