@@ -97,7 +97,13 @@ format:
   \text{ATT} = \E{Y_i(1) - Y_i(0) \mid D_i = 1}.
   $$
 
-- ATE averages over the entire population; ATT averages only over those who actually receive treatment.
+- **Conditional Average Treatment Effect (CATE):**
+
+  $$
+  \text{CATE}(\mathbf{x}) = \E{Y_i(1) - Y_i(0) \mid \mathbf{X}_i = \mathbf{x}}.
+  $$
+
+- ATE averages over the entire population; ATT averages only over those who actually receive treatment; CATE conditions on observable characteristics $\mathbf{X}_i$.
 
 
 
@@ -206,6 +212,8 @@ format:
 
 - The selection on observables assumption can be formalized as follows: after conditioning on $X_i$, treatment assignment $D_i$ is as good as random.
 
+- $D_i$ and $X_i$ can be correlated.
+
 - Suppose the potential outcomes depend linearly on a covariate $X_i$:
 
   \begin{align*}
@@ -213,9 +221,13 @@ format:
   Y_i(1) &= \alpha_1 + \beta_1 X_i + U_i(1),
   \end{align*}
 
-  where $\E{U_i(0) \mid X_i, D_i} = 0$ and $\E{U_i(1) \mid X_i, D_i} = 0$.
+- **Conditional mean independence assumption:**
 
-- These conditions are called **conditional mean independence**: while $Y_i(0)$ and $Y_i(1)$ depend on $X_i$ (and thus on $D_i$), the residual terms after controlling for $X_i$, namely $U_i(0)$ and $U_i(1)$, are uncorrelated with both $X_i$ and $D_i$.
+  $$
+  \E{U_i(0) \mid X_i, D_i} = 0 \quad \text{and} \quad \E{U_i(1) \mid X_i, D_i} = 0.
+  $$
+
+- That is, after controlling for $X_i$, the residual terms $U_i(0)$ and $U_i(1)$ are uncorrelated with treatment $D_i$.
 - The effect of $X_i$ on the potential outcomes can differ between the treated and control groups: $\beta_1$ may not equal $\beta_0$.
 
 ## The ATE with a covariate
@@ -258,21 +270,28 @@ format:
 - The observed outcome $Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)$ can be written as a single regression. Expanding:
 
   \begin{align*}
-  Y_i &= \alpha_0(1 - D_i) + \alpha_1 D_i \\
-  &\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + U_i \\
-  &= \alpha_0 + (\alpha_1 - \alpha_0)D_i \\
-  &\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + U_i,
+  Y_i &= D_i \underbrace{({\color{blue}\alpha_1} + {\color{blue}\beta_1} X_i + {\color{blue}U_i(1)})}_{Y_i(1)} + (1 - D_i)\underbrace{({\color{red}\alpha_0} + {\color{red}\beta_0} X_i + {\color{red}U_i(0)})}_{Y_i(0)} \\
+  &= {\color{red}\alpha_0}(1 - D_i) + {\color{blue}\alpha_1} D_i \\
+  &\quad + {\color{red}\beta_0} X_i(1 - D_i) + {\color{blue}\beta_1} X_i D_i + (1 - D_i){\color{red}U_i(0)} + D_i {\color{blue}U_i(1)} \\
+  &= {\color{red}\alpha_0} + ({\color{blue}\alpha_1} - {\color{red}\alpha_0})D_i \\
+  &\quad + {\color{red}\beta_0} X_i + ({\color{blue}\beta_1} - {\color{red}\beta_0})X_i D_i + U_i,
   \end{align*}
 
-  where $U_i = (1 - D_i)U_i(0) + D_i U_i(1)$.
+  where $U_i = (1 - D_i){\color{red}U_i(0)} + D_i {\color{blue}U_i(1)}$.
 
-- This is a regression of $Y_i$ on $D_i$, $X_i$, and the interaction $X_i D_i$.
+- This is a regression of $Y_i$ on $D_i$, $X_i$, and the interaction $X_i D_i$:
 
-- The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, which is **not** the ATE (unless $\beta_1 = \beta_0$).
+  $$
+  Y_i = \alpha_0 + \gamma D_i + \beta_0 X_i + \delta X_i D_i + U_i,
+  $$
+
+  where $\gamma = {\color{blue}\alpha_1} - {\color{red}\alpha_0}$ and $\delta = {\color{blue}\beta_1} - {\color{red}\beta_0}$.
+
+- The coefficient on $D_i$ is $\gamma = \alpha_1 - \alpha_0$, which is **not** the ATE (unless $\beta_1 = \beta_0$).
 
 ## The demeaning trick
 
-- The coefficient on $D_i$ is $\alpha_1 - \alpha_0$, not the ATE. To fix this, **add and subtract** $(\beta_1 - \beta_0)\E{X_i}D_i$:
+- Recall that $\text{ATE} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\E{X_i}$, but the coefficient on $D_i$ is only $\alpha_1 - \alpha_0$. To fix this, **add and subtract** $(\beta_1 - \beta_0)\E{X_i}D_i$:
 
   \begin{align*}
   Y_i &= \alpha_0 + (\alpha_1 - \alpha_0)D_i + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i + U_i \\
@@ -308,8 +327,10 @@ format:
 - A simpler regression omits the interaction:
 
   $$
-  Y_i = a + \tau D_i + b X_i + V_i.
+  Y_i = a + c D_i + b X_i + V_i.
   $$
+
+- Recall $\delta = \beta_1 - \beta_0$ measures how the effect of $X_i$ differs between the treatment and control groups.
 
 - This is valid if $\beta_1 = \beta_0$ (the covariate has the same effect in both groups). Then $\delta = 0$, the interaction drops out, and the coefficient on $D_i$ is the ATE.
 

@@ -1195,7 +1195,11 @@ Y_i = D_i \, Y_i(1) + (1 - D_i) \, Y_i(0).
 <p><span class="math display">
 \text{ATT} = \mathrm{E}\left[Y_i(1) - Y_i(0) \mid D_i = 1\right].
 </span></p></li>
-<li class="fragment"><p>ATE averages over the entire population; ATT averages only over those who actually receive treatment.</p></li>
+<li class="fragment"><p><strong>Conditional Average Treatment Effect (CATE):</strong></p>
+<p><span class="math display">
+\text{CATE}(\mathbf{x}) = \mathrm{E}\left[Y_i(1) - Y_i(0) \mid \mathbf{X}_i = \mathbf{x}\right].
+</span></p></li>
+<li class="fragment"><p>ATE averages over the entire population; ATT averages only over those who actually receive treatment; CATE conditions on observable characteristics <span class="math inline">\mathbf{X}_i</span>.</p></li>
 </ul>
 </section>
 <section id="selection-bias" class="slide level2">
@@ -1305,13 +1309,17 @@ train       1.794343  0.6328536  2.835321 4.787524e-03</code></pre>
 <h2>Potential outcomes with a covariate</h2>
 <ul>
 <li class="fragment"><p>The selection on observables assumption can be formalized as follows: after conditioning on <span class="math inline">X_i</span>, treatment assignment <span class="math inline">D_i</span> is as good as random.</p></li>
+<li class="fragment"><p><span class="math inline">D_i</span> and <span class="math inline">X_i</span> can be correlated.</p></li>
 <li class="fragment"><p>Suppose the potential outcomes depend linearly on a covariate <span class="math inline">X_i</span>:</p>
 <p><span class="math display">\begin{align*}
 Y_i(0) &amp;= \alpha_0 + \beta_0 X_i + U_i(0), \\
 Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),
-\end{align*}</span></p>
-<p>where <span class="math inline">\mathrm{E}\left[U_i(0) \mid X_i, D_i\right] = 0</span> and <span class="math inline">\mathrm{E}\left[U_i(1) \mid X_i, D_i\right] = 0</span>.</p></li>
-<li class="fragment"><p>These conditions are called <strong>conditional mean independence</strong>: while <span class="math inline">Y_i(0)</span> and <span class="math inline">Y_i(1)</span> depend on <span class="math inline">X_i</span> (and thus on <span class="math inline">D_i</span>), the residual terms after controlling for <span class="math inline">X_i</span>, namely <span class="math inline">U_i(0)</span> and <span class="math inline">U_i(1)</span>, are uncorrelated with both <span class="math inline">X_i</span> and <span class="math inline">D_i</span>.</p></li>
+\end{align*}</span></p></li>
+<li class="fragment"><p><strong>Conditional mean independence assumption:</strong></p>
+<p><span class="math display">
+\mathrm{E}\left[U_i(0) \mid X_i, D_i\right] = 0 \quad \text{and} \quad \mathrm{E}\left[U_i(1) \mid X_i, D_i\right] = 0.
+</span></p></li>
+<li class="fragment"><p>That is, after controlling for <span class="math inline">X_i</span>, the residual terms <span class="math inline">U_i(0)</span> and <span class="math inline">U_i(1)</span> are uncorrelated with treatment <span class="math inline">D_i</span>.</p></li>
 <li class="fragment"><p>The effect of <span class="math inline">X_i</span> on the potential outcomes can differ between the treated and control groups: <span class="math inline">\beta_1</span> may not equal <span class="math inline">\beta_0</span>.</p></li>
 </ul>
 </section>
@@ -1350,20 +1358,25 @@ Y_i(1) &amp;= \alpha_1 + \beta_1 X_i + U_i(1),
 <ul>
 <li class="fragment"><p>The observed outcome <span class="math inline">Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)</span> can be written as a single regression. Expanding:</p>
 <p><span class="math display">\begin{align*}
-Y_i &amp;= \alpha_0(1 - D_i) + \alpha_1 D_i \\
-&amp;\quad + \beta_0 X_i(1 - D_i) + \beta_1 X_i D_i + U_i \\
-&amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i \\
-&amp;\quad + \beta_0 X_i + (\beta_1 - \beta_0)X_i D_i + U_i,
+Y_i &amp;= D_i \underbrace{({\color{blue}\alpha_1} + {\color{blue}\beta_1} X_i + {\color{blue}U_i(1)})}_{Y_i(1)} + (1 - D_i)\underbrace{({\color{red}\alpha_0} + {\color{red}\beta_0} X_i + {\color{red}U_i(0)})}_{Y_i(0)} \\
+&amp;= {\color{red}\alpha_0}(1 - D_i) + {\color{blue}\alpha_1} D_i \\
+&amp;\quad + {\color{red}\beta_0} X_i(1 - D_i) + {\color{blue}\beta_1} X_i D_i + (1 - D_i){\color{red}U_i(0)} + D_i {\color{blue}U_i(1)} \\
+&amp;= {\color{red}\alpha_0} + ({\color{blue}\alpha_1} - {\color{red}\alpha_0})D_i \\
+&amp;\quad + {\color{red}\beta_0} X_i + ({\color{blue}\beta_1} - {\color{red}\beta_0})X_i D_i + U_i,
 \end{align*}</span></p>
-<p>where <span class="math inline">U_i = (1 - D_i)U_i(0) + D_i U_i(1)</span>.</p></li>
-<li class="fragment"><p>This is a regression of <span class="math inline">Y_i</span> on <span class="math inline">D_i</span>, <span class="math inline">X_i</span>, and the interaction <span class="math inline">X_i D_i</span>.</p></li>
-<li class="fragment"><p>The coefficient on <span class="math inline">D_i</span> is <span class="math inline">\alpha_1 - \alpha_0</span>, which is <strong>not</strong> the ATE (unless <span class="math inline">\beta_1 = \beta_0</span>).</p></li>
+<p>where <span class="math inline">U_i = (1 - D_i){\color{red}U_i(0)} + D_i {\color{blue}U_i(1)}</span>.</p></li>
+<li class="fragment"><p>This is a regression of <span class="math inline">Y_i</span> on <span class="math inline">D_i</span>, <span class="math inline">X_i</span>, and the interaction <span class="math inline">X_i D_i</span>:</p>
+<p><span class="math display">
+Y_i = \alpha_0 + \gamma D_i + \beta_0 X_i + \delta X_i D_i + U_i,
+</span></p>
+<p>where <span class="math inline">\gamma = {\color{blue}\alpha_1} - {\color{red}\alpha_0}</span> and <span class="math inline">\delta = {\color{blue}\beta_1} - {\color{red}\beta_0}</span>.</p></li>
+<li class="fragment"><p>The coefficient on <span class="math inline">D_i</span> is <span class="math inline">\gamma = \alpha_1 - \alpha_0</span>, which is <strong>not</strong> the ATE (unless <span class="math inline">\beta_1 = \beta_0</span>).</p></li>
 </ul>
 </section>
 <section id="the-demeaning-trick" class="slide level2">
 <h2>The demeaning trick</h2>
 <ul>
-<li class="fragment"><p>The coefficient on <span class="math inline">D_i</span> is <span class="math inline">\alpha_1 - \alpha_0</span>, not the ATE. To fix this, <strong>add and subtract</strong> <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]D_i</span>:</p>
+<li class="fragment"><p>Recall that <span class="math inline">\text{ATE} = (\alpha_1 - \alpha_0) + (\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]</span>, but the coefficient on <span class="math inline">D_i</span> is only <span class="math inline">\alpha_1 - \alpha_0</span>. To fix this, <strong>add and subtract</strong> <span class="math inline">(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]D_i</span>:</p>
 <p><span class="math display">\begin{align*}
 Y_i &amp;= \alpha_0 + (\alpha_1 - \alpha_0)D_i + \beta_0 X_i + (\beta_1 - \beta_0) X_i D_i + U_i \\
 &amp;= \alpha_0 + \big[(\alpha_1 - \alpha_0) + {\color{blue}(\beta_1 - \beta_0)\mathrm{E}\left[X_i\right]}\big]D_i \\
@@ -1397,6 +1410,7 @@ Y_i &amp;= \hat{\alpha}_0 + \hat{\tau} D_i + \hat{\beta}_0 X_i \\
 <p><span class="math display">
 Y_i = a + \tau D_i + b X_i + V_i.
 </span></p></li>
+<li class="fragment"><p>Recall <span class="math inline">\delta = \beta_1 - \beta_0</span> measures how the effect of <span class="math inline">X_i</span> differs between the treatment and control groups.</p></li>
 <li class="fragment"><p>This is valid if <span class="math inline">\beta_1 = \beta_0</span> (the covariate has the same effect in both groups). Then <span class="math inline">\delta = 0</span>, the interaction drops out, and the coefficient on <span class="math inline">D_i</span> is the ATE.</p></li>
 <li class="fragment"><p>If <span class="math inline">\beta_1 \neq \beta_0</span> (the effect of <span class="math inline">X_i</span> differs between groups), the omitted interaction creates bias: the interaction <span class="math inline">X_iD_i</span> affects <span class="math inline">Y_i</span> and is correlated with <span class="math inline">D_i</span>, so the coefficient on <span class="math inline">D_i</span> does not equal the ATE.</p></li>
 </ul>
