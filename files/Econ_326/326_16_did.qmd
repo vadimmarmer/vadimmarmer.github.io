@@ -193,22 +193,22 @@ format:
 - Substituting observed outcomes with potential outcomes:
 
   \begin{align*}
-  \beta &= \E{Y_{i1}(1) {\color{red}- Y_{i0}(1)} \mid D_i = 1} \\
+  \beta &= \E{{\color{teal}Y_{i1}(1)} {\color{red}- Y_{i0}(1)} \mid D_i = 1} \\
   &\quad {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}.
   \end{align*}
 
 - To relate $\beta$ to the ATT, add and subtract $\E{Y_{i1}(0) \mid D_i = 1}$ and $\E{Y_{i0}(0) \mid D_i = 1}$ inside the first expectation:
 
   \begin{align*}
-  \beta &= \E{Y_{i1}(1) {\color{red}- Y_{i0}(1)} \mid D_i = 1} {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}} \\
-  &= \E{Y_{i1}(1) \underbrace{- Y_{i1}(0) {\color{blue}+ Y_{i1}(0)}}_{= \, 0} \underbrace{{\color{blue}- Y_{i0}(0)} {\color{red}+ Y_{i0}(0)}}_{= \, 0} {\color{red}- Y_{i0}(1)} \mid D_i = 1} \\
+  \beta &= \E{{\color{teal}Y_{i1}(1)} {\color{red}- Y_{i0}(1)} \mid D_i = 1} {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}} \\
+  &= \E{{\color{teal}Y_{i1}(1)} \underbrace{{\color{teal}- Y_{i1}(0)} {\color{blue}+ Y_{i1}(0)}}_{= \, 0} \underbrace{{\color{blue}- Y_{i0}(0)} {\color{red}+ Y_{i0}(0)}}_{= \, 0} {\color{red}- Y_{i0}(1)} \mid D_i = 1} \\
   &\quad {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}.
   \end{align*}
 
 - Rearranging and splitting the expectation:
 
   \begin{align*}
-  \beta &= \underbrace{\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}_{\text{ATT}} \\
+  \beta &= \underbrace{{\color{teal}\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}}_{\color{teal}\text{ATT}} \\
   &\quad + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}} \\
   &\quad + \underbrace{{\color{red}\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}}_{\color{red}\text{anticipation effect}}.
   \end{align*}
