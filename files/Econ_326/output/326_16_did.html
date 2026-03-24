@@ -2703,16 +2703,16 @@ Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}
 </thead>
 <tbody>
 <tr class="odd">
-<td>All close to zero</td>
+<td><span class="math inline">\mu_{-3} \approx \mu_{-2} \approx \mu_{-1} \approx 0</span></td>
 <td>Both assumptions look plausible</td>
 </tr>
 <tr class="even">
-<td>Sharp break right before treatment</td>
-<td><strong>Anticipation</strong>: units react to news of upcoming treatment</td>
+<td><span class="math inline">\mu_{-3} \approx \mu_{-2} \approx 0</span> but <span class="math inline">\mu_{-1} \neq 0</span></td>
+<td><strong>Anticipation</strong>: units react to news of upcoming treatment one period before it starts</td>
 </tr>
 <tr class="odd">
-<td>Gradual trend across all pre-periods</td>
-<td><strong>Parallel trends violation</strong>, not anticipation</td>
+<td><span class="math inline">\mu_{-3}, \mu_{-2}, \mu_{-1}</span> trending (e.g., growing in magnitude)</td>
+<td><strong>Parallel trends violation</strong>: groups were already diverging before treatment</td>
 </tr>
 </tbody>
 </table></li>
@@ -3562,9 +3562,9 @@ Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}
 <span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a>  | Pattern in $\mu_k$ for $k &lt; 0$ | Interpretation |</span>
 <span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a>  |---|---|</span>
-<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a>  | All close to zero | Both assumptions look plausible |</span>
-<span id="cb16-391"><a href="#cb16-391" aria-hidden="true" tabindex="-1"></a>  | Sharp break right before treatment | **Anticipation**: units react to news of upcoming treatment |</span>
-<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a>  | Gradual trend across all pre-periods | **Parallel trends violation**, not anticipation |</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a>  | $\mu_{-3} \approx \mu_{-2} \approx \mu_{-1} \approx 0$ | Both assumptions look plausible |</span>
+<span id="cb16-391"><a href="#cb16-391" aria-hidden="true" tabindex="-1"></a>  | $\mu_{-3} \approx \mu_{-2} \approx 0$ but $\mu_{-1} \neq 0$ | **Anticipation**: units react to news of upcoming treatment one period before it starts |</span>
+<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a>  | $\mu_{-3}, \mu_{-2}, \mu_{-1}$ trending (e.g., growing in magnitude) | **Parallel trends violation**: groups were already diverging before treatment |</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
