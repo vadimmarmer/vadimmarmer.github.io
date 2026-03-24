@@ -2275,6 +2275,7 @@ window.Quarto = {
   <li><a href="#assumptions-in-the-incinerator-example" id="toc-assumptions-in-the-incinerator-example" class="nav-link" data-scroll-target="#assumptions-in-the-incinerator-example">Assumptions in the incinerator example</a></li>
   <li><a href="#did-with-covariates" id="toc-did-with-covariates" class="nav-link" data-scroll-target="#did-with-covariates">DID with covariates</a></li>
   <li><a href="#where-does-the-bias-come-from" id="toc-where-does-the-bias-come-from" class="nav-link" data-scroll-target="#where-does-the-bias-come-from">Where does the bias come from?</a></li>
+  <li><a href="#detecting-anticipation-and-pre-trends" id="toc-detecting-anticipation-and-pre-trends" class="nav-link" data-scroll-target="#detecting-anticipation-and-pre-trends">Detecting anticipation and pre-trends</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="326_16_did.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="326_16_did_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -2673,6 +2674,44 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <td>Parallel trends</td>
 <td>Yes (unconditionally)</td>
 <td>Near houses are older; older houses had different price trends</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</section>
+<section id="detecting-anticipation-and-pre-trends" class="level2">
+<h2 class="anchored" data-anchor-id="detecting-anticipation-and-pre-trends">Detecting anticipation and pre-trends</h2>
+<ul>
+<li><p>With only two time periods (as in the incinerator example), anticipation effects <strong>cannot</strong> be separately identified.</p></li>
+<li><p>With <strong>multiple pre-treatment periods</strong>, an <strong>event study</strong> design can help. Include leads and lags of the treatment indicator:</p>
+<p><span class="math display">
+Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}[t = k] + U_{it},
+</span></p>
+<p>where <span class="math inline">k &lt; 0</span> are pre-treatment periods and <span class="math inline">k &gt; 0</span> are post-treatment periods.</p></li>
+<li><p>The pre-treatment coefficients <span class="math inline">\mu_k</span> for <span class="math inline">k &lt; 0</span> serve as a diagnostic:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pattern in <span class="math inline">\mu_k</span> for <span class="math inline">k &lt; 0</span></th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>All close to zero</td>
+<td>Both assumptions look plausible</td>
+</tr>
+<tr class="even">
+<td>Sharp break right before treatment</td>
+<td><strong>Anticipation</strong>: units react to news of upcoming treatment</td>
+</tr>
+<tr class="odd">
+<td>Gradual trend across all pre-periods</td>
+<td><strong>Parallel trends violation</strong>, not anticipation</td>
 </tr>
 </tbody>
 </table></li>
@@ -3502,7 +3541,27 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a>  | Assumption | Violated? | Reasoning |</span>
 <span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a>  |---|---|---|</span>
 <span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a>  | No anticipation | No | Incinerator not yet announced in 1978 |</span>
-<span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a>  | Parallel trends | Yes (unconditionally) | Near houses are older; older houses had different price trends |</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a>  | Parallel trends | Yes (unconditionally) | Near houses are older; older houses had different price trends |</span>
+<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-372"><a href="#cb16-372" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detecting anticipation and pre-trends</span></span>
+<span id="cb16-373"><a href="#cb16-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-374"><a href="#cb16-374" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With only two time periods (as in the incinerator example), anticipation effects **cannot** be separately identified.</span>
+<span id="cb16-375"><a href="#cb16-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With **multiple pre-treatment periods**, an **event study** design can help. Include leads and lags of the treatment indicator:</span>
+<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a>  Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}[t = k] + U_{it},</span>
+<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a>  where $k &lt; 0$ are pre-treatment periods and $k &gt; 0$ are post-treatment periods.</span>
+<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The pre-treatment coefficients $\mu_k$ for $k &lt; 0$ serve as a diagnostic:</span>
+<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a>  | Pattern in $\mu_k$ for $k &lt; 0$ | Interpretation |</span>
+<span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a>  |---|---|</span>
+<span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a>  | All close to zero | Both assumptions look plausible |</span>
+<span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a>  | Sharp break right before treatment | **Anticipation**: units react to news of upcoming treatment |</span>
+<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a>  | Gradual trend across all pre-periods | **Parallel trends violation**, not anticipation |</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

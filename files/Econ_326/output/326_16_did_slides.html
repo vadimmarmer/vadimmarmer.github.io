@@ -1512,6 +1512,44 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 </tbody>
 </table></li>
 </ul>
+</section>
+<section id="detecting-anticipation-and-pre-trends" class="slide level2">
+<h2>Detecting anticipation and pre-trends</h2>
+<ul>
+<li class="fragment"><p>With only two time periods (as in the incinerator example), anticipation effects <strong>cannot</strong> be separately identified.</p></li>
+<li class="fragment"><p>With <strong>multiple pre-treatment periods</strong>, an <strong>event study</strong> design can help. Include leads and lags of the treatment indicator:</p>
+<p><span class="math display">
+Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}[t = k] + U_{it},
+</span></p>
+<p>where <span class="math inline">k &lt; 0</span> are pre-treatment periods and <span class="math inline">k &gt; 0</span> are post-treatment periods.</p></li>
+<li class="fragment"><p>The pre-treatment coefficients <span class="math inline">\mu_k</span> for <span class="math inline">k &lt; 0</span> serve as a diagnostic:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pattern in <span class="math inline">\mu_k</span> for <span class="math inline">k &lt; 0</span></th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>All close to zero</td>
+<td>Both assumptions look plausible</td>
+</tr>
+<tr class="even">
+<td>Sharp break right before treatment</td>
+<td><strong>Anticipation</strong>: units react to news of upcoming treatment</td>
+</tr>
+<tr class="odd">
+<td>Gradual trend across all pre-periods</td>
+<td><strong>Parallel trends violation</strong>, not anticipation</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
 
 </section>
     </div>

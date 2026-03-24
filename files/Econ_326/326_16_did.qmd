@@ -368,3 +368,23 @@ format:
   |---|---|---|
   | No anticipation | No | Incinerator not yet announced in 1978 |
   | Parallel trends | Yes (unconditionally) | Near houses are older; older houses had different price trends |
+
+## Detecting anticipation and pre-trends
+
+- With only two time periods (as in the incinerator example), anticipation effects **cannot** be separately identified.
+
+- With **multiple pre-treatment periods**, an **event study** design can help. Include leads and lags of the treatment indicator:
+
+  $$
+  Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}[t = k] + U_{it},
+  $$
+
+  where $k < 0$ are pre-treatment periods and $k > 0$ are post-treatment periods.
+
+- The pre-treatment coefficients $\mu_k$ for $k < 0$ serve as a diagnostic:
+
+  | Pattern in $\mu_k$ for $k < 0$ | Interpretation |
+  |---|---|
+  | All close to zero | Both assumptions look plausible |
+  | Sharp break right before treatment | **Anticipation**: units react to news of upcoming treatment |
+  | Gradual trend across all pre-periods | **Parallel trends violation**, not anticipation |
