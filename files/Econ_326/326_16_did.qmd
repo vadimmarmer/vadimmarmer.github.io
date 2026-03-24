@@ -67,7 +67,7 @@ format:
 - The DID regression is:
 
   $$
-  Y_{it} = \alpha + \delta \cdot t + \gamma D_i + \beta(t \cdot D_i) + U_{it},
+  Y_{it} = \alpha + {\color{blue}\delta} \cdot t + {\color{purple}\gamma} D_i + {\color{teal}\beta}(t \cdot D_i) + U_{it},
   $$
 
   where $\E{U_{it} \mid D_i} = 0$.
@@ -80,46 +80,46 @@ format:
 ## Interpreting the coefficients
 
 - $$
-  Y_{it} = \alpha + \delta \cdot t + \gamma D_i + \beta(t \cdot D_i) + U_{it},
+  Y_{it} = \alpha + {\color{blue}\delta} \cdot t + {\color{purple}\gamma} D_i + {\color{teal}\beta}(t \cdot D_i) + U_{it},
   $$
 
 - Evaluate $\E{Y_{it} \mid D_i}$ for each combination of $t$ and $D_i$:
 
   \begin{align*}
   t = 0,\ D_i = 0: \quad & \E{Y_{i0} \mid D_i = 0} = \alpha, \\
-  t = 0,\ D_i = 1: \quad & \E{Y_{i0} \mid D_i = 1} = \alpha + \gamma, \\
-  t = 1,\ D_i = 0: \quad & \E{Y_{i1} \mid D_i = 0} = \alpha + \delta, \\
-  t = 1,\ D_i = 1: \quad & \E{Y_{i1} \mid D_i = 1} = \alpha + \delta + \gamma + \beta.
+  t = 0,\ D_i = 1: \quad & \E{Y_{i0} \mid D_i = 1} = \alpha + {\color{purple}\gamma}, \\
+  t = 1,\ D_i = 0: \quad & \E{Y_{i1} \mid D_i = 0} = \alpha + {\color{blue}\delta}, \\
+  t = 1,\ D_i = 1: \quad & \E{Y_{i1} \mid D_i = 1} = \alpha + {\color{blue}\delta} + {\color{purple}\gamma} + {\color{teal}\beta}.
   \end{align*}
 
 - Summarized as a 2×2 table:
 
   | | $D_i = 0$ (Control) | $D_i = 1$ (Treatment) |
   |---|---|---|
-  | $t = 0$ | $\alpha$ | $\alpha + \gamma$ |
-  | $t = 1$ | $\alpha + \delta$ | $\alpha + \delta + \gamma + \beta$ |
+  | $t = 0$ | $\alpha$ | $\alpha + {\color{purple}\gamma}$ |
+  | $t = 1$ | $\alpha + {\color{blue}\delta}$ | $\alpha + {\color{blue}\delta} + {\color{purple}\gamma} + {\color{teal}\beta}$ |
 
 - $\alpha$: baseline expected outcome (control group, before treatment).
-- $\gamma$: pre-existing **group difference** at baseline ($t = 0$).
-- $\delta$: **time effect** — the change in the control group from $t = 0$ to $t = 1$, capturing common trends.
+- ${\color{purple}\gamma}$: pre-existing **group difference** at baseline ($t = 0$).
+- ${\color{blue}\delta}$: **time effect** — the change in the control group from $t = 0$ to $t = 1$, capturing common trends.
 
 - From the 2×2 table, the change over time for each group:
-  - **Treatment:** $\E{Y_{i1} \mid D_i = 1} - \E{Y_{i0} \mid D_i = 1} = \delta + \beta$.
-  - **Control:** $\E{Y_{i1} \mid D_i = 0} - \E{Y_{i0} \mid D_i = 0} = \delta$.
+  - **Treatment:** $\E{Y_{i1} \mid D_i = 1} - \E{Y_{i0} \mid D_i = 1} = {\color{blue}\delta} + {\color{teal}\beta}$.
+  - **Control:** $\E{Y_{i1} \mid D_i = 0} - \E{Y_{i0} \mid D_i = 0} = {\color{blue}\delta}$.
 
 - Subtracting the control group's change from the treatment group's change:
 
   $$
-  (\delta + \beta) - \delta = \beta.
+  ({\color{blue}\delta} + {\color{teal}\beta}) - {\color{blue}\delta} = {\color{teal}\beta}.
   $$
 
 - The DID estimand as a double difference of conditional expectations:
 
   \begin{align*}
-  \beta &= \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.
+  {\color{teal}\beta} &= \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.
   \end{align*}
 
-- By subtracting the control group's change, the common time trend $\delta$ cancels, isolating the treatment effect $\beta$.
+- By subtracting the control group's change, the common time trend ${\color{blue}\delta}$ cancels, isolating the treatment effect ${\color{teal}\beta}$.
 
 ## DID diagram
 
@@ -147,7 +147,7 @@ format:
 
   arrows(1.05, y_cf[2], 1.05, y_treat[2],
          code = 3, length = 0.08, lwd = 1.5)
-  text(1.15, (y_cf[2] + y_treat[2]) / 2, expression(beta), cex = 1.3)
+  text(1.15, (y_cf[2] + y_treat[2]) / 2, expression(beta), cex = 1.3, col = "#008080")
 
   text(1.05, y_ctrl[2], "Control", pos = 4, col = "blue", cex = 0.9)
   text(1.05, y_treat[2] + 0.3, "Treatment", pos = 4, col = "red", cex = 0.9)
@@ -159,7 +159,7 @@ format:
        col = "blue", pos = 2)
   ```
 
-- We predict the counterfactual outcome for the treatment group at $t = 1$ (dashed gray line) by adding the control group's change $\delta$ to the treatment group's baseline $\alpha + \gamma$.
+- We predict the counterfactual outcome for the treatment group at $t = 1$ (dashed gray line) by adding the control group's change ${\color{blue}\delta}$ to the treatment group's baseline $\alpha + {\color{purple}\gamma}$.
 
 ## DID and potential outcomes
 
@@ -181,14 +181,14 @@ format:
 - The treatment effect at time $t = 1$ for the treated group is:
 
   $$
-  \text{ATT} = \E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}.
+  {\color{teal}\text{ATT}} = {\color{teal}\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}.
   $$
 
   [The counterfactual $Y_{i1}(0)$ is unobserved for the treated group.]{style="color: red;"}
 
 ## DID as a treatment effect
 
-- $\beta = \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}$.
+- ${\color{teal}\beta} = \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}$.
 
 - Substituting observed outcomes with potential outcomes:
 
@@ -213,20 +213,20 @@ format:
   &\quad + \underbrace{{\color{red}\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}}_{\color{red}\text{anticipation effect}}.
   \end{align*}
 
-- For $\beta$ to equal the ATT, the last two terms must be zero. This requires two assumptions.
+- For ${\color{teal}\beta}$ to equal the ${\color{teal}\text{ATT}}$, the ${\color{blue}\text{difference in trends}}$ and ${\color{red}\text{anticipation effect}}$ must be zero. This requires two assumptions.
 
 ## Assumption 1: Parallel trends
 
 - The "difference in trends" term equals zero if both groups would have experienced the same change over time in the absence of treatment:
 
   $$
-  \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} = \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}.
+  {\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} = \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}.
   $$
 
 - Under parallel trends, the decomposition reduces to:
 
   $$
-  \beta = \text{ATT} + \underbrace{\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}_{\text{anticipation effect}}.
+  {\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{red}\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}}_{\color{red}\text{anticipation effect}}.
   $$
 
 - The parallel trends assumption cannot be directly tested because $Y_{i1}(0)$ is unobserved for the treated group.
@@ -245,7 +245,7 @@ format:
 - Under both parallel trends and no anticipation:
 
   $$
-  \beta = \text{ATT}.
+  {\color{teal}\beta} = {\color{teal}\text{ATT}}.
   $$
 
 ## Example: incinerator and house prices
@@ -310,7 +310,7 @@ format:
 
 - The coefficient on `y81nrinc` matches the DID computed from the 2×2 table.
 
-- The estimated effect is negative (incinerator reduced nearby prices), but the p-value is around 0.11, so it is not statistically significant at the 5% level.
+- The estimated DID effect is $\hat{\beta} = -\$11{,}864$ (SE $= 7{,}457$, $p = 0.113$). The incinerator reduced nearby house prices, but the effect is not statistically significant at the 5% level.
 
 ## Assumptions in the incinerator example
 
@@ -331,4 +331,6 @@ format:
   round(summary(reg_did_cov)$coefficients, 4)
   ```
 
-- After controlling for house age, the DID estimate becomes larger in magnitude and statistically significant. The change in the estimate suggests that the basic DID was biased: older houses near the incinerator appreciated differently than houses farther away, masking part of the incinerator's negative effect.
+- After controlling for house age, the DID estimate is $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large and highly significant.
+
+- The change in the estimate suggests that the basic DID was biased: older houses near the incinerator appreciated differently than houses farther away, masking part of the incinerator's negative effect.
