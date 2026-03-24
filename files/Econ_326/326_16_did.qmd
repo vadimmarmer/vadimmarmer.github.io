@@ -387,6 +387,6 @@ format:
 
   | Pattern in $\mu_k$ for $k < 0$ | Interpretation |
   |---|---|
-  | $\mu_{-3} \approx \mu_{-2} \approx \mu_{-1} \approx 0$ | Both assumptions look plausible |
-  | $\mu_{-3} \approx \mu_{-2} \approx 0$ but $\mu_{-1} \neq 0$ | **Anticipation**: units react to news of upcoming treatment |
-  | $|\mu_{-3}| < |\mu_{-2}| < |\mu_{-1}|$, growing steadily | **Parallel trends violation**, not anticipation: groups were already diverging before treatment |
+  | All close to zero: $\mu_{-3} \approx \mu_{-2} \approx \mu_{-1} \approx 0$ | Both assumptions look plausible |
+  | Sharp break right before treatment: $\mu_{-3} \approx \mu_{-2} \approx 0$ but $\mu_{-1} \neq 0$ | **Anticipation**: units react to news of upcoming treatment |
+  | Gradual trend across pre-periods: $|\mu_{-3}| < |\mu_{-2}| < |\mu_{-1}|$, growing steadily | **Parallel trends violation**, not anticipation: groups were already diverging before treatment |
