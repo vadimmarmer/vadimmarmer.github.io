@@ -1,0 +1,352 @@
+---
+title: "Lecture 19: Instrumental Variables"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_19_IV.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+    embed-resources: true
+  pdf:
+    output-file: 326_19_IV.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_19_IV_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Endogeneity
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- In the linear regression model,
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},
+  $$
+  the condition for consistent estimation of $\beta _{1}$ by OLS is that $X$ is **exogenous**:
+  $$
+  \Cov{X_{i},U_{i}} =0.
+  $$
+
+- When $\Cov{X_{i},U_{i}} \neq 0,$ we say that the regressor $X$ is **endogenous**.
+
+- When the regressor is **endogenous**, the OLS estimator is **inconsistent**:
+  \begin{align*}
+  \hat{\beta}_{1,n}-\beta _{1}
+  &= \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}} \\
+  &\rightarrow _{p}\frac{{\color{red}\Cov{X_{i},U_{i}}}}{\Var{X_{i}}} \neq 0.
+  \end{align*}
+
+## Consequences of endogeneity
+
+- The causal effect of $X$ on $Y$ is not estimated consistently:
+  $$
+  \hat{\beta}_{1,n}\rightarrow _{p}\beta _{1}+\frac{\Cov{X_{i},U_{i}}}{\Var{X_{i}}}.
+  $$
+  The effect can be over- or underestimated depending on the sign of $\Cov{X_{i},U_{i}}$.
+
+- Tests and confidence intervals are invalid.
+
+## Sources of endogeneity
+
+- Several possible sources of endogeneity:
+
+  1. Omitted explanatory variables.
+
+  2. Simultaneity.
+
+  3. Errors in variables.
+
+- All result in regressors correlated with the errors.
+
+## Omitted explanatory variables
+
+- Suppose that the true model is
+  $$
+  \ln \text{Wage}_{i}=\beta _{0}+\beta _{1}\text{Education}_{i}+\beta _{2}\text{Ability}_{i}+V_{i},
+  $$
+  where $V_{i}$ is uncorrelated with $\text{Education}$ and $\text{Ability}$.
+
+- Since $\text{Ability}$ is unobservable, the econometrician regresses $\ln \text{Wage}$ against $\text{Education}$, and $\beta _{2}\text{Ability}$ goes into the error:
+  $$
+  \begin{aligned}
+  \ln \text{Wage}_{i} &= \beta _{0}+\beta _{1}\text{Education}_{i}+U_{i}, \\
+  U_{i} &= \beta _{2}\text{Ability}_{i}+V_{i}.
+  \end{aligned}
+  $$
+
+- $\text{Education}$ is correlated with $\text{Ability}$: we can expect that $\Cov{\text{Education}_{i},\text{Ability}_{i}} >0$, $\beta _{2}>0$, and therefore
+  $$
+  \Cov{\text{Education}_{i},U_{i}} >0.
+  $$
+  Thus, OLS will overestimate the return to education.
+
+## Simultaneity
+
+- Consider a **demand-supply** system:
+  $$
+  \begin{array}{ll}
+  \text{Demand:} & Q^{d}=\beta _{0}^{d}+\beta _{1}^{d}P+U^{d}, \\
+  \text{Supply:} & Q^{s}=\beta _{0}^{s}+\beta _{1}^{s}P+U^{s},
+  \end{array}
+  $$
+  where $Q^{d}$ = quantity demanded, $Q^{s}$ = quantity supplied, $P$ = price.
+
+- The quantity and price are determined **simultaneously** in the equilibrium:
+  $$
+  Q^{d}=Q^{s}=Q.
+  $$
+
+- $Q^{d}$ and $Q^{s}$ are not observed separately; we observe only the equilibrium values $Q$.
+
+## Simultaneity
+
+- Solving for $P$:
+  $$
+  \begin{aligned}
+  Q^{d} &= Q^{s} \\
+  \beta _{0}^{d}+\beta _{1}^{d}P+U^{d} &= \beta _{0}^{s}+\beta _{1}^{s}P+U^{s},
+  \end{aligned}
+  $$
+  so
+  $$
+  P=-\frac{\beta _{0}^{d}-\beta _{0}^{s}}{\beta _{1}^{d}-\beta _{1}^{s}}-\frac{U^{d}-U^{s}}{\beta _{1}^{d}-\beta _{1}^{s}}.
+  $$
+
+- Thus,
+  $$
+  \Cov{P,U^{d}} \neq 0 \text{ and } \Cov{P,U^{s}} \neq 0.
+  $$
+  The demand-supply equations cannot be estimated by OLS.
+
+## Simultaneity
+
+- Consider a labour supply model for married women:
+  $$
+  \text{Hours}_{i}=\beta _{0}+\beta _{1}\text{Children}_{i}+\text{Other Factors}+U_{i},
+  $$
+  where $\text{Hours}$ = hours of work, $\text{Children}$ = number of children.
+
+- It is reasonable to assume that women decide **simultaneously** how much time to devote to career and family.
+
+- Thus, while we may be mainly interested in the effect of family size on labour supply, there is another equation:
+  $$
+  \text{Children}_{i}=\gamma _{0}+\gamma _{1}\text{Hours}_{i}+\text{Other Factors}+V_{i},
+  $$
+  and $\text{Children}$ and $\text{Hours}$ are determined **simultaneously** in an equilibrium.
+
+- As a result, $\Cov{\text{Children}_{i},U_{i}} \neq 0,$ and the effect of family size cannot be estimated by OLS.
+
+## Errors in variables
+
+- Consider a model:
+  $$
+  Y_{i}=\beta _{0}+\beta _{1}X_{i}^{\ast }+V_{i},
+  $$
+  where $X_{i}^{\ast }$ is the "true" regressor.
+
+- Suppose that $X_{i}^{\ast }$ is not directly observable. Instead, we observe $X_{i}$ that measures $X_{i}^{\ast }$ with an error $\varepsilon_{i}$:
+  $$
+  X_{i}=X_{i}^{\ast }+\varepsilon _{i}.
+  $$
+
+- Since $X_{i}^{\ast }$ is unobservable, the econometrician has to regress $Y_{i}$ against $X_{i}$.
+
+## Errors in variables
+
+- The model for $Y_{i}$ as a function of $X_{i}$ can be written as
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta _{0}+\beta _{1}\left( X_{i}-\varepsilon _{i}\right) +V_{i} \\
+  &= \beta _{0}+\beta _{1}X_{i}+V_{i}-\beta _{1}\varepsilon _{i},
+  \end{aligned}
+  $$
+  or
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
+  U_{i} &= V_{i}-\beta _{1}\varepsilon _{i}.
+  \end{aligned}
+  $$
+
+## Errors in variables
+
+- We can assume that
+  $$
+  \Cov{X_{i}^{\ast },V_{i}} =\Cov{X_{i}^{\ast },\varepsilon_{i}} =\Cov{\varepsilon _{i},V_{i}} =0.
+  $$
+
+- However,
+  $$
+  \begin{aligned}
+  \Cov{X_{i},U_{i}} &= \Cov{X_{i}^{\ast }+\varepsilon _{i},\; V_{i}-\beta _{1}\varepsilon_{i}} \\
+  &= \Cov{X_{i}^{\ast },V_{i}} -\beta _{1}\Cov{X_{i}^{\ast },\varepsilon _{i}} \\
+  &\quad +\Cov{\varepsilon _{i},V_{i}} -\beta _{1}{\color{red}\Cov{\varepsilon _{i},\varepsilon _{i}}} \\
+  &= -\beta _{1}\Var{\varepsilon _{i}} \neq 0.
+  \end{aligned}
+  $$
+
+- Thus, $X_{i}$ is **endogenous** and $\beta _{1}$ cannot be estimated by OLS.
+
+## Instrumental variable (IV)
+
+- Consider
+  $$
+  \begin{aligned}
+  Y_{i} &= \beta _{0}+\beta _{1}X_{i}+U_{i}, \\
+  \Cov{X_{i},U_{i}} &\neq 0.
+  \end{aligned}
+  $$
+
+- Suppose that the econometrician observes another variable $Z_{i}$, called the **instrumental variable**, that satisfies the following conditions:
+
+  1. The IV is **exogenous**: $\Cov{Z_{i},U_{i}} =0.$
+
+  2. The IV **determines** the endogenous regressor: $\Cov{Z_{i},X_{i}} \neq 0.$
+
+- When an IV satisfying those conditions is available, it allows us to estimate the effect of $X$ on $Y$ consistently.
+
+## IV regression
+
+- Consider the **IV estimator** of $\beta _{1}$:
+  $$
+  {\color{blue}\hat{\beta}_{1,n}^{IV}=\frac{\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) Y_{i}}{\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i}}}.
+  $$
+
+- Substituting $Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i}$:
+  $$
+  \begin{aligned}
+  \hat{\beta}_{1,n}^{IV} &= \frac{\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) \left( \beta _{0}+\beta _{1}X_{i}+U_{i}\right)}{\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i}} \\
+  &= \beta _{1}+\frac{\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) U_{i}}{\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i}}.
+  \end{aligned}
+  $$
+
+## Consistency of the IV estimator
+
+- The IV conditions:
+
+  1. **Exogeneity**: ${\color{red}\Cov{Z_{i},U_{i}} =0}.$
+  2. **Relevance**: ${\color{blue}\Cov{Z_{i},X_{i}} \neq 0}.$
+
+- By the LLN:
+  $$
+  \begin{aligned}
+  \frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) U_{i} &\rightarrow _{p} {\color{red}\Cov{Z_{i},U_{i}}}, \\
+  \frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i} &\rightarrow _{p} {\color{blue}\Cov{Z_{i},X_{i}}}.
+  \end{aligned}
+  $$
+
+- The IV estimator is consistent:
+  \begin{align*}
+  \hat{\beta}_{1,n}^{IV}
+  &= \beta _{1}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i}} \\
+  &\rightarrow _{p}\beta _{1}+\frac{{\color{red}0}}{{\color{blue}\Cov{Z_{i},X_{i}}}} =\beta _{1}.
+  \end{align*}
+
+## Natural experiments
+
+- Theoretically, the causal effect can be estimated from **controlled experiments**:
+
+  - To estimate the return to education, select a random sample of children, **randomly** assign how many years of education they should have, and measure their income several years after graduation.
+
+  - To estimate the effect of family size on labor supply, select a random sample of parents and **randomly** assign how many children they should have, and measure their labor market outcomes.
+
+- Such an approach is infeasible due to high cost and/or ethical reasons.
+
+- **Natural experiments**: use the random variation in the variable of interest to estimate the causal effect.
+
+## Example: Compulsory schooling laws
+
+- Angrist and Krueger (1991, *QJE*) suggested using school start age policy to estimate $\beta _{1}$ in
+  $$
+  \ln \text{Wage}_{i}=\beta _{0}+\beta _{1}\text{Education}_{i}+\beta _{2}\text{Ability}_{i}+V_{i}.
+  $$
+
+- We need an IV $Z$ such that $\Cov{\text{Ability}_{i},Z_{i}} =0$ and $\Cov{\text{Education}_{i},Z_{i}} \neq 0.$
+
+- They argue that due to compulsory schooling laws, the **season of birth** satisfies the IV conditions:
+
+  - A child must attend school until reaching a certain drop-out age.
+
+  - Students born in the first quarter reach the legal drop-out age before classmates born later in the year.
+
+  - The quarter-of-birth dummy is correlated with education.
+
+  - The quarter of birth is uncorrelated with ability.
+
+## Example: Sibling-sex composition
+
+- Angrist and Evans (1998, *AER*) argue that parents' preferences for a mixed sibling-sex composition can be used to estimate $\beta _{1}$ in
+  $$
+  \text{Hours}_{i}=\beta _{0}+\beta _{1}\text{Children}_{i}+\ldots +U_{i}.
+  $$
+
+- We need an IV $Z$ such that $\Cov{U_{i},Z_{i}} =0$ and $\Cov{\text{Children}_{i},Z_{i}} \neq 0$.
+
+- Consider a dummy variable equal to one if the sex of the second child matches the sex of the first child.
+
+- If parents prefer a mixed sibling-sex composition, they are more likely to have another child if their first two children are of the same sex.
+
+- The same-sex dummy is correlated with the number of children.
+
+- Since sex mix is randomly determined, the same-sex dummy is exogenous.
+
+## Asymptotic distribution of the IV estimator
+
+- Write
+  \begin{align*}
+  \sqrt{n}\left( \hat{\beta}_{1,n}^{IV}-\beta _{1}\right)
+  &= \frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i}} \\
+  &\rightarrow _{d}\frac{N\left( 0,\;\E{\left( Z_{i}-\E{Z_{i}}\right)^{2}U_{i}^{2}}\right)}{\Cov{Z_{i},X_{i}}}.
+  \end{align*}
+
+- Thus,
+  $$
+  \begin{aligned}
+  \sqrt{n}\left( \hat{\beta}_{1,n}^{IV}-\beta _{1}\right) &\rightarrow_{d} N\left( 0,V^{IV}\right), \text{ where} \\
+  V^{IV} &= \frac{\E{\left( Z_{i}-\E{Z_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Cov{Z_{i},X_{i}}\right) ^{2}}.
+  \end{aligned}
+  $$
+
+## Variance estimation
+
+- Let $\hat{\beta}_{0,n}^{IV}=\bar{Y}_{n}-\hat{\beta}_{1,n}^{IV}\cdot \bar{X}_{n}.$
+
+- Let $\hat{U}_{i}=Y_{i}-\hat{\beta}_{0,n}^{IV}-\hat{\beta}_{1,n}^{IV}X_{i}.$
+
+- Estimate $V^{IV}$ by
+  $$
+  \hat{V}_{n}^{IV}=\frac{\frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) ^{2}\hat{U}_{i}^{2}}{\left( \frac{1}{n}\sum_{i=1}^{n}\left( Z_{i}-\bar{Z}_{n}\right) X_{i}\right) ^{2}}.
+  $$
+
+- In finite samples, we use the approximation:
+  $$
+  \hat{\beta}_{1,n}^{IV}\overset{a}{\sim }N\left( \beta _{1},\frac{\hat{V}_{n}^{IV}}{n}\right).
+  $$
