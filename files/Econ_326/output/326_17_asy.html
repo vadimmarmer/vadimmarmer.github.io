@@ -2278,9 +2278,6 @@ window.Quarto = {
   <li><a href="#denominator-converges-to-mathrmvarleftx_iright" id="toc-denominator-converges-to-mathrmvarleftx_iright" class="nav-link" data-scroll-target="#denominator-converges-to-mathrmvarleftx_iright">Denominator converges to <span class="math inline">\mathrm{Var}\left(X_i\right)</span></a></li>
   <li><a href="#multiple-regression" id="toc-multiple-regression" class="nav-link" data-scroll-target="#multiple-regression">Multiple regression</a></li>
   <li><a href="#omitted-variables-and-ols-inconsistency" id="toc-omitted-variables-and-ols-inconsistency" class="nav-link" data-scroll-target="#omitted-variables-and-ols-inconsistency">Omitted variables and OLS inconsistency</a></li>
-  <li><a href="#inconsistency-proof-noise-term" id="toc-inconsistency-proof-noise-term" class="nav-link" data-scroll-target="#inconsistency-proof-noise-term">Inconsistency proof: noise term</a></li>
-  <li><a href="#inconsistency-proof-bias-term" id="toc-inconsistency-proof-bias-term" class="nav-link" data-scroll-target="#inconsistency-proof-bias-term">Inconsistency proof: bias term</a></li>
-  <li><a href="#omitted-variable-bias-formula" id="toc-omitted-variable-bias-formula" class="nav-link" data-scroll-target="#omitted-variable-bias-formula">Omitted variable bias formula</a></li>
   <li><a href="#ovb-through-the-composite-error" id="toc-ovb-through-the-composite-error" class="nav-link" data-scroll-target="#ovb-through-the-composite-error">OVB through the composite error</a></li>
   </ul></li>
   <li><a href="#part-ii-asymptotic-normality" id="toc-part-ii-asymptotic-normality" class="nav-link" data-scroll-target="#part-ii-asymptotic-normality">Part II: Asymptotic Normality</a>
@@ -2357,9 +2354,9 @@ window.Quarto = {
 <ul>
 <li><p>The OLS estimator <span class="math inline">\hat{\beta}</span> has desirable properties:</p>
 <ul>
-<li><p><span class="math inline">\hat{\beta}</span> is unbiased if the errors are <strong>strongly exogenous</strong>: <span class="math inline">\mathrm{E}\left[U \mid X\right] =0.</span></p></li>
+<li><p><span class="math inline">\hat{\beta}</span> is unbiased if the errors are <strong>strongly exogenous</strong>: <span class="math inline">\mathrm{E}\left[U_i \mid \mathbf{X}\right] =0.</span></p></li>
 <li><p>If in addition the errors are <strong>homoskedastic</strong>, then <span class="math inline">\widehat{\mathrm{Var}}\left(\hat{\beta}\right)=s^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}</span> is an unbiased estimator of the conditional variance of <span class="math inline">\hat{\beta}</span>.</p></li>
-<li><p>If in addition the errors are <strong>normally</strong> distributed (given <span class="math inline">X</span>), then <span class="math inline">T=\left( \hat{\beta}-\beta \right) /\sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}\right)}</span> has a <span class="math inline">t</span> distribution which can be used for hypothesis testing.</p></li>
+<li><p>If in addition the errors are <strong>normally</strong> distributed (given <span class="math inline">\mathbf{X}</span>), then <span class="math inline">T=\left( \hat{\beta}-\beta \right) /\sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}\right)}</span> has a <span class="math inline">t</span> distribution which can be used for hypothesis testing.</p></li>
 </ul></li>
 </ul>
 </section>
@@ -2372,7 +2369,7 @@ window.Quarto = {
 <li><p>If the errors are <strong>heteroskedastic</strong>: <span class="math display">
 \mathrm{E}\left[U_{i}^{2} \mid X_{i}\right] =h\left( X_{i}\right),
 </span> the “usual” variance formula is invalid; we also do not have an unbiased estimator for the variance in this case.</p></li>
-<li><p>If the errors are <strong>not normally distributed</strong> conditional on <span class="math inline">X</span>, then <span class="math inline">T</span>- and <span class="math inline">F</span>-statistics do not have <span class="math inline">t</span> and <span class="math inline">F</span> distributions under the null hypothesis.</p></li>
+<li><p>If the errors are <strong>not normally distributed</strong> conditional on <span class="math inline">\mathbf{X}</span>, then <span class="math inline">T</span>- and <span class="math inline">F</span>-statistics do not have <span class="math inline">t</span> and <span class="math inline">F</span> distributions under the null hypothesis.</p></li>
 <li><p>Asymptotic (large-sample) theory allows us to derive <strong>approximate</strong> properties and distributions of estimators and test statistics by assuming that the sample size <span class="math inline">n</span> is very large.</p></li>
 </ul>
 </section>
@@ -2561,14 +2558,8 @@ g\left( \theta _{n}\right) \rightarrow _{p}g\left( \theta \right).
 <section id="denominator-converges-to-mathrmvarleftx_iright" class="level2">
 <h2 class="anchored" data-anchor-id="denominator-converges-to-mathrmvarleftx_iright">Denominator converges to <span class="math inline">\mathrm{Var}\left(X_i\right)</span></h2>
 <ul>
-<li><p>First,</p>
-<p><span class="math display">
-\begin{aligned}
-\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}
-&amp;= \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}^{2}-2\bar{X}_{n}X_{i}+\bar{X}_{n}^{2}\right) \\
-&amp;= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\frac{1}{n}\sum_{i=1}^{n}X_{i}+\bar{X}_{n}^{2} \\
-&amp;= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\bar{X}_{n}+\bar{X}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
-\end{aligned}
+<li><p>The sample variance can be written as <span class="math display">
+\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
 </span></p></li>
 <li><p>By the LLN, <span class="math inline">\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\rightarrow _{p}\mathrm{E}\left[X_{i}^{2}\right]</span> and <span class="math inline">\bar{X}_{n}\rightarrow _{p}\mathrm{E}\left[X_{i}\right].</span></p></li>
 <li><p>By Slutsky’s Lemma, <span class="math inline">\bar{X}_{n}^{2}\rightarrow _{p}\left( \mathrm{E}\left[X_{i}\right]\right) ^{2}.</span></p></li>
@@ -2605,52 +2596,19 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\ldots +\beta _{k}X_{k,i}+U_{i},
 &amp;= \beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="inconsistency-proof-noise-term" class="level2">
-<h2 class="anchored" data-anchor-id="inconsistency-proof-noise-term">Inconsistency proof: noise term</h2>
+<li><p>Dividing numerator and denominator by <span class="math inline">n</span> and applying the LLN as before:</p>
 <ul>
-<li><p>From the previous slide: <span class="math display">
-\tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+<li><p>The noise term vanishes: <span class="math display">
+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\mathrm{Cov}\left(X_{1,i},U_{i}\right)}{\mathrm{Var}\left(X_{1,i}\right)} = 0.
 </span></p></li>
-<li><p>As before,</p>
-<p><span class="math display">
-\begin{aligned}
-\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &amp;= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}U_{i}-\bar{X}_{1,n}\bar{U}_{n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
-&amp;\rightarrow _{p}\frac{0}{\mathrm{E}\left[X_{1,i}^{2}\right]-\left( \mathrm{E}\left[X_{1,i}\right]\right) ^{2}} \\
-&amp;= \frac{0}{\mathrm{Var}\left(X_{1,i}\right)}=0.
-\end{aligned}
+<li><p>The bias term converges: <span class="math display">
+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
 </span></p></li>
-</ul>
-</section>
-<section id="inconsistency-proof-bias-term" class="level2">
-<h2 class="anchored" data-anchor-id="inconsistency-proof-bias-term">Inconsistency proof: bias term</h2>
-<ul>
-<li><p>From the previous slide: <span class="math display">
-\tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+</ul></li>
+<li><p>Therefore, <span class="math display">
+\tilde{\beta}_{1,n} \rightarrow _{p} \beta _{1}+\beta _{2}\frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
 </span></p></li>
-<li><p>However,</p>
-<p><span class="math display">
-\begin{aligned}
-\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &amp;= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}X_{2,i}-\bar{X}_{1,n}\bar{X}_{2,n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
-&amp;\rightarrow _{p}\frac{\mathrm{E}\left[X_{1,i}X_{2,i}\right] -\mathrm{E}\left[X_{1,i}\right] \mathrm{E}\left[X_{2,i}\right]}{\mathrm{E}\left[X_{1,i}^{2}\right]-\left( \mathrm{E}\left[X_{1,i}\right]\right) ^{2}} \\
-&amp;= \frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="omitted-variable-bias-formula" class="level2">
-<h2 class="anchored" data-anchor-id="omitted-variable-bias-formula">Omitted variable bias formula</h2>
-<ul>
-<li><p>We have</p>
-<p><span class="math display">
-\begin{aligned}
-\tilde{\beta}_{1,n} &amp;= \beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \\
-&amp;\rightarrow _{p}\beta _{1}+\beta _{2}\frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}+\frac{0}{\mathrm{Var}\left(X_{1,i}\right)} \\
-&amp;= \beta _{1}+\beta _{2}\frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
-\end{aligned}
-</span></p></li>
-<li><p>Thus, <span class="math inline">\tilde{\beta}_{1,n}</span> is <strong>inconsistent</strong> unless:</p>
+<li><p><span class="math inline">\tilde{\beta}_{1,n}</span> is <strong>inconsistent</strong> unless:</p>
 <ol type="1">
 <li><p><span class="math inline">\beta _{2}=0</span> (the model is correctly specified).</p></li>
 <li><p><span class="math inline">\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)=0</span> (the omitted variable is <strong>uncorrelated</strong> with the included regressor).</p></li>
@@ -2707,7 +2665,7 @@ V_{i} &amp;= \beta _{2}X_{2,i}+U_{i}.
 <li>Typically, <span class="math inline">W_{n}</span> will be a function of some estimator, such as <span class="math inline">W_{n}=\sqrt{n}\left( \hat{\beta}_{n}-\beta \right)</span>.</li>
 </ul></li>
 <li><p>We say that <span class="math inline">W_{n}</span> has an <strong>asymptotically</strong> normal distribution if its <strong>CDF</strong> converges to a <strong>normal CDF</strong>.</p></li>
-<li><p>Let <span class="math inline">W</span> be any random variable with a normal <span class="math inline">N\left( 0,\sigma^{2}\right)</span> distribution. We say that <span class="math inline">W_{n}</span> has an asymptotically normal distribution if for all <span class="math inline">x\in \mathbb{R}</span>:</p>
+<li><p>Let <span class="math inline">W</span> be any random variable with a normal <span class="math inline">N\left( 0,\sigma^{2}\right)</span> distribution and let <span class="math inline">F</span> denote its CDF. We say that <span class="math inline">W_{n}</span> has an asymptotically normal distribution if for all <span class="math inline">x\in \mathbb{R}</span>:</p>
 <p><span class="math display">
 F_{n}\left( x\right) =P\left( W_{n}\leq x\right) \rightarrow P\left( W\leq x\right) =F\left( x\right) \text{ as }n\rightarrow \infty .
 </span></p>
@@ -3638,11 +3596,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The OLS estimator $\hat{\beta}$ has desirable properties:</span>
 <span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\hat{\beta}$ is unbiased if the errors are **strongly exogenous**: $\E{U \mid X} =0.$</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$\hat{\beta}$ is unbiased if the errors are **strongly exogenous**: $\E{U_i \mid \mathbf{X}} =0.$</span>
 <span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If in addition the errors are **homoskedastic**, then $\Vhat{\hat{\beta}}=s^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}$ is an unbiased estimator of the conditional variance of $\hat{\beta}$.</span>
 <span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If in addition the errors are **normally** distributed (given $X$), then $T=\left( \hat{\beta}-\beta \right) /\sqrt{\Vhat{\hat{\beta}}}$ has a $t$ distribution which can be used for hypothesis testing.</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If in addition the errors are **normally** distributed (given $\mathbf{X}$), then $T=\left( \hat{\beta}-\beta \right) /\sqrt{\Vhat{\hat{\beta}}}$ has a $t$ distribution which can be used for hypothesis testing.</span>
 <span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Limitations of finite-sample theory</span></span>
 <span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a></span>
@@ -3658,7 +3616,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  the &quot;usual&quot; variance formula is invalid; we also do not have an unbiased estimator for the variance in this case.</span>
 <span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If the errors are **not normally distributed** conditional on $X$, then $T$- and $F$-statistics do not have $t$ and $F$ distributions under the null hypothesis.</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If the errors are **not normally distributed** conditional on $\mathbf{X}$, then $T$- and $F$-statistics do not have $t$ and $F$ distributions under the null hypothesis.</span>
 <span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asymptotic (large-sample) theory allows us to derive **approximate** properties and distributions of estimators and test statistics by assuming that the sample size $n$ is very large.</span>
 <span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a></span>
@@ -3867,632 +3825,597 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <span id="cb6-279"><a href="#cb6-279" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-280"><a href="#cb6-280" aria-hidden="true" tabindex="-1"></a><span class="fu">## Denominator converges to $\Var{X_i}$</span></span>
 <span id="cb6-281"><a href="#cb6-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-282"><a href="#cb6-282" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First,</span>
-<span id="cb6-283"><a href="#cb6-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-284"><a href="#cb6-284" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-285"><a href="#cb6-285" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-286"><a href="#cb6-286" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}</span>
-<span id="cb6-287"><a href="#cb6-287" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}^{2}-2\bar{X}_{n}X_{i}+\bar{X}_{n}^{2}\right) <span class="sc">\\</span></span>
-<span id="cb6-288"><a href="#cb6-288" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\frac{1}{n}\sum_{i=1}^{n}X_{i}+\bar{X}_{n}^{2} <span class="sc">\\</span></span>
-<span id="cb6-289"><a href="#cb6-289" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\bar{X}_{n}+\bar{X}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.</span>
-<span id="cb6-290"><a href="#cb6-290" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-291"><a href="#cb6-291" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-292"><a href="#cb6-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-293"><a href="#cb6-293" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By the LLN, $\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\rightarrow _{p}\E{X_{i}^{2}}$ and $\bar{X}_{n}\rightarrow _{p}\E{X_{i}}.$</span>
-<span id="cb6-294"><a href="#cb6-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-295"><a href="#cb6-295" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By Slutsky&#39;s Lemma, $\bar{X}_{n}^{2}\rightarrow _{p}\left( \E{X_{i}}\right) ^{2}.$</span>
-<span id="cb6-296"><a href="#cb6-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-297"><a href="#cb6-297" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus,</span>
-<span id="cb6-298"><a href="#cb6-298" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-299"><a href="#cb6-299" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}=\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}\rightarrow _{p}\E{X_{i}^{2}} -\left( \E{X_{i}}\right) ^{2}=\Var{X_{i}}.</span>
-<span id="cb6-300"><a href="#cb6-300" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-301"><a href="#cb6-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-302"><a href="#cb6-302" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple regression</span></span>
+<span id="cb6-282"><a href="#cb6-282" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The sample variance can be written as</span>
+<span id="cb6-283"><a href="#cb6-283" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-284"><a href="#cb6-284" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.</span>
+<span id="cb6-285"><a href="#cb6-285" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-286"><a href="#cb6-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-287"><a href="#cb6-287" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By the LLN, $\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\rightarrow _{p}\E{X_{i}^{2}}$ and $\bar{X}_{n}\rightarrow _{p}\E{X_{i}}.$</span>
+<span id="cb6-288"><a href="#cb6-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-289"><a href="#cb6-289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By Slutsky&#39;s Lemma, $\bar{X}_{n}^{2}\rightarrow _{p}\left( \E{X_{i}}\right) ^{2}.$</span>
+<span id="cb6-290"><a href="#cb6-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-291"><a href="#cb6-291" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus,</span>
+<span id="cb6-292"><a href="#cb6-292" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-293"><a href="#cb6-293" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}=\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}\rightarrow _{p}\E{X_{i}^{2}} -\left( \E{X_{i}}\right) ^{2}=\Var{X_{i}}.</span>
+<span id="cb6-294"><a href="#cb6-294" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-295"><a href="#cb6-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-296"><a href="#cb6-296" aria-hidden="true" tabindex="-1"></a><span class="fu">## Multiple regression</span></span>
+<span id="cb6-297"><a href="#cb6-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-298"><a href="#cb6-298" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under similar conditions to 1--4, one can establish consistency of OLS for the multiple linear regression model:</span>
+<span id="cb6-299"><a href="#cb6-299" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-300"><a href="#cb6-300" aria-hidden="true" tabindex="-1"></a>  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\ldots +\beta _{k}X_{k,i}+U_{i},</span>
+<span id="cb6-301"><a href="#cb6-301" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-302"><a href="#cb6-302" aria-hidden="true" tabindex="-1"></a>  where $\E{U_{i}}=0.$</span>
 <span id="cb6-303"><a href="#cb6-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-304"><a href="#cb6-304" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under similar conditions to 1--4, one can establish consistency of OLS for the multiple linear regression model:</span>
+<span id="cb6-304"><a href="#cb6-304" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The key assumption is that the errors and regressors are uncorrelated:</span>
 <span id="cb6-305"><a href="#cb6-305" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-306"><a href="#cb6-306" aria-hidden="true" tabindex="-1"></a>  Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\ldots +\beta _{k}X_{k,i}+U_{i},</span>
+<span id="cb6-306"><a href="#cb6-306" aria-hidden="true" tabindex="-1"></a>  \E{X_{1,i}U_{i}} =\ldots =\E{X_{k,i}U_{i}} =0.</span>
 <span id="cb6-307"><a href="#cb6-307" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-308"><a href="#cb6-308" aria-hidden="true" tabindex="-1"></a>  where $\E{U_{i}}=0.$</span>
-<span id="cb6-309"><a href="#cb6-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-310"><a href="#cb6-310" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The key assumption is that the errors and regressors are uncorrelated:</span>
-<span id="cb6-311"><a href="#cb6-311" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-312"><a href="#cb6-312" aria-hidden="true" tabindex="-1"></a>  \E{X_{1,i}U_{i}} =\ldots =\E{X_{k,i}U_{i}} =0.</span>
-<span id="cb6-313"><a href="#cb6-313" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-314"><a href="#cb6-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-315"><a href="#cb6-315" aria-hidden="true" tabindex="-1"></a><span class="fu">## Omitted variables and OLS inconsistency</span></span>
-<span id="cb6-316"><a href="#cb6-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-317"><a href="#cb6-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that the true model has two regressors:</span>
-<span id="cb6-318"><a href="#cb6-318" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-319"><a href="#cb6-319" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-320"><a href="#cb6-320" aria-hidden="true" tabindex="-1"></a>  &amp;Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}, <span class="sc">\\</span></span>
-<span id="cb6-321"><a href="#cb6-321" aria-hidden="true" tabindex="-1"></a>  &amp;\E{X_{1,i}U_{i}} =\E{X_{2,i}U_{i}} =0.</span>
-<span id="cb6-322"><a href="#cb6-322" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-323"><a href="#cb6-323" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-324"><a href="#cb6-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-325"><a href="#cb6-325" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that the econometrician includes **only** $X_{1}$ in the regression when estimating $\beta _{1}$:</span>
-<span id="cb6-326"><a href="#cb6-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-308"><a href="#cb6-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-309"><a href="#cb6-309" aria-hidden="true" tabindex="-1"></a><span class="fu">## Omitted variables and OLS inconsistency</span></span>
+<span id="cb6-310"><a href="#cb6-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-311"><a href="#cb6-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that the true model has two regressors:</span>
+<span id="cb6-312"><a href="#cb6-312" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-313"><a href="#cb6-313" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-314"><a href="#cb6-314" aria-hidden="true" tabindex="-1"></a>  &amp;Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}, <span class="sc">\\</span></span>
+<span id="cb6-315"><a href="#cb6-315" aria-hidden="true" tabindex="-1"></a>  &amp;\E{X_{1,i}U_{i}} =\E{X_{2,i}U_{i}} =0.</span>
+<span id="cb6-316"><a href="#cb6-316" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-317"><a href="#cb6-317" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-318"><a href="#cb6-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-319"><a href="#cb6-319" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that the econometrician includes **only** $X_{1}$ in the regression when estimating $\beta _{1}$:</span>
+<span id="cb6-320"><a href="#cb6-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-321"><a href="#cb6-321" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-322"><a href="#cb6-322" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-323"><a href="#cb6-323" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1,n} &amp;= \frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} <span class="sc">\\</span></span>
+<span id="cb6-324"><a href="#cb6-324" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) \left( \beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}\right) }{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} <span class="sc">\\</span></span>
+<span id="cb6-325"><a href="#cb6-325" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.</span>
+<span id="cb6-326"><a href="#cb6-326" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
 <span id="cb6-327"><a href="#cb6-327" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-328"><a href="#cb6-328" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-329"><a href="#cb6-329" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1,n} &amp;= \frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) Y_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} <span class="sc">\\</span></span>
-<span id="cb6-330"><a href="#cb6-330" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) \left( \beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}\right) }{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} <span class="sc">\\</span></span>
-<span id="cb6-331"><a href="#cb6-331" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.</span>
-<span id="cb6-332"><a href="#cb6-332" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-333"><a href="#cb6-333" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-334"><a href="#cb6-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-335"><a href="#cb6-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Inconsistency proof: noise term</span></span>
-<span id="cb6-336"><a href="#cb6-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-337"><a href="#cb6-337" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
-<span id="cb6-338"><a href="#cb6-338" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-339"><a href="#cb6-339" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.</span>
-<span id="cb6-340"><a href="#cb6-340" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-341"><a href="#cb6-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-342"><a href="#cb6-342" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>As before,</span>
-<span id="cb6-343"><a href="#cb6-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-328"><a href="#cb6-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-329"><a href="#cb6-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Dividing numerator and denominator by $n$ and applying the LLN as before:</span>
+<span id="cb6-330"><a href="#cb6-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-331"><a href="#cb6-331" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The noise term vanishes:</span>
+<span id="cb6-332"><a href="#cb6-332" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb6-333"><a href="#cb6-333" aria-hidden="true" tabindex="-1"></a>    \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\Cov{X_{1,i},U_{i}}}{\Var{X_{1,i}}} = 0.</span>
+<span id="cb6-334"><a href="#cb6-334" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb6-335"><a href="#cb6-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-336"><a href="#cb6-336" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The bias term converges:</span>
+<span id="cb6-337"><a href="#cb6-337" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb6-338"><a href="#cb6-338" aria-hidden="true" tabindex="-1"></a>    \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.</span>
+<span id="cb6-339"><a href="#cb6-339" aria-hidden="true" tabindex="-1"></a>    $$</span>
+<span id="cb6-340"><a href="#cb6-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-341"><a href="#cb6-341" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Therefore,</span>
+<span id="cb6-342"><a href="#cb6-342" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-343"><a href="#cb6-343" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1,n} \rightarrow _{p} \beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.</span>
 <span id="cb6-344"><a href="#cb6-344" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-345"><a href="#cb6-345" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-346"><a href="#cb6-346" aria-hidden="true" tabindex="-1"></a>  \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &amp;= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}U_{i}-\bar{X}_{1,n}\bar{U}_{n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} <span class="sc">\\</span></span>
-<span id="cb6-347"><a href="#cb6-347" aria-hidden="true" tabindex="-1"></a>  &amp;\rightarrow _{p}\frac{0}{\E{X_{1,i}^{2}}-\left( \E{X_{1,i}}\right) ^{2}} <span class="sc">\\</span></span>
-<span id="cb6-348"><a href="#cb6-348" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{0}{\Var{X_{1,i}}}=0.</span>
-<span id="cb6-349"><a href="#cb6-349" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-350"><a href="#cb6-350" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-345"><a href="#cb6-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-346"><a href="#cb6-346" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\tilde{\beta}_{1,n}$ is **inconsistent** unless:</span>
+<span id="cb6-347"><a href="#cb6-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-348"><a href="#cb6-348" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>$\beta _{2}=0$ (the model is correctly specified).</span>
+<span id="cb6-349"><a href="#cb6-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-350"><a href="#cb6-350" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>$\Cov{X_{1,i},X_{2,i}}=0$ (the omitted variable is **uncorrelated** with the included regressor).</span>
 <span id="cb6-351"><a href="#cb6-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-352"><a href="#cb6-352" aria-hidden="true" tabindex="-1"></a><span class="fu">## Inconsistency proof: bias term</span></span>
+<span id="cb6-352"><a href="#cb6-352" aria-hidden="true" tabindex="-1"></a><span class="fu">## OVB through the composite error</span></span>
 <span id="cb6-353"><a href="#cb6-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-354"><a href="#cb6-354" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
+<span id="cb6-354"><a href="#cb6-354" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this example, the model contains two regressors:</span>
 <span id="cb6-355"><a href="#cb6-355" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-356"><a href="#cb6-356" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.</span>
-<span id="cb6-357"><a href="#cb6-357" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-358"><a href="#cb6-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-359"><a href="#cb6-359" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>However,</span>
-<span id="cb6-360"><a href="#cb6-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-361"><a href="#cb6-361" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-362"><a href="#cb6-362" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-363"><a href="#cb6-363" aria-hidden="true" tabindex="-1"></a>  \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &amp;= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}X_{2,i}-\bar{X}_{1,n}\bar{X}_{2,n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} <span class="sc">\\</span></span>
-<span id="cb6-364"><a href="#cb6-364" aria-hidden="true" tabindex="-1"></a>  &amp;\rightarrow _{p}\frac{\E{X_{1,i}X_{2,i}} -\E{X_{1,i}} \E{X_{2,i}}}{\E{X_{1,i}^{2}}-\left( \E{X_{1,i}}\right) ^{2}} <span class="sc">\\</span></span>
-<span id="cb6-365"><a href="#cb6-365" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.</span>
-<span id="cb6-366"><a href="#cb6-366" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-367"><a href="#cb6-367" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-368"><a href="#cb6-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-369"><a href="#cb6-369" aria-hidden="true" tabindex="-1"></a><span class="fu">## Omitted variable bias formula</span></span>
-<span id="cb6-370"><a href="#cb6-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-371"><a href="#cb6-371" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have</span>
-<span id="cb6-372"><a href="#cb6-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-373"><a href="#cb6-373" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-374"><a href="#cb6-374" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-375"><a href="#cb6-375" aria-hidden="true" tabindex="-1"></a>  \tilde{\beta}_{1,n} &amp;= \beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} <span class="sc">\\</span></span>
-<span id="cb6-376"><a href="#cb6-376" aria-hidden="true" tabindex="-1"></a>  &amp;\rightarrow _{p}\beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}+\frac{0}{\Var{X_{1,i}}} <span class="sc">\\</span></span>
-<span id="cb6-377"><a href="#cb6-377" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.</span>
+<span id="cb6-356"><a href="#cb6-356" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-357"><a href="#cb6-357" aria-hidden="true" tabindex="-1"></a>  &amp;Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}, <span class="sc">\\</span></span>
+<span id="cb6-358"><a href="#cb6-358" aria-hidden="true" tabindex="-1"></a>  &amp;\E{X_{1,i}U_{i}} =\E{X_{2,i}U_{i}} =0.</span>
+<span id="cb6-359"><a href="#cb6-359" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-360"><a href="#cb6-360" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-361"><a href="#cb6-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-362"><a href="#cb6-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>However, since $X_{2}$ is not controlled for, it goes into the error term:</span>
+<span id="cb6-363"><a href="#cb6-363" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-364"><a href="#cb6-364" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-365"><a href="#cb6-365" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta _{0}+\beta _{1}X_{1,i}+V_{i},\text{ where} <span class="sc">\\</span></span>
+<span id="cb6-366"><a href="#cb6-366" aria-hidden="true" tabindex="-1"></a>  V_{i} &amp;= \beta _{2}X_{2,i}+U_{i}.</span>
+<span id="cb6-367"><a href="#cb6-367" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-368"><a href="#cb6-368" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-369"><a href="#cb6-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-370"><a href="#cb6-370" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For consistency of $\tilde{\beta}_{1,n}$ we need $\Cov{X_{1,i},V_{i}} = 0$; however,</span>
+<span id="cb6-371"><a href="#cb6-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-372"><a href="#cb6-372" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-373"><a href="#cb6-373" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-374"><a href="#cb6-374" aria-hidden="true" tabindex="-1"></a>  \Cov{X_{1,i},V_{i}} &amp;= \Cov{X_{1,i},\beta _{2}X_{2,i}+U_{i}} <span class="sc">\\</span></span>
+<span id="cb6-375"><a href="#cb6-375" aria-hidden="true" tabindex="-1"></a>  &amp;= \Cov{X_{1,i},\beta _{2}X_{2,i}}+\Cov{X_{1,i},U_{i}} <span class="sc">\\</span></span>
+<span id="cb6-376"><a href="#cb6-376" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta _{2}\Cov{X_{1,i},X_{2,i}}+0 <span class="sc">\\</span></span>
+<span id="cb6-377"><a href="#cb6-377" aria-hidden="true" tabindex="-1"></a>  &amp;\neq 0\text{, unless }\beta _{2}=0\text{ or }\Cov{X_{1,i},X_{2,i}}=0.</span>
 <span id="cb6-378"><a href="#cb6-378" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
 <span id="cb6-379"><a href="#cb6-379" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-380"><a href="#cb6-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-381"><a href="#cb6-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, $\tilde{\beta}_{1,n}$ is **inconsistent** unless:</span>
+<span id="cb6-381"><a href="#cb6-381" aria-hidden="true" tabindex="-1"></a><span class="fu"># Part II: Asymptotic Normality</span></span>
 <span id="cb6-382"><a href="#cb6-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-383"><a href="#cb6-383" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>$\beta _{2}=0$ (the model is correctly specified).</span>
+<span id="cb6-383"><a href="#cb6-383" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why do we need asymptotic normality?</span></span>
 <span id="cb6-384"><a href="#cb6-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-385"><a href="#cb6-385" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>$\Cov{X_{1,i},X_{2,i}}=0$ (the omitted variable is **uncorrelated** with the included regressor).</span>
+<span id="cb6-385"><a href="#cb6-385" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the previous lectures, we showed that the OLS estimator has an **exact** normal distribution when the **errors are normally distributed**.</span>
 <span id="cb6-386"><a href="#cb6-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-387"><a href="#cb6-387" aria-hidden="true" tabindex="-1"></a><span class="fu">## OVB through the composite error</span></span>
+<span id="cb6-387"><a href="#cb6-387" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The same assumption is needed to show that the $T$ statistic has a $t$-distribution and the $F$ statistic has an $F$-distribution.</span>
 <span id="cb6-388"><a href="#cb6-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-389"><a href="#cb6-389" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this example, the model contains two regressors:</span>
-<span id="cb6-390"><a href="#cb6-390" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-391"><a href="#cb6-391" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-392"><a href="#cb6-392" aria-hidden="true" tabindex="-1"></a>  &amp;Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\beta _{2}X_{2,i}+U_{i}, <span class="sc">\\</span></span>
-<span id="cb6-393"><a href="#cb6-393" aria-hidden="true" tabindex="-1"></a>  &amp;\E{X_{1,i}U_{i}} =\E{X_{2,i}U_{i}} =0.</span>
-<span id="cb6-394"><a href="#cb6-394" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-395"><a href="#cb6-395" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-389"><a href="#cb6-389" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this lecture, we argue that even when the errors are **not** normally distributed, the OLS estimator has an **approximately normal distribution** in large samples, provided that some additional conditions hold.</span>
+<span id="cb6-390"><a href="#cb6-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-391"><a href="#cb6-391" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>This property is used for hypothesis testing: in large samples, the $T$ statistic has a standard normal distribution and the $F$ statistic has a $\chi^{2}$ distribution (approximately).</span>
+<span id="cb6-392"><a href="#cb6-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-393"><a href="#cb6-393" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic normality</span></span>
+<span id="cb6-394"><a href="#cb6-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-395"><a href="#cb6-395" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $W_{n}$ be a sequence of random variables indexed by the sample size $n.$</span>
 <span id="cb6-396"><a href="#cb6-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-397"><a href="#cb6-397" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>However, since $X_{2}$ is not controlled for, it goes into the error term:</span>
-<span id="cb6-398"><a href="#cb6-398" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-399"><a href="#cb6-399" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-400"><a href="#cb6-400" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta _{0}+\beta _{1}X_{1,i}+V_{i},\text{ where} <span class="sc">\\</span></span>
-<span id="cb6-401"><a href="#cb6-401" aria-hidden="true" tabindex="-1"></a>  V_{i} &amp;= \beta _{2}X_{2,i}+U_{i}.</span>
-<span id="cb6-402"><a href="#cb6-402" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-397"><a href="#cb6-397" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Typically, $W_{n}$ will be a function of some estimator, such as $W_{n}=\sqrt{n}\left( \hat{\beta}_{n}-\beta \right)$.</span>
+<span id="cb6-398"><a href="#cb6-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-399"><a href="#cb6-399" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We say that $W_{n}$ has an **asymptotically** normal distribution if its **CDF** converges to a **normal CDF**.</span>
+<span id="cb6-400"><a href="#cb6-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-401"><a href="#cb6-401" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $W$ be any random variable with a normal $N\left( 0,\sigma^{2}\right)$ distribution and let $F$ denote its CDF. We say that $W_{n}$ has an asymptotically normal distribution if for all $x\in \mathbb{R}$:</span>
+<span id="cb6-402"><a href="#cb6-402" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-403"><a href="#cb6-403" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-404"><a href="#cb6-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-405"><a href="#cb6-405" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For consistency of $\tilde{\beta}_{1,n}$ we need $\Cov{X_{1,i},V_{i}} = 0$; however,</span>
+<span id="cb6-404"><a href="#cb6-404" aria-hidden="true" tabindex="-1"></a>  F_{n}\left( x\right) =P\left( W_{n}\leq x\right) \rightarrow P\left( W\leq x\right) =F\left( x\right) \text{ as }n\rightarrow \infty .</span>
+<span id="cb6-405"><a href="#cb6-405" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-406"><a href="#cb6-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-407"><a href="#cb6-407" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-408"><a href="#cb6-408" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-409"><a href="#cb6-409" aria-hidden="true" tabindex="-1"></a>  \Cov{X_{1,i},V_{i}} &amp;= \Cov{X_{1,i},\beta _{2}X_{2,i}+U_{i}} <span class="sc">\\</span></span>
-<span id="cb6-410"><a href="#cb6-410" aria-hidden="true" tabindex="-1"></a>  &amp;= \Cov{X_{1,i},\beta _{2}X_{2,i}}+\Cov{X_{1,i},U_{i}} <span class="sc">\\</span></span>
-<span id="cb6-411"><a href="#cb6-411" aria-hidden="true" tabindex="-1"></a>  &amp;= \beta _{2}\Cov{X_{1,i},X_{2,i}}+0 <span class="sc">\\</span></span>
-<span id="cb6-412"><a href="#cb6-412" aria-hidden="true" tabindex="-1"></a>  &amp;\neq 0\text{, unless }\beta _{2}=0\text{ or }\Cov{X_{1,i},X_{2,i}}=0.</span>
-<span id="cb6-413"><a href="#cb6-413" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-414"><a href="#cb6-414" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-415"><a href="#cb6-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-416"><a href="#cb6-416" aria-hidden="true" tabindex="-1"></a><span class="fu"># Part II: Asymptotic Normality</span></span>
-<span id="cb6-417"><a href="#cb6-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-418"><a href="#cb6-418" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why do we need asymptotic normality?</span></span>
-<span id="cb6-419"><a href="#cb6-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-420"><a href="#cb6-420" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the previous lectures, we showed that the OLS estimator has an **exact** normal distribution when the **errors are normally distributed**.</span>
-<span id="cb6-421"><a href="#cb6-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-422"><a href="#cb6-422" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The same assumption is needed to show that the $T$ statistic has a $t$-distribution and the $F$ statistic has an $F$-distribution.</span>
-<span id="cb6-423"><a href="#cb6-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-424"><a href="#cb6-424" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this lecture, we argue that even when the errors are **not** normally distributed, the OLS estimator has an **approximately normal distribution** in large samples, provided that some additional conditions hold.</span>
-<span id="cb6-425"><a href="#cb6-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-426"><a href="#cb6-426" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>This property is used for hypothesis testing: in large samples, the $T$ statistic has a standard normal distribution and the $F$ statistic has a $\chi^{2}$ distribution (approximately).</span>
-<span id="cb6-427"><a href="#cb6-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-428"><a href="#cb6-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic normality</span></span>
-<span id="cb6-429"><a href="#cb6-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-430"><a href="#cb6-430" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $W_{n}$ be a sequence of random variables indexed by the sample size $n.$</span>
-<span id="cb6-431"><a href="#cb6-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-432"><a href="#cb6-432" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Typically, $W_{n}$ will be a function of some estimator, such as $W_{n}=\sqrt{n}\left( \hat{\beta}_{n}-\beta \right)$.</span>
-<span id="cb6-433"><a href="#cb6-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-434"><a href="#cb6-434" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We say that $W_{n}$ has an **asymptotically** normal distribution if its **CDF** converges to a **normal CDF**.</span>
-<span id="cb6-435"><a href="#cb6-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-436"><a href="#cb6-436" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $W$ be any random variable with a normal $N\left( 0,\sigma^{2}\right)$ distribution. We say that $W_{n}$ has an asymptotically normal distribution if for all $x\in \mathbb{R}$:</span>
-<span id="cb6-437"><a href="#cb6-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-438"><a href="#cb6-438" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-439"><a href="#cb6-439" aria-hidden="true" tabindex="-1"></a>  F_{n}\left( x\right) =P\left( W_{n}\leq x\right) \rightarrow P\left( W\leq x\right) =F\left( x\right) \text{ as }n\rightarrow \infty .</span>
-<span id="cb6-440"><a href="#cb6-440" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-441"><a href="#cb6-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-442"><a href="#cb6-442" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We denote this as $W_{n}\rightarrow _{d}W$ or $W_{n}\rightarrow _{d}N\left( 0,\sigma ^{2}\right).$</span>
-<span id="cb6-443"><a href="#cb6-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-444"><a href="#cb6-444" aria-hidden="true" tabindex="-1"></a><span class="fu">## Convergence in distribution</span></span>
-<span id="cb6-445"><a href="#cb6-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-446"><a href="#cb6-446" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asymptotic normality is an example of convergence in distribution.</span>
-<span id="cb6-447"><a href="#cb6-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-448"><a href="#cb6-448" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We say that a sequence of random variables $W_{n}$ converges in distribution to $W$ (denoted as $W_{n}\rightarrow _{d}W$) if the CDF of $W_{n}$ converges to the CDF of $W$ at all points where the CDF of $W$ is continuous.</span>
-<span id="cb6-449"><a href="#cb6-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-450"><a href="#cb6-450" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Convergence in distribution is convergence of the **CDFs**.</span>
-<span id="cb6-451"><a href="#cb6-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-452"><a href="#cb6-452" aria-hidden="true" tabindex="-1"></a><span class="fu">## Central Limit Theorem (CLT)</span></span>
+<span id="cb6-407"><a href="#cb6-407" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We denote this as $W_{n}\rightarrow _{d}W$ or $W_{n}\rightarrow _{d}N\left( 0,\sigma ^{2}\right).$</span>
+<span id="cb6-408"><a href="#cb6-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-409"><a href="#cb6-409" aria-hidden="true" tabindex="-1"></a><span class="fu">## Convergence in distribution</span></span>
+<span id="cb6-410"><a href="#cb6-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-411"><a href="#cb6-411" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asymptotic normality is an example of convergence in distribution.</span>
+<span id="cb6-412"><a href="#cb6-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-413"><a href="#cb6-413" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We say that a sequence of random variables $W_{n}$ converges in distribution to $W$ (denoted as $W_{n}\rightarrow _{d}W$) if the CDF of $W_{n}$ converges to the CDF of $W$ at all points where the CDF of $W$ is continuous.</span>
+<span id="cb6-414"><a href="#cb6-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-415"><a href="#cb6-415" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Convergence in distribution is convergence of the **CDFs**.</span>
+<span id="cb6-416"><a href="#cb6-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-417"><a href="#cb6-417" aria-hidden="true" tabindex="-1"></a><span class="fu">## Central Limit Theorem (CLT)</span></span>
+<span id="cb6-418"><a href="#cb6-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-419"><a href="#cb6-419" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An example of convergence in distribution is a CLT.</span>
+<span id="cb6-420"><a href="#cb6-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-421"><a href="#cb6-421" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $X_{1},\ldots ,X_{n}$ be a sample of **iid** random variables such that $\E{X_{i}} =0$ and $\Var{X_{i}} =\sigma ^{2}&gt;0$ (finite). Then, as $n\rightarrow \infty,$</span>
+<span id="cb6-422"><a href="#cb6-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-423"><a href="#cb6-423" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-424"><a href="#cb6-424" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}X_{i}\rightarrow _{d}N\left( 0,\sigma^{2}\right) .</span>
+<span id="cb6-425"><a href="#cb6-425" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-426"><a href="#cb6-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-427"><a href="#cb6-427" aria-hidden="true" tabindex="-1"></a><span class="fu">## CLT with non-zero mean</span></span>
+<span id="cb6-428"><a href="#cb6-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-429"><a href="#cb6-429" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For the CLT we impose 3 assumptions: **(1)** iid; **(2)** Mean zero; **(3)** Finite variance different from zero.</span>
+<span id="cb6-430"><a href="#cb6-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-431"><a href="#cb6-431" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X_{1},\ldots ,X_{n}$ are iid but $\E{X_{i}} =\mu \neq 0,$ then consider $X_{i}-\mu.$ Since $\E{X_{i}-\mu} =0,$ we have</span>
+<span id="cb6-432"><a href="#cb6-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-433"><a href="#cb6-433" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-434"><a href="#cb6-434" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \rightarrow_{d}N\left( 0,\Var{X_{i}} \right) .</span>
+<span id="cb6-435"><a href="#cb6-435" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-436"><a href="#cb6-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-437"><a href="#cb6-437" aria-hidden="true" tabindex="-1"></a>  Then</span>
+<span id="cb6-438"><a href="#cb6-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-439"><a href="#cb6-439" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-440"><a href="#cb6-440" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-441"><a href="#cb6-441" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) &amp;= \sqrt{n}\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) <span class="sc">\\</span></span>
+<span id="cb6-442"><a href="#cb6-442" aria-hidden="true" tabindex="-1"></a>  &amp;= \sqrt{n}\left( \frac{1}{n}\sum_{i=1}^{n}X_{i}-\frac{1}{n}\sum_{i=1}^{n}\mu \right) <span class="sc">\\</span></span>
+<span id="cb6-443"><a href="#cb6-443" aria-hidden="true" tabindex="-1"></a>  &amp;= \sqrt{n}\left( \bar{X}_{n}-\mu \right) .</span>
+<span id="cb6-444"><a href="#cb6-444" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-445"><a href="#cb6-445" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-446"><a href="#cb6-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-447"><a href="#cb6-447" aria-hidden="true" tabindex="-1"></a><span class="fu">## CLT for the sample average</span></span>
+<span id="cb6-448"><a href="#cb6-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-449"><a href="#cb6-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
+<span id="cb6-450"><a href="#cb6-450" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-451"><a href="#cb6-451" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) = \sqrt{n}\left( \bar{X}_{n}-\mu \right) .</span>
+<span id="cb6-452"><a href="#cb6-452" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-453"><a href="#cb6-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-454"><a href="#cb6-454" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An example of convergence in distribution is a CLT.</span>
+<span id="cb6-454"><a href="#cb6-454" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, the CLT can be stated as</span>
 <span id="cb6-455"><a href="#cb6-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-456"><a href="#cb6-456" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $X_{1},\ldots ,X_{n}$ be a sample of **iid** random variables such that $\E{X_{i}} =0$ and $\Var{X_{i}} =\sigma ^{2}&gt;0$ (finite). Then, as $n\rightarrow \infty,$</span>
-<span id="cb6-457"><a href="#cb6-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-456"><a href="#cb6-456" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-457"><a href="#cb6-457" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \bar{X}_{n}-\mu \right) \rightarrow _{d}N\left( 0,\Var{X_{i}} \right) .</span>
 <span id="cb6-458"><a href="#cb6-458" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-459"><a href="#cb6-459" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}X_{i}\rightarrow _{d}N\left( 0,\sigma^{2}\right) .</span>
-<span id="cb6-460"><a href="#cb6-460" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-459"><a href="#cb6-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-460"><a href="#cb6-460" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By the LLN,</span>
 <span id="cb6-461"><a href="#cb6-461" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-462"><a href="#cb6-462" aria-hidden="true" tabindex="-1"></a><span class="fu">## CLT with non-zero mean</span></span>
-<span id="cb6-463"><a href="#cb6-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-464"><a href="#cb6-464" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For the CLT we impose 3 assumptions: **(1)** iid; **(2)** Mean zero; **(3)** Finite variance different from zero.</span>
+<span id="cb6-462"><a href="#cb6-462" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-463"><a href="#cb6-463" aria-hidden="true" tabindex="-1"></a>  \bar{X}_{n}-\mu \rightarrow _{p}0,</span>
+<span id="cb6-464"><a href="#cb6-464" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-465"><a href="#cb6-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-466"><a href="#cb6-466" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $X_{1},\ldots ,X_{n}$ are iid but $\E{X_{i}} =\mu \neq 0,$ then consider $X_{i}-\mu.$ Since $\E{X_{i}-\mu} =0,$ we have</span>
+<span id="cb6-466"><a href="#cb6-466" aria-hidden="true" tabindex="-1"></a>  and</span>
 <span id="cb6-467"><a href="#cb6-467" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-468"><a href="#cb6-468" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-469"><a href="#cb6-469" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \rightarrow_{d}N\left( 0,\Var{X_{i}} \right) .</span>
+<span id="cb6-469"><a href="#cb6-469" aria-hidden="true" tabindex="-1"></a>  \Var{\sqrt{n}\left( \bar{X}_{n}-\mu \right)} = n\Var{\bar{X}_{n}} = n\frac{\Var{X_{i}}}{n} = \Var{X_{i}}.</span>
 <span id="cb6-470"><a href="#cb6-470" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-471"><a href="#cb6-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-472"><a href="#cb6-472" aria-hidden="true" tabindex="-1"></a>  Then</span>
+<span id="cb6-472"><a href="#cb6-472" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties</span></span>
 <span id="cb6-473"><a href="#cb6-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-474"><a href="#cb6-474" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-475"><a href="#cb6-475" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-476"><a href="#cb6-476" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) &amp;= \sqrt{n}\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) <span class="sc">\\</span></span>
-<span id="cb6-477"><a href="#cb6-477" aria-hidden="true" tabindex="-1"></a>  &amp;= \sqrt{n}\left( \frac{1}{n}\sum_{i=1}^{n}X_{i}-\frac{1}{n}\sum_{i=1}^{n}\mu \right) <span class="sc">\\</span></span>
-<span id="cb6-478"><a href="#cb6-478" aria-hidden="true" tabindex="-1"></a>  &amp;= \sqrt{n}\left( \bar{X}_{n}-\mu \right) .</span>
-<span id="cb6-479"><a href="#cb6-479" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-480"><a href="#cb6-480" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-474"><a href="#cb6-474" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that $W_{n}\rightarrow _{d}N\left( 0,\sigma ^{2}\right)$ and $\theta _{n}\rightarrow _{p}\theta.$ Then,</span>
+<span id="cb6-475"><a href="#cb6-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-476"><a href="#cb6-476" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-477"><a href="#cb6-477" aria-hidden="true" tabindex="-1"></a>  \theta _{n}W_{n}\rightarrow _{d}\theta N\left( 0,\sigma ^{2}\right) \stackrel{d}{=} N\left( 0,\theta ^{2}\sigma ^{2}\right) ,</span>
+<span id="cb6-478"><a href="#cb6-478" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-479"><a href="#cb6-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-480"><a href="#cb6-480" aria-hidden="true" tabindex="-1"></a>  and</span>
 <span id="cb6-481"><a href="#cb6-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-482"><a href="#cb6-482" aria-hidden="true" tabindex="-1"></a><span class="fu">## CLT for the sample average</span></span>
-<span id="cb6-483"><a href="#cb6-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-484"><a href="#cb6-484" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
-<span id="cb6-485"><a href="#cb6-485" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-486"><a href="#cb6-486" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\mu \right) = \sqrt{n}\left( \bar{X}_{n}-\mu \right) .</span>
-<span id="cb6-487"><a href="#cb6-487" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-488"><a href="#cb6-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-489"><a href="#cb6-489" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, the CLT can be stated as</span>
-<span id="cb6-490"><a href="#cb6-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-491"><a href="#cb6-491" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-492"><a href="#cb6-492" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \bar{X}_{n}-\mu \right) \rightarrow _{d}N\left( 0,\Var{X_{i}} \right) .</span>
-<span id="cb6-493"><a href="#cb6-493" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-494"><a href="#cb6-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-495"><a href="#cb6-495" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By the LLN,</span>
-<span id="cb6-496"><a href="#cb6-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-497"><a href="#cb6-497" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-498"><a href="#cb6-498" aria-hidden="true" tabindex="-1"></a>  \bar{X}_{n}-\mu \rightarrow _{p}0,</span>
-<span id="cb6-499"><a href="#cb6-499" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-500"><a href="#cb6-500" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-501"><a href="#cb6-501" aria-hidden="true" tabindex="-1"></a>  and</span>
-<span id="cb6-502"><a href="#cb6-502" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-503"><a href="#cb6-503" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-504"><a href="#cb6-504" aria-hidden="true" tabindex="-1"></a>  \Var{\sqrt{n}\left( \bar{X}_{n}-\mu \right)} = n\Var{\bar{X}_{n}} = n\frac{\Var{X_{i}}}{n} = \Var{X_{i}}.</span>
-<span id="cb6-505"><a href="#cb6-505" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-506"><a href="#cb6-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-507"><a href="#cb6-507" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties</span></span>
-<span id="cb6-508"><a href="#cb6-508" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-509"><a href="#cb6-509" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that $W_{n}\rightarrow _{d}N\left( 0,\sigma ^{2}\right)$ and $\theta _{n}\rightarrow _{p}\theta.$ Then,</span>
-<span id="cb6-510"><a href="#cb6-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-511"><a href="#cb6-511" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-512"><a href="#cb6-512" aria-hidden="true" tabindex="-1"></a>  \theta _{n}W_{n}\rightarrow _{d}\theta N\left( 0,\sigma ^{2}\right) \stackrel{d}{=} N\left( 0,\theta ^{2}\sigma ^{2}\right) ,</span>
-<span id="cb6-513"><a href="#cb6-513" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-514"><a href="#cb6-514" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-515"><a href="#cb6-515" aria-hidden="true" tabindex="-1"></a>  and</span>
-<span id="cb6-516"><a href="#cb6-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-517"><a href="#cb6-517" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-518"><a href="#cb6-518" aria-hidden="true" tabindex="-1"></a>  \theta _{n}+W_{n}\rightarrow _{d}\theta +N\left( 0,\sigma ^{2}\right) \stackrel{d}{=} N\left( \theta ,\sigma ^{2}\right) .</span>
-<span id="cb6-519"><a href="#cb6-519" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-520"><a href="#cb6-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-521"><a href="#cb6-521" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that $Z_{n}\rightarrow _{d}Z\sim N\left( 0,1\right).$ Then,</span>
-<span id="cb6-522"><a href="#cb6-522" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-523"><a href="#cb6-523" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-524"><a href="#cb6-524" aria-hidden="true" tabindex="-1"></a>  Z_{n}^{2}\rightarrow _{d}Z^{2}\equiv \chi _{1}^{2}.</span>
-<span id="cb6-525"><a href="#cb6-525" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-526"><a href="#cb6-526" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-527"><a href="#cb6-527" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $W_{n}\rightarrow _{d}c=$ constant, then $W_{n}\rightarrow _{p}c.$</span>
-<span id="cb6-528"><a href="#cb6-528" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-529"><a href="#cb6-529" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic normality of OLS</span></span>
-<span id="cb6-530"><a href="#cb6-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-531"><a href="#cb6-531" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that:</span>
-<span id="cb6-532"><a href="#cb6-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-533"><a href="#cb6-533" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>The data $\left<span class="sc">\{</span> \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right<span class="sc">\}</span>$ are iid.</span>
-<span id="cb6-534"><a href="#cb6-534" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>$Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},$ where $\E{U_{i}} =0.$</span>
-<span id="cb6-535"><a href="#cb6-535" aria-hidden="true" tabindex="-1"></a><span class="ss">  3. </span>$\E{X_{i}U_{i}} =0.$</span>
-<span id="cb6-536"><a href="#cb6-536" aria-hidden="true" tabindex="-1"></a><span class="ss">  4. </span>$0&lt;\Var{X_{i}} &lt;\infty.$</span>
-<span id="cb6-537"><a href="#cb6-537" aria-hidden="true" tabindex="-1"></a><span class="ss">  5. </span>$0&lt;\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} &lt;\infty$ and $0&lt;\E{U_{i}^{2}} &lt;\infty.$</span>
-<span id="cb6-538"><a href="#cb6-538" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-539"><a href="#cb6-539" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\hat{\beta}_{1,n}$ be the OLS estimator of $\beta _{1}.$ Then,</span>
-<span id="cb6-540"><a href="#cb6-540" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-541"><a href="#cb6-541" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-542"><a href="#cb6-542" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \rightarrow _{d}N\left( 0,\frac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}\right).</span>
-<span id="cb6-543"><a href="#cb6-543" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-544"><a href="#cb6-544" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-545"><a href="#cb6-545" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$V=\dfrac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}$ is called the **asymptotic variance** of $\hat{\beta}_{1,n}.$</span>
-<span id="cb6-546"><a href="#cb6-546" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-547"><a href="#cb6-547" aria-hidden="true" tabindex="-1"></a><span class="fu">## Large-sample approximation for OLS</span></span>
-<span id="cb6-548"><a href="#cb6-548" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-549"><a href="#cb6-549" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\overset{a}{\sim}$ denote &quot;approximately in large samples.&quot;</span>
-<span id="cb6-550"><a href="#cb6-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-551"><a href="#cb6-551" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The asymptotic normality</span>
-<span id="cb6-552"><a href="#cb6-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-553"><a href="#cb6-553" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-554"><a href="#cb6-554" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \rightarrow _{d}N\left(0,V\right)</span>
-<span id="cb6-555"><a href="#cb6-555" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-556"><a href="#cb6-556" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-557"><a href="#cb6-557" aria-hidden="true" tabindex="-1"></a>  can be viewed as the following large-sample **approximation**:</span>
-<span id="cb6-558"><a href="#cb6-558" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-559"><a href="#cb6-559" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-560"><a href="#cb6-560" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \overset{a}{\sim} N\left(0,V\right) ,</span>
-<span id="cb6-561"><a href="#cb6-561" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-562"><a href="#cb6-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-563"><a href="#cb6-563" aria-hidden="true" tabindex="-1"></a>  or</span>
-<span id="cb6-564"><a href="#cb6-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-565"><a href="#cb6-565" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-566"><a href="#cb6-566" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n}\overset{a}{\sim} N\left( \beta _{1},V/n\right) .</span>
-<span id="cb6-567"><a href="#cb6-567" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-568"><a href="#cb6-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-569"><a href="#cb6-569" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: decomposition</span></span>
-<span id="cb6-570"><a href="#cb6-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-571"><a href="#cb6-571" aria-hidden="true" tabindex="-1"></a>Write</span>
-<span id="cb6-572"><a href="#cb6-572" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-573"><a href="#cb6-573" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-574"><a href="#cb6-574" aria-hidden="true" tabindex="-1"></a>\hat{\beta}_{1,n}=\beta _{1}+\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.</span>
-<span id="cb6-575"><a href="#cb6-575" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-576"><a href="#cb6-576" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-577"><a href="#cb6-577" aria-hidden="true" tabindex="-1"></a>Now</span>
-<span id="cb6-578"><a href="#cb6-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-579"><a href="#cb6-579" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-580"><a href="#cb6-580" aria-hidden="true" tabindex="-1"></a>\hat{\beta}_{1,n}-\beta _{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}},</span>
-<span id="cb6-581"><a href="#cb6-581" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-582"><a href="#cb6-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-583"><a href="#cb6-583" aria-hidden="true" tabindex="-1"></a>and</span>
-<span id="cb6-584"><a href="#cb6-584" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-585"><a href="#cb6-585" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-586"><a href="#cb6-586" aria-hidden="true" tabindex="-1"></a>\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.</span>
+<span id="cb6-482"><a href="#cb6-482" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-483"><a href="#cb6-483" aria-hidden="true" tabindex="-1"></a>  \theta _{n}+W_{n}\rightarrow _{d}\theta +N\left( 0,\sigma ^{2}\right) \stackrel{d}{=} N\left( \theta ,\sigma ^{2}\right) .</span>
+<span id="cb6-484"><a href="#cb6-484" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-485"><a href="#cb6-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-486"><a href="#cb6-486" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that $Z_{n}\rightarrow _{d}Z\sim N\left( 0,1\right).$ Then,</span>
+<span id="cb6-487"><a href="#cb6-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-488"><a href="#cb6-488" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-489"><a href="#cb6-489" aria-hidden="true" tabindex="-1"></a>  Z_{n}^{2}\rightarrow _{d}Z^{2}\equiv \chi _{1}^{2}.</span>
+<span id="cb6-490"><a href="#cb6-490" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-491"><a href="#cb6-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-492"><a href="#cb6-492" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $W_{n}\rightarrow _{d}c=$ constant, then $W_{n}\rightarrow _{p}c.$</span>
+<span id="cb6-493"><a href="#cb6-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-494"><a href="#cb6-494" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic normality of OLS</span></span>
+<span id="cb6-495"><a href="#cb6-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-496"><a href="#cb6-496" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose that:</span>
+<span id="cb6-497"><a href="#cb6-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-498"><a href="#cb6-498" aria-hidden="true" tabindex="-1"></a><span class="ss">  1. </span>The data $\left<span class="sc">\{</span> \left( Y_{i},X_{i}\right) :i=1,\ldots ,n\right<span class="sc">\}</span>$ are iid.</span>
+<span id="cb6-499"><a href="#cb6-499" aria-hidden="true" tabindex="-1"></a><span class="ss">  2. </span>$Y_{i}=\beta _{0}+\beta _{1}X_{i}+U_{i},$ where $\E{U_{i}} =0.$</span>
+<span id="cb6-500"><a href="#cb6-500" aria-hidden="true" tabindex="-1"></a><span class="ss">  3. </span>$\E{X_{i}U_{i}} =0.$</span>
+<span id="cb6-501"><a href="#cb6-501" aria-hidden="true" tabindex="-1"></a><span class="ss">  4. </span>$0&lt;\Var{X_{i}} &lt;\infty.$</span>
+<span id="cb6-502"><a href="#cb6-502" aria-hidden="true" tabindex="-1"></a><span class="ss">  5. </span>$0&lt;\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} &lt;\infty$ and $0&lt;\E{U_{i}^{2}} &lt;\infty.$</span>
+<span id="cb6-503"><a href="#cb6-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-504"><a href="#cb6-504" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\hat{\beta}_{1,n}$ be the OLS estimator of $\beta _{1}.$ Then,</span>
+<span id="cb6-505"><a href="#cb6-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-506"><a href="#cb6-506" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-507"><a href="#cb6-507" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \rightarrow _{d}N\left( 0,\frac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}\right).</span>
+<span id="cb6-508"><a href="#cb6-508" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-509"><a href="#cb6-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-510"><a href="#cb6-510" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$V=\dfrac{\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}$ is called the **asymptotic variance** of $\hat{\beta}_{1,n}.$</span>
+<span id="cb6-511"><a href="#cb6-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-512"><a href="#cb6-512" aria-hidden="true" tabindex="-1"></a><span class="fu">## Large-sample approximation for OLS</span></span>
+<span id="cb6-513"><a href="#cb6-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-514"><a href="#cb6-514" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\overset{a}{\sim}$ denote &quot;approximately in large samples.&quot;</span>
+<span id="cb6-515"><a href="#cb6-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-516"><a href="#cb6-516" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The asymptotic normality</span>
+<span id="cb6-517"><a href="#cb6-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-518"><a href="#cb6-518" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-519"><a href="#cb6-519" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \rightarrow _{d}N\left(0,V\right)</span>
+<span id="cb6-520"><a href="#cb6-520" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-521"><a href="#cb6-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-522"><a href="#cb6-522" aria-hidden="true" tabindex="-1"></a>  can be viewed as the following large-sample **approximation**:</span>
+<span id="cb6-523"><a href="#cb6-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-524"><a href="#cb6-524" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-525"><a href="#cb6-525" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) \overset{a}{\sim} N\left(0,V\right) ,</span>
+<span id="cb6-526"><a href="#cb6-526" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-527"><a href="#cb6-527" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-528"><a href="#cb6-528" aria-hidden="true" tabindex="-1"></a>  or</span>
+<span id="cb6-529"><a href="#cb6-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-530"><a href="#cb6-530" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-531"><a href="#cb6-531" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n}\overset{a}{\sim} N\left( \beta _{1},V/n\right) .</span>
+<span id="cb6-532"><a href="#cb6-532" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-533"><a href="#cb6-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-534"><a href="#cb6-534" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: decomposition</span></span>
+<span id="cb6-535"><a href="#cb6-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-536"><a href="#cb6-536" aria-hidden="true" tabindex="-1"></a>Write</span>
+<span id="cb6-537"><a href="#cb6-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-538"><a href="#cb6-538" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-539"><a href="#cb6-539" aria-hidden="true" tabindex="-1"></a>\hat{\beta}_{1,n}=\beta _{1}+\frac{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.</span>
+<span id="cb6-540"><a href="#cb6-540" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-541"><a href="#cb6-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-542"><a href="#cb6-542" aria-hidden="true" tabindex="-1"></a>Now</span>
+<span id="cb6-543"><a href="#cb6-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-544"><a href="#cb6-544" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-545"><a href="#cb6-545" aria-hidden="true" tabindex="-1"></a>\hat{\beta}_{1,n}-\beta _{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}},</span>
+<span id="cb6-546"><a href="#cb6-546" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-547"><a href="#cb6-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-548"><a href="#cb6-548" aria-hidden="true" tabindex="-1"></a>and</span>
+<span id="cb6-549"><a href="#cb6-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-550"><a href="#cb6-550" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-551"><a href="#cb6-551" aria-hidden="true" tabindex="-1"></a>\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.</span>
+<span id="cb6-552"><a href="#cb6-552" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-553"><a href="#cb6-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-554"><a href="#cb6-554" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: combining the limits</span></span>
+<span id="cb6-555"><a href="#cb6-555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-556"><a href="#cb6-556" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-557"><a href="#cb6-557" aria-hidden="true" tabindex="-1"></a>\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.</span>
+<span id="cb6-558"><a href="#cb6-558" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-559"><a href="#cb6-559" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-560"><a href="#cb6-560" aria-hidden="true" tabindex="-1"></a>In Part I, we established</span>
+<span id="cb6-561"><a href="#cb6-561" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-562"><a href="#cb6-562" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-563"><a href="#cb6-563" aria-hidden="true" tabindex="-1"></a>\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}\rightarrow_{p}\Var{X_{i}}.</span>
+<span id="cb6-564"><a href="#cb6-564" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-565"><a href="#cb6-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-566"><a href="#cb6-566" aria-hidden="true" tabindex="-1"></a>We will show that</span>
+<span id="cb6-567"><a href="#cb6-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-568"><a href="#cb6-568" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-569"><a href="#cb6-569" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}\rightarrow _{d}N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right)^{2}U_{i}^{2}} \right),</span>
+<span id="cb6-570"><a href="#cb6-570" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-571"><a href="#cb6-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-572"><a href="#cb6-572" aria-hidden="true" tabindex="-1"></a>so that</span>
+<span id="cb6-573"><a href="#cb6-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-574"><a href="#cb6-574" aria-hidden="true" tabindex="-1"></a>\begin{align*}</span>
+<span id="cb6-575"><a href="#cb6-575" aria-hidden="true" tabindex="-1"></a>\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) &amp;= \frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}} <span class="sc">\\</span></span>
+<span id="cb6-576"><a href="#cb6-576" aria-hidden="true" tabindex="-1"></a>&amp;\rightarrow _{d}\frac{N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} \right)}{\Var{X_{i}}} <span class="sc">\\</span></span>
+<span id="cb6-577"><a href="#cb6-577" aria-hidden="true" tabindex="-1"></a>&amp;\stackrel{d}{=} N\left( 0,\frac{\E{\left( X_{i}-\E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}\right).</span>
+<span id="cb6-578"><a href="#cb6-578" aria-hidden="true" tabindex="-1"></a>\end{align*}</span>
+<span id="cb6-579"><a href="#cb6-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-580"><a href="#cb6-580" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: numerator CLT</span></span>
+<span id="cb6-581"><a href="#cb6-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-582"><a href="#cb6-582" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-583"><a href="#cb6-583" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb6-584"><a href="#cb6-584" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i} &amp;= \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}+\E{X_{i}}-\bar{X}_{n}\right) U_{i} <span class="sc">\\</span></span>
+<span id="cb6-585"><a href="#cb6-585" aria-hidden="true" tabindex="-1"></a>&amp;= \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}\right) U_{i}+\left( \E{X_{i}}-\bar{X}_{n}\right) \frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}.</span>
+<span id="cb6-586"><a href="#cb6-586" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
 <span id="cb6-587"><a href="#cb6-587" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb6-588"><a href="#cb6-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-589"><a href="#cb6-589" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: combining the limits</span></span>
+<span id="cb6-589"><a href="#cb6-589" aria-hidden="true" tabindex="-1"></a>We have</span>
 <span id="cb6-590"><a href="#cb6-590" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-591"><a href="#cb6-591" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-592"><a href="#cb6-592" aria-hidden="true" tabindex="-1"></a>\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) =\frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}}.</span>
+<span id="cb6-592"><a href="#cb6-592" aria-hidden="true" tabindex="-1"></a>\E{\left( X_{i}-\E{X_{i}}\right) U_{i}} = \E{X_{i}U_{i}}-\E{X_{i}}\E{U_{i}}=0,</span>
 <span id="cb6-593"><a href="#cb6-593" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb6-594"><a href="#cb6-594" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-595"><a href="#cb6-595" aria-hidden="true" tabindex="-1"></a>In Part I, we established</span>
+<span id="cb6-595"><a href="#cb6-595" aria-hidden="true" tabindex="-1"></a>and $0&lt;\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} &lt;\infty,$ so by the CLT,</span>
 <span id="cb6-596"><a href="#cb6-596" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-597"><a href="#cb6-597" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-598"><a href="#cb6-598" aria-hidden="true" tabindex="-1"></a>\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}\rightarrow_{p}\Var{X_{i}}.</span>
+<span id="cb6-598"><a href="#cb6-598" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}\right) U_{i}\rightarrow_{d}N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}\right).</span>
 <span id="cb6-599"><a href="#cb6-599" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb6-600"><a href="#cb6-600" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-601"><a href="#cb6-601" aria-hidden="true" tabindex="-1"></a>We will show that</span>
+<span id="cb6-601"><a href="#cb6-601" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: second term vanishes</span></span>
 <span id="cb6-602"><a href="#cb6-602" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-603"><a href="#cb6-603" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-604"><a href="#cb6-604" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}\rightarrow _{d}N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right)^{2}U_{i}^{2}} \right),</span>
+<span id="cb6-603"><a href="#cb6-603" aria-hidden="true" tabindex="-1"></a>It is left to show that</span>
+<span id="cb6-604"><a href="#cb6-604" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-605"><a href="#cb6-605" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-606"><a href="#cb6-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-607"><a href="#cb6-607" aria-hidden="true" tabindex="-1"></a>so that</span>
+<span id="cb6-606"><a href="#cb6-606" aria-hidden="true" tabindex="-1"></a>\left( \E{X_{i}}-\bar{X}_{n}\right) \frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}\rightarrow _{p}0.</span>
+<span id="cb6-607"><a href="#cb6-607" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb6-608"><a href="#cb6-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-609"><a href="#cb6-609" aria-hidden="true" tabindex="-1"></a>\begin{align*}</span>
-<span id="cb6-610"><a href="#cb6-610" aria-hidden="true" tabindex="-1"></a>\sqrt{n}\left( \hat{\beta}_{1,n}-\beta _{1}\right) &amp;= \frac{\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}} <span class="sc">\\</span></span>
-<span id="cb6-611"><a href="#cb6-611" aria-hidden="true" tabindex="-1"></a>&amp;\rightarrow _{d}\frac{N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} \right)}{\Var{X_{i}}} <span class="sc">\\</span></span>
-<span id="cb6-612"><a href="#cb6-612" aria-hidden="true" tabindex="-1"></a>&amp;\stackrel{d}{=} N\left( 0,\frac{\E{\left( X_{i}-\E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}} \right) ^{2}}\right).</span>
-<span id="cb6-613"><a href="#cb6-613" aria-hidden="true" tabindex="-1"></a>\end{align*}</span>
+<span id="cb6-609"><a href="#cb6-609" aria-hidden="true" tabindex="-1"></a>We have $\E{U_{i}}=0$ and $0&lt;\E{U_{i}^{2}}&lt;\infty.$ By the CLT,</span>
+<span id="cb6-610"><a href="#cb6-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-611"><a href="#cb6-611" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-612"><a href="#cb6-612" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}\rightarrow _{d}N\left(0,\E{U_{i}^{2}}\right).</span>
+<span id="cb6-613"><a href="#cb6-613" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb6-614"><a href="#cb6-614" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-615"><a href="#cb6-615" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: numerator CLT</span></span>
+<span id="cb6-615"><a href="#cb6-615" aria-hidden="true" tabindex="-1"></a>By the LLN,</span>
 <span id="cb6-616"><a href="#cb6-616" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-617"><a href="#cb6-617" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-618"><a href="#cb6-618" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb6-619"><a href="#cb6-619" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) U_{i} &amp;= \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}+\E{X_{i}}-\bar{X}_{n}\right) U_{i} <span class="sc">\\</span></span>
-<span id="cb6-620"><a href="#cb6-620" aria-hidden="true" tabindex="-1"></a>&amp;= \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}\right) U_{i}+\left( \E{X_{i}}-\bar{X}_{n}\right) \frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}.</span>
-<span id="cb6-621"><a href="#cb6-621" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb6-622"><a href="#cb6-622" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-623"><a href="#cb6-623" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-624"><a href="#cb6-624" aria-hidden="true" tabindex="-1"></a>We have</span>
-<span id="cb6-625"><a href="#cb6-625" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-626"><a href="#cb6-626" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-627"><a href="#cb6-627" aria-hidden="true" tabindex="-1"></a>\E{\left( X_{i}-\E{X_{i}}\right) U_{i}} = \E{X_{i}U_{i}}-\E{X_{i}}\E{U_{i}}=0,</span>
-<span id="cb6-628"><a href="#cb6-628" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-629"><a href="#cb6-629" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-630"><a href="#cb6-630" aria-hidden="true" tabindex="-1"></a>and $0&lt;\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}} &lt;\infty,$ so by the CLT,</span>
-<span id="cb6-631"><a href="#cb6-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-632"><a href="#cb6-632" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-633"><a href="#cb6-633" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}\left( X_{i}-\E{X_{i}}\right) U_{i}\rightarrow_{d}N\left( 0,\E{\left( X_{i}-\E{X_{i}}\right) ^{2}U_{i}^{2}}\right).</span>
-<span id="cb6-634"><a href="#cb6-634" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-635"><a href="#cb6-635" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-636"><a href="#cb6-636" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof: second term vanishes</span></span>
-<span id="cb6-637"><a href="#cb6-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-638"><a href="#cb6-638" aria-hidden="true" tabindex="-1"></a>It is left to show that</span>
-<span id="cb6-639"><a href="#cb6-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-640"><a href="#cb6-640" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-641"><a href="#cb6-641" aria-hidden="true" tabindex="-1"></a>\left( \E{X_{i}}-\bar{X}_{n}\right) \frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}\rightarrow _{p}0.</span>
-<span id="cb6-642"><a href="#cb6-642" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-643"><a href="#cb6-643" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-644"><a href="#cb6-644" aria-hidden="true" tabindex="-1"></a>We have $\E{U_{i}}=0$ and $0&lt;\E{U_{i}^{2}}&lt;\infty.$ By the CLT,</span>
-<span id="cb6-645"><a href="#cb6-645" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-646"><a href="#cb6-646" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-647"><a href="#cb6-647" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{n}}\sum_{i=1}^{n}U_{i}\rightarrow _{d}N\left(0,\E{U_{i}^{2}}\right).</span>
-<span id="cb6-648"><a href="#cb6-648" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-649"><a href="#cb6-649" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-650"><a href="#cb6-650" aria-hidden="true" tabindex="-1"></a>By the LLN,</span>
-<span id="cb6-651"><a href="#cb6-651" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-652"><a href="#cb6-652" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-653"><a href="#cb6-653" aria-hidden="true" tabindex="-1"></a>\E{X_{i}}-\bar{X}_{n}\rightarrow _{p}0.</span>
-<span id="cb6-654"><a href="#cb6-654" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb6-655"><a href="#cb6-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-656"><a href="#cb6-656" aria-hidden="true" tabindex="-1"></a>Hence, the result follows.</span>
-<span id="cb6-657"><a href="#cb6-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-658"><a href="#cb6-658" aria-hidden="true" tabindex="-1"></a><span class="fu"># Part III: Asymptotic Variance</span></span>
-<span id="cb6-659"><a href="#cb6-659" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-660"><a href="#cb6-660" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic variance</span></span>
-<span id="cb6-661"><a href="#cb6-661" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-662"><a href="#cb6-662" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In Part II, we showed that when the data are iid and the regressors are exogenous,</span>
-<span id="cb6-663"><a href="#cb6-663" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-664"><a href="#cb6-664" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-665"><a href="#cb6-665" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta_{0} + \beta_{1}X_{i} + U_{i}, <span class="sc">\\</span></span>
-<span id="cb6-666"><a href="#cb6-666" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}} &amp;= \E{X_{i}U_{i}} = 0,</span>
-<span id="cb6-667"><a href="#cb6-667" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-668"><a href="#cb6-668" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-669"><a href="#cb6-669" aria-hidden="true" tabindex="-1"></a>  the OLS estimator of $\beta_{1}$ is asymptotically normal:</span>
-<span id="cb6-670"><a href="#cb6-670" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-671"><a href="#cb6-671" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-672"><a href="#cb6-672" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) &amp;\rightarrow_{d} N\left(0, V\right), <span class="sc">\\</span></span>
-<span id="cb6-673"><a href="#cb6-673" aria-hidden="true" tabindex="-1"></a>  V &amp;= \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}.</span>
-<span id="cb6-674"><a href="#cb6-674" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-675"><a href="#cb6-675" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-676"><a href="#cb6-676" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-677"><a href="#cb6-677" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For hypothesis testing, we need a **consistent** estimator of the asymptotic variance $V$:</span>
-<span id="cb6-678"><a href="#cb6-678" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-679"><a href="#cb6-679" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} \rightarrow_{p} V.</span>
+<span id="cb6-618"><a href="#cb6-618" aria-hidden="true" tabindex="-1"></a>\E{X_{i}}-\bar{X}_{n}\rightarrow _{p}0.</span>
+<span id="cb6-619"><a href="#cb6-619" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb6-620"><a href="#cb6-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-621"><a href="#cb6-621" aria-hidden="true" tabindex="-1"></a>Hence, the result follows.</span>
+<span id="cb6-622"><a href="#cb6-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-623"><a href="#cb6-623" aria-hidden="true" tabindex="-1"></a><span class="fu"># Part III: Asymptotic Variance</span></span>
+<span id="cb6-624"><a href="#cb6-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-625"><a href="#cb6-625" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic variance</span></span>
+<span id="cb6-626"><a href="#cb6-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-627"><a href="#cb6-627" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In Part II, we showed that when the data are iid and the regressors are exogenous,</span>
+<span id="cb6-628"><a href="#cb6-628" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-629"><a href="#cb6-629" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-630"><a href="#cb6-630" aria-hidden="true" tabindex="-1"></a>  Y_{i} &amp;= \beta_{0} + \beta_{1}X_{i} + U_{i}, <span class="sc">\\</span></span>
+<span id="cb6-631"><a href="#cb6-631" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}} &amp;= \E{X_{i}U_{i}} = 0,</span>
+<span id="cb6-632"><a href="#cb6-632" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-633"><a href="#cb6-633" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-634"><a href="#cb6-634" aria-hidden="true" tabindex="-1"></a>  the OLS estimator of $\beta_{1}$ is asymptotically normal:</span>
+<span id="cb6-635"><a href="#cb6-635" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-636"><a href="#cb6-636" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-637"><a href="#cb6-637" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) &amp;\rightarrow_{d} N\left(0, V\right), <span class="sc">\\</span></span>
+<span id="cb6-638"><a href="#cb6-638" aria-hidden="true" tabindex="-1"></a>  V &amp;= \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}.</span>
+<span id="cb6-639"><a href="#cb6-639" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-640"><a href="#cb6-640" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-641"><a href="#cb6-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-642"><a href="#cb6-642" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For hypothesis testing, we need a **consistent** estimator of the asymptotic variance $V$:</span>
+<span id="cb6-643"><a href="#cb6-643" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-644"><a href="#cb6-644" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} \rightarrow_{p} V.</span>
+<span id="cb6-645"><a href="#cb6-645" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-646"><a href="#cb6-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-647"><a href="#cb6-647" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simplifying $V$ under homoskedasticity</span></span>
+<span id="cb6-648"><a href="#cb6-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-649"><a href="#cb6-649" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Assume that the errors are **homoskedastic**:</span>
+<span id="cb6-650"><a href="#cb6-650" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-651"><a href="#cb6-651" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}^{2} \mid X_{i}} = \sigma^{2} \text{ for all } X_{i}\text{&#39;s.}</span>
+<span id="cb6-652"><a href="#cb6-652" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-653"><a href="#cb6-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-654"><a href="#cb6-654" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, the asymptotic variance can be simplified using the Law of Iterated Expectation:</span>
+<span id="cb6-655"><a href="#cb6-655" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-656"><a href="#cb6-656" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-657"><a href="#cb6-657" aria-hidden="true" tabindex="-1"></a>  \E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}} &amp;= \E{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2} \mid X_{i}}} <span class="sc">\\</span></span>
+<span id="cb6-658"><a href="#cb6-658" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{\left(X_{i} - \E{X_{i}}\right)^{2} \E{U_{i}^{2} \mid X_{i}}} <span class="sc">\\</span></span>
+<span id="cb6-659"><a href="#cb6-659" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{\left(X_{i} - \E{X_{i}}\right)^{2} \sigma^{2}} <span class="sc">\\</span></span>
+<span id="cb6-660"><a href="#cb6-660" aria-hidden="true" tabindex="-1"></a>  &amp;= \sigma^{2}\,\E{\left(X_{i} - \E{X_{i}}\right)^{2}} = \sigma^{2}\Var{X_{i}}.</span>
+<span id="cb6-661"><a href="#cb6-661" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-662"><a href="#cb6-662" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-663"><a href="#cb6-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-664"><a href="#cb6-664" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating $V$: method of moments</span></span>
+<span id="cb6-665"><a href="#cb6-665" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-666"><a href="#cb6-666" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, when the errors are homoskedastic with $\E{U_{i}^{2}} = \sigma^{2},$</span>
+<span id="cb6-667"><a href="#cb6-667" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-668"><a href="#cb6-668" aria-hidden="true" tabindex="-1"></a>  V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}} = \frac{\sigma^{2}\Var{X_{i}}}{\left(\Var{X_{i}}\right)^{2}} = \frac{\sigma^{2}}{\Var{X_{i}}}.</span>
+<span id="cb6-669"><a href="#cb6-669" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-670"><a href="#cb6-670" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-671"><a href="#cb6-671" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\hat{U}_{i} = Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i}$, where $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ are the OLS estimators of $\beta_{0}$ and $\beta_{1}.$</span>
+<span id="cb6-672"><a href="#cb6-672" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-673"><a href="#cb6-673" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A consistent estimator for the asymptotic variance can be constructed using the **Method of Moments**:</span>
+<span id="cb6-674"><a href="#cb6-674" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-675"><a href="#cb6-675" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-676"><a href="#cb6-676" aria-hidden="true" tabindex="-1"></a>  \hat{\sigma}_{n}^{2} &amp;= \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2}, <span class="sc">\\</span></span>
+<span id="cb6-677"><a href="#cb6-677" aria-hidden="true" tabindex="-1"></a>  \Vhat{X_{i}} &amp;= \frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}, \text{ and} <span class="sc">\\</span></span>
+<span id="cb6-678"><a href="#cb6-678" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} &amp;= \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.</span>
+<span id="cb6-679"><a href="#cb6-679" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
 <span id="cb6-680"><a href="#cb6-680" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-681"><a href="#cb6-681" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-682"><a href="#cb6-682" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simplifying $V$ under homoskedasticity</span></span>
+<span id="cb6-682"><a href="#cb6-682" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the LLN does not apply directly</span></span>
 <span id="cb6-683"><a href="#cb6-683" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-684"><a href="#cb6-684" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Assume that the errors are **homoskedastic**:</span>
+<span id="cb6-684"><a href="#cb6-684" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
 <span id="cb6-685"><a href="#cb6-685" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-686"><a href="#cb6-686" aria-hidden="true" tabindex="-1"></a>  \E{U_{i}^{2} \mid X_{i}} = \sigma^{2} \text{ for all } X_{i}\text{&#39;s.}</span>
+<span id="cb6-686"><a href="#cb6-686" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} = \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}},\quad \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2},\quad \hat{U}_{i} = Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i}.</span>
 <span id="cb6-687"><a href="#cb6-687" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-688"><a href="#cb6-688" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-689"><a href="#cb6-689" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, the asymptotic variance can be simplified using the Law of Iterated Expectation:</span>
+<span id="cb6-689"><a href="#cb6-689" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When proving the consistency of OLS (Part I), we showed that</span>
 <span id="cb6-690"><a href="#cb6-690" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-691"><a href="#cb6-691" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-692"><a href="#cb6-692" aria-hidden="true" tabindex="-1"></a>  \E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}} &amp;= \E{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2} \mid X_{i}}} <span class="sc">\\</span></span>
-<span id="cb6-693"><a href="#cb6-693" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{\left(X_{i} - \E{X_{i}}\right)^{2} \E{U_{i}^{2} \mid X_{i}}} <span class="sc">\\</span></span>
-<span id="cb6-694"><a href="#cb6-694" aria-hidden="true" tabindex="-1"></a>  &amp;= \E{\left(X_{i} - \E{X_{i}}\right)^{2} \sigma^{2}} <span class="sc">\\</span></span>
-<span id="cb6-695"><a href="#cb6-695" aria-hidden="true" tabindex="-1"></a>  &amp;= \sigma^{2}\,\E{\left(X_{i} - \E{X_{i}}\right)^{2}} = \sigma^{2}\Var{X_{i}}.</span>
-<span id="cb6-696"><a href="#cb6-696" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-697"><a href="#cb6-697" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-698"><a href="#cb6-698" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-699"><a href="#cb6-699" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estimating $V$: method of moments</span></span>
+<span id="cb6-691"><a href="#cb6-691" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2} \rightarrow_{p} \Var{X_{i}},</span>
+<span id="cb6-692"><a href="#cb6-692" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-693"><a href="#cb6-693" aria-hidden="true" tabindex="-1"></a>  and to establish $\hat{V}_{n} \rightarrow_{p} V,$ we need to show that $\hat{\sigma}_{n}^{2} \rightarrow_{p} \sigma^{2}.$</span>
+<span id="cb6-694"><a href="#cb6-694" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-695"><a href="#cb6-695" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The LLN **cannot** be applied directly to</span>
+<span id="cb6-696"><a href="#cb6-696" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-697"><a href="#cb6-697" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2}</span>
+<span id="cb6-698"><a href="#cb6-698" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-699"><a href="#cb6-699" aria-hidden="true" tabindex="-1"></a>  because the $\hat{U}_{i}$&#39;s are not iid: they are **dependent** through $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}.$</span>
 <span id="cb6-700"><a href="#cb6-700" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-701"><a href="#cb6-701" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, when the errors are homoskedastic with $\E{U_{i}^{2}} = \sigma^{2},$</span>
-<span id="cb6-702"><a href="#cb6-702" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-703"><a href="#cb6-703" aria-hidden="true" tabindex="-1"></a>  V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}} = \frac{\sigma^{2}\Var{X_{i}}}{\left(\Var{X_{i}}\right)^{2}} = \frac{\sigma^{2}}{\Var{X_{i}}}.</span>
+<span id="cb6-701"><a href="#cb6-701" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of $\hat{\sigma}^{2}_{n} \rightarrow_{p} \sigma^{2}$</span></span>
+<span id="cb6-702"><a href="#cb6-702" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-703"><a href="#cb6-703" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First, write</span>
 <span id="cb6-704"><a href="#cb6-704" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-705"><a href="#cb6-705" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-706"><a href="#cb6-706" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Let $\hat{U}_{i} = Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i}$, where $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ are the OLS estimators of $\beta_{0}$ and $\beta_{1}.$</span>
-<span id="cb6-707"><a href="#cb6-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-708"><a href="#cb6-708" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A consistent estimator for the asymptotic variance can be constructed using the **Method of Moments**:</span>
-<span id="cb6-709"><a href="#cb6-709" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-710"><a href="#cb6-710" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-711"><a href="#cb6-711" aria-hidden="true" tabindex="-1"></a>  \hat{\sigma}_{n}^{2} &amp;= \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2}, <span class="sc">\\</span></span>
-<span id="cb6-712"><a href="#cb6-712" aria-hidden="true" tabindex="-1"></a>  \Vhat{X_{i}} &amp;= \frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}, \text{ and} <span class="sc">\\</span></span>
-<span id="cb6-713"><a href="#cb6-713" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} &amp;= \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.</span>
-<span id="cb6-714"><a href="#cb6-714" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-705"><a href="#cb6-705" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-706"><a href="#cb6-706" aria-hidden="true" tabindex="-1"></a>  \hat{U}_{i} &amp;= Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i} <span class="sc">\\</span></span>
+<span id="cb6-707"><a href="#cb6-707" aria-hidden="true" tabindex="-1"></a>  &amp;= \left(\beta_{0} + \beta_{1}X_{i} + U_{i}\right) - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i} <span class="sc">\\</span></span>
+<span id="cb6-708"><a href="#cb6-708" aria-hidden="true" tabindex="-1"></a>  &amp;= U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}.</span>
+<span id="cb6-709"><a href="#cb6-709" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-710"><a href="#cb6-710" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-711"><a href="#cb6-711" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-712"><a href="#cb6-712" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Now,</span>
+<span id="cb6-713"><a href="#cb6-713" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-714"><a href="#cb6-714" aria-hidden="true" tabindex="-1"></a>  \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2} = \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2}.</span>
 <span id="cb6-715"><a href="#cb6-715" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb6-716"><a href="#cb6-716" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-717"><a href="#cb6-717" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the LLN does not apply directly</span></span>
+<span id="cb6-717"><a href="#cb6-717" aria-hidden="true" tabindex="-1"></a><span class="fu">## Completing the consistency proof</span></span>
 <span id="cb6-718"><a href="#cb6-718" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-719"><a href="#cb6-719" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
+<span id="cb6-719"><a href="#cb6-719" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have</span>
 <span id="cb6-720"><a href="#cb6-720" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-721"><a href="#cb6-721" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} = \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}},\quad \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2},\quad \hat{U}_{i} = Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i}.</span>
-<span id="cb6-722"><a href="#cb6-722" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-723"><a href="#cb6-723" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-724"><a href="#cb6-724" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When proving the consistency of OLS (Part I), we showed that</span>
-<span id="cb6-725"><a href="#cb6-725" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-726"><a href="#cb6-726" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2} \rightarrow_{p} \Var{X_{i}},</span>
+<span id="cb6-721"><a href="#cb6-721" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-722"><a href="#cb6-722" aria-hidden="true" tabindex="-1"></a>  \hat{\sigma}_{n}^{2} &amp;= \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2} <span class="sc">\\</span></span>
+<span id="cb6-723"><a href="#cb6-723" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{1}{n}\sum_{i=1}^{n}U_{i}^{2} + \left(\hat{\beta}_{0,n} - \beta_{0}\right)^{2} + \left(\hat{\beta}_{1,n} - \beta_{1}\right)^{2}\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2} <span class="sc">\\</span></span>
+<span id="cb6-724"><a href="#cb6-724" aria-hidden="true" tabindex="-1"></a>  &amp;\quad -2\left(\hat{\beta}_{0,n} - \beta_{0}\right)\frac{1}{n}\sum_{i=1}^{n}U_{i} - 2\left(\hat{\beta}_{1,n} - \beta_{1}\right)\frac{1}{n}\sum_{i=1}^{n}U_{i}X_{i} <span class="sc">\\</span></span>
+<span id="cb6-725"><a href="#cb6-725" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +2\left(\hat{\beta}_{0,n} - \beta_{0}\right)\left(\hat{\beta}_{1,n} - \beta_{1}\right)\frac{1}{n}\sum_{i=1}^{n}X_{i}.</span>
+<span id="cb6-726"><a href="#cb6-726" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
 <span id="cb6-727"><a href="#cb6-727" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-728"><a href="#cb6-728" aria-hidden="true" tabindex="-1"></a>  and to establish $\hat{V}_{n} \rightarrow_{p} V,$ we need to show that $\hat{\sigma}_{n}^{2} \rightarrow_{p} \sigma^{2}.$</span>
-<span id="cb6-729"><a href="#cb6-729" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-730"><a href="#cb6-730" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The LLN **cannot** be applied directly to</span>
-<span id="cb6-731"><a href="#cb6-731" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-732"><a href="#cb6-732" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2}</span>
-<span id="cb6-733"><a href="#cb6-733" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-734"><a href="#cb6-734" aria-hidden="true" tabindex="-1"></a>  because the $\hat{U}_{i}$&#39;s are not iid: they are **dependent** through $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}.$</span>
-<span id="cb6-735"><a href="#cb6-735" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-736"><a href="#cb6-736" aria-hidden="true" tabindex="-1"></a><span class="fu">## Proof of $\hat{\sigma}^{2}_{n} \rightarrow_{p} \sigma^{2}$</span></span>
-<span id="cb6-737"><a href="#cb6-737" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-738"><a href="#cb6-738" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First, write</span>
-<span id="cb6-739"><a href="#cb6-739" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-740"><a href="#cb6-740" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-741"><a href="#cb6-741" aria-hidden="true" tabindex="-1"></a>  \hat{U}_{i} &amp;= Y_{i} - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i} <span class="sc">\\</span></span>
-<span id="cb6-742"><a href="#cb6-742" aria-hidden="true" tabindex="-1"></a>  &amp;= \left(\beta_{0} + \beta_{1}X_{i} + U_{i}\right) - \hat{\beta}_{0,n} - \hat{\beta}_{1,n}X_{i} <span class="sc">\\</span></span>
-<span id="cb6-743"><a href="#cb6-743" aria-hidden="true" tabindex="-1"></a>  &amp;= U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}.</span>
-<span id="cb6-744"><a href="#cb6-744" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-745"><a href="#cb6-745" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-728"><a href="#cb6-728" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-729"><a href="#cb6-729" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By the LLN,</span>
+<span id="cb6-730"><a href="#cb6-730" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-731"><a href="#cb6-731" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}U_{i}^{2} \rightarrow_{p} \E{U_{i}^{2}} = \sigma^{2}.</span>
+<span id="cb6-732"><a href="#cb6-732" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-733"><a href="#cb6-733" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-734"><a href="#cb6-734" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Because $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ are consistent,</span>
+<span id="cb6-735"><a href="#cb6-735" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-736"><a href="#cb6-736" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{0,n} - \beta_{0} \rightarrow_{p} 0 \text{ and } \hat{\beta}_{1,n} - \beta_{1} \rightarrow_{p} 0.</span>
+<span id="cb6-737"><a href="#cb6-737" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-738"><a href="#cb6-738" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-739"><a href="#cb6-739" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using $s^2$ instead of $\hat{\sigma}^2_n$</span></span>
+<span id="cb6-740"><a href="#cb6-740" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-741"><a href="#cb6-741" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, when the errors are homoskedastic,</span>
+<span id="cb6-742"><a href="#cb6-742" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-743"><a href="#cb6-743" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} = \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}, \text{ with } \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2},</span>
+<span id="cb6-744"><a href="#cb6-744" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-745"><a href="#cb6-745" aria-hidden="true" tabindex="-1"></a>  is a consistent estimator of $V = \frac{\sigma^{2}}{\Var{X_{i}}}.$</span>
 <span id="cb6-746"><a href="#cb6-746" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-747"><a href="#cb6-747" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Now,</span>
+<span id="cb6-747"><a href="#cb6-747" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Similarly,</span>
 <span id="cb6-748"><a href="#cb6-748" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-749"><a href="#cb6-749" aria-hidden="true" tabindex="-1"></a>  \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2} = \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2}.</span>
+<span id="cb6-749"><a href="#cb6-749" aria-hidden="true" tabindex="-1"></a>  s^{2} = \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \rightarrow_{p} \sigma^{2},</span>
 <span id="cb6-750"><a href="#cb6-750" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-751"><a href="#cb6-751" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-752"><a href="#cb6-752" aria-hidden="true" tabindex="-1"></a><span class="fu">## Completing the consistency proof</span></span>
-<span id="cb6-753"><a href="#cb6-753" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-754"><a href="#cb6-754" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have</span>
-<span id="cb6-755"><a href="#cb6-755" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-756"><a href="#cb6-756" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-757"><a href="#cb6-757" aria-hidden="true" tabindex="-1"></a>  \hat{\sigma}_{n}^{2} &amp;= \frac{1}{n}\sum_{i=1}^{n}\left(U_{i} - \left(\hat{\beta}_{0,n} - \beta_{0}\right) - \left(\hat{\beta}_{1,n} - \beta_{1}\right)X_{i}\right)^{2} <span class="sc">\\</span></span>
-<span id="cb6-758"><a href="#cb6-758" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{1}{n}\sum_{i=1}^{n}U_{i}^{2} + \left(\hat{\beta}_{0,n} - \beta_{0}\right)^{2} + \left(\hat{\beta}_{1,n} - \beta_{1}\right)^{2}\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2} <span class="sc">\\</span></span>
-<span id="cb6-759"><a href="#cb6-759" aria-hidden="true" tabindex="-1"></a>  &amp;\quad -2\left(\hat{\beta}_{0,n} - \beta_{0}\right)\frac{1}{n}\sum_{i=1}^{n}U_{i} - 2\left(\hat{\beta}_{1,n} - \beta_{1}\right)\frac{1}{n}\sum_{i=1}^{n}U_{i}X_{i} <span class="sc">\\</span></span>
-<span id="cb6-760"><a href="#cb6-760" aria-hidden="true" tabindex="-1"></a>  &amp;\quad +2\left(\hat{\beta}_{0,n} - \beta_{0}\right)\left(\hat{\beta}_{1,n} - \beta_{1}\right)\frac{1}{n}\sum_{i=1}^{n}X_{i}.</span>
-<span id="cb6-761"><a href="#cb6-761" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-751"><a href="#cb6-751" aria-hidden="true" tabindex="-1"></a>  and therefore</span>
+<span id="cb6-752"><a href="#cb6-752" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-753"><a href="#cb6-753" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}</span>
+<span id="cb6-754"><a href="#cb6-754" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-755"><a href="#cb6-755" aria-hidden="true" tabindex="-1"></a>  is also a consistent estimator of $V = \frac{\sigma^{2}}{\Var{X_{i}}}.$</span>
+<span id="cb6-756"><a href="#cb6-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-757"><a href="#cb6-757" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This version has an advantage over the one with $\hat{\sigma}_{n}^{2}$: in addition to being consistent, $s^{2}$ is also an unbiased estimator of $\sigma^{2}$ if the regressors are strongly exogenous.</span>
+<span id="cb6-758"><a href="#cb6-758" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-759"><a href="#cb6-759" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic approximation</span></span>
+<span id="cb6-760"><a href="#cb6-760" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-761"><a href="#cb6-761" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The result $\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) \rightarrow_{d} N\left(0, V\right)$ is used as the following **approximation**:</span>
 <span id="cb6-762"><a href="#cb6-762" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-763"><a href="#cb6-763" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-764"><a href="#cb6-764" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By the LLN,</span>
-<span id="cb6-765"><a href="#cb6-765" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-766"><a href="#cb6-766" aria-hidden="true" tabindex="-1"></a>  \frac{1}{n}\sum_{i=1}^{n}U_{i}^{2} \rightarrow_{p} \E{U_{i}^{2}} = \sigma^{2}.</span>
-<span id="cb6-767"><a href="#cb6-767" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-768"><a href="#cb6-768" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-769"><a href="#cb6-769" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Because $\hat{\beta}_{0,n}$ and $\hat{\beta}_{1,n}$ are consistent,</span>
+<span id="cb6-763"><a href="#cb6-763" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{V}{n}\right),</span>
+<span id="cb6-764"><a href="#cb6-764" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-765"><a href="#cb6-765" aria-hidden="true" tabindex="-1"></a>  where $\overset{a}{\sim}$ denotes approximately in large samples. Thus, the variance of $\hat{\beta}_{1,n}$ can be taken as approximately $V/n.$</span>
+<span id="cb6-766"><a href="#cb6-766" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-767"><a href="#cb6-767" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With $\hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}$ we have</span>
+<span id="cb6-768"><a href="#cb6-768" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-769"><a href="#cb6-769" aria-hidden="true" tabindex="-1"></a>  \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} \cdot \frac{1}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.</span>
 <span id="cb6-770"><a href="#cb6-770" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-771"><a href="#cb6-771" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{0,n} - \beta_{0} \rightarrow_{p} 0 \text{ and } \hat{\beta}_{1,n} - \beta_{1} \rightarrow_{p} 0.</span>
-<span id="cb6-772"><a href="#cb6-772" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-771"><a href="#cb6-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-772"><a href="#cb6-772" aria-hidden="true" tabindex="-1"></a><span class="fu">## Connection to the exact result</span></span>
 <span id="cb6-773"><a href="#cb6-773" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-774"><a href="#cb6-774" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using $s^2$ instead of $\hat{\sigma}^2_n$</span></span>
-<span id="cb6-775"><a href="#cb6-775" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-776"><a href="#cb6-776" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, when the errors are homoskedastic,</span>
+<span id="cb6-774"><a href="#cb6-774" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
+<span id="cb6-775"><a href="#cb6-775" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-776"><a href="#cb6-776" aria-hidden="true" tabindex="-1"></a>  \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}</span>
 <span id="cb6-777"><a href="#cb6-777" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-778"><a href="#cb6-778" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} = \frac{\hat{\sigma}_{n}^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}, \text{ with } \hat{\sigma}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}\hat{U}_{i}^{2},</span>
-<span id="cb6-779"><a href="#cb6-779" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-780"><a href="#cb6-780" aria-hidden="true" tabindex="-1"></a>  is a consistent estimator of $V = \frac{\sigma^{2}}{\Var{X_{i}}}.$</span>
-<span id="cb6-781"><a href="#cb6-781" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-782"><a href="#cb6-782" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Similarly,</span>
-<span id="cb6-783"><a href="#cb6-783" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-784"><a href="#cb6-784" aria-hidden="true" tabindex="-1"></a>  s^{2} = \frac{1}{n-2}\sum_{i=1}^{n}\hat{U}_{i}^{2} \rightarrow_{p} \sigma^{2},</span>
-<span id="cb6-785"><a href="#cb6-785" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-786"><a href="#cb6-786" aria-hidden="true" tabindex="-1"></a>  and therefore</span>
-<span id="cb6-787"><a href="#cb6-787" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-788"><a href="#cb6-788" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}</span>
-<span id="cb6-789"><a href="#cb6-789" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-790"><a href="#cb6-790" aria-hidden="true" tabindex="-1"></a>  is also a consistent estimator of $V = \frac{\sigma^{2}}{\Var{X_{i}}}.$</span>
-<span id="cb6-791"><a href="#cb6-791" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-792"><a href="#cb6-792" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This version has an advantage over the one with $\hat{\sigma}_{n}^{2}$: in addition to being consistent, $s^{2}$ is also an unbiased estimator of $\sigma^{2}$ if the regressors are strongly exogenous.</span>
-<span id="cb6-793"><a href="#cb6-793" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-794"><a href="#cb6-794" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic approximation</span></span>
-<span id="cb6-795"><a href="#cb6-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-796"><a href="#cb6-796" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The result $\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) \rightarrow_{d} N\left(0, V\right)$ is used as the following **approximation**:</span>
-<span id="cb6-797"><a href="#cb6-797" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-798"><a href="#cb6-798" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{V}{n}\right),</span>
-<span id="cb6-799"><a href="#cb6-799" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-800"><a href="#cb6-800" aria-hidden="true" tabindex="-1"></a>  where $\overset{a}{\sim}$ denotes approximately in large samples. Thus, the variance of $\hat{\beta}_{1,n}$ can be taken as approximately $V/n.$</span>
-<span id="cb6-801"><a href="#cb6-801" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-802"><a href="#cb6-802" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With $\hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}$ we have</span>
-<span id="cb6-803"><a href="#cb6-803" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-804"><a href="#cb6-804" aria-hidden="true" tabindex="-1"></a>  \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} \cdot \frac{1}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}.</span>
-<span id="cb6-805"><a href="#cb6-805" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-806"><a href="#cb6-806" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-807"><a href="#cb6-807" aria-hidden="true" tabindex="-1"></a><span class="fu">## Connection to the exact result</span></span>
-<span id="cb6-808"><a href="#cb6-808" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-809"><a href="#cb6-809" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the previous slide:</span>
-<span id="cb6-810"><a href="#cb6-810" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-811"><a href="#cb6-811" aria-hidden="true" tabindex="-1"></a>  \frac{\hat{V}_{n}}{n} = \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}</span>
+<span id="cb6-778"><a href="#cb6-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-779"><a href="#cb6-779" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, in the case of homoskedastic errors we have the following asymptotic approximation:</span>
+<span id="cb6-780"><a href="#cb6-780" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-781"><a href="#cb6-781" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}\right).</span>
+<span id="cb6-782"><a href="#cb6-782" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-783"><a href="#cb6-783" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-784"><a href="#cb6-784" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In finite samples, we have the same result **exactly**, when the regressors are **strongly exogenous** and the errors are **normal**.</span>
+<span id="cb6-785"><a href="#cb6-785" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-786"><a href="#cb6-786" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic $T$-test</span></span>
+<span id="cb6-787"><a href="#cb6-787" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-788"><a href="#cb6-788" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider testing $H_{0}: \beta_{1} = \beta_{1,0}$ vs $H_{1}: \beta_{1} \neq \beta_{1,0}.$</span>
+<span id="cb6-789"><a href="#cb6-789" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-790"><a href="#cb6-790" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the behavior of the $T$ statistic **under $H_{0}: \beta_{1} = \beta_{1,0}$**. Since</span>
+<span id="cb6-791"><a href="#cb6-791" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-792"><a href="#cb6-792" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) \rightarrow_{d} N\left(0, V\right) \text{ and } \hat{V}_{n} \rightarrow_{p} V,</span>
+<span id="cb6-793"><a href="#cb6-793" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-794"><a href="#cb6-794" aria-hidden="true" tabindex="-1"></a>  we have</span>
+<span id="cb6-795"><a href="#cb6-795" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-796"><a href="#cb6-796" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-797"><a href="#cb6-797" aria-hidden="true" tabindex="-1"></a>  T = \frac{\hat{\beta}_{1,n} - \beta_{1,0}}{\sqrt{\hat{V}_{n}/n}} &amp;= \frac{\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1,0}\right)}{\sqrt{\hat{V}_{n}}} <span class="sc">\\</span></span>
+<span id="cb6-798"><a href="#cb6-798" aria-hidden="true" tabindex="-1"></a>  &amp;\overset{H_{0}}{=} \frac{\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right)}{\sqrt{\hat{V}_{n}}} <span class="sc">\\</span></span>
+<span id="cb6-799"><a href="#cb6-799" aria-hidden="true" tabindex="-1"></a>  &amp;\rightarrow_{d} \frac{N\left(0, V\right)}{\sqrt{V}} \stackrel{d}{=} N\left(0, 1\right).</span>
+<span id="cb6-800"><a href="#cb6-800" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
+<span id="cb6-801"><a href="#cb6-801" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-802"><a href="#cb6-802" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-803"><a href="#cb6-803" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic $T$-test: rejection rule</span></span>
+<span id="cb6-804"><a href="#cb6-804" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-805"><a href="#cb6-805" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under $H_{0}: \beta_{1} = \beta_{1,0},$</span>
+<span id="cb6-806"><a href="#cb6-806" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-807"><a href="#cb6-807" aria-hidden="true" tabindex="-1"></a>  T = \frac{\hat{\beta}_{1,n} - \beta_{1,0}}{\sqrt{\hat{V}_{n}/n}} \rightarrow_{d} N\left(0, 1\right),</span>
+<span id="cb6-808"><a href="#cb6-808" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-809"><a href="#cb6-809" aria-hidden="true" tabindex="-1"></a>  provided that $\hat{V}_{n} \rightarrow_{p} V$ (the asymptotic variance of $\hat{\beta}_{1,n}$).</span>
+<span id="cb6-810"><a href="#cb6-810" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-811"><a href="#cb6-811" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An asymptotic size $\alpha$ test rejects $H_{0}: \beta_{1} = \beta_{1,0}$ against $H_{1}: \beta_{1} \neq \beta_{1,0}$ when</span>
 <span id="cb6-812"><a href="#cb6-812" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-813"><a href="#cb6-813" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-814"><a href="#cb6-814" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Thus, in the case of homoskedastic errors we have the following asymptotic approximation:</span>
-<span id="cb6-815"><a href="#cb6-815" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-816"><a href="#cb6-816" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{s^{2}}{\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}\right).</span>
-<span id="cb6-817"><a href="#cb6-817" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-813"><a href="#cb6-813" aria-hidden="true" tabindex="-1"></a>  \left|T\right| &gt; z_{1-\alpha/2},</span>
+<span id="cb6-814"><a href="#cb6-814" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-815"><a href="#cb6-815" aria-hidden="true" tabindex="-1"></a>  where $z_{1-\alpha/2}$ is a **standard normal** critical value.</span>
+<span id="cb6-816"><a href="#cb6-816" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-817"><a href="#cb6-817" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asymptotically, the variance of the OLS estimator is known; we behave as if the variance were known.</span>
 <span id="cb6-818"><a href="#cb6-818" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-819"><a href="#cb6-819" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In finite samples, we have the same result **exactly**, when the regressors are **strongly exogenous** and the errors are **normal**.</span>
+<span id="cb6-819"><a href="#cb6-819" aria-hidden="true" tabindex="-1"></a><span class="fu">## Heteroskedastic errors</span></span>
 <span id="cb6-820"><a href="#cb6-820" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-821"><a href="#cb6-821" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic $T$-test</span></span>
+<span id="cb6-821"><a href="#cb6-821" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In general, the **errors are heteroskedastic**: $\E{U_{i}^{2} \mid X_{i}}$ is not constant and changes with $X_{i}.$</span>
 <span id="cb6-822"><a href="#cb6-822" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-823"><a href="#cb6-823" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider testing $H_{0}: \beta_{1} = \beta_{1,0}$ vs $H_{1}: \beta_{1} \neq \beta_{1,0}.$</span>
-<span id="cb6-824"><a href="#cb6-824" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-825"><a href="#cb6-825" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Consider the behavior of the $T$ statistic **under $H_{0}: \beta_{1} = \beta_{1,0}$**. Since</span>
-<span id="cb6-826"><a href="#cb6-826" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-827"><a href="#cb6-827" aria-hidden="true" tabindex="-1"></a>  \sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right) \rightarrow_{d} N\left(0, V\right) \text{ and } \hat{V}_{n} \rightarrow_{p} V,</span>
-<span id="cb6-828"><a href="#cb6-828" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-829"><a href="#cb6-829" aria-hidden="true" tabindex="-1"></a>  we have</span>
+<span id="cb6-823"><a href="#cb6-823" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, $\hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}$ is **not** a consistent estimator of the asymptotic variance $V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}$:</span>
+<span id="cb6-824"><a href="#cb6-824" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-825"><a href="#cb6-825" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
+<span id="cb6-826"><a href="#cb6-826" aria-hidden="true" tabindex="-1"></a>  \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} &amp;\rightarrow_{p} \frac{\E{U_{i}^{2}}}{\Var{X_{i}}} <span class="sc">\\</span></span>
+<span id="cb6-827"><a href="#cb6-827" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{\Var{X_{i}}\cdot\E{U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}} <span class="sc">\\</span></span>
+<span id="cb6-828"><a href="#cb6-828" aria-hidden="true" tabindex="-1"></a>  &amp;\neq \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}.</span>
+<span id="cb6-829"><a href="#cb6-829" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
 <span id="cb6-830"><a href="#cb6-830" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-831"><a href="#cb6-831" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-832"><a href="#cb6-832" aria-hidden="true" tabindex="-1"></a>  T = \frac{\hat{\beta}_{1,n} - \beta_{1,0}}{\sqrt{\hat{V}_{n}/n}} &amp;= \frac{\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1,0}\right)}{\sqrt{\hat{V}_{n}}} <span class="sc">\\</span></span>
-<span id="cb6-833"><a href="#cb6-833" aria-hidden="true" tabindex="-1"></a>  &amp;\overset{H_{0}}{=} \frac{\sqrt{n}\left(\hat{\beta}_{1,n} - \beta_{1}\right)}{\sqrt{\hat{V}_{n}}} <span class="sc">\\</span></span>
-<span id="cb6-834"><a href="#cb6-834" aria-hidden="true" tabindex="-1"></a>  &amp;\rightarrow_{d} \frac{N\left(0, V\right)}{\sqrt{V}} \stackrel{d}{=} N\left(0, 1\right).</span>
-<span id="cb6-835"><a href="#cb6-835" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-836"><a href="#cb6-836" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-837"><a href="#cb6-837" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-838"><a href="#cb6-838" aria-hidden="true" tabindex="-1"></a><span class="fu">## Asymptotic $T$-test: rejection rule</span></span>
-<span id="cb6-839"><a href="#cb6-839" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-840"><a href="#cb6-840" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under $H_{0}: \beta_{1} = \beta_{1,0},$</span>
-<span id="cb6-841"><a href="#cb6-841" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-842"><a href="#cb6-842" aria-hidden="true" tabindex="-1"></a>  T = \frac{\hat{\beta}_{1,n} - \beta_{1,0}}{\sqrt{\hat{V}_{n}/n}} \rightarrow_{d} N\left(0, 1\right),</span>
-<span id="cb6-843"><a href="#cb6-843" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-844"><a href="#cb6-844" aria-hidden="true" tabindex="-1"></a>  provided that $\hat{V}_{n} \rightarrow_{p} V$ (the asymptotic variance of $\hat{\beta}_{1,n}$).</span>
-<span id="cb6-845"><a href="#cb6-845" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-846"><a href="#cb6-846" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An asymptotic size $\alpha$ test rejects $H_{0}: \beta_{1} = \beta_{1,0}$ against $H_{1}: \beta_{1} \neq \beta_{1,0}$ when</span>
-<span id="cb6-847"><a href="#cb6-847" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-848"><a href="#cb6-848" aria-hidden="true" tabindex="-1"></a>  \left|T\right| &gt; z_{1-\alpha/2},</span>
-<span id="cb6-849"><a href="#cb6-849" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-850"><a href="#cb6-850" aria-hidden="true" tabindex="-1"></a>  where $z_{1-\alpha/2}$ is a **standard normal** critical value.</span>
-<span id="cb6-851"><a href="#cb6-851" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-852"><a href="#cb6-852" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asymptotically, the variance of the OLS estimator is known; we behave as if the variance were known.</span>
-<span id="cb6-853"><a href="#cb6-853" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-854"><a href="#cb6-854" aria-hidden="true" tabindex="-1"></a><span class="fu">## Heteroskedastic errors</span></span>
-<span id="cb6-855"><a href="#cb6-855" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-856"><a href="#cb6-856" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In general, the **errors are heteroskedastic**: $\E{U_{i}^{2} \mid X_{i}}$ is not constant and changes with $X_{i}.$</span>
-<span id="cb6-857"><a href="#cb6-857" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-858"><a href="#cb6-858" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In this case, $\hat{V}_{n} = \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}}$ is **not** a consistent estimator of the asymptotic variance $V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}$:</span>
-<span id="cb6-859"><a href="#cb6-859" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-860"><a href="#cb6-860" aria-hidden="true" tabindex="-1"></a>  \begin{aligned}</span>
-<span id="cb6-861"><a href="#cb6-861" aria-hidden="true" tabindex="-1"></a>  \frac{s^{2}}{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}} &amp;\rightarrow_{p} \frac{\E{U_{i}^{2}}}{\Var{X_{i}}} <span class="sc">\\</span></span>
-<span id="cb6-862"><a href="#cb6-862" aria-hidden="true" tabindex="-1"></a>  &amp;= \frac{\Var{X_{i}}\cdot\E{U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}} <span class="sc">\\</span></span>
-<span id="cb6-863"><a href="#cb6-863" aria-hidden="true" tabindex="-1"></a>  &amp;\neq \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}.</span>
-<span id="cb6-864"><a href="#cb6-864" aria-hidden="true" tabindex="-1"></a>  \end{aligned}</span>
-<span id="cb6-865"><a href="#cb6-865" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-831"><a href="#cb6-831" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-832"><a href="#cb6-832" aria-hidden="true" tabindex="-1"></a><span class="fu">## HC estimator of asymptotic variance</span></span>
+<span id="cb6-833"><a href="#cb6-833" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-834"><a href="#cb6-834" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the case of heteroskedastic errors, a consistent estimator of $V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}$ can be constructed as follows:</span>
+<span id="cb6-835"><a href="#cb6-835" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-836"><a href="#cb6-836" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n}^{HC} = \frac{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}\hat{U}_{i}^{2}}{\left(\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}\right)^{2}}.</span>
+<span id="cb6-837"><a href="#cb6-837" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-838"><a href="#cb6-838" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-839"><a href="#cb6-839" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One can show that $\hat{V}_{n}^{HC} \rightarrow_{p} V$ whether the errors are heteroskedastic or homoskedastic.</span>
+<span id="cb6-840"><a href="#cb6-840" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-841"><a href="#cb6-841" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have the following asymptotic approximation:</span>
+<span id="cb6-842"><a href="#cb6-842" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-843"><a href="#cb6-843" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{\hat{V}_{n}^{HC}}{n}\right),</span>
+<span id="cb6-844"><a href="#cb6-844" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb6-845"><a href="#cb6-845" aria-hidden="true" tabindex="-1"></a>  and the standard errors can be computed as $\se{\hat{\beta}_{1,n}} = \sqrt{\hat{V}_{n}^{HC}/n}.$</span>
+<span id="cb6-846"><a href="#cb6-846" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-847"><a href="#cb6-847" aria-hidden="true" tabindex="-1"></a><span class="fu">## HC standard errors in R</span></span>
+<span id="cb6-848"><a href="#cb6-848" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-849"><a href="#cb6-849" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In R, the HC estimator of standard errors can be obtained using the <span class="in">`sandwich`</span> package:</span>
+<span id="cb6-850"><a href="#cb6-850" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-851"><a href="#cb6-851" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb6-852"><a href="#cb6-852" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb6-853"><a href="#cb6-853" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
+<span id="cb6-854"><a href="#cb6-854" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(lmtest)</span>
+<span id="cb6-855"><a href="#cb6-855" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sandwich)</span>
+<span id="cb6-856"><a href="#cb6-856" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="st">&quot;wage1&quot;</span>)</span>
+<span id="cb6-857"><a href="#cb6-857" aria-hidden="true" tabindex="-1"></a>  reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> tenure, <span class="at">data =</span> wage1)</span>
+<span id="cb6-858"><a href="#cb6-858" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb6-859"><a href="#cb6-859" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-860"><a href="#cb6-860" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Standard (homoskedastic) standard errors:**</span>
+<span id="cb6-861"><a href="#cb6-861" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-862"><a href="#cb6-862" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb6-863"><a href="#cb6-863" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb6-864"><a href="#cb6-864" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coeftest</span>(reg)</span>
+<span id="cb6-865"><a href="#cb6-865" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb6-866"><a href="#cb6-866" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-867"><a href="#cb6-867" aria-hidden="true" tabindex="-1"></a><span class="fu">## HC estimator of asymptotic variance</span></span>
+<span id="cb6-867"><a href="#cb6-867" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**HC (robust) standard errors:**</span>
 <span id="cb6-868"><a href="#cb6-868" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-869"><a href="#cb6-869" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the case of heteroskedastic errors, a consistent estimator of $V = \frac{\E{\left(X_{i} - \E{X_{i}}\right)^{2}U_{i}^{2}}}{\left(\Var{X_{i}}\right)^{2}}$ can be constructed as follows:</span>
-<span id="cb6-870"><a href="#cb6-870" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-871"><a href="#cb6-871" aria-hidden="true" tabindex="-1"></a>  \hat{V}_{n}^{HC} = \frac{\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}\hat{U}_{i}^{2}}{\left(\frac{1}{n}\sum_{i=1}^{n}\left(X_{i} - \bar{X}_{n}\right)^{2}\right)^{2}}.</span>
-<span id="cb6-872"><a href="#cb6-872" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-873"><a href="#cb6-873" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-874"><a href="#cb6-874" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One can show that $\hat{V}_{n}^{HC} \rightarrow_{p} V$ whether the errors are heteroskedastic or homoskedastic.</span>
-<span id="cb6-875"><a href="#cb6-875" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-876"><a href="#cb6-876" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We have the following asymptotic approximation:</span>
-<span id="cb6-877"><a href="#cb6-877" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-878"><a href="#cb6-878" aria-hidden="true" tabindex="-1"></a>  \hat{\beta}_{1,n} \overset{a}{\sim} N\left(\beta_{1}, \frac{\hat{V}_{n}^{HC}}{n}\right),</span>
-<span id="cb6-879"><a href="#cb6-879" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb6-880"><a href="#cb6-880" aria-hidden="true" tabindex="-1"></a>  and the standard errors can be computed as $\se{\hat{\beta}_{1,n}} = \sqrt{\hat{V}_{n}^{HC}/n}.$</span>
-<span id="cb6-881"><a href="#cb6-881" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-882"><a href="#cb6-882" aria-hidden="true" tabindex="-1"></a><span class="fu">## HC standard errors in R</span></span>
-<span id="cb6-883"><a href="#cb6-883" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-884"><a href="#cb6-884" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In R, the HC estimator of standard errors can be obtained using the <span class="in">`sandwich`</span> package:</span>
-<span id="cb6-885"><a href="#cb6-885" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-886"><a href="#cb6-886" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb6-887"><a href="#cb6-887" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb6-888"><a href="#cb6-888" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(wooldridge)</span>
-<span id="cb6-889"><a href="#cb6-889" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(lmtest)</span>
-<span id="cb6-890"><a href="#cb6-890" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(sandwich)</span>
-<span id="cb6-891"><a href="#cb6-891" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="st">&quot;wage1&quot;</span>)</span>
-<span id="cb6-892"><a href="#cb6-892" aria-hidden="true" tabindex="-1"></a>  reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> tenure, <span class="at">data =</span> wage1)</span>
-<span id="cb6-893"><a href="#cb6-893" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb6-894"><a href="#cb6-894" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-895"><a href="#cb6-895" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Standard (homoskedastic) standard errors:**</span>
-<span id="cb6-896"><a href="#cb6-896" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-897"><a href="#cb6-897" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb6-898"><a href="#cb6-898" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb6-899"><a href="#cb6-899" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coeftest</span>(reg)</span>
-<span id="cb6-900"><a href="#cb6-900" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb6-901"><a href="#cb6-901" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-902"><a href="#cb6-902" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**HC (robust) standard errors:**</span>
-<span id="cb6-903"><a href="#cb6-903" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-904"><a href="#cb6-904" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
-<span id="cb6-905"><a href="#cb6-905" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
-<span id="cb6-906"><a href="#cb6-906" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coeftest</span>(reg, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="at">type =</span> <span class="st">&quot;HC1&quot;</span>))</span>
-<span id="cb6-907"><a href="#cb6-907" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb6-869"><a href="#cb6-869" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
+<span id="cb6-870"><a href="#cb6-870" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
+<span id="cb6-871"><a href="#cb6-871" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coeftest</span>(reg, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(reg, <span class="at">type =</span> <span class="st">&quot;HC1&quot;</span>))</span>
+<span id="cb6-872"><a href="#cb6-872" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

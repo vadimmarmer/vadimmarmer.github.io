@@ -50,11 +50,11 @@ format:
 
 - The OLS estimator $\hat{\beta}$ has desirable properties:
 
-  - $\hat{\beta}$ is unbiased if the errors are **strongly exogenous**: $\E{U \mid X} =0.$
+  - $\hat{\beta}$ is unbiased if the errors are **strongly exogenous**: $\E{U_i \mid \mathbf{X}} =0.$
 
   - If in addition the errors are **homoskedastic**, then $\Vhat{\hat{\beta}}=s^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}$ is an unbiased estimator of the conditional variance of $\hat{\beta}$.
 
-  - If in addition the errors are **normally** distributed (given $X$), then $T=\left( \hat{\beta}-\beta \right) /\sqrt{\Vhat{\hat{\beta}}}$ has a $t$ distribution which can be used for hypothesis testing.
+  - If in addition the errors are **normally** distributed (given $\mathbf{X}$), then $T=\left( \hat{\beta}-\beta \right) /\sqrt{\Vhat{\hat{\beta}}}$ has a $t$ distribution which can be used for hypothesis testing.
 
 ## Limitations of finite-sample theory
 
@@ -70,7 +70,7 @@ format:
   $$
   the "usual" variance formula is invalid; we also do not have an unbiased estimator for the variance in this case.
 
-- If the errors are **not normally distributed** conditional on $X$, then $T$- and $F$-statistics do not have $t$ and $F$ distributions under the null hypothesis.
+- If the errors are **not normally distributed** conditional on $\mathbf{X}$, then $T$- and $F$-statistics do not have $t$ and $F$ distributions under the null hypothesis.
 
 - Asymptotic (large-sample) theory allows us to derive **approximate** properties and distributions of estimators and test statistics by assuming that the sample size $n$ is very large.
 
@@ -279,15 +279,9 @@ $$
 
 ## Denominator converges to $\Var{X_i}$
 
-- First,
-
+- The sample variance can be written as
   $$
-  \begin{aligned}
-  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}
-  &= \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}^{2}-2\bar{X}_{n}X_{i}+\bar{X}_{n}^{2}\right) \\
-  &= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\frac{1}{n}\sum_{i=1}^{n}X_{i}+\bar{X}_{n}^{2} \\
-  &= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\bar{X}_{n}+\bar{X}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
-  \end{aligned}
+  \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
   $$
 
 - By the LLN, $\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\rightarrow _{p}\E{X_{i}^{2}}$ and $\bar{X}_{n}\rightarrow _{p}\E{X_{i}}.$
@@ -332,53 +326,24 @@ $$
   \end{aligned}
   $$
 
-## Inconsistency proof: noise term
+- Dividing numerator and denominator by $n$ and applying the LLN as before:
 
-- From the previous slide:
-  $$
-  \tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
-  $$
+  - The noise term vanishes:
+    $$
+    \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\Cov{X_{1,i},U_{i}}}{\Var{X_{1,i}}} = 0.
+    $$
 
-- As before,
+  - The bias term converges:
+    $$
+    \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.
+    $$
 
+- Therefore,
   $$
-  \begin{aligned}
-  \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}U_{i}-\bar{X}_{1,n}\bar{U}_{n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
-  &\rightarrow _{p}\frac{0}{\E{X_{1,i}^{2}}-\left( \E{X_{1,i}}\right) ^{2}} \\
-  &= \frac{0}{\Var{X_{1,i}}}=0.
-  \end{aligned}
-  $$
-
-## Inconsistency proof: bias term
-
-- From the previous slide:
-  $$
-  \tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+  \tilde{\beta}_{1,n} \rightarrow _{p} \beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.
   $$
 
-- However,
-
-  $$
-  \begin{aligned}
-  \frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}X_{2,i}-\bar{X}_{1,n}\bar{X}_{2,n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
-  &\rightarrow _{p}\frac{\E{X_{1,i}X_{2,i}} -\E{X_{1,i}} \E{X_{2,i}}}{\E{X_{1,i}^{2}}-\left( \E{X_{1,i}}\right) ^{2}} \\
-  &= \frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.
-  \end{aligned}
-  $$
-
-## Omitted variable bias formula
-
-- We have
-
-  $$
-  \begin{aligned}
-  \tilde{\beta}_{1,n} &= \beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \\
-  &\rightarrow _{p}\beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}+\frac{0}{\Var{X_{1,i}}} \\
-  &= \beta _{1}+\beta _{2}\frac{\Cov{X_{1,i},X_{2,i}}}{\Var{X_{1,i}}}.
-  \end{aligned}
-  $$
-
-- Thus, $\tilde{\beta}_{1,n}$ is **inconsistent** unless:
+- $\tilde{\beta}_{1,n}$ is **inconsistent** unless:
 
   1. $\beta _{2}=0$ (the model is correctly specified).
 
@@ -433,7 +398,7 @@ $$
 
 - We say that $W_{n}$ has an **asymptotically** normal distribution if its **CDF** converges to a **normal CDF**.
 
-- Let $W$ be any random variable with a normal $N\left( 0,\sigma^{2}\right)$ distribution. We say that $W_{n}$ has an asymptotically normal distribution if for all $x\in \mathbb{R}$:
+- Let $W$ be any random variable with a normal $N\left( 0,\sigma^{2}\right)$ distribution and let $F$ denote its CDF. We say that $W_{n}$ has an asymptotically normal distribution if for all $x\in \mathbb{R}$:
 
   $$
   F_{n}\left( x\right) =P\left( W_{n}\leq x\right) \rightarrow P\left( W\leq x\right) =F\left( x\right) \text{ as }n\rightarrow \infty .

@@ -1154,9 +1154,9 @@ Vadim Marmer, UBC
 <ul>
 <li class="fragment"><p>The OLS estimator <span class="math inline">\hat{\beta}</span> has desirable properties:</p>
 <ul>
-<li class="fragment"><p><span class="math inline">\hat{\beta}</span> is unbiased if the errors are <strong>strongly exogenous</strong>: <span class="math inline">\mathrm{E}\left[U \mid X\right] =0.</span></p></li>
+<li class="fragment"><p><span class="math inline">\hat{\beta}</span> is unbiased if the errors are <strong>strongly exogenous</strong>: <span class="math inline">\mathrm{E}\left[U_i \mid \mathbf{X}\right] =0.</span></p></li>
 <li class="fragment"><p>If in addition the errors are <strong>homoskedastic</strong>, then <span class="math inline">\widehat{\mathrm{Var}}\left(\hat{\beta}\right)=s^{2}/\sum_{i=1}^{n}\left( X_{i}-\bar{X}\right) ^{2}</span> is an unbiased estimator of the conditional variance of <span class="math inline">\hat{\beta}</span>.</p></li>
-<li class="fragment"><p>If in addition the errors are <strong>normally</strong> distributed (given <span class="math inline">X</span>), then <span class="math inline">T=\left( \hat{\beta}-\beta \right) /\sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}\right)}</span> has a <span class="math inline">t</span> distribution which can be used for hypothesis testing.</p></li>
+<li class="fragment"><p>If in addition the errors are <strong>normally</strong> distributed (given <span class="math inline">\mathbf{X}</span>), then <span class="math inline">T=\left( \hat{\beta}-\beta \right) /\sqrt{\widehat{\mathrm{Var}}\left(\hat{\beta}\right)}</span> has a <span class="math inline">t</span> distribution which can be used for hypothesis testing.</p></li>
 </ul></li>
 </ul>
 </section>
@@ -1169,7 +1169,7 @@ Vadim Marmer, UBC
 <li class="fragment"><p>If the errors are <strong>heteroskedastic</strong>: <span class="math display">
 \mathrm{E}\left[U_{i}^{2} \mid X_{i}\right] =h\left( X_{i}\right),
 </span> the “usual” variance formula is invalid; we also do not have an unbiased estimator for the variance in this case.</p></li>
-<li class="fragment"><p>If the errors are <strong>not normally distributed</strong> conditional on <span class="math inline">X</span>, then <span class="math inline">T</span>- and <span class="math inline">F</span>-statistics do not have <span class="math inline">t</span> and <span class="math inline">F</span> distributions under the null hypothesis.</p></li>
+<li class="fragment"><p>If the errors are <strong>not normally distributed</strong> conditional on <span class="math inline">\mathbf{X}</span>, then <span class="math inline">T</span>- and <span class="math inline">F</span>-statistics do not have <span class="math inline">t</span> and <span class="math inline">F</span> distributions under the null hypothesis.</p></li>
 <li class="fragment"><p>Asymptotic (large-sample) theory allows us to derive <strong>approximate</strong> properties and distributions of estimators and test statistics by assuming that the sample size <span class="math inline">n</span> is very large.</p></li>
 </ul>
 </section>
@@ -1358,14 +1358,8 @@ g\left( \theta _{n}\right) \rightarrow _{p}g\left( \theta \right).
 <section id="denominator-converges-to-mathrmvarleftx_iright" class="slide level2">
 <h2>Denominator converges to <span class="math inline">\mathrm{Var}\left(X_i\right)</span></h2>
 <ul>
-<li class="fragment"><p>First,</p>
-<p><span class="math display">
-\begin{aligned}
-\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2}
-&amp;= \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}^{2}-2\bar{X}_{n}X_{i}+\bar{X}_{n}^{2}\right) \\
-&amp;= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\frac{1}{n}\sum_{i=1}^{n}X_{i}+\bar{X}_{n}^{2} \\
-&amp;= \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-2\bar{X}_{n}\bar{X}_{n}+\bar{X}_{n}^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
-\end{aligned}
+<li class="fragment"><p>The sample variance can be written as <span class="math display">
+\frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\bar{X}_{n}\right) ^{2} = \frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}-\bar{X}_{n}^{2}.
 </span></p></li>
 <li class="fragment"><p>By the LLN, <span class="math inline">\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\rightarrow _{p}\mathrm{E}\left[X_{i}^{2}\right]</span> and <span class="math inline">\bar{X}_{n}\rightarrow _{p}\mathrm{E}\left[X_{i}\right].</span></p></li>
 <li class="fragment"><p>By Slutsky’s Lemma, <span class="math inline">\bar{X}_{n}^{2}\rightarrow _{p}\left( \mathrm{E}\left[X_{i}\right]\right) ^{2}.</span></p></li>
@@ -1385,7 +1379,7 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\ldots +\beta _{k}X_{k,i}+U_{i},
 </span></p></li>
 </ul>
 </section>
-<section id="omitted-variables-and-ols-inconsistency" class="slide level2">
+<section id="omitted-variables-and-ols-inconsistency" class="slide level2 scrollable">
 <h2>Omitted variables and OLS inconsistency</h2>
 <ul>
 <li class="fragment"><p>Suppose that the true model has two regressors: <span class="math display">
@@ -1402,52 +1396,19 @@ Y_{i}=\beta _{0}+\beta _{1}X_{1,i}+\ldots +\beta _{k}X_{k,i}+U_{i},
 &amp;= \beta _{1}+\beta _{2}\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="inconsistency-proof-noise-term" class="slide level2">
-<h2>Inconsistency proof: noise term</h2>
+<li class="fragment"><p>Dividing numerator and denominator by <span class="math inline">n</span> and applying the LLN as before:</p>
 <ul>
-<li class="fragment"><p>From the previous slide: <span class="math display">
-\tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+<li class="fragment"><p>The noise term vanishes: <span class="math display">
+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\mathrm{Cov}\left(X_{1,i},U_{i}\right)}{\mathrm{Var}\left(X_{1,i}\right)} = 0.
 </span></p></li>
-<li class="fragment"><p>As before,</p>
-<p><span class="math display">
-\begin{aligned}
-\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &amp;= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}U_{i}-\bar{X}_{1,n}\bar{U}_{n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
-&amp;\rightarrow _{p}\frac{0}{\mathrm{E}\left[X_{1,i}^{2}\right]-\left( \mathrm{E}\left[X_{1,i}\right]\right) ^{2}} \\
-&amp;= \frac{0}{\mathrm{Var}\left(X_{1,i}\right)}=0.
-\end{aligned}
+<li class="fragment"><p>The bias term converges: <span class="math display">
+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \rightarrow _{p} \frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
 </span></p></li>
-</ul>
-</section>
-<section id="inconsistency-proof-bias-term" class="slide level2">
-<h2>Inconsistency proof: bias term</h2>
-<ul>
-<li class="fragment"><p>From the previous slide: <span class="math display">
-\tilde{\beta}_{1,n}=\beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}.
+</ul></li>
+<li class="fragment"><p>Therefore, <span class="math display">
+\tilde{\beta}_{1,n} \rightarrow _{p} \beta _{1}+\beta _{2}\frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
 </span></p></li>
-<li class="fragment"><p>However,</p>
-<p><span class="math display">
-\begin{aligned}
-\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} &amp;= \frac{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}X_{2,i}-\bar{X}_{1,n}\bar{X}_{2,n}}{\frac{1}{n}\sum_{i=1}^{n}X_{1,i}^{2}-\bar{X}_{1,n}^{2}} \\
-&amp;\rightarrow _{p}\frac{\mathrm{E}\left[X_{1,i}X_{2,i}\right] -\mathrm{E}\left[X_{1,i}\right] \mathrm{E}\left[X_{2,i}\right]}{\mathrm{E}\left[X_{1,i}^{2}\right]-\left( \mathrm{E}\left[X_{1,i}\right]\right) ^{2}} \\
-&amp;= \frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="omitted-variable-bias-formula" class="slide level2 scrollable">
-<h2>Omitted variable bias formula</h2>
-<ul>
-<li class="fragment"><p>We have</p>
-<p><span class="math display">
-\begin{aligned}
-\tilde{\beta}_{1,n} &amp;= \beta _{1}+\beta _{2}\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) X_{2,i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}}+\frac{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) U_{i}}{\frac{1}{n}\sum_{i=1}^{n}\left( X_{1,i}-\bar{X}_{1,n}\right) ^{2}} \\
-&amp;\rightarrow _{p}\beta _{1}+\beta _{2}\frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}+\frac{0}{\mathrm{Var}\left(X_{1,i}\right)} \\
-&amp;= \beta _{1}+\beta _{2}\frac{\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)}{\mathrm{Var}\left(X_{1,i}\right)}.
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>Thus, <span class="math inline">\tilde{\beta}_{1,n}</span> is <strong>inconsistent</strong> unless:</p>
+<li class="fragment"><p><span class="math inline">\tilde{\beta}_{1,n}</span> is <strong>inconsistent</strong> unless:</p>
 <ol type="1">
 <li class="fragment"><p><span class="math inline">\beta _{2}=0</span> (the model is correctly specified).</p></li>
 <li class="fragment"><p><span class="math inline">\mathrm{Cov}\left(X_{1,i},X_{2,i}\right)=0</span> (the omitted variable is <strong>uncorrelated</strong> with the included regressor).</p></li>
@@ -1506,7 +1467,7 @@ V_{i} &amp;= \beta _{2}X_{2,i}+U_{i}.
 <li class="fragment">Typically, <span class="math inline">W_{n}</span> will be a function of some estimator, such as <span class="math inline">W_{n}=\sqrt{n}\left( \hat{\beta}_{n}-\beta \right)</span>.</li>
 </ul></li>
 <li class="fragment"><p>We say that <span class="math inline">W_{n}</span> has an <strong>asymptotically</strong> normal distribution if its <strong>CDF</strong> converges to a <strong>normal CDF</strong>.</p></li>
-<li class="fragment"><p>Let <span class="math inline">W</span> be any random variable with a normal <span class="math inline">N\left( 0,\sigma^{2}\right)</span> distribution. We say that <span class="math inline">W_{n}</span> has an asymptotically normal distribution if for all <span class="math inline">x\in \mathbb{R}</span>:</p>
+<li class="fragment"><p>Let <span class="math inline">W</span> be any random variable with a normal <span class="math inline">N\left( 0,\sigma^{2}\right)</span> distribution and let <span class="math inline">F</span> denote its CDF. We say that <span class="math inline">W_{n}</span> has an asymptotically normal distribution if for all <span class="math inline">x\in \mathbb{R}</span>:</p>
 <p><span class="math display">
 F_{n}\left( x\right) =P\left( W_{n}\leq x\right) \rightarrow P\left( W\leq x\right) =F\left( x\right) \text{ as }n\rightarrow \infty .
 </span></p>
