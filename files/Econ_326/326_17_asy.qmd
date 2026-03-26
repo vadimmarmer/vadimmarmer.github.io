@@ -12,7 +12,7 @@ format:
     toc-title: "Table of Contents"
     theme: cosmo
     smooth-scroll: true
-    html-math-method: katex
+    html-math-method: mathjax
     embed-resources: true
   pdf:
     output-file: 326_17_asy.pdf
@@ -22,6 +22,9 @@ format:
     number-sections: false
     toc: false
     classoption: fleqn
+    include-in-header:
+      text: |
+        \newcommand{\fragment}[1]{#1}
   revealjs:
     output-file: 326_17_asy_slides.html
     theme: solarized
@@ -29,14 +32,14 @@ format:
     smaller: true
     slide-number: c/t
     incremental: true
-    html-math-method: katex
+    html-math-method: mathjax
+    mathjax: 3
     scrollable: true
     chalkboard: false
     self-contained: true
     transition: none
+    include-after-body: reveal_mathjax_fragments.html
 ---
-
-# Part I: Consistency
 
 ## Why we need large-sample theory
 
@@ -47,6 +50,10 @@ format:
 \gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
 \gdef\se#1{\mathrm{se}\left(#1\right)}
 :::
+
+```{=html}
+<span style="display:none">\(\newcommand{\fragment}[1]{\class{mjxfrag}{#1}}\)</span>
+```
 
 - The OLS estimator $\hat{\beta}$ has desirable properties:
 
@@ -73,6 +80,8 @@ format:
 - If the errors are **not normally distributed** conditional on $\mathbf{X}$, then $T$- and $F$-statistics do not have $t$ and $F$ distributions under the null hypothesis.
 
 - Asymptotic (large-sample) theory allows us to derive **approximate** properties and distributions of estimators and test statistics by assuming that the sample size $n$ is very large.
+
+# Part I: Consistency
 
 ## Convergence in probability and LLN
 
@@ -121,19 +130,48 @@ format:
 
 - The probability of observing an outlier (a large deviation of $X$ from its mean $\mu$) can be bounded by the variance.
 
+## Proof of Markov's inequality
+
+::: {.nonincremental}
+
+- For any event $A$, the expectation of its indicator equals the probability of the event:
+  $$
+  \E{\mathbf{1}(A)} = 1 \cdot P(A) + 0 \cdot P(A^c) = P(A).
+  $$
+
+- Define the indicator $\mathbf{1}\left(\left\vert W \right\vert \geq \varepsilon\right)$, which equals $1$ when $\left\vert W \right\vert \geq \varepsilon$ and $0$ otherwise. Then:
+
+:::
+
+$$
+\begin{aligned}
+\mathbf{1}\left(\left\vert W \right\vert \geq \varepsilon\right)
+&\fragment{{}= \mathbf{1}\left(\left\vert W \right\vert^r \geq \varepsilon^r\right)} \\
+&\fragment{{}= \mathbf{1}\!\left(\frac{\left\vert W \right\vert^r}{\varepsilon^r} \geq 1\right)} \\
+&\fragment{{}\leq \frac{\left\vert W \right\vert^r}{\varepsilon^r}} \\
+&\fragment{{}\Longrightarrow P\left(\left\vert W \right\vert \geq \varepsilon\right)
+= \E{\mathbf{1}\left(\left\vert W \right\vert \geq \varepsilon\right)}
+\leq \frac{\E{\left\vert W \right\vert^r}}{\varepsilon^r}.}
+\end{aligned}
+$$
+
 ## Proof of the LLN
 
-Fix $\varepsilon >0$ and apply Markov's inequality with $r=2:$
+::: {.nonincremental}
+
+- Fix $\varepsilon >0$ and apply Markov's inequality with $r=2:$
+
+:::
 
 $$
 \begin{aligned}
 P\left( \left\vert \bar{X}_{n}-\mu \right\vert \geq \varepsilon \right)
-&= P\left( \left\vert \frac{1}{n}\sum_{i=1}^{n}X_{i}-\mu \right\vert \geq \varepsilon \right)  \\
-&= P\left( \left\vert \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \right\vert \geq \varepsilon \right)  \\
-&\leq \frac{\E{\left( \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \right) ^{2}}}{\varepsilon ^{2}} \\
-&= \frac{1}{n^{2}\varepsilon ^{2}}\left( \sum_{i=1}^{n}\E{\left( X_{i}-\mu \right) ^{2}}+\sum_{i=1}^{n}\sum_{j\neq i}\E{\left( X_{i}-\mu \right) \left( X_{j}-\mu \right)} \right)  \\
-&= \frac{1}{n^{2}\varepsilon ^{2}}\left( \sum_{i=1}^{n}\Var{X_{i}}+\sum_{i=1}^{n}\sum_{j\neq i}\Cov{X_{i},X_{j}}\right)  \\
-&= \frac{n\sigma ^{2}}{n^{2}\varepsilon ^{2}} = \frac{\sigma ^{2}}{n\varepsilon ^{2}} \rightarrow 0 \text{ as }n\rightarrow \infty \text{ for all }\varepsilon >0.
+&\fragment{{}= P\left( \left\vert \frac{1}{n}\sum_{i=1}^{n}X_{i}-\mu \right\vert \geq \varepsilon \right)}  \\
+&\fragment{{}= P\left( \left\vert \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \right\vert \geq \varepsilon \right)}  \\
+&\fragment{{}\leq \frac{\E{\left( \frac{1}{n}\sum_{i=1}^{n}\left( X_{i}-\mu \right) \right) ^{2}}}{\varepsilon ^{2}}} \\
+&\fragment{{}= \frac{1}{n^{2}\varepsilon ^{2}}\left( \sum_{i=1}^{n}\E{\left( X_{i}-\mu \right) ^{2}}+\sum_{i=1}^{n}\sum_{j\neq i}\E{\left( X_{i}-\mu \right) \left( X_{j}-\mu \right)} \right)}  \\
+&\fragment{{}= \frac{1}{n^{2}\varepsilon ^{2}}\left( \sum_{i=1}^{n}\Var{X_{i}}+\sum_{i=1}^{n}\sum_{j\neq i}\Cov{X_{i},X_{j}}\right)}  \\
+&\fragment{{}= \frac{n\sigma ^{2}}{n^{2}\varepsilon ^{2}} = \frac{\sigma ^{2}}{n\varepsilon ^{2}} \rightarrow 0 \text{ as }n\rightarrow \infty \text{ for all }\varepsilon >0.}
 \end{aligned}
 $$
 
