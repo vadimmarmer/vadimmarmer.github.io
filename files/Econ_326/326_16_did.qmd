@@ -139,19 +139,19 @@ format:
 
   plot(c(0, 1), y_ctrl, type = "b", pch = 16, lwd = 2, col = "blue",
        xlab = "Time period", ylab = "Outcome",
-       xlim = c(-0.1, 1.3), ylim = c(3, 13),
+       xlim = c(-0.2, 1.7), ylim = c(3, 13),
        xaxt = "n", main = "Difference-in-differences")
   axis(1, at = c(0, 1), labels = c("t = 0\n(Before)", "t = 1\n(After)"))
   lines(c(0, 1), y_treat, type = "b", pch = 16, lwd = 2, col = "red")
   lines(c(0, 1), y_cf, type = "b", pch = 1, lwd = 2, col = "gray50", lty = 2)
 
   arrows(1.05, y_cf[2], 1.05, y_treat[2],
-         code = 3, length = 0.08, lwd = 1.5)
+         code = 3, length = 0.08, lwd = 1.5, col = "#008080")
   text(1.15, (y_cf[2] + y_treat[2]) / 2, expression(beta), cex = 1.3, col = "#008080")
 
-  text(1.05, y_ctrl[2], "Control", pos = 4, col = "blue", cex = 0.9)
-  text(1.05, y_treat[2] + 0.3, "Treatment", pos = 4, col = "red", cex = 0.9)
-  text(1.05, y_cf[2] - 0.3, "Counterfactual", pos = 4, col = "gray50", cex = 0.9)
+  text(1.2, y_ctrl[2], "Control", pos = 4, col = "blue", cex = 0.9)
+  text(1.2, y_treat[2], "Treatment", pos = 4, col = "red", cex = 0.9)
+  text(1.2, y_cf[2], "Counterfactual", pos = 4, col = "gray50", cex = 0.9)
 
   # gamma: baseline group difference at t = 0
   arrows(-0.05, y_ctrl[1], -0.05, y_treat[1],
@@ -159,13 +159,12 @@ format:
   text(-0.1, (y_ctrl[1] + y_treat[1]) / 2, expression(gamma), cex = 1,
        col = "purple", pos = 2)
 
-  # delta: time effect (control group change from t=0 to t=1)
-  # reference line at baseline alpha from t=0 to t=1
-  segments(0, alpha, 1, alpha, lty = 3, col = "blue", lwd = 0.8)
-  arrows(0.95, alpha, 0.95, alpha + delta,
+  # delta: time effect (control group change, under beta arrow)
+  segments(0, alpha, 1, alpha, lty = 3, col = "blue", lwd = 0.5)
+  arrows(1.05, y_ctrl[1], 1.05, y_ctrl[2],
          code = 3, length = 0.08, lwd = 1, col = "blue")
-  text(0.85, (alpha + alpha + delta) / 2, expression(delta), cex = 1,
-       col = "blue", pos = 2)
+  text(1.15, (y_ctrl[1] + y_ctrl[2]) / 2, expression(delta), cex = 1,
+       col = "blue")
   ```
 
 - We predict the counterfactual outcome for the treatment group at $t = 1$ (dashed gray line) by adding the control group's change ${\color{blue}\delta}$ to the treatment group's baseline $\alpha + {\color{purple}\gamma}$.
