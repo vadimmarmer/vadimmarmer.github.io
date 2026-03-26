@@ -1519,12 +1519,12 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <h2>Detecting anticipation and pre-trends</h2>
 <ul>
 <li class="fragment"><p>With only two time periods (as in the incinerator example), anticipation effects <strong>cannot</strong> be separately identified.</p></li>
-<li class="fragment"><p>With <strong>multiple pre-treatment periods</strong>, an <strong>event study</strong> design can help. Include leads and lags of the treatment indicator:</p>
+<li class="fragment"><p>With <strong>multiple pre-treatment periods</strong>, an <strong>event study</strong> design can help. Suppose data span periods <span class="math inline">t = -T, \ldots, -1, 0, 1, \ldots, T&#39;</span>, with treatment at <span class="math inline">t = 0</span>. Extend the DID regression by replacing the single interaction <span class="math inline">\beta(t \cdot D_i)</span> with a separate coefficient for each period:</p>
 <p><span class="math display">
-Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}[t = k] + U_{it},
-</span></p>
-<p>where <span class="math inline">k &lt; 0</span> are pre-treatment periods and <span class="math inline">k &gt; 0</span> are post-treatment periods.</p></li>
-<li class="fragment"><p>The pre-treatment coefficients <span class="math inline">\mu_k</span> for <span class="math inline">k &lt; 0</span> serve as a diagnostic:</p>
+Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+</span></p></li>
+<li class="fragment"><p>Each <span class="math inline">{\color{blue}\delta_s}</span> captures the time effect in period <span class="math inline">s</span> relative to <span class="math inline">t = 0</span> (analogous to <span class="math inline">{\color{blue}\delta}</span> in the two-period model). Each <span class="math inline">{\color{teal}\beta_s}</span> measures how the treatment group’s outcome differs from the control group in period <span class="math inline">s</span>, beyond the baseline group difference <span class="math inline">{\color{purple}\gamma}</span> and the common time effect <span class="math inline">{\color{blue}\delta_s}</span>.</p></li>
+<li class="fragment"><p>The pre-treatment coefficients <span class="math inline">\beta_s</span> for <span class="math inline">s &lt; 0</span> serve as a diagnostic:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -1532,25 +1532,111 @@ Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq 0} \mu_k \cdot D_i \cdot \mathbb{1}
 </colgroup>
 <thead>
 <tr class="header">
-<th>Pattern in <span class="math inline">\mu_k</span> for <span class="math inline">k &lt; 0</span></th>
+<th>Pattern in <span class="math inline">\beta_s</span> for <span class="math inline">s &lt; 0</span></th>
 <th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>All close to zero: <span class="math inline">\mu_{-3} \approx \mu_{-2} \approx \mu_{-1} \approx 0</span></td>
+<td>All close to zero: <span class="math inline">\beta_{-3} \approx \beta_{-2} \approx \beta_{-1} \approx 0</span></td>
 <td>Both assumptions look plausible</td>
 </tr>
 <tr class="even">
-<td>Sharp break right before treatment: <span class="math inline">\mu_{-3} \approx \mu_{-2} \approx 0</span> but <span class="math inline">\mu_{-1} \neq 0</span></td>
+<td>Sharp break right before treatment: <span class="math inline">\beta_{-3} \approx \beta_{-2} \approx 0</span> but <span class="math inline">\beta_{-1} \neq 0</span></td>
 <td><strong>Anticipation</strong>: units react to news of upcoming treatment</td>
 </tr>
 <tr class="odd">
-<td>Gradual trend across pre-periods: <span class="math inline">|\mu_{-3}| &lt; |\mu_{-2}| &lt; |\mu_{-1}|</span>, growing steadily</td>
+<td>Gradual trend across pre-periods: <span class="math inline">|\beta_{-3}| &lt; |\beta_{-2}| &lt; |\beta_{-1}|</span>, growing steadily</td>
 <td><strong>Parallel trends violation</strong>, not anticipation: groups were already diverging before treatment</td>
 </tr>
 </tbody>
 </table></li>
+</ul>
+</section>
+<section id="time-fixed-effects" class="slide level2">
+<h2>Time fixed effects</h2>
+<ul>
+<li class="fragment"><p>In the two-period model, the term <span class="math inline">{\color{blue}\delta} \cdot t</span> creates two intercepts: <span class="math inline">\alpha</span> at <span class="math inline">t = 0</span> and <span class="math inline">\alpha + {\color{blue}\delta}</span> at <span class="math inline">t = 1</span>.</p></li>
+<li class="fragment"><p>With multiple periods <span class="math inline">t = 0, 1, 2, \ldots</span>, we cannot use <span class="math inline">{\color{blue}\delta} \cdot t</span> because that forces a <strong>linear</strong> trend. Instead, include a separate dummy for each period. The regression actually estimated is:</p>
+<p><span class="math display">
+Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots + {\color{purple}\gamma} D_i + \cdots + U_{it}.
+</span></p></li>
+<li class="fragment"><p>The key property of the dummies: <span class="math inline">\mathbb{1}[t = s]</span> equals <span class="math inline">1</span> when <span class="math inline">t = s</span> and <span class="math inline">0</span> otherwise. So at any given time <span class="math inline">t</span>, <strong>all dummies are zero except one</strong>. The intercept becomes:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Period</th>
+<th>Active dummy</th>
+<th>Intercept</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">t = 0</span></td>
+<td>none (baseline)</td>
+<td><span class="math inline">\alpha</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">t = 1</span></td>
+<td><span class="math inline">\mathbb{1}[t = 1] = 1</span></td>
+<td><span class="math inline">\alpha + {\color{blue}\delta_1}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">t = 2</span></td>
+<td><span class="math inline">\mathbb{1}[t = 2] = 1</span></td>
+<td><span class="math inline">\alpha + {\color{blue}\delta_2}</span></td>
+</tr>
+</tbody>
+</table></li>
+<li class="fragment"><p>Each period gets its own intercept. These are called <strong>time fixed effects</strong>. The compact notation writes them as <span class="math inline">\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]</span>.</p></li>
+</ul>
+</section>
+<section id="individual-fixed-effects" class="slide level2">
+<h2>Individual fixed effects</h2>
+<ul>
+<li class="fragment"><p>The same idea can be applied to individuals. In the event study model, the intercept for individual <span class="math inline">i</span> is <span class="math inline">\alpha + {\color{purple}\gamma} D_i</span>. This allows only <strong>two</strong> values:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Intercept</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Control (<span class="math inline">D_i = 0</span>)</td>
+<td><span class="math inline">\alpha</span></td>
+</tr>
+<tr class="even">
+<td>Treatment (<span class="math inline">D_i = 1</span>)</td>
+<td><span class="math inline">\alpha + {\color{purple}\gamma}</span></td>
+</tr>
+</tbody>
+</table>
+<p>All individuals within the same group share the same baseline. But individuals may differ even within a group (e.g., houses near the incinerator differ in size, age, neighborhood quality).</p></li>
+<li class="fragment"><p><strong>Individual fixed effects</strong> give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression actually estimated is:</p>
+<p><span class="math display">
+Y_{it} = {\color{purple}\alpha_1} \cdot \mathbb{1}[i = 1] + {\color{purple}\alpha_2} \cdot \mathbb{1}[i = 2] + \cdots + {\color{purple}\alpha_n} \cdot \mathbb{1}[i = n] + \text{(time and treatment terms)} + U_{it}.
+</span></p>
+<p>At any given observation, only the dummy for individual <span class="math inline">i</span> is active, so the intercept is <span class="math inline">{\color{purple}\alpha_i}</span>.</p></li>
+</ul>
+</section>
+<section id="why-d_i-is-absorbed" class="slide level2">
+<h2>Why <span class="math inline">D_i</span> is absorbed</h2>
+<ul>
+<li class="fragment"><p>With individual fixed effects, can we still include <span class="math inline">{\color{purple}\gamma} D_i</span> in the regression?</p></li>
+<li class="fragment"><p><strong>No.</strong> <span class="math inline">D_i</span> is a characteristic of individual <span class="math inline">i</span> that does <strong>not change over time</strong>: a house is either near the incinerator or it is not, in every period. So <span class="math inline">D_i</span> is already fully captured by <span class="math inline">{\color{purple}\alpha_i}</span>.</p></li>
+<li class="fragment"><p>Formally, <span class="math inline">D_i</span> is a linear combination of the individual dummies (it equals <span class="math inline">1</span> for some individuals and <span class="math inline">0</span> for others). Including both <span class="math inline">{\color{purple}\alpha_i}</span> and <span class="math inline">{\color{purple}\gamma} D_i</span> would be <strong>perfect multicollinearity</strong>.</p></li>
+<li class="fragment"><p>The model with both individual and time fixed effects:</p>
+<p><span class="math display">
+Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+</span></p></li>
+<li class="fragment"><p>The interaction terms <span class="math inline">{\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s]</span> survive because they vary across <strong>both</strong> individuals and time.</p></li>
 </ul>
 
 </section>
