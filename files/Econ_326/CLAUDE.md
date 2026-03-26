@@ -127,10 +127,17 @@ Include `\Vhat` and `\se` macros in any lecture that uses estimated variances or
 - To reveal non-list content incrementally (code chunks, tables, standalone equations, figures), indent it under a bullet point so it becomes part of an incremental list item. Do **not** use `::: {.fragment}` divs.
 - **Exception**: multi-line derivations in `align*`/`aligned` environments should **not** be placed under bullet points — each equation line should not start with a bullet. Keep these as standalone display math blocks.
 
-### Color markup
-- `\color{blue}text\color{black}` → `**text**`
-- `\color{red}text\color{black}` → `**text**`
-- Inside display math: simply remove `\color{...}` commands (bold doesn't work in math)
+### Color markup (from LaTeX source)
+- `\color{blue}text\color{black}` → `**text**` (in prose)
+- `\color{red}text\color{black}` → `**text**` (in prose)
+- Inside display math: remove the original LaTeX `\color{...}` commands (these were for emphasis, not pedagogical tracking)
+
+### Color for clarity in derivations
+- Use `{\color{...}...}` in display math to help students track terms through multi-step derivations, cancellations, and decompositions.
+- KaTeX-compatible named colors: `blue`, `red`, `teal`, `purple`, `orange`, `green`. Use the brace-grouped form `{\color{blue}\delta}` so color does not bleed.
+- Assign a consistent color to each key coefficient or term within a lecture and maintain it across all slides in that lecture (equations, tables, prose references).
+- Colors are especially valuable for: tracking coefficients through algebra (e.g., which terms cancel), connecting regression parameters to causal parameters, and decomposing estimands into labeled components (e.g., ATT, bias terms).
+- Do not over-color: leave baseline/always-present terms (like intercepts) uncolored to reduce visual noise. Reserve color for terms that need tracking.
 
 ### Math environments
 - `\begin{equation*}...\end{equation*}` → `$$...$$`

@@ -145,11 +145,12 @@ format:
 
 $$
 \begin{aligned}
-\mathbf{1}\left(\left\vert W \right\vert \geq \varepsilon\right)
-&\fragment{{}= \mathbf{1}\left(\left\vert W \right\vert^r \geq \varepsilon^r\right)} \\
-&\fragment{{}= \mathbf{1}\!\left(\frac{\left\vert W \right\vert^r}{\varepsilon^r} \geq 1\right)} \\
-&\fragment{{}\leq \frac{\left\vert W \right\vert^r}{\varepsilon^r}} \\
-&\fragment{{}\Longrightarrow P\left(\left\vert W \right\vert \geq \varepsilon\right)
+&\mathbf{1}\left(\left\vert W \right\vert \geq \varepsilon\right)\\
+&\fragment{{}\quad= \mathbf{1}\left(\left\vert W \right\vert^r \geq \varepsilon^r\right)} \\
+&\fragment{{}\quad= \mathbf{1}\!\left(\frac{\left\vert W \right\vert^r}{\varepsilon^r} \geq 1\right)} \\
+&\fragment{{}\quad\leq \frac{\left\vert W \right\vert^r}{\varepsilon^r}} \\
+&\fragment{{}\Longrightarrow }\\
+&\fragment{{} P\left(\left\vert W \right\vert \geq \varepsilon\right)
 = \E{\mathbf{1}\left(\left\vert W \right\vert \geq \varepsilon\right)}
 \leq \frac{\E{\left\vert W \right\vert^r}}{\varepsilon^r}.}
 \end{aligned}
