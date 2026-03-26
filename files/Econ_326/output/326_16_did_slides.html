@@ -1152,8 +1152,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p>The <strong>difference-in-differences (DID)</strong> method compares changes over time between a treatment group and a control group.</p></li>
 </ul>
 </section>
-<section id="did-setup" class="slide level2">
-<h2>DID setup</h2>
+<section id="did-basic-setup" class="slide level2">
+<h2>DID basic setup</h2>
 <ul>
 <li class="fragment"><p>Two time periods: <span class="math inline">t \in \{0, 1\}</span> (before and after treatment).</p></li>
 <li class="fragment"><p>Two groups: <span class="math inline">D_i \in \{0, 1\}</span> (control and treatment).</p></li>
@@ -1222,8 +1222,8 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 <li class="fragment"><p><span class="math inline">{\color{blue}\delta}</span>: <strong>time effect</strong> — the change in the control group from <span class="math inline">t = 0</span> to <span class="math inline">t = 1</span>, capturing common trends.</p></li>
 <li class="fragment"><p>From the 2×2 table, the change over time for each group:</p>
 <ul>
-<li class="fragment"><strong>Treatment:</strong> <span class="math inline">\mathrm{E}\left[Y_{i1} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i0} \mid D_i = 1\right] = {\color{blue}\delta} + {\color{teal}\beta}</span>.</li>
-<li class="fragment"><strong>Control:</strong> <span class="math inline">\mathrm{E}\left[Y_{i1} \mid D_i = 0\right] - \mathrm{E}\left[Y_{i0} \mid D_i = 0\right] = {\color{blue}\delta}</span>.</li>
+<li class="fragment"><strong>Treatment:</strong> <span class="math inline">\mathrm{E}\left[Y_{i{\color{red}1}} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i{\color{red}0}} \mid D_i = 1\right] = {\color{blue}\delta} + {\color{teal}\beta}</span>.</li>
+<li class="fragment"><strong>Control:</strong> <span class="math inline">\mathrm{E}\left[Y_{i{\color{red}1}} \mid D_i = 0\right] - \mathrm{E}\left[Y_{i{\color{red}0}} \mid D_i = 0\right] = {\color{blue}\delta}</span>.</li>
 </ul></li>
 <li class="fragment"><p>Subtracting the control group’s change from the treatment group’s change:</p>
 <p><span class="math display">
@@ -1256,6 +1256,7 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 <h2>DID and potential outcomes</h2>
 <ul>
 <li class="fragment"><p>To connect DID with the potential outcomes framework, define <strong>panel potential outcomes</strong>: <span class="math inline">Y_{it}(d)</span> is the outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span> if assigned to group <span class="math inline">d \in \{0, 1\}</span>.</p></li>
+<li class="fragment"><p>Four potential outcomes: <span class="math inline">Y_{i0}(0)</span>, <span class="math inline">Y_{i1}(0)</span>, <span class="math inline">Y_{i0}(1)</span>, <span class="math inline">Y_{i1}(1)</span>.</p></li>
 <li class="fragment"><p>The observed outcome is:</p>
 <p><span class="math display">
 Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
@@ -1318,7 +1319,7 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 <ul>
 <li class="fragment"><p>The “difference in trends” term equals zero if both groups would have experienced the same change over time in the absence of treatment:</p>
 <p><span class="math display">
-{\color{blue}\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}.
+{\color{blue}\mathrm{E}\left[Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 0\right]}.
 </span></p></li>
 <li class="fragment"><p>Under parallel trends, the decomposition reduces to:</p>
 <p><span class="math display">
