@@ -200,70 +200,47 @@ format:
 
 - The system is **overidentified** ($l = 2 > m = 1$).
 
-- In Stata, use `ivregress 2sls` with options `robust` (heteroskedasticity-robust SEs) and `first` (report the first stage).
+- In R, use `ivreg()` from the `AER` package with `vcovHC(..., type = "HC1")` for heteroskedasticity-robust standard errors.
+
+```{r}
+#| echo: false
+#| message: false
+options(scipen = 999)
+library(wooldridge)
+library(AER)
+library(lmtest)
+library(sandwich)
+data(mroz)
+d <- subset(mroz, inlf == 1)
+d$expersq <- d$exper^2
+```
 
 ## Example: returns to education
 
 **First-stage regression** ($\text{Educ}$ on instruments and exogenous regressors):
 
-```
-                                                  Number of obs   =        428
-                                                  F(   4,    423) =      25.76
-                                                  Prob > F        =     0.0000
-                                                  R-squared       =     0.2115
-                                                  Adj R-squared   =     0.2040
-                                                  Root MSE        =     2.0390
-
-------------------------------------------------------------------------------
-             |               Robust
-        educ |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       exper |   .0452254   .0419107     1.08   0.281    -.0371538    .1276046
-     expersq |  -.0010091   .0013233    -0.76   0.446    -.0036101    .0015919
-    motheduc |    .157597   .0354502     4.45   0.000     .0879165    .2272776
-    fatheduc |   .1895484   .0324419     5.84   0.000      .125781    .2533159
-       _cons |    9.10264   .4241444    21.46   0.000     8.268947    9.936333
-------------------------------------------------------------------------------
+```{r}
+first_stage <- lm(educ ~ exper + expersq + motheduc + fatheduc, data = d)
+coeftest(first_stage, vcov = vcovHC(first_stage, type = "HC1"))
 ```
 
-Both instruments (motheduc, fatheduc) are statistically significant.
+Both instruments (`motheduc`, `fatheduc`) are statistically significant. First-stage $R^2 =$ `r round(summary(first_stage)$r.squared, 4)`.
 
 ## Example: returns to education
 
 **2SLS second stage:**
 
-```
-Instrumental variables (2SLS) regression               Number of obs =     428
-                                                       Wald chi2(3)  =   18.61
-                                                       Prob > chi2   =  0.0003
-                                                       R-squared     =  0.1357
-                                                       Root MSE      =  .67155
-
-------------------------------------------------------------------------------
-             |               Robust
-       lwage |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-        educ |   .0613966   .0331824     1.85   0.064    -.0036397     .126433
-       exper |   .0441704   .0154736     2.85   0.004     .0138428     .074498
-     expersq |   -.000899   .0004281    -2.10   0.036     -.001738     -.00006
-       _cons |   .0481003   .4277846     0.11   0.910    -.7903421    .8865427
-------------------------------------------------------------------------------
-Instrumented:  educ
-Instruments:   exper expersq motheduc fatheduc
+```{r}
+iv_fit <- ivreg(lwage ~ educ + exper + expersq |
+                  exper + expersq + motheduc + fatheduc, data = d)
+coeftest(iv_fit, vcov = vcovHC(iv_fit, type = "HC1"))
 ```
 
 **OLS for comparison:**
 
-```
-------------------------------------------------------------------------------
-             |               Robust
-       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-        educ |   .1074896    .013219     8.13   0.000     .0815068    .1334725
-       exper |   .0415665    .015273     2.72   0.007     .0115462    .0715868
-     expersq |  -.0008112   .0004201    -1.93   0.054    -.0016369    .0000145
-       _cons |  -.5220406   .2016505    -2.59   0.010    -.9183996   -.1256815
-------------------------------------------------------------------------------
+```{r}
+ols_fit <- lm(lwage ~ educ + exper + expersq, data = d)
+coeftest(ols_fit, vcov = vcovHC(ols_fit, type = "HC1"))
 ```
 
 The 2SLS estimate of the return to education ($\hat{\beta}_1^{2SLS} = 0.061$) is smaller than the OLS estimate ($\hat{\beta}_1^{OLS} = 0.107$), consistent with upward ability bias.
