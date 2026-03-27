@@ -1,0 +1,269 @@
+---
+title: "Lecture 20: Two-Stage Least Squares"
+subtitle: "Economics 326 — Introduction to Econometrics II"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 326_20_2SLS.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+    embed-resources: true
+  pdf:
+    output-file: 326_20_2SLS.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 326_20_2SLS_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    scrollable: true
+    chalkboard: false
+    self-contained: true
+    transition: none
+---
+
+## Multiple linear IV model
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\Vhat#1{\widehat{\mathrm{Var}}\left(#1\right)}
+\gdef\se#1{\mathrm{se}\left(#1\right)}
+:::
+
+- In practice, we often estimate models with multiple endogenous and exogenous regressors.
+
+- Example:
+  $$
+  \ln \text{Wage}_i = {\color{blue}\gamma_0 + \gamma_1 \text{Age}_i + \gamma_2 \text{Sex}_i} + {\color{red}\beta_1 \text{Educ}_i + \beta_2 \text{Children}_i} + U_i.
+  $$
+
+  - ${\color{blue}\text{Exogenous}}$ regressors: age, sex, and a constant.
+
+  - ${\color{red}\text{Endogenous}}$ regressors: education and children (family size).
+
+## Multiple linear IV model
+
+- General model:
+  $$
+  y_i = {\color{blue}\gamma_0 + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + {\color{red}\beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i}} + U_i,
+  $$
+  where
+
+  - $y_i$ is the dependent variable.
+
+  - $\gamma_0$ is the intercept: $\E{U_i} = 0$.
+
+  - ${\color{blue}X_{1,i}, \ldots, X_{k,i}}$ are $k$ **exogenous** regressors:
+    $$
+    \Cov{X_{1,i}, U_i} = \ldots = \Cov{X_{k,i}, U_i} = 0.
+    $$
+
+  - ${\color{red}Y_{1,i}, \ldots, Y_{m,i}}$ are $m$ **endogenous** regressors:
+    $$
+    \Cov{Y_{1,i}, U_i} \neq 0, \ldots, \Cov{Y_{m,i}, U_i} \neq 0.
+    $$
+
+## Identification problem
+
+- There are ${\color{red}k + 1 + m}$ unknown coefficients:
+  $$
+  y_i = {\color{red}\gamma_0} + {\color{red}\gamma_1} X_{1,i} + \ldots + {\color{red}\gamma_k} X_{k,i} + {\color{red}\beta_1} Y_{1,i} + \ldots + {\color{red}\beta_m} Y_{m,i} + U_i.
+  $$
+
+- The exogeneity conditions give only ${\color{blue}k + 1}$ equations:
+  $$
+  \E{U_i} = 0, \quad \Cov{X_{j,i}, U_i} = 0, \quad j = 1, \ldots, k.
+  $$
+
+- More unknowns than equations: the covariances between $X$'s, $Y$'s, and $y$ do not suffice to recover the coefficients.
+
+- Without additional information, the coefficients are **not identified** even at the population level.
+
+- We need **at least** $m$ additional equations!
+
+## Instrumental variables
+
+- Suppose we observe $l$ additional **exogenous** variables (IVs) ${\color{blue}Z_{1,i}, \ldots, Z_{l,i}}$.
+
+- The IVs are **excluded** from the **structural equation**:
+  $$
+  y_i = \gamma_0 + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i} + \beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i} + U_i,
+  $$
+  so there are still ${\color{red}k + 1 + m}$ structural coefficients.
+
+- Since the IVs are exogenous, we gain $l$ additional moment conditions:
+  $$
+  \Cov{Z_{j,i}, U_i} = 0, \quad j = 1, \ldots, l,
+  $$
+  bringing the total to ${\color{blue}k + 1 + l}$ equations.
+
+- **Necessary condition** for identification: ${\color{red}l \geq m}$.
+
+## First-stage equations
+
+- The IVs must also determine the endogenous regressors.
+
+- The system consists of the **structural equation** and $m$ **first-stage** (**reduced-form**) equations:
+  \begin{align*}
+  Y_{1,i} &= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
+  &\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
+  &\;\;\vdots \\
+  Y_{m,i} &= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
+  &\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
+  \end{align*}
+
+- The exogenous regressors $X$'s appear in the first-stage equations because they can be correlated with $Y$'s.
+
+- The $X$'s and $Z$'s are **uncorrelated** with all errors $U$ and $V$'s.
+
+## Order condition for identification
+
+- Necessary condition: for every endogenous regressor $Y$, there must be **at least** one excluded exogenous variable $Z$:
+  $$
+  {\color{red}l \geq m}.
+  $$
+
+- $l = m$: the system is **exactly identified**.
+
+- $l > m$: the system is **overidentified**.
+
+- $l < m$: the system is **underidentified**; the structural coefficients $\gamma$'s and $\beta$'s cannot be estimated.
+
+## 2SLS: the first stage
+
+- The first-stage equations:
+  \begin{align*}
+  Y_{1,i} &= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
+  &\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
+  &\;\;\vdots \\
+  Y_{m,i} &= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
+  &\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
+  \end{align*}
+
+- All right-hand side variables are exogenous.
+
+- The first-stage coefficients $\pi$'s can be estimated consistently by OLS, regressing each $Y$ against $Z$'s and $X$'s.
+
+## 2SLS: the first stage
+
+- Let $\hat{\pi}$'s denote the OLS estimators of $\pi$'s. Obtain the fitted values:
+  \begin{align*}
+  \hat{Y}_{1,i} &= \hat{\pi}_{0,1} + \hat{\pi}_{1,1} Z_{1,i} + \ldots + \hat{\pi}_{l,1} Z_{l,i} \\
+  &\quad + \hat{\pi}_{l+1,1} X_{1,i} + \ldots + \hat{\pi}_{l+k,1} X_{k,i}, \\
+  &\;\;\vdots \\
+  \hat{Y}_{m,i} &= \hat{\pi}_{0,m} + \hat{\pi}_{1,m} Z_{1,i} + \ldots + \hat{\pi}_{l,m} Z_{l,i} \\
+  &\quad + \hat{\pi}_{l+1,m} X_{1,i} + \ldots + \hat{\pi}_{l+k,m} X_{k,i}.
+  \end{align*}
+
+- The $\hat{Y}$'s are functions of $Z$'s and $X$'s (all exogenous), so they are asymptotically uncorrelated with the errors.
+
+## 2SLS: the second stage
+
+- In the second stage, regress (OLS) $y$ against a constant, $X$'s, and the fitted values $\hat{Y}$'s:
+  \begin{align*}
+  y_i &= \hat{\gamma}_0^{2SLS} + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} \\
+  &\quad + \hat{\beta}_1^{2SLS} \hat{Y}_{1,i} + \ldots + \hat{\beta}_m^{2SLS} \hat{Y}_{m,i} + \hat{U}_i.
+  \end{align*}
+
+- The 2SLS estimators $\hat{\gamma}_0^{2SLS}, \ldots, \hat{\gamma}_k^{2SLS}, \hat{\beta}_1^{2SLS}, \ldots, \hat{\beta}_m^{2SLS}$ are **consistent** and **asymptotically normal**.
+
+- Standard errors from naïve second-stage OLS are **incorrect**: they do not account for the estimation error in $\hat{\pi}$'s from the first stage.
+
+- Statistical packages report the corrected standard errors.
+
+## Example: returns to education
+
+- Estimate the returns to education using the MROZ dataset (Wooldridge, 2006):
+  $$
+  \ln \text{Wage}_i = \gamma_0 + \beta_1 \text{Educ}_i + \gamma_1 \text{Exper}_i + \gamma_2 \text{Exper}_i^2 + U_i.
+  $$
+
+  - **Endogenous**: $\text{Educ}$ (education).
+  - **Instruments**: $\text{MotherEduc}$ and $\text{FatherEduc}$ (parents' education).
+  - **Exogenous**: $\text{Exper}$ and $\text{Exper}^2$ (experience).
+
+- The system is **overidentified** ($l = 2 > m = 1$).
+
+- In Stata, use `ivregress 2sls` with options `robust` (heteroskedasticity-robust SEs) and `first` (report the first stage).
+
+## Example: returns to education
+
+**First-stage regression** ($\text{Educ}$ on instruments and exogenous regressors):
+
+```
+                                                  Number of obs   =        428
+                                                  F(   4,    423) =      25.76
+                                                  Prob > F        =     0.0000
+                                                  R-squared       =     0.2115
+                                                  Adj R-squared   =     0.2040
+                                                  Root MSE        =     2.0390
+
+------------------------------------------------------------------------------
+             |               Robust
+        educ |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       exper |   .0452254   .0419107     1.08   0.281    -.0371538    .1276046
+     expersq |  -.0010091   .0013233    -0.76   0.446    -.0036101    .0015919
+    motheduc |    .157597   .0354502     4.45   0.000     .0879165    .2272776
+    fatheduc |   .1895484   .0324419     5.84   0.000      .125781    .2533159
+       _cons |    9.10264   .4241444    21.46   0.000     8.268947    9.936333
+------------------------------------------------------------------------------
+```
+
+Both instruments (motheduc, fatheduc) are statistically significant.
+
+## Example: returns to education
+
+**2SLS second stage:**
+
+```
+Instrumental variables (2SLS) regression               Number of obs =     428
+                                                       Wald chi2(3)  =   18.61
+                                                       Prob > chi2   =  0.0003
+                                                       R-squared     =  0.1357
+                                                       Root MSE      =  .67155
+
+------------------------------------------------------------------------------
+             |               Robust
+       lwage |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .0613966   .0331824     1.85   0.064    -.0036397     .126433
+       exper |   .0441704   .0154736     2.85   0.004     .0138428     .074498
+     expersq |   -.000899   .0004281    -2.10   0.036     -.001738     -.00006
+       _cons |   .0481003   .4277846     0.11   0.910    -.7903421    .8865427
+------------------------------------------------------------------------------
+Instrumented:  educ
+Instruments:   exper expersq motheduc fatheduc
+```
+
+**OLS for comparison:**
+
+```
+------------------------------------------------------------------------------
+             |               Robust
+       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .1074896    .013219     8.13   0.000     .0815068    .1334725
+       exper |   .0415665    .015273     2.72   0.007     .0115462    .0715868
+     expersq |  -.0008112   .0004201    -1.93   0.054    -.0016369    .0000145
+       _cons |  -.5220406   .2016505    -2.59   0.010    -.9183996   -.1256815
+------------------------------------------------------------------------------
+```
+
+The 2SLS estimate of the return to education ($\hat{\beta}_1^{2SLS} = 0.061$) is smaller than the OLS estimate ($\hat{\beta}_1^{OLS} = 0.107$), consistent with upward ability bias.
