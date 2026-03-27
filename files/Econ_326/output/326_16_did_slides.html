@@ -1641,10 +1641,10 @@ Y_{it} &amp;= {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{pu
 \end{align*}</span></p>
 <p>Only the dummy for individual <span class="math inline">i</span> is active, so the intercept is <span class="math inline">{\color{purple}\alpha_i}</span>. Using time fixed effects <span class="math inline">{\color{blue}\lambda_t}</span> from the previous slide:</p>
 <p><span class="math display">\begin{align*}
-Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i \\
+Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{red}\cancel{{\color{purple}\gamma} D_i}} \\
 &amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
 \end{align*}</span></p></li>
-<li class="fragment"><p>But can we include both <span class="math inline">{\color{purple}\alpha_i}</span> and <span class="math inline">{\color{purple}\gamma} D_i</span>? <strong>No.</strong> <span class="math inline">D_i</span> does <strong>not change over time</strong> for any individual, so it is already captured by <span class="math inline">{\color{purple}\alpha_i}</span>. Including both would be <strong>perfect multicollinearity</strong>. Drop <span class="math inline">{\color{purple}\gamma} D_i</span>:</p>
+<li class="fragment"><p>Can we include both <span class="math inline">{\color{purple}\alpha_i}</span> and <span class="math inline">{\color{purple}\gamma} D_i</span>? <strong>No.</strong> <span class="math inline">D_i</span> does <strong>not change over time</strong> for any individual, so it is already captured by <span class="math inline">{\color{purple}\alpha_i}</span>. Including both would be <strong>perfect multicollinearity</strong>:</p>
 <p><span class="math display">\begin{align*}
 Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 &amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.

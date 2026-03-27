@@ -22,6 +22,9 @@ format:
     number-sections: false
     toc: false
     classoption: fleqn
+    include-in-header:
+      text: |
+        \usepackage{cancel}
   revealjs:
     output-file: 326_16_did_slides.html
     theme: solarized
@@ -462,11 +465,11 @@ format:
   Only the dummy for individual $i$ is active, so the intercept is ${\color{purple}\alpha_i}$. Using time fixed effects ${\color{blue}\lambda_t}$ from the previous slide:
 
   \begin{align*}
-  Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i \\
+  Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{red}\cancel{{\color{purple}\gamma} D_i}} \\
   &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   \end{align*}
 
-- But can we include both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$? **No.** $D_i$ does **not change over time** for any individual, so it is already captured by ${\color{purple}\alpha_i}$. Including both would be **perfect multicollinearity**. Drop ${\color{purple}\gamma} D_i$:
+- Can we include both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$? **No.** $D_i$ does **not change over time** for any individual, so it is already captured by ${\color{purple}\alpha_i}$. Including both would be **perfect multicollinearity**:
 
   \begin{align*}
   Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
