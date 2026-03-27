@@ -438,7 +438,14 @@ format:
   {\color{blue}\lambda_0} = \alpha, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad {\color{blue}\lambda_2} = \alpha + {\color{blue}\delta_2}, \quad \ldots
   $$
 
-  The ${\color{blue}\lambda_t}$'s are called **time fixed effects**. In this notation:
+  The ${\color{blue}\lambda_t}$'s are called **time fixed effects**. The regression with all the $\lambda$ dummies written out:
+
+  \begin{align*}
+  Y_{it} &= {\color{blue}\lambda_0} \mathbb{1}[t\!=\!0] + {\color{blue}\lambda_1} \mathbb{1}[t\!=\!1] + {\color{blue}\lambda_2} \mathbb{1}[t\!=\!2] + \cdots \\
+  &\quad + {\color{purple}\gamma} D_i + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + \cdots + U_{it}.
+  \end{align*}
+
+- At each $t$, exactly one $\lambda$-dummy equals $1$ and all others are zero. So the intercept at time $t$ is simply ${\color{blue}\lambda_t}$. In compact **fixed effects notation**:
 
   $$
   Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
