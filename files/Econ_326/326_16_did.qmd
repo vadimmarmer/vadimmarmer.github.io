@@ -49,11 +49,11 @@ format:
 \gdef\se#1{\mathrm{se}\left(#1\right)}
 :::
 
-- In the previous lecture, we estimated treatment effects from **cross-sectional** data under the assumption of selection on observables: after controlling for covariates, treatment is as good as random.
+- Previous lecture: treatment effects from **cross-sectional** data, assuming selection on observables (treatment is as good as random after controlling for covariates).
 
-- In many settings, this assumption is hard to justify. An alternative approach exploits **panel data** (repeated observations on the same units over time).
+- Often hard to justify. Alternative: exploit **panel data** (repeated observations on the same units over time).
 
-- The **difference-in-differences (DID)** method compares changes over time between a treatment group and a control group.
+- **Difference-in-differences (DID)**: compare changes over time between a treatment group and a control group.
 
 ## DID basic setup
 
@@ -61,13 +61,13 @@ format:
 
 - Two groups: $D_i \in \{0, 1\}$ (control and treatment).
 
-- Treatment occurs between periods 0 and 1, and only the treatment group ($D_i = 1$) is affected.
+- Treatment occurs between periods 0 and 1; only the treatment group ($D_i = 1$) is affected.
 
-- We observe $Y_{it}$: the outcome for individual $i$ at time $t$.
+- $Y_{it}$: outcome for individual $i$ at time $t$.
 
 ## DID regression model
 
-- The DID regression is:
+- DID regression:
 
   $$
   Y_{it} = \alpha + {\color{blue}\delta} \cdot t + {\color{purple}\gamma} D_i + {\color{teal}\beta}(t \cdot D_i) + U_{it},
@@ -75,10 +75,10 @@ format:
 
   where $\E{U_{it} \mid D_i} = 0$.
 
-- The regressors:
-  - $t$: time indicator (0 = before, 1 = after).
-  - $D_i$: group indicator (0 = control, 1 = treatment).
-  - $t \cdot D_i$: interaction term, equals 1 only for the treatment group after treatment.
+- Regressors:
+  - $t$: time (0 = before, 1 = after).
+  - $D_i$: group (0 = control, 1 = treatment).
+  - $t \cdot D_i$: interaction, equals 1 only for the treatment group after treatment.
 
 ## Interpreting the coefficients
 
@@ -102,31 +102,31 @@ format:
   | $t = 0$ | $\alpha$ | $\alpha + {\color{purple}\gamma}$ |
   | $t = 1$ | $\alpha + {\color{blue}\delta}$ | $\alpha + {\color{blue}\delta} + {\color{purple}\gamma} + {\color{teal}\beta}$ |
 
-- $\alpha$: baseline expected outcome (control group, before treatment).
-- ${\color{purple}\gamma}$: pre-existing **group difference** at baseline ($t = 0$).
-- ${\color{blue}\delta}$: **time effect** — the change in the control group from $t = 0$ to $t = 1$, capturing common trends.
+- $\alpha$: baseline (control group, $t = 0$).
+- ${\color{purple}\gamma}$: pre-existing **group difference** at $t = 0$.
+- ${\color{blue}\delta}$: **time effect** — change in the control group from $t = 0$ to $t = 1$ (common trend).
 
-- From the 2×2 table, the change over time for each group:
+- Change over time for each group:
   - **Treatment:** $\E{Y_{i{\color{red}1}} \mid D_i = 1} - \E{Y_{i{\color{red}0}} \mid D_i = 1} = {\color{blue}\delta} + {\color{teal}\beta}$.
   - **Control:** $\E{Y_{i{\color{red}1}} \mid D_i = 0} - \E{Y_{i{\color{red}0}} \mid D_i = 0} = {\color{blue}\delta}$.
 
-- Subtracting the control group's change from the treatment group's change:
+- Subtract control's change from treatment's change:
 
   $$
   ({\color{blue}\delta} + {\color{teal}\beta}) - {\color{blue}\delta} = {\color{teal}\beta}.
   $$
 
-- The DID estimand as a double difference of conditional expectations:
+- DID estimand as a double difference:
 
   \begin{align*}
   {\color{teal}\beta} &= \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.
   \end{align*}
 
-- By subtracting the control group's change, the common time trend ${\color{blue}\delta}$ cancels, isolating the treatment effect ${\color{teal}\beta}$.
+- The common trend ${\color{blue}\delta}$ cancels, isolating ${\color{teal}\beta}$.
 
 ## DID diagram
 
-- The classic DID diagram shows the control group, treatment group, and counterfactual:
+- DID diagram — control, treatment, and counterfactual:
 
   ```{r}
   #| echo: false
@@ -170,11 +170,11 @@ format:
        col = "blue")
   ```
 
-- We predict the counterfactual outcome for the treatment group at $t = 1$ (dashed gray line) by adding the control group's change ${\color{blue}\delta}$ to the treatment group's baseline $\alpha + {\color{purple}\gamma}$.
+- Counterfactual (dashed gray): treatment group's baseline $\alpha + {\color{purple}\gamma}$ plus the control group's change ${\color{blue}\delta}$.
 
 ## DID and potential outcomes
 
-- To connect DID with the potential outcomes framework, define **panel potential outcomes**: $Y_{it}(d)$ is the outcome for individual $i$ at time $t$ if assigned to group $d \in \{0, 1\}$.
+- **Panel potential outcomes**: $Y_{it}(d)$ — outcome for individual $i$ at time $t$ if assigned to group $d \in \{0, 1\}$.
 
 - Four potential outcomes: $Y_{i0}(0)$, $Y_{i1}(0)$, $Y_{i0}(1)$, $Y_{i1}(1)$.
 
@@ -191,7 +191,7 @@ format:
   | $t = 0$ | $Y_{i0}(0)$ | $Y_{i0}(1)$ |
   | $t = 1$ | $Y_{i1}(0)$ | $Y_{i1}(1)$ |
 
-- The treatment effect at time $t = 1$ for the treated group is:
+- Treatment effect on the treated at $t = 1$:
 
   $$
   {\color{teal}\text{ATT}} = {\color{teal}\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}.
@@ -230,7 +230,7 @@ format:
 
 ## Assumption 1: Parallel trends
 
-- The "difference in trends" term equals zero if both groups would have experienced the same change over time in the absence of treatment:
+- Difference in trends is zero if both groups would have experienced the same change over time absent treatment:
 
   $$
   {\color{blue}\E{Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 1} = \E{Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 0}}.
@@ -242,18 +242,18 @@ format:
   {\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{red}\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}}_{\color{red}\text{anticipation effect}}.
   $$
 
-- The parallel trends assumption cannot be directly tested because $Y_{i1}(0)$ is unobserved for the treated group.
-- If pre-treatment data for multiple periods exist, one can check whether trends were parallel before treatment.
+- Cannot be directly tested: $Y_{i1}(0)$ is unobserved for the treated group.
+- With multiple pre-treatment periods, can check whether trends were parallel before treatment.
 
 ## Assumption 2: No anticipation
 
-- The "anticipation effect" term equals zero if the outcome [at $t = 0$ (before treatment)]{style="color: red;"} is not affected by future treatment assignment:
+- Anticipation effect is zero if [pre-treatment]{style="color: red;"} outcomes are not affected by future treatment assignment:
 
   $$
   \E{Y_{i{\color{red}0}}(1) \mid D_i = 1} = \E{Y_{i{\color{red}0}}(0) \mid D_i = 1}.
   $$
 
-- Being assigned to the treatment group does not change [pre-treatment]{style="color: red;"} outcomes in expectation.
+- Treatment assignment does not change [pre-treatment]{style="color: red;"} outcomes in expectation.
 
 - Under both parallel trends and no anticipation:
 
@@ -263,9 +263,9 @@ format:
 
 ## Example: incinerator and house prices
 
-- Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts. This is an example of an **event study**: a research design that estimates the causal effect of a specific event by comparing outcomes before and after it occurs.
+- Kiel and McClain (1995): did a garbage incinerator in North Andover, MA reduce nearby house prices?
 
-- We use the `kielmc` dataset from the `wooldridge` package:
+- Data: `kielmc` from the `wooldridge` package:
 
   ```{r}
   #| echo: true
@@ -321,9 +321,9 @@ format:
   round(summary(reg_did)$coefficients, 4)
   ```
 
-- The coefficient on `y81nrinc` matches the DID computed from the 2×2 table.
+- Coefficient on `y81nrinc` matches the DID from the 2×2 table.
 
-- The estimated DID effect is $\hat{\beta} = -\$11{,}864$ (SE $= 7{,}457$, $p = 0.113$). The incinerator reduced nearby house prices, but the effect is not statistically significant at the 5% level.
+- $\hat{\beta} = -\$11{,}864$ (SE $= 7{,}457$, $p = 0.113$): negative but not significant at 5%.
 
 ## Assumptions in the incinerator example
 
@@ -333,11 +333,11 @@ format:
 
 ## DID with covariates
 
-- The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates unconditional parallel trends.
+- Basic DID requires parallel trends to hold unconditionally. If near houses are systematically different (e.g., older) and age affects price trends, the groups may follow different trajectories even without the incinerator.
 
-- Omitting age from the regression biases the estimated common trend ${\color{blue}\delta}$, which in turn biases the DID estimate ${\color{teal}\beta}$.
+- Omitting age biases ${\color{blue}\delta}$, which biases ${\color{teal}\beta}$.
 
-- Adding covariates addresses this under a weaker assumption: **parallel trends holds conditional on house age**. Among houses of the same age, near and far houses would have followed the same price trend absent the incinerator.
+- Adding covariates: **parallel trends conditional on age**. Among houses of the same age, near and far would follow the same trend.
 
   ```{r}
   #| echo: true
@@ -346,9 +346,9 @@ format:
   round(summary(reg_did_cov)$coefficients, 4)
   ```
 
-- After controlling for house age, the DID estimate is $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large and highly significant.
+- With age controls: $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large, highly significant.
 
-- The change in the estimate suggests that the basic DID was biased: omitting age biased the estimated trend, which in turn biased ${\color{teal}\hat{\beta}}$.
+- The change suggests the basic DID was biased by age-driven trend differences.
 
 ## Where does the bias come from?
 
@@ -359,11 +359,11 @@ format:
   &\quad + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}}.
   \end{align*}
 
-- **No anticipation is plausible:** the incinerator was not publicly known in 1978, so there is no reason for 1978 prices to already reflect the future incinerator.
+- **No anticipation is plausible:** incinerator not publicly known in 1978.
 
-- The bias must come from the ${\color{blue}\text{difference in trends}}$: a violation of **parallel trends**.
+- Bias must come from ${\color{blue}\text{difference in trends}}$: a **parallel trends** violation.
 
-- Houses near the incinerator are systematically older:
+- Near houses are systematically older:
 
   ```{r}
   #| echo: true
@@ -376,9 +376,9 @@ format:
           col = c("lightblue", "salmon"))
   ```
 
-- Since house age affects price trends nonlinearly, the near and far groups would have had **different price trends even without the incinerator**.
+- Age affects price trends nonlinearly, so near and far groups would have had **different price trends even without the incinerator**.
 
-- The estimated bias is approximately $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$: the age-driven trend difference partially masked the incinerator's negative effect.
+- Estimated bias: $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$ — the age-driven trend difference partially masked the incinerator's negative effect.
 
   | Assumption | Violated? | Reasoning |
   |---|---|---|
@@ -387,16 +387,16 @@ format:
 
 ## Detecting anticipation and pre-trends
 
-- With only two time periods (as in the incinerator example), anticipation effects **cannot** be separately identified.
+- With only two time periods, anticipation effects **cannot** be separately identified.
 
-- With **multiple pre-treatment periods**, an **event study** design can help. Suppose data span periods $t = -T, \ldots, -1, 0, 1, \ldots, T'$, with treatment at $t = 0$. Extend the DID regression by replacing the single interaction $\beta(t \cdot D_i)$ with a separate coefficient for each period:
+- With **multiple pre-treatment periods**, use an **event study** design. Data span $t = -T, \ldots, -1, 0, 1, \ldots, T'$, treatment at $t = 0$. Replace the single interaction $\beta(t \cdot D_i)$ with a separate coefficient per period:
 
   \begin{align*}
   Y_{it} &= \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i \\
   &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   \end{align*}
 
-- Each ${\color{blue}\delta_s}$ captures the time effect in period $s$ relative to $t = 0$ (analogous to ${\color{blue}\delta}$ in the two-period model). Each ${\color{teal}\beta_s}$ measures how the treatment group's outcome differs from the control group in period $s$, beyond the baseline group difference ${\color{purple}\gamma}$ and the common time effect ${\color{blue}\delta_s}$.
+- ${\color{blue}\delta_s}$: time effect in period $s$ relative to $t = 0$ (generalizes ${\color{blue}\delta}$). ${\color{teal}\beta_s}$: treatment-control difference in period $s$, beyond ${\color{purple}\gamma}$ and ${\color{blue}\delta_s}$.
 
 - The pre-treatment coefficients $\beta_s$ for $s < 0$ serve as a diagnostic:
 

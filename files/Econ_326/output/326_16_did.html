@@ -2316,9 +2316,9 @@ window.Quarto = {
 
 </div>
 <ul>
-<li><p>In the previous lecture, we estimated treatment effects from <strong>cross-sectional</strong> data under the assumption of selection on observables: after controlling for covariates, treatment is as good as random.</p></li>
-<li><p>In many settings, this assumption is hard to justify. An alternative approach exploits <strong>panel data</strong> (repeated observations on the same units over time).</p></li>
-<li><p>The <strong>difference-in-differences (DID)</strong> method compares changes over time between a treatment group and a control group.</p></li>
+<li><p>Previous lecture: treatment effects from <strong>cross-sectional</strong> data, assuming selection on observables (treatment is as good as random after controlling for covariates).</p></li>
+<li><p>Often hard to justify. Alternative: exploit <strong>panel data</strong> (repeated observations on the same units over time).</p></li>
+<li><p><strong>Difference-in-differences (DID)</strong>: compare changes over time between a treatment group and a control group.</p></li>
 </ul>
 </section>
 <section id="did-basic-setup" class="level2">
@@ -2326,23 +2326,23 @@ window.Quarto = {
 <ul>
 <li><p>Two time periods: <span class="math inline">t \in \{0, 1\}</span> (before and after treatment).</p></li>
 <li><p>Two groups: <span class="math inline">D_i \in \{0, 1\}</span> (control and treatment).</p></li>
-<li><p>Treatment occurs between periods 0 and 1, and only the treatment group (<span class="math inline">D_i = 1</span>) is affected.</p></li>
-<li><p>We observe <span class="math inline">Y_{it}</span>: the outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span>.</p></li>
+<li><p>Treatment occurs between periods 0 and 1; only the treatment group (<span class="math inline">D_i = 1</span>) is affected.</p></li>
+<li><p><span class="math inline">Y_{it}</span>: outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span>.</p></li>
 </ul>
 </section>
 <section id="did-regression-model" class="level2">
 <h2 class="anchored" data-anchor-id="did-regression-model">DID regression model</h2>
 <ul>
-<li><p>The DID regression is:</p>
+<li><p>DID regression:</p>
 <p><span class="math display">
 Y_{it} = \alpha + {\color{blue}\delta} \cdot t + {\color{purple}\gamma} D_i + {\color{teal}\beta}(t \cdot D_i) + U_{it},
 </span></p>
 <p>where <span class="math inline">\mathrm{E}\left[U_{it} \mid D_i\right] = 0</span>.</p></li>
-<li><p>The regressors:</p>
+<li><p>Regressors:</p>
 <ul>
-<li><span class="math inline">t</span>: time indicator (0 = before, 1 = after).</li>
-<li><span class="math inline">D_i</span>: group indicator (0 = control, 1 = treatment).</li>
-<li><span class="math inline">t \cdot D_i</span>: interaction term, equals 1 only for the treatment group after treatment.</li>
+<li><span class="math inline">t</span>: time (0 = before, 1 = after).</li>
+<li><span class="math inline">D_i</span>: group (0 = control, 1 = treatment).</li>
+<li><span class="math inline">t \cdot D_i</span>: interaction, equals 1 only for the treatment group after treatment.</li>
 </ul></li>
 </ul>
 </section>
@@ -2386,29 +2386,29 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 </tr>
 </tbody>
 </table></li>
-<li><p><span class="math inline">\alpha</span>: baseline expected outcome (control group, before treatment).</p></li>
-<li><p><span class="math inline">{\color{purple}\gamma}</span>: pre-existing <strong>group difference</strong> at baseline (<span class="math inline">t = 0</span>).</p></li>
-<li><p><span class="math inline">{\color{blue}\delta}</span>: <strong>time effect</strong> — the change in the control group from <span class="math inline">t = 0</span> to <span class="math inline">t = 1</span>, capturing common trends.</p></li>
-<li><p>From the 2×2 table, the change over time for each group:</p>
+<li><p><span class="math inline">\alpha</span>: baseline (control group, <span class="math inline">t = 0</span>).</p></li>
+<li><p><span class="math inline">{\color{purple}\gamma}</span>: pre-existing <strong>group difference</strong> at <span class="math inline">t = 0</span>.</p></li>
+<li><p><span class="math inline">{\color{blue}\delta}</span>: <strong>time effect</strong> — change in the control group from <span class="math inline">t = 0</span> to <span class="math inline">t = 1</span> (common trend).</p></li>
+<li><p>Change over time for each group:</p>
 <ul>
 <li><strong>Treatment:</strong> <span class="math inline">\mathrm{E}\left[Y_{i{\color{red}1}} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i{\color{red}0}} \mid D_i = 1\right] = {\color{blue}\delta} + {\color{teal}\beta}</span>.</li>
 <li><strong>Control:</strong> <span class="math inline">\mathrm{E}\left[Y_{i{\color{red}1}} \mid D_i = 0\right] - \mathrm{E}\left[Y_{i{\color{red}0}} \mid D_i = 0\right] = {\color{blue}\delta}</span>.</li>
 </ul></li>
-<li><p>Subtracting the control group’s change from the treatment group’s change:</p>
+<li><p>Subtract control’s change from treatment’s change:</p>
 <p><span class="math display">
 ({\color{blue}\delta} + {\color{teal}\beta}) - {\color{blue}\delta} = {\color{teal}\beta}.
 </span></p></li>
-<li><p>The DID estimand as a double difference of conditional expectations:</p>
+<li><p>DID estimand as a double difference:</p>
 <p><span class="math display">\begin{align*}
 {\color{teal}\beta} &amp;= \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1} - Y_{i0} \mid D_i = 0\right].
 \end{align*}</span></p></li>
-<li><p>By subtracting the control group’s change, the common time trend <span class="math inline">{\color{blue}\delta}</span> cancels, isolating the treatment effect <span class="math inline">{\color{teal}\beta}</span>.</p></li>
+<li><p>The common trend <span class="math inline">{\color{blue}\delta}</span> cancels, isolating <span class="math inline">{\color{teal}\beta}</span>.</p></li>
 </ul>
 </section>
 <section id="did-diagram" class="level2">
 <h2 class="anchored" data-anchor-id="did-diagram">DID diagram</h2>
 <ul>
-<li><p>The classic DID diagram shows the control group, treatment group, and counterfactual:</p>
+<li><p>DID diagram — control, treatment, and counterfactual:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2418,13 +2418,13 @@ t = 1,\ D_i = 1: \quad &amp; \mathrm{E}\left[Y_{i1} \mid D_i = 1\right] = \alpha
 </div>
 </div>
 </div></li>
-<li><p>We predict the counterfactual outcome for the treatment group at <span class="math inline">t = 1</span> (dashed gray line) by adding the control group’s change <span class="math inline">{\color{blue}\delta}</span> to the treatment group’s baseline <span class="math inline">\alpha + {\color{purple}\gamma}</span>.</p></li>
+<li><p>Counterfactual (dashed gray): treatment group’s baseline <span class="math inline">\alpha + {\color{purple}\gamma}</span> plus the control group’s change <span class="math inline">{\color{blue}\delta}</span>.</p></li>
 </ul>
 </section>
 <section id="did-and-potential-outcomes" class="level2">
 <h2 class="anchored" data-anchor-id="did-and-potential-outcomes">DID and potential outcomes</h2>
 <ul>
-<li><p>To connect DID with the potential outcomes framework, define <strong>panel potential outcomes</strong>: <span class="math inline">Y_{it}(d)</span> is the outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span> if assigned to group <span class="math inline">d \in \{0, 1\}</span>.</p></li>
+<li><p><strong>Panel potential outcomes</strong>: <span class="math inline">Y_{it}(d)</span> — outcome for individual <span class="math inline">i</span> at time <span class="math inline">t</span> if assigned to group <span class="math inline">d \in \{0, 1\}</span>.</p></li>
 <li><p>Four potential outcomes: <span class="math inline">Y_{i0}(0)</span>, <span class="math inline">Y_{i1}(0)</span>, <span class="math inline">Y_{i0}(1)</span>, <span class="math inline">Y_{i1}(1)</span>.</p></li>
 <li><p>The observed outcome is:</p>
 <p><span class="math display">
@@ -2452,7 +2452,7 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 </tr>
 </tbody>
 </table></li>
-<li><p>The treatment effect at time <span class="math inline">t = 1</span> for the treated group is:</p>
+<li><p>Treatment effect on the treated at <span class="math inline">t = 1</span>:</p>
 <p><span class="math display">
 {\color{teal}\text{ATT}} = {\color{teal}\mathrm{E}\left[Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1\right]}.
 </span></p>
@@ -2486,7 +2486,7 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 <section id="assumption-1-parallel-trends" class="level2">
 <h2 class="anchored" data-anchor-id="assumption-1-parallel-trends">Assumption 1: Parallel trends</h2>
 <ul>
-<li><p>The “difference in trends” term equals zero if both groups would have experienced the same change over time in the absence of treatment:</p>
+<li><p>Difference in trends is zero if both groups would have experienced the same change over time absent treatment:</p>
 <p><span class="math display">
 {\color{blue}\mathrm{E}\left[Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 0\right]}.
 </span></p></li>
@@ -2494,18 +2494,18 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 <p><span class="math display">
 {\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{red}\mathrm{E}\left[Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1\right]}}_{\color{red}\text{anticipation effect}}.
 </span></p></li>
-<li><p>The parallel trends assumption cannot be directly tested because <span class="math inline">Y_{i1}(0)</span> is unobserved for the treated group.</p></li>
-<li><p>If pre-treatment data for multiple periods exist, one can check whether trends were parallel before treatment.</p></li>
+<li><p>Cannot be directly tested: <span class="math inline">Y_{i1}(0)</span> is unobserved for the treated group.</p></li>
+<li><p>With multiple pre-treatment periods, can check whether trends were parallel before treatment.</p></li>
 </ul>
 </section>
 <section id="assumption-2-no-anticipation" class="level2">
 <h2 class="anchored" data-anchor-id="assumption-2-no-anticipation">Assumption 2: No anticipation</h2>
 <ul>
-<li><p>The “anticipation effect” term equals zero if the outcome <span style="color: red;">at <span class="math inline">t = 0</span> (before treatment)</span> is not affected by future treatment assignment:</p>
+<li><p>Anticipation effect is zero if <span style="color: red;">pre-treatment</span> outcomes are not affected by future treatment assignment:</p>
 <p><span class="math display">
 \mathrm{E}\left[Y_{i{\color{red}0}}(1) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i{\color{red}0}}(0) \mid D_i = 1\right].
 </span></p></li>
-<li><p>Being assigned to the treatment group does not change <span style="color: red;">pre-treatment</span> outcomes in expectation.</p></li>
+<li><p>Treatment assignment does not change <span style="color: red;">pre-treatment</span> outcomes in expectation.</p></li>
 <li><p>Under both parallel trends and no anticipation:</p>
 <p><span class="math display">
 {\color{teal}\beta} = {\color{teal}\text{ATT}}.
@@ -2515,8 +2515,8 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 <section id="example-incinerator-and-house-prices" class="level2">
 <h2 class="anchored" data-anchor-id="example-incinerator-and-house-prices">Example: incinerator and house prices</h2>
 <ul>
-<li><p>Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts. This is an example of an <strong>event study</strong>: a research design that estimates the causal effect of a specific event by comparing outcomes before and after it occurs.</p></li>
-<li><p>We use the <code>kielmc</code> dataset from the <code>wooldridge</code> package:</p>
+<li><p>Kiel and McClain (1995): did a garbage incinerator in North Andover, MA reduce nearby house prices?</p></li>
+<li><p>Data: <code>kielmc</code> from the <code>wooldridge</code> package:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wooldridge)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(kielmc)</span>
@@ -2596,8 +2596,8 @@ nearinc     -18824.37   4875.322 -3.8612   0.0001
 y81nrinc    -11863.90   7456.646 -1.5911   0.1126</code></pre>
 </div>
 </div></li>
-<li><p>The coefficient on <code>y81nrinc</code> matches the DID computed from the 2×2 table.</p></li>
-<li><p>The estimated DID effect is <span class="math inline">\hat{\beta} = -\$11{,}864</span> (SE <span class="math inline">= 7{,}457</span>, <span class="math inline">p = 0.113</span>). The incinerator reduced nearby house prices, but the effect is not statistically significant at the 5% level.</p></li>
+<li><p>Coefficient on <code>y81nrinc</code> matches the DID from the 2×2 table.</p></li>
+<li><p><span class="math inline">\hat{\beta} = -\$11{,}864</span> (SE <span class="math inline">= 7{,}457</span>, <span class="math inline">p = 0.113</span>): negative but not significant at 5%.</p></li>
 </ul>
 </section>
 <section id="assumptions-in-the-incinerator-example" class="level2">
@@ -2610,9 +2610,9 @@ y81nrinc    -11863.90   7456.646 -1.5911   0.1126</code></pre>
 <section id="did-with-covariates" class="level2">
 <h2 class="anchored" data-anchor-id="did-with-covariates">DID with covariates</h2>
 <ul>
-<li><p>The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates unconditional parallel trends.</p></li>
-<li><p>Omitting age from the regression biases the estimated common trend <span class="math inline">{\color{blue}\delta}</span>, which in turn biases the DID estimate <span class="math inline">{\color{teal}\beta}</span>.</p></li>
-<li><p>Adding covariates addresses this under a weaker assumption: <strong>parallel trends holds conditional on house age</strong>. Among houses of the same age, near and far houses would have followed the same price trend absent the incinerator.</p>
+<li><p>Basic DID requires parallel trends to hold unconditionally. If near houses are systematically different (e.g., older) and age affects price trends, the groups may follow different trajectories even without the incinerator.</p></li>
+<li><p>Omitting age biases <span class="math inline">{\color{blue}\delta}</span>, which biases <span class="math inline">{\color{teal}\beta}</span>.</p></li>
+<li><p>Adding covariates: <strong>parallel trends conditional on age</strong>. Among houses of the same age, near and far would follow the same trend.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>reg_did_cov <span class="ot">&lt;-</span> <span class="fu">lm</span>(rprice <span class="sc">~</span> y81 <span class="sc">+</span> nearinc <span class="sc">+</span> y81nrinc <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>),</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> kielmc)</span>
@@ -2627,8 +2627,8 @@ age          -1494.4240   131.8603 -11.3334   0.0000
 I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 </div>
 </div></li>
-<li><p>After controlling for house age, the DID estimate is <span class="math inline">\hat{\beta} = -\$21{,}920</span> (SE <span class="math inline">= 6{,}360</span>, <span class="math inline">p = 0.0006</span>) — nearly twice as large and highly significant.</p></li>
-<li><p>The change in the estimate suggests that the basic DID was biased: omitting age biased the estimated trend, which in turn biased <span class="math inline">{\color{teal}\hat{\beta}}</span>.</p></li>
+<li><p>With age controls: <span class="math inline">\hat{\beta} = -\$21{,}920</span> (SE <span class="math inline">= 6{,}360</span>, <span class="math inline">p = 0.0006</span>) — nearly twice as large, highly significant.</p></li>
+<li><p>The change suggests the basic DID was biased by age-driven trend differences.</p></li>
 </ul>
 </section>
 <section id="where-does-the-bias-come-from" class="level2">
@@ -2639,9 +2639,9 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 {\color{teal}\beta} &amp;= {\color{teal}\text{ATT}} \\
 &amp;\quad + \underbrace{{\color{blue}\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}}_{\color{blue}\text{difference in trends}}.
 \end{align*}</span></p></li>
-<li><p><strong>No anticipation is plausible:</strong> the incinerator was not publicly known in 1978, so there is no reason for 1978 prices to already reflect the future incinerator.</p></li>
-<li><p>The bias must come from the <span class="math inline">{\color{blue}\text{difference in trends}}</span>: a violation of <strong>parallel trends</strong>.</p></li>
-<li><p>Houses near the incinerator are systematically older:</p>
+<li><p><strong>No anticipation is plausible:</strong> incinerator not publicly known in 1978.</p></li>
+<li><p>Bias must come from <span class="math inline">{\color{blue}\text{difference in trends}}</span>: a <strong>parallel trends</strong> violation.</p></li>
+<li><p>Near houses are systematically older:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(age <span class="sc">~</span> nearinc, <span class="at">data =</span> kielmc,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;Far (D=0)&quot;</span>, <span class="st">&quot;Near (D=1)&quot;</span>),</span>
@@ -2655,8 +2655,8 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 </div>
 </div>
 </div></li>
-<li><p>Since house age affects price trends nonlinearly, the near and far groups would have had <strong>different price trends even without the incinerator</strong>.</p></li>
-<li><p>The estimated bias is approximately <span class="math inline">-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056</span>: the age-driven trend difference partially masked the incinerator’s negative effect.</p>
+<li><p>Age affects price trends nonlinearly, so near and far groups would have had <strong>different price trends even without the incinerator</strong>.</p></li>
+<li><p>Estimated bias: <span class="math inline">-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056</span> — the age-driven trend difference partially masked the incinerator’s negative effect.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -2688,13 +2688,13 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <section id="detecting-anticipation-and-pre-trends" class="level2">
 <h2 class="anchored" data-anchor-id="detecting-anticipation-and-pre-trends">Detecting anticipation and pre-trends</h2>
 <ul>
-<li><p>With only two time periods (as in the incinerator example), anticipation effects <strong>cannot</strong> be separately identified.</p></li>
-<li><p>With <strong>multiple pre-treatment periods</strong>, an <strong>event study</strong> design can help. Suppose data span periods <span class="math inline">t = -T, \ldots, -1, 0, 1, \ldots, T&#39;</span>, with treatment at <span class="math inline">t = 0</span>. Extend the DID regression by replacing the single interaction <span class="math inline">\beta(t \cdot D_i)</span> with a separate coefficient for each period:</p>
+<li><p>With only two time periods, anticipation effects <strong>cannot</strong> be separately identified.</p></li>
+<li><p>With <strong>multiple pre-treatment periods</strong>, use an <strong>event study</strong> design. Data span <span class="math inline">t = -T, \ldots, -1, 0, 1, \ldots, T&#39;</span>, treatment at <span class="math inline">t = 0</span>. Replace the single interaction <span class="math inline">\beta(t \cdot D_i)</span> with a separate coefficient per period:</p>
 <p><span class="math display">\begin{align*}
 Y_{it} &amp;= \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i \\
 &amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
 \end{align*}</span></p></li>
-<li><p>Each <span class="math inline">{\color{blue}\delta_s}</span> captures the time effect in period <span class="math inline">s</span> relative to <span class="math inline">t = 0</span> (analogous to <span class="math inline">{\color{blue}\delta}</span> in the two-period model). Each <span class="math inline">{\color{teal}\beta_s}</span> measures how the treatment group’s outcome differs from the control group in period <span class="math inline">s</span>, beyond the baseline group difference <span class="math inline">{\color{purple}\gamma}</span> and the common time effect <span class="math inline">{\color{blue}\delta_s}</span>.</p></li>
+<li><p><span class="math inline">{\color{blue}\delta_s}</span>: time effect in period <span class="math inline">s</span> relative to <span class="math inline">t = 0</span> (generalizes <span class="math inline">{\color{blue}\delta}</span>). <span class="math inline">{\color{teal}\beta_s}</span>: treatment-control difference in period <span class="math inline">s</span>, beyond <span class="math inline">{\color{purple}\gamma}</span> and <span class="math inline">{\color{blue}\delta_s}</span>.</p></li>
 <li><p>The pre-treatment coefficients <span class="math inline">\beta_s</span> for <span class="math inline">s &lt; 0</span> serve as a diagnostic:</p>
 <table class="caption-top table">
 <colgroup>
@@ -3348,11 +3348,11 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>\gdef\se#1{\mathrm{se}\left(#1\right)}</span>
 <span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In the previous lecture, we estimated treatment effects from **cross-sectional** data under the assumption of selection on observables: after controlling for covariates, treatment is as good as random.</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Previous lecture: treatment effects from **cross-sectional** data, assuming selection on observables (treatment is as good as random after controlling for covariates).</span>
 <span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In many settings, this assumption is hard to justify. An alternative approach exploits **panel data** (repeated observations on the same units over time).</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Often hard to justify. Alternative: exploit **panel data** (repeated observations on the same units over time).</span>
 <span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **difference-in-differences (DID)** method compares changes over time between a treatment group and a control group.</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Difference-in-differences (DID)**: compare changes over time between a treatment group and a control group.</span>
 <span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID basic setup</span></span>
 <span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a></span>
@@ -3360,13 +3360,13 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Two groups: $D_i \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$ (control and treatment).</span>
 <span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treatment occurs between periods 0 and 1, and only the treatment group ($D_i = 1$) is affected.</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treatment occurs between periods 0 and 1; only the treatment group ($D_i = 1$) is affected.</span>
 <span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We observe $Y_{it}$: the outcome for individual $i$ at time $t$.</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Y_{it}$: outcome for individual $i$ at time $t$.</span>
 <span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID regression model</span></span>
 <span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The DID regression is:</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DID regression:</span>
 <span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>  Y_{it} = \alpha + {\color{blue}\delta} \cdot t + {\color{purple}\gamma} D_i + {\color{teal}\beta}(t \cdot D_i) + U_{it},</span>
@@ -3374,10 +3374,10 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>  where $\E{U_{it} \mid D_i} = 0$.</span>
 <span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The regressors:</span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$t$: time indicator (0 = before, 1 = after).</span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$D_i$: group indicator (0 = control, 1 = treatment).</span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$t \cdot D_i$: interaction term, equals 1 only for the treatment group after treatment.</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Regressors:</span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$t$: time (0 = before, 1 = after).</span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$D_i$: group (0 = control, 1 = treatment).</span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$t \cdot D_i$: interaction, equals 1 only for the treatment group after treatment.</span>
 <span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interpreting the coefficients</span></span>
 <span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a></span>
@@ -3401,31 +3401,31 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>  | $t = 0$ | $\alpha$ | $\alpha + {\color{purple}\gamma}$ |</span>
 <span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>  | $t = 1$ | $\alpha + {\color{blue}\delta}$ | $\alpha + {\color{blue}\delta} + {\color{purple}\gamma} + {\color{teal}\beta}$ |</span>
 <span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\alpha$: baseline expected outcome (control group, before treatment).</span>
-<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>${\color{purple}\gamma}$: pre-existing **group difference** at baseline ($t = 0$).</span>
-<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>${\color{blue}\delta}$: **time effect** — the change in the control group from $t = 0$ to $t = 1$, capturing common trends.</span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\alpha$: baseline (control group, $t = 0$).</span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>${\color{purple}\gamma}$: pre-existing **group difference** at $t = 0$.</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>${\color{blue}\delta}$: **time effect** — change in the control group from $t = 0$ to $t = 1$ (common trend).</span>
 <span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>From the 2×2 table, the change over time for each group:</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Change over time for each group:</span>
 <span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>**Treatment:** $\E{Y_{i{\color{red}1}} \mid D_i = 1} - \E{Y_{i{\color{red}0}} \mid D_i = 1} = {\color{blue}\delta} + {\color{teal}\beta}$.</span>
 <span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>**Control:** $\E{Y_{i{\color{red}1}} \mid D_i = 0} - \E{Y_{i{\color{red}0}} \mid D_i = 0} = {\color{blue}\delta}$.</span>
 <span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Subtracting the control group&#39;s change from the treatment group&#39;s change:</span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Subtract control&#39;s change from treatment&#39;s change:</span>
 <span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>  ({\color{blue}\delta} + {\color{teal}\beta}) - {\color{blue}\delta} = {\color{teal}\beta}.</span>
 <span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The DID estimand as a double difference of conditional expectations:</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DID estimand as a double difference:</span>
 <span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
 <span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>  {\color{teal}\beta} &amp;= \E{Y_{i1} - Y_{i0} \mid D_i = 1} - \E{Y_{i1} - Y_{i0} \mid D_i = 0}.</span>
 <span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>By subtracting the control group&#39;s change, the common time trend ${\color{blue}\delta}$ cancels, isolating the treatment effect ${\color{teal}\beta}$.</span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The common trend ${\color{blue}\delta}$ cancels, isolating ${\color{teal}\beta}$.</span>
 <span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID diagram</span></span>
 <span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The classic DID diagram shows the control group, treatment group, and counterfactual:</span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DID diagram — control, treatment, and counterfactual:</span>
 <span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: false</span></span>
@@ -3469,11 +3469,11 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
 <span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We predict the counterfactual outcome for the treatment group at $t = 1$ (dashed gray line) by adding the control group&#39;s change ${\color{blue}\delta}$ to the treatment group&#39;s baseline $\alpha + {\color{purple}\gamma}$.</span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Counterfactual (dashed gray): treatment group&#39;s baseline $\alpha + {\color{purple}\gamma}$ plus the control group&#39;s change ${\color{blue}\delta}$.</span>
 <span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID and potential outcomes</span></span>
 <span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>To connect DID with the potential outcomes framework, define **panel potential outcomes**: $Y_{it}(d)$ is the outcome for individual $i$ at time $t$ if assigned to group $d \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$.</span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Panel potential outcomes**: $Y_{it}(d)$ — outcome for individual $i$ at time $t$ if assigned to group $d \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$.</span>
 <span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Four potential outcomes: $Y_{i0}(0)$, $Y_{i1}(0)$, $Y_{i0}(1)$, $Y_{i1}(1)$.</span>
 <span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a></span>
@@ -3490,7 +3490,7 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a>  | $t = 0$ | $Y_{i0}(0)$ | $Y_{i0}(1)$ |</span>
 <span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a>  | $t = 1$ | $Y_{i1}(0)$ | $Y_{i1}(1)$ |</span>
 <span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The treatment effect at time $t = 1$ for the treated group is:</span>
+<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treatment effect on the treated at $t = 1$:</span>
 <span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a>  {\color{teal}\text{ATT}} = {\color{teal}\E{Y_{i1}(1) - Y_{i1}(0) \mid D_i = 1}}.</span>
@@ -3529,7 +3529,7 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumption 1: Parallel trends</span></span>
 <span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The &quot;difference in trends&quot; term equals zero if both groups would have experienced the same change over time in the absence of treatment:</span>
+<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Difference in trends is zero if both groups would have experienced the same change over time absent treatment:</span>
 <span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a>  {\color{blue}\E{Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 1} = \E{Y_{i{\color{red}1}}(0) - Y_{i{\color{red}0}}(0) \mid D_i = 0}}.</span>
@@ -3541,18 +3541,18 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a>  {\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{red}\E{Y_{i0}(0) - Y_{i0}(1) \mid D_i = 1}}}_{\color{red}\text{anticipation effect}}.</span>
 <span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The parallel trends assumption cannot be directly tested because $Y_{i1}(0)$ is unobserved for the treated group.</span>
-<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If pre-treatment data for multiple periods exist, one can check whether trends were parallel before treatment.</span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cannot be directly tested: $Y_{i1}(0)$ is unobserved for the treated group.</span>
+<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With multiple pre-treatment periods, can check whether trends were parallel before treatment.</span>
 <span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumption 2: No anticipation</span></span>
 <span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The &quot;anticipation effect&quot; term equals zero if the outcome <span class="co">[</span><span class="ot">at $t = 0$ (before treatment)</span><span class="co">]</span>{style=&quot;color: red;&quot;} is not affected by future treatment assignment:</span>
+<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Anticipation effect is zero if <span class="co">[</span><span class="ot">pre-treatment</span><span class="co">]</span>{style=&quot;color: red;&quot;} outcomes are not affected by future treatment assignment:</span>
 <span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a>  \E{Y_{i{\color{red}0}}(1) \mid D_i = 1} = \E{Y_{i{\color{red}0}}(0) \mid D_i = 1}.</span>
 <span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Being assigned to the treatment group does not change <span class="co">[</span><span class="ot">pre-treatment</span><span class="co">]</span>{style=&quot;color: red;&quot;} outcomes in expectation.</span>
+<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treatment assignment does not change <span class="co">[</span><span class="ot">pre-treatment</span><span class="co">]</span>{style=&quot;color: red;&quot;} outcomes in expectation.</span>
 <span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Under both parallel trends and no anticipation:</span>
 <span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a></span>
@@ -3562,9 +3562,9 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: incinerator and house prices</span></span>
 <span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kiel and McClain (1995) studied how the construction of a garbage incinerator affected nearby house prices in North Andover, Massachusetts. This is an example of an **event study**: a research design that estimates the causal effect of a specific event by comparing outcomes before and after it occurs.</span>
+<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kiel and McClain (1995): did a garbage incinerator in North Andover, MA reduce nearby house prices?</span>
 <span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We use the <span class="in">`kielmc`</span> dataset from the <span class="in">`wooldridge`</span> package:</span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Data: <span class="in">`kielmc`</span> from the <span class="in">`wooldridge`</span> package:</span>
 <span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
@@ -3620,9 +3620,9 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">summary</span>(reg_did)<span class="sc">$</span>coefficients, <span class="dv">4</span>)</span>
 <span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb16-323"><a href="#cb16-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The coefficient on <span class="in">`y81nrinc`</span> matches the DID computed from the 2×2 table.</span>
+<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Coefficient on <span class="in">`y81nrinc`</span> matches the DID from the 2×2 table.</span>
 <span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated DID effect is $\hat{\beta} = -\$11{,}864$ (SE $= 7{,}457$, $p = 0.113$). The incinerator reduced nearby house prices, but the effect is not statistically significant at the 5% level.</span>
+<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\hat{\beta} = -\$11{,}864$ (SE $= 7{,}457$, $p = 0.113$): negative but not significant at 5%.</span>
 <span id="cb16-327"><a href="#cb16-327" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assumptions in the incinerator example</span></span>
 <span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a></span>
@@ -3632,11 +3632,11 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a><span class="fu">## DID with covariates</span></span>
 <span id="cb16-335"><a href="#cb16-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The basic DID estimator is unbiased only if the parallel trends assumption holds unconditionally. If houses near the incinerator site are systematically different from those farther away (e.g., older), and house age affects price trends, then near and far houses may follow different price trajectories even without the incinerator. This violates unconditional parallel trends.</span>
+<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Basic DID requires parallel trends to hold unconditionally. If near houses are systematically different (e.g., older) and age affects price trends, the groups may follow different trajectories even without the incinerator.</span>
 <span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Omitting age from the regression biases the estimated common trend ${\color{blue}\delta}$, which in turn biases the DID estimate ${\color{teal}\beta}$.</span>
+<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Omitting age biases ${\color{blue}\delta}$, which biases ${\color{teal}\beta}$.</span>
 <span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding covariates addresses this under a weaker assumption: **parallel trends holds conditional on house age**. Among houses of the same age, near and far houses would have followed the same price trend absent the incinerator.</span>
+<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Adding covariates: **parallel trends conditional on age**. Among houses of the same age, near and far would follow the same trend.</span>
 <span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-342"><a href="#cb16-342" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb16-343"><a href="#cb16-343" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
@@ -3645,9 +3645,9 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">summary</span>(reg_did_cov)<span class="sc">$</span>coefficients, <span class="dv">4</span>)</span>
 <span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>After controlling for house age, the DID estimate is $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large and highly significant.</span>
+<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With age controls: $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large, highly significant.</span>
 <span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The change in the estimate suggests that the basic DID was biased: omitting age biased the estimated trend, which in turn biased ${\color{teal}\hat{\beta}}$.</span>
+<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The change suggests the basic DID was biased by age-driven trend differences.</span>
 <span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a><span class="fu">## Where does the bias come from?</span></span>
 <span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a></span>
@@ -3658,11 +3658,11 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-359"><a href="#cb16-359" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}}.</span>
 <span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No anticipation is plausible:** the incinerator was not publicly known in 1978, so there is no reason for 1978 prices to already reflect the future incinerator.</span>
+<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No anticipation is plausible:** incinerator not publicly known in 1978.</span>
 <span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The bias must come from the ${\color{blue}\text{difference in trends}}$: a violation of **parallel trends**.</span>
+<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bias must come from ${\color{blue}\text{difference in trends}}$: a **parallel trends** violation.</span>
 <span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Houses near the incinerator are systematically older:</span>
+<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Near houses are systematically older:</span>
 <span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a>  <span class="in">```{r}</span></span>
 <span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a>  <span class="co">#| echo: true</span></span>
@@ -3675,9 +3675,9 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a>          <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;salmon&quot;</span>))</span>
 <span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
 <span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since house age affects price trends nonlinearly, the near and far groups would have had **different price trends even without the incinerator**.</span>
+<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Age affects price trends nonlinearly, so near and far groups would have had **different price trends even without the incinerator**.</span>
 <span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The estimated bias is approximately $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$: the age-driven trend difference partially masked the incinerator&#39;s negative effect.</span>
+<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Estimated bias: $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$ — the age-driven trend difference partially masked the incinerator&#39;s negative effect.</span>
 <span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a>  | Assumption | Violated? | Reasoning |</span>
 <span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a>  |---|---|---|</span>
@@ -3686,16 +3686,16 @@ Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
 <span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detecting anticipation and pre-trends</span></span>
 <span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With only two time periods (as in the incinerator example), anticipation effects **cannot** be separately identified.</span>
+<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With only two time periods, anticipation effects **cannot** be separately identified.</span>
 <span id="cb16-391"><a href="#cb16-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With **multiple pre-treatment periods**, an **event study** design can help. Suppose data span periods $t = -T, \ldots, -1, 0, 1, \ldots, T&#39;$, with treatment at $t = 0$. Extend the DID regression by replacing the single interaction $\beta(t \cdot D_i)$ with a separate coefficient for each period:</span>
+<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With **multiple pre-treatment periods**, use an **event study** design. Data span $t = -T, \ldots, -1, 0, 1, \ldots, T&#39;$, treatment at $t = 0$. Replace the single interaction $\beta(t \cdot D_i)$ with a separate coefficient per period:</span>
 <span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a>  \begin{align*}</span>
 <span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a>  Y_{it} &amp;= \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}<span class="co">[</span><span class="ot">t = s</span><span class="co">]</span> + {\color{purple}\gamma} D_i <span class="sc">\\</span></span>
 <span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a>  &amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.</span>
 <span id="cb16-397"><a href="#cb16-397" aria-hidden="true" tabindex="-1"></a>  \end{align*}</span>
 <span id="cb16-398"><a href="#cb16-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each ${\color{blue}\delta_s}$ captures the time effect in period $s$ relative to $t = 0$ (analogous to ${\color{blue}\delta}$ in the two-period model). Each ${\color{teal}\beta_s}$ measures how the treatment group&#39;s outcome differs from the control group in period $s$, beyond the baseline group difference ${\color{purple}\gamma}$ and the common time effect ${\color{blue}\delta_s}$.</span>
+<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>${\color{blue}\delta_s}$: time effect in period $s$ relative to $t = 0$ (generalizes ${\color{blue}\delta}$). ${\color{teal}\beta_s}$: treatment-control difference in period $s$, beyond ${\color{purple}\gamma}$ and ${\color{blue}\delta_s}$.</span>
 <span id="cb16-400"><a href="#cb16-400" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-401"><a href="#cb16-401" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The pre-treatment coefficients $\beta_s$ for $s &lt; 0$ serve as a diagnostic:</span>
 <span id="cb16-402"><a href="#cb16-402" aria-hidden="true" tabindex="-1"></a></span>
