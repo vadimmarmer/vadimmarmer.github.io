@@ -482,7 +482,7 @@ format:
   &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   \end{align*}
 
-- Can we include both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$? **No.** $D_i$ does **not change over time** for any individual, so it is already captured by ${\color{purple}\alpha_i}$. Including both would be **perfect multicollinearity**:
+- Since $D_i$ does **not change over time** for any individual, it is already captured by ${\color{purple}\alpha_i}$. Including both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$ would be **perfect multicollinearity**, so we drop ${\color{purple}\gamma} D_i$:
 
   \begin{align*}
   Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
