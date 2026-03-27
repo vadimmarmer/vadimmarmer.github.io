@@ -207,7 +207,7 @@ format:
   &\quad {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}.
   \end{align*}
 
-- To relate $\beta$ to the ATT, add and subtract $\E{Y_{i1}(0) \mid D_i = 1}$ and $\E{Y_{i0}(0) \mid D_i = 1}$ inside the first expectation:
+- To relate $\beta$ to the ATT, add and subtract $Y_{i1}(0)$ and $Y_{i0}(0)$ inside the first expectation:
 
   \begin{align*}
   \beta &= \E{{\color{teal}Y_{i1}(1)} {\color{red}- Y_{i0}(1)} \mid D_i = 1} {\color{blue}- \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}} \\
@@ -247,7 +247,7 @@ format:
 - The "anticipation effect" term equals zero if the outcome [at $t = 0$ (before treatment)]{style="color: red;"} is not affected by future treatment assignment:
 
   $$
-  \E{Y_{i\color{red}{0}}(1) \mid D_i = 1} = \E{Y_{i\color{red}{0}}(0) \mid D_i = 1}.
+  \E{Y_{i{\color{red}0}}(1) \mid D_i = 1} = \E{Y_{i{\color{red}0}}(0) \mid D_i = 1}.
   $$
 
 - Being assigned to the treatment group does not change [pre-treatment]{style="color: red;"} outcomes in expectation.
@@ -411,7 +411,7 @@ format:
   Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots + {\color{purple}\gamma} D_i + \cdots + U_{it}.
   $$
 
-- The key property of the dummies: $\mathbb{1}[t = s]$ equals $1$ when $t = s$ and $0$ otherwise. So at any given time $t$, **all dummies are zero except one**. The intercept becomes:
+- The key property: $\mathbb{1}[t = s]$ equals $1$ when $t = s$ and $0$ otherwise. At $t = 0$ all dummies are zero (baseline). At any other $t$, exactly one dummy equals $1$:
 
   | Period | Active dummy | Intercept |
   |---|---|---|
@@ -419,10 +419,16 @@ format:
   | $t = 1$ | $\mathbb{1}[t = 1] = 1$ | $\alpha + {\color{blue}\delta_1}$ |
   | $t = 2$ | $\mathbb{1}[t = 2] = 1$ | $\alpha + {\color{blue}\delta_2}$ |
 
-- Each period gets its own intercept. These are called **time fixed effects**. The compact notation writes them as $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]$. The event study model with time fixed effects:
+- Each period gets its own intercept. Define ${\color{blue}\lambda_t}$ to absorb $\alpha$ and ${\color{blue}\delta_t}$ into a single period-specific intercept:
 
   $$
-  Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  {\color{blue}\lambda_0} = \alpha, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad {\color{blue}\lambda_2} = \alpha + {\color{blue}\delta_2}, \quad \ldots
+  $$
+
+  The ${\color{blue}\lambda_t}$'s are called **time fixed effects**. The event study model becomes:
+
+  $$
+  Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   $$
 
 ## Individual fixed effects
@@ -442,16 +448,16 @@ format:
   Y_{it} = {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{purple}\alpha_n} \mathbb{1}[i\!=\!n] + \text{(time and treatment terms)} + U_{it}.
   $$
 
-  Only the dummy for individual $i$ is active, so the intercept is ${\color{purple}\alpha_i}$. In compact notation:
+  Only the dummy for individual $i$ is active, so the intercept is ${\color{purple}\alpha_i}$. Using time fixed effects ${\color{blue}\lambda_t}$ from the previous slide:
 
   $$
-  Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   $$
 
 - But can we include both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$? **No.** $D_i$ does **not change over time** for any individual, so it is already captured by ${\color{purple}\alpha_i}$. Including both would be **perfect multicollinearity**. Drop ${\color{purple}\gamma} D_i$:
 
   $$
-  Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   $$
 
 - The interaction terms ${\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s]$ survive because they vary across **both** individuals and time.
@@ -461,9 +467,9 @@ format:
 - Combining individual and time fixed effects gives the **two-way fixed effects** (TWFE) model:
 
   $$
-  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\delta_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
+  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
   $$
 
-  where ${\color{purple}\alpha_i}$ is the individual fixed effect and ${\color{blue}\delta_t}$ is the time fixed effect.
+  where ${\color{purple}\alpha_i}$ is the individual fixed effect and ${\color{blue}\lambda_t}$ is the time fixed effect.
 
 - This is the standard specification for event studies and DID with multiple periods.
