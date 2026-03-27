@@ -2762,7 +2762,10 @@ Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}
 </tr>
 </tbody>
 </table></li>
-<li><p>Each period gets its own intercept. These are called <strong>time fixed effects</strong>. The compact notation writes them as <span class="math inline">\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]</span>.</p></li>
+<li><p>Each period gets its own intercept. These are called <strong>time fixed effects</strong>. The compact notation writes them as <span class="math inline">\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]</span>. The event study model with time fixed effects:</p>
+<p><span class="math display">
+Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+</span></p></li>
 </ul>
 </section>
 <section id="individual-fixed-effects" class="level2">
@@ -3684,42 +3687,46 @@ Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot
 <span id="cb16-419"><a href="#cb16-419" aria-hidden="true" tabindex="-1"></a>  | $t = 1$ | $\mathbb{1}<span class="co">[</span><span class="ot">t = 1</span><span class="co">]</span> = 1$ | $\alpha + {\color{blue}\delta_1}$ |</span>
 <span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a>  | $t = 2$ | $\mathbb{1}<span class="co">[</span><span class="ot">t = 2</span><span class="co">]</span> = 1$ | $\alpha + {\color{blue}\delta_2}$ |</span>
 <span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each period gets its own intercept. These are called **time fixed effects**. The compact notation writes them as $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}<span class="co">[</span><span class="ot">t = s</span><span class="co">]</span>$.</span>
+<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each period gets its own intercept. These are called **time fixed effects**. The compact notation writes them as $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}<span class="co">[</span><span class="ot">t = s</span><span class="co">]</span>$. The event study model with time fixed effects:</span>
 <span id="cb16-423"><a href="#cb16-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## Individual fixed effects</span></span>
-<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The same idea can be applied to individuals. In the event study model, the intercept for individual $i$ is $\alpha + {\color{purple}\gamma} D_i$. This allows only **two** values:</span>
+<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a>  Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.</span>
+<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a>  | Group | Intercept |</span>
-<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a>  |---|---|</span>
-<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a>  | Control ($D_i = 0$) | $\alpha$ |</span>
-<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a>  | Treatment ($D_i = 1$) | $\alpha + {\color{purple}\gamma}$ |</span>
-<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>  All individuals within the same group share the same baseline. But individuals may differ even within a group (e.g., houses near the incinerator differ in size, age, neighborhood quality).</span>
-<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Individual fixed effects** give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression actually estimated is:</span>
+<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Individual fixed effects</span></span>
+<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The same idea can be applied to individuals. In the event study model, the intercept for individual $i$ is $\alpha + {\color{purple}\gamma} D_i$. This allows only **two** values:</span>
+<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a>  | Group | Intercept |</span>
+<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>  |---|---|</span>
+<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a>  | Control ($D_i = 0$) | $\alpha$ |</span>
+<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a>  | Treatment ($D_i = 1$) | $\alpha + {\color{purple}\gamma}$ |</span>
 <span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a>  Y_{it} = {\color{purple}\alpha_1} \cdot \mathbb{1}[i = 1] + {\color{purple}\alpha_2} \cdot \mathbb{1}[i = 2] + \cdots + {\color{purple}\alpha_n} \cdot \mathbb{1}[i = n] + \text{(time and treatment terms)} + U_{it}.</span>
-<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a>  All individuals within the same group share the same baseline. But individuals may differ even within a group (e.g., houses near the incinerator differ in size, age, neighborhood quality).</span>
+<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Individual fixed effects** give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression actually estimated is:</span>
 <span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a>  At any given observation, only the dummy for individual $i$ is active, so the intercept is ${\color{purple}\alpha_i}$.</span>
-<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why $D_i$ is absorbed</span></span>
+<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a>  Y_{it} = {\color{purple}\alpha_1} \cdot \mathbb{1}[i = 1] + {\color{purple}\alpha_2} \cdot \mathbb{1}[i = 2] + \cdots + {\color{purple}\alpha_n} \cdot \mathbb{1}[i = n] + \text{(time and treatment terms)} + U_{it}.</span>
+<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a>  $$</span>
 <span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With individual fixed effects, can we still include ${\color{purple}\gamma} D_i$ in the regression?</span>
+<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a>  At any given observation, only the dummy for individual $i$ is active, so the intercept is ${\color{purple}\alpha_i}$.</span>
 <span id="cb16-446"><a href="#cb16-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No.** $D_i$ is a characteristic of individual $i$ that does **not change over time**: a house is either near the incinerator or it is not, in every period. So $D_i$ is already fully captured by ${\color{purple}\alpha_i}$.</span>
+<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why $D_i$ is absorbed</span></span>
 <span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Formally, $D_i$ is a linear combination of the individual dummies (it equals $1$ for some individuals and $0$ for others). Including both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$ would be **perfect multicollinearity**.</span>
+<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>With individual fixed effects, can we still include ${\color{purple}\gamma} D_i$ in the regression?</span>
 <span id="cb16-450"><a href="#cb16-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model with both individual and time fixed effects:</span>
+<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No.** $D_i$ is a characteristic of individual $i$ that does **not change over time**: a house is either near the incinerator or it is not, in every period. So $D_i$ is already fully captured by ${\color{purple}\alpha_i}$.</span>
 <span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a>  $$</span>
-<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a>  Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.</span>
-<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Formally, $D_i$ is a linear combination of the individual dummies (it equals $1$ for some individuals and $0$ for others). Including both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$ would be **perfect multicollinearity**.</span>
+<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model with both individual and time fixed effects:</span>
 <span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The interaction terms ${\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}<span class="co">[</span><span class="ot">t = s</span><span class="co">]</span>$ survive because they vary across **both** individuals and time.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a>  Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.</span>
+<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a>  $$</span>
+<span id="cb16-460"><a href="#cb16-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The interaction terms ${\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}<span class="co">[</span><span class="ot">t = s</span><span class="co">]</span>$ survive because they vary across **both** individuals and time.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

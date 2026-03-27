@@ -419,7 +419,11 @@ format:
   | $t = 1$ | $\mathbb{1}[t = 1] = 1$ | $\alpha + {\color{blue}\delta_1}$ |
   | $t = 2$ | $\mathbb{1}[t = 2] = 1$ | $\alpha + {\color{blue}\delta_2}$ |
 
-- Each period gets its own intercept. These are called **time fixed effects**. The compact notation writes them as $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]$.
+- Each period gets its own intercept. These are called **time fixed effects**. The compact notation writes them as $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]$. The event study model with time fixed effects:
+
+  $$
+  Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  $$
 
 ## Individual fixed effects
 

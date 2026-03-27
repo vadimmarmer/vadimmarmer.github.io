@@ -1593,7 +1593,10 @@ Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}
 </tr>
 </tbody>
 </table></li>
-<li class="fragment"><p>Each period gets its own intercept. These are called <strong>time fixed effects</strong>. The compact notation writes them as <span class="math inline">\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]</span>.</p></li>
+<li class="fragment"><p>Each period gets its own intercept. These are called <strong>time fixed effects</strong>. The compact notation writes them as <span class="math inline">\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]</span>. The event study model with time fixed effects:</p>
+<p><span class="math display">
+Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+</span></p></li>
 </ul>
 </section>
 <section id="individual-fixed-effects" class="slide level2">
