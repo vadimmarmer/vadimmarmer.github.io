@@ -1299,7 +1299,7 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 \beta &amp;= \mathrm{E}\left[{\color{teal}Y_{i1}(1)} {\color{red}- Y_{i0}(1)} \mid D_i = 1\right] \\
 &amp;\quad {\color{blue}- \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}.
 \end{align*}</span></p></li>
-<li class="fragment"><p>To relate <span class="math inline">\beta</span> to the ATT, add and subtract <span class="math inline">\mathrm{E}\left[Y_{i1}(0) \mid D_i = 1\right]</span> and <span class="math inline">\mathrm{E}\left[Y_{i0}(0) \mid D_i = 1\right]</span> inside the first expectation:</p>
+<li class="fragment"><p>To relate <span class="math inline">\beta</span> to the ATT, add and subtract <span class="math inline">Y_{i1}(0)</span> and <span class="math inline">Y_{i0}(0)</span> inside the first expectation:</p>
 <p><span class="math display">\begin{align*}
 \beta &amp;= \mathrm{E}\left[{\color{teal}Y_{i1}(1)} {\color{red}- Y_{i0}(1)} \mid D_i = 1\right] {\color{blue}- \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]} \\
 &amp;= \mathrm{E}\left[{\color{teal}Y_{i1}(1)} \underbrace{{\color{teal}- Y_{i1}(0)} {\color{blue}+ Y_{i1}(0)}}_{= \, 0} \underbrace{{\color{blue}- Y_{i0}(0)} {\color{red}+ Y_{i0}(0)}}_{= \, 0} {\color{red}- Y_{i0}(1)} \mid D_i = 1\right] \\
@@ -1334,7 +1334,7 @@ Y_{it} = D_i \, Y_{it}(1) + (1 - D_i) \, Y_{it}(0).
 <ul>
 <li class="fragment"><p>The “anticipation effect” term equals zero if the outcome <span style="color: red;">at <span class="math inline">t = 0</span> (before treatment)</span> is not affected by future treatment assignment:</p>
 <p><span class="math display">
-\mathrm{E}\left[Y_{i\color{red}{0}}(1) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i\color{red}{0}}(0) \mid D_i = 1\right].
+\mathrm{E}\left[Y_{i{\color{red}0}}(1) \mid D_i = 1\right] = \mathrm{E}\left[Y_{i{\color{red}0}}(0) \mid D_i = 1\right].
 </span></p></li>
 <li class="fragment"><p>Being assigned to the treatment group does not change <span style="color: red;">pre-treatment</span> outcomes in expectation.</p></li>
 <li class="fragment"><p>Under both parallel trends and no anticipation:</p>
@@ -1466,9 +1466,10 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <h2>Where does the bias come from?</h2>
 <ul>
 <li class="fragment"><p>Under no anticipation, the decomposition from the earlier slide gives:</p>
-<p><span class="math display">
-{\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{blue}\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}}_{\color{blue}\text{difference in trends}}.
-</span></p></li>
+<p><span class="math display">\begin{align*}
+{\color{teal}\beta} &amp;= {\color{teal}\text{ATT}} \\
+&amp;\quad + \underbrace{{\color{blue}\mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1\right] - \mathrm{E}\left[Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0\right]}}_{\color{blue}\text{difference in trends}}.
+\end{align*}</span></p></li>
 <li class="fragment"><p><strong>No anticipation is plausible:</strong> the incinerator was not publicly known in 1978, so there is no reason for 1978 prices to already reflect the future incinerator.</p></li>
 <li class="fragment"><p>The bias must come from the <span class="math inline">{\color{blue}\text{difference in trends}}</span>: a violation of <strong>parallel trends</strong>.</p></li>
 <li class="fragment"><p>Houses near the incinerator are systematically older:</p>
@@ -1520,9 +1521,10 @@ I(age^2)         8.6913     0.8481  10.2476   0.0000</code></pre>
 <ul>
 <li class="fragment"><p>With only two time periods (as in the incinerator example), anticipation effects <strong>cannot</strong> be separately identified.</p></li>
 <li class="fragment"><p>With <strong>multiple pre-treatment periods</strong>, an <strong>event study</strong> design can help. Suppose data span periods <span class="math inline">t = -T, \ldots, -1, 0, 1, \ldots, T&#39;</span>, with treatment at <span class="math inline">t = 0</span>. Extend the DID regression by replacing the single interaction <span class="math inline">\beta(t \cdot D_i)</span> with a separate coefficient for each period:</p>
-<p><span class="math display">
-Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
-</span></p></li>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i \\
+&amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+\end{align*}</span></p></li>
 <li class="fragment"><p>Each <span class="math inline">{\color{blue}\delta_s}</span> captures the time effect in period <span class="math inline">s</span> relative to <span class="math inline">t = 0</span> (analogous to <span class="math inline">{\color{blue}\delta}</span> in the two-period model). Each <span class="math inline">{\color{teal}\beta_s}</span> measures how the treatment group’s outcome differs from the control group in period <span class="math inline">s</span>, beyond the baseline group difference <span class="math inline">{\color{purple}\gamma}</span> and the common time effect <span class="math inline">{\color{blue}\delta_s}</span>.</p></li>
 <li class="fragment"><p>The pre-treatment coefficients <span class="math inline">\beta_s</span> for <span class="math inline">s &lt; 0</span> serve as a diagnostic:</p>
 <table class="caption-top">
@@ -1558,9 +1560,10 @@ Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]
 <ul>
 <li class="fragment"><p>In the two-period model, the term <span class="math inline">{\color{blue}\delta} \cdot t</span> creates two intercepts: <span class="math inline">\alpha</span> at <span class="math inline">t = 0</span> and <span class="math inline">\alpha + {\color{blue}\delta}</span> at <span class="math inline">t = 1</span>.</p></li>
 <li class="fragment"><p>With multiple periods <span class="math inline">t = 0, 1, 2, \ldots</span>, we cannot use <span class="math inline">{\color{blue}\delta} \cdot t</span> because that forces a <strong>linear</strong> trend. Instead, include a separate dummy for each period. The regression actually estimated is:</p>
-<p><span class="math display">
-Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots + {\color{purple}\gamma} D_i + \cdots + U_{it}.
-</span></p></li>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots \\
+&amp;\quad + {\color{purple}\gamma} D_i + \cdots + U_{it}.
+\end{align*}</span></p></li>
 <li class="fragment"><p>The key property: <span class="math inline">\mathbb{1}[t = s]</span> equals <span class="math inline">1</span> when <span class="math inline">t = s</span> and <span class="math inline">0</span> otherwise. At <span class="math inline">t = 0</span> all dummies are zero (baseline). At any other <span class="math inline">t</span>, exactly one dummy equals <span class="math inline">1</span>:</p>
 <table class="caption-top">
 <colgroup>
@@ -1593,11 +1596,16 @@ Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}
 </tr>
 </tbody>
 </table></li>
-<li class="fragment"><p>Each period gets its own intercept. Define <span class="math inline">{\color{blue}\lambda_t}</span> to absorb <span class="math inline">\alpha</span> and <span class="math inline">{\color{blue}\delta_t}</span> into a single period-specific intercept:</p>
+<li class="fragment"><p>Each period gets its own intercept. The compact notation <span class="math inline">\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]</span> writes the time dummies as a sum. The event study model with all the dummies written out:</p>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= \alpha + {\color{blue}\delta_1} \mathbb{1}[t\!=\!1] + {\color{blue}\delta_2} \mathbb{1}[t\!=\!2] + \cdots \\
+&amp;\quad + {\color{purple}\gamma} D_i + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + {\color{teal}\beta_2} D_i \mathbb{1}[t\!=\!2] + \cdots + U_{it}.
+\end{align*}</span></p></li>
+<li class="fragment"><p>At each <span class="math inline">t</span>, exactly one time dummy survives (and at <span class="math inline">t = 0</span> none do). So <span class="math inline">\alpha + {\color{blue}\delta_t}</span> is the intercept at time <span class="math inline">t</span>. Define <span class="math inline">{\color{blue}\lambda_t} = \alpha + {\color{blue}\delta_t}</span> (with <span class="math inline">\delta_0 = 0</span>):</p>
 <p><span class="math display">
 {\color{blue}\lambda_0} = \alpha, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad {\color{blue}\lambda_2} = \alpha + {\color{blue}\delta_2}, \quad \ldots
 </span></p>
-<p>The <span class="math inline">{\color{blue}\lambda_t}</span>’s are called <strong>time fixed effects</strong>. The event study model becomes:</p>
+<p>The <span class="math inline">{\color{blue}\lambda_t}</span>’s are called <strong>time fixed effects</strong>. In this notation:</p>
 <p><span class="math display">
 Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
 </span></p></li>
@@ -1627,17 +1635,20 @@ Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} 
 </table>
 <p>All individuals within the same group share the same baseline. But individuals may differ even within a group (e.g., houses near the incinerator differ in size, age, neighborhood quality).</p></li>
 <li class="fragment"><p><strong>Individual fixed effects</strong> give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression is:</p>
-<p><span class="math display">
-Y_{it} = {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{purple}\alpha_n} \mathbb{1}[i\!=\!n] + \text{(time and treatment terms)} + U_{it}.
-</span></p>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{purple}\alpha_n} \mathbb{1}[i\!=\!n] \\
+&amp;\quad + \text{(time and treatment terms)} + U_{it}.
+\end{align*}</span></p>
 <p>Only the dummy for individual <span class="math inline">i</span> is active, so the intercept is <span class="math inline">{\color{purple}\alpha_i}</span>. Using time fixed effects <span class="math inline">{\color{blue}\lambda_t}</span> from the previous slide:</p>
-<p><span class="math display">
-Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
-</span></p></li>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i \\
+&amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+\end{align*}</span></p></li>
 <li class="fragment"><p>But can we include both <span class="math inline">{\color{purple}\alpha_i}</span> and <span class="math inline">{\color{purple}\gamma} D_i</span>? <strong>No.</strong> <span class="math inline">D_i</span> does <strong>not change over time</strong> for any individual, so it is already captured by <span class="math inline">{\color{purple}\alpha_i}</span>. Including both would be <strong>perfect multicollinearity</strong>. Drop <span class="math inline">{\color{purple}\gamma} D_i</span>:</p>
-<p><span class="math display">
-Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
-</span></p></li>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
+&amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+\end{align*}</span></p></li>
 <li class="fragment"><p>The interaction terms <span class="math inline">{\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s]</span> survive because they vary across <strong>both</strong> individuals and time.</p></li>
 </ul>
 </section>
@@ -1645,9 +1656,10 @@ Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\
 <h2>Two-way fixed effects</h2>
 <ul>
 <li class="fragment"><p>Combining individual and time fixed effects gives the <strong>two-way fixed effects</strong> (TWFE) model:</p>
-<p><span class="math display">
-Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
-</span></p>
+<p><span class="math display">\begin{align*}
+Y_{it} &amp;= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
+&amp;\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
+\end{align*}</span></p>
 <p>where <span class="math inline">{\color{purple}\alpha_i}</span> is the individual fixed effect and <span class="math inline">{\color{blue}\lambda_t}</span> is the time fixed effect.</p></li>
 <li class="fragment"><p>This is the standard specification for event studies and DID with multiple periods.</p></li>
 </ul>

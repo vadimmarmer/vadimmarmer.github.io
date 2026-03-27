@@ -351,9 +351,10 @@ format:
 
 - Under no anticipation, the decomposition from the earlier slide gives:
 
-  $$
-  {\color{teal}\beta} = {\color{teal}\text{ATT}} + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}}.
-  $$
+  \begin{align*}
+  {\color{teal}\beta} &= {\color{teal}\text{ATT}} \\
+  &\quad + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}}.
+  \end{align*}
 
 - **No anticipation is plausible:** the incinerator was not publicly known in 1978, so there is no reason for 1978 prices to already reflect the future incinerator.
 
@@ -387,9 +388,10 @@ format:
 
 - With **multiple pre-treatment periods**, an **event study** design can help. Suppose data span periods $t = -T, \ldots, -1, 0, 1, \ldots, T'$, with treatment at $t = 0$. Extend the DID regression by replacing the single interaction $\beta(t \cdot D_i)$ with a separate coefficient for each period:
 
-  $$
-  Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
-  $$
+  \begin{align*}
+  Y_{it} &= \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i \\
+  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  \end{align*}
 
 - Each ${\color{blue}\delta_s}$ captures the time effect in period $s$ relative to $t = 0$ (analogous to ${\color{blue}\delta}$ in the two-period model). Each ${\color{teal}\beta_s}$ measures how the treatment group's outcome differs from the control group in period $s$, beyond the baseline group difference ${\color{purple}\gamma}$ and the common time effect ${\color{blue}\delta_s}$.
 
@@ -407,9 +409,10 @@ format:
 
 - With multiple periods $t = 0, 1, 2, \ldots$, we cannot use ${\color{blue}\delta} \cdot t$ because that forces a **linear** trend. Instead, include a separate dummy for each period. The regression actually estimated is:
 
-  $$
-  Y_{it} = \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots + {\color{purple}\gamma} D_i + \cdots + U_{it}.
-  $$
+  \begin{align*}
+  Y_{it} &= \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots \\
+  &\quad + {\color{purple}\gamma} D_i + \cdots + U_{it}.
+  \end{align*}
 
 - The key property: $\mathbb{1}[t = s]$ equals $1$ when $t = s$ and $0$ otherwise. At $t = 0$ all dummies are zero (baseline). At any other $t$, exactly one dummy equals $1$:
 
@@ -419,13 +422,20 @@ format:
   | $t = 1$ | $\mathbb{1}[t = 1] = 1$ | $\alpha + {\color{blue}\delta_1}$ |
   | $t = 2$ | $\mathbb{1}[t = 2] = 1$ | $\alpha + {\color{blue}\delta_2}$ |
 
-- Each period gets its own intercept. Define ${\color{blue}\lambda_t}$ to absorb $\alpha$ and ${\color{blue}\delta_t}$ into a single period-specific intercept:
+- Each period gets its own intercept. The compact notation $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]$ writes the time dummies as a sum. The event study model with all the dummies written out:
+
+  \begin{align*}
+  Y_{it} &= \alpha + {\color{blue}\delta_1} \mathbb{1}[t\!=\!1] + {\color{blue}\delta_2} \mathbb{1}[t\!=\!2] + \cdots \\
+  &\quad + {\color{purple}\gamma} D_i + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + {\color{teal}\beta_2} D_i \mathbb{1}[t\!=\!2] + \cdots + U_{it}.
+  \end{align*}
+
+- At each $t$, exactly one time dummy survives (and at $t = 0$ none do). So $\alpha + {\color{blue}\delta_t}$ is the intercept at time $t$. Define ${\color{blue}\lambda_t} = \alpha + {\color{blue}\delta_t}$ (with $\delta_0 = 0$):
 
   $$
   {\color{blue}\lambda_0} = \alpha, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad {\color{blue}\lambda_2} = \alpha + {\color{blue}\delta_2}, \quad \ldots
   $$
 
-  The ${\color{blue}\lambda_t}$'s are called **time fixed effects**. The event study model becomes:
+  The ${\color{blue}\lambda_t}$'s are called **time fixed effects**. In this notation:
 
   $$
   Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
@@ -444,21 +454,24 @@ format:
 
 - **Individual fixed effects** give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression is:
 
-  $$
-  Y_{it} = {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{purple}\alpha_n} \mathbb{1}[i\!=\!n] + \text{(time and treatment terms)} + U_{it}.
-  $$
+  \begin{align*}
+  Y_{it} &= {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{purple}\alpha_n} \mathbb{1}[i\!=\!n] \\
+  &\quad + \text{(time and treatment terms)} + U_{it}.
+  \end{align*}
 
   Only the dummy for individual $i$ is active, so the intercept is ${\color{purple}\alpha_i}$. Using time fixed effects ${\color{blue}\lambda_t}$ from the previous slide:
 
-  $$
-  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
-  $$
+  \begin{align*}
+  Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i \\
+  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  \end{align*}
 
 - But can we include both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$? **No.** $D_i$ does **not change over time** for any individual, so it is already captured by ${\color{purple}\alpha_i}$. Including both would be **perfect multicollinearity**. Drop ${\color{purple}\gamma} D_i$:
 
-  $$
-  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
-  $$
+  \begin{align*}
+  Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
+  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  \end{align*}
 
 - The interaction terms ${\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s]$ survive because they vary across **both** individuals and time.
 
@@ -466,9 +479,10 @@ format:
 
 - Combining individual and time fixed effects gives the **two-way fixed effects** (TWFE) model:
 
-  $$
-  Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
-  $$
+  \begin{align*}
+  Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
+  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
+  \end{align*}
 
   where ${\color{purple}\alpha_i}$ is the individual fixed effect and ${\color{blue}\lambda_t}$ is the time fixed effect.
 
