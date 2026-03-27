@@ -126,13 +126,15 @@ format:
 
 ## DID diagram
 
+- DID regression: $Y_{it} = \alpha + {\color{blue}\delta} \cdot t + {\color{purple}\gamma} D_i + {\color{teal}\beta}(t \cdot D_i) + U_{it}$.
+
 - DID diagram — control, treatment, and counterfactual:
 
   ```{r}
   #| echo: false
   #| fig-align: center
   #| fig-width: 8
-  #| fig-height: 5.5
+  #| fig-height: 5
 
   alpha <- 5; delta <- 2; gamma <- 1; beta_did <- 3
 
