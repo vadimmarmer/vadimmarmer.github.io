@@ -1622,24 +1622,30 @@ Y_{it} = \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]
 </tbody>
 </table>
 <p>All individuals within the same group share the same baseline. But individuals may differ even within a group (e.g., houses near the incinerator differ in size, age, neighborhood quality).</p></li>
-<li class="fragment"><p><strong>Individual fixed effects</strong> give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression actually estimated is:</p>
+<li class="fragment"><p><strong>Individual fixed effects</strong> give each individual its own dummy, just like time fixed effects give each period its own dummy. The regression is:</p>
 <p><span class="math display">
-Y_{it} = {\color{purple}\alpha_1} \cdot \mathbb{1}[i = 1] + {\color{purple}\alpha_2} \cdot \mathbb{1}[i = 2] + \cdots + {\color{purple}\alpha_n} \cdot \mathbb{1}[i = n] + \text{(time and treatment terms)} + U_{it}.
+Y_{it} = {\color{purple}\alpha_1} \mathbb{1}[i\!=\!1] + \cdots + {\color{purple}\alpha_n} \mathbb{1}[i\!=\!n] + \text{(time and treatment terms)} + U_{it}.
 </span></p>
-<p>At any given observation, only the dummy for individual <span class="math inline">i</span> is active, so the intercept is <span class="math inline">{\color{purple}\alpha_i}</span>.</p></li>
-</ul>
-</section>
-<section id="why-d_i-is-absorbed" class="slide level2">
-<h2>Why <span class="math inline">D_i</span> is absorbed</h2>
-<ul>
-<li class="fragment"><p>With individual fixed effects, can we still include <span class="math inline">{\color{purple}\gamma} D_i</span> in the regression?</p></li>
-<li class="fragment"><p><strong>No.</strong> <span class="math inline">D_i</span> is a characteristic of individual <span class="math inline">i</span> that does <strong>not change over time</strong>: a house is either near the incinerator or it is not, in every period. So <span class="math inline">D_i</span> is already fully captured by <span class="math inline">{\color{purple}\alpha_i}</span>.</p></li>
-<li class="fragment"><p>Formally, <span class="math inline">D_i</span> is a linear combination of the individual dummies (it equals <span class="math inline">1</span> for some individuals and <span class="math inline">0</span> for others). Including both <span class="math inline">{\color{purple}\alpha_i}</span> and <span class="math inline">{\color{purple}\gamma} D_i</span> would be <strong>perfect multicollinearity</strong>.</p></li>
-<li class="fragment"><p>The model with both individual and time fixed effects:</p>
+<p>Only the dummy for individual <span class="math inline">i</span> is active, so the intercept is <span class="math inline">{\color{purple}\alpha_i}</span>. In compact notation:</p>
+<p><span class="math display">
+Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+</span></p></li>
+<li class="fragment"><p>But can we include both <span class="math inline">{\color{purple}\alpha_i}</span> and <span class="math inline">{\color{purple}\gamma} D_i</span>? <strong>No.</strong> <span class="math inline">D_i</span> does <strong>not change over time</strong> for any individual, so it is already captured by <span class="math inline">{\color{purple}\alpha_i}</span>. Including both would be <strong>perfect multicollinearity</strong>. Drop <span class="math inline">{\color{purple}\gamma} D_i</span>:</p>
 <p><span class="math display">
 Y_{it} = {\color{purple}\alpha_i} + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
 </span></p></li>
 <li class="fragment"><p>The interaction terms <span class="math inline">{\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s]</span> survive because they vary across <strong>both</strong> individuals and time.</p></li>
+</ul>
+</section>
+<section id="two-way-fixed-effects" class="slide level2">
+<h2>Two-way fixed effects</h2>
+<ul>
+<li class="fragment"><p>Combining individual and time fixed effects gives the <strong>two-way fixed effects</strong> (TWFE) model:</p>
+<p><span class="math display">
+Y_{it} = {\color{purple}\alpha_i} + {\color{blue}\delta_t} + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
+</span></p>
+<p>where <span class="math inline">{\color{purple}\alpha_i}</span> is the individual fixed effect and <span class="math inline">{\color{blue}\delta_t}</span> is the time fixed effect.</p></li>
+<li class="fragment"><p>This is the standard specification for event studies and DID with multiple periods.</p></li>
 </ul>
 
 </section>
