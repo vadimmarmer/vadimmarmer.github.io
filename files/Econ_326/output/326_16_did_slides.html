@@ -1605,12 +1605,16 @@ Y_{it} &amp;= \alpha + {\color{blue}\delta_1} \mathbb{1}[t\!=\!1] + {\color{blue
 <p><span class="math display">
 {\color{blue}\lambda_0} = \alpha, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad {\color{blue}\lambda_2} = \alpha + {\color{blue}\delta_2}, \quad \ldots
 </span></p>
-<p>The <span class="math inline">{\color{blue}\lambda_t}</span>’s are called <strong>time fixed effects</strong>. The regression with all the <span class="math inline">\lambda</span> dummies written out:</p>
+<p>The <span class="math inline">{\color{blue}\lambda_t}</span>’s are called <strong>time fixed effects</strong>. This is the regression we actually run in OLS, with a dummy for each period:</p>
 <p><span class="math display">\begin{align*}
 Y_{it} &amp;= {\color{blue}\lambda_0} \mathbb{1}[t\!=\!0] + {\color{blue}\lambda_1} \mathbb{1}[t\!=\!1] + {\color{blue}\lambda_2} \mathbb{1}[t\!=\!2] + \cdots \\
 &amp;\quad + {\color{purple}\gamma} D_i + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + \cdots + U_{it}.
 \end{align*}</span></p></li>
-<li class="fragment"><p>At each <span class="math inline">t</span>, exactly one <span class="math inline">\lambda</span>-dummy equals <span class="math inline">1</span> and all others are zero. So the intercept at time <span class="math inline">t</span> is simply <span class="math inline">{\color{blue}\lambda_t}</span>. In compact <strong>fixed effects notation</strong>:</p>
+<li class="fragment"><p>At each <span class="math inline">t</span>, exactly one <span class="math inline">\lambda</span>-dummy equals <span class="math inline">1</span> and all others are zero:</p>
+<p><span class="math display">
+\underbrace{{\color{blue}\lambda_0} \cdot 0 + \cdots + {\color{blue}\lambda_t} \cdot 1 + \cdots}_{\text{only } {\color{blue}\lambda_t} \text{ survives}} = {\color{blue}\lambda_t}.
+</span></p>
+<p>The notation <span class="math inline">{\color{blue}\lambda_t}</span> is shorthand for this — it represents whichever <span class="math inline">\lambda</span> is active at time <span class="math inline">t</span>:</p>
 <p><span class="math display">
 Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
 </span></p></li>
