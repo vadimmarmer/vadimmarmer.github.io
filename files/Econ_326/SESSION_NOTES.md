@@ -305,3 +305,39 @@
 - 54 section tags in slides HTML
 - `proofread-326` agent: ~70+ fixes (spelling, grammar, `\E{}` macro consistency, overflow, slide titles)
 - `revealjs-check` agent: 6 reveal-order fixes; 13 long-math-line flags remain (advisory)
+
+## 2026-03-26
+
+### Lecture 16 (326_16_did.qmd)
+- Renamed "DID setup" → "DID basic setup" (~line 55)
+- Added red time subscripts to "Interpreting the coefficients" bullet (~lines 107-108)
+- Added "Four potential outcomes" bullet grouped by d (~line 168)
+- Added red time subscripts to "Parallel trends" equation (~line 225)
+- Fixed DID diagram: removed alpha arrow, moved delta arrow to t=1 under beta, added thin reference line, teal beta arrow, widened xlim for labels
+
+### Lecture 17 (326_17_asy.qmd)
+- Moved "Part I: Consistency" heading to just before convergence in probability (~line 76)
+- Added "Proof of Markov's inequality" slide with indicator trick, E[1(A)]=P(A) explanation, and line-by-line incremental reveal (~lines 133-156)
+- Added line-by-line incremental reveal to "Proof of the LLN" slide (~lines 158-180)
+- Switched RevealJS and HTML from KaTeX to MathJax (required for \fragment macro)
+- Added \fragment macro (mjxfrag marker class), include-after-body for JS normalizer, PDF header fallback
+- Key lesson: \fragment{} must NOT contain & alignment markers; & must be outside \fragment
+
+## 2026-03-27
+
+### Lecture 20: Two-Stage Least Squares (new)
+- **Created:** `326_20_2SLS.qmd` — converted from LaTeX `326_21_2SLS.tex`
+- **Content (12 slides):**
+  - Multiple linear IV model (example + general notation)
+  - Identification problem (counting unknowns vs equations)
+  - Instrumental variables (IVs, moment conditions, necessary condition l ≥ m)
+  - First-stage equations (structural + reduced-form system)
+  - Order condition for identification (exactly/over/underidentified)
+  - 2SLS procedure: first stage (OLS on first-stage equations → fitted values)
+  - 2SLS procedure: second stage (OLS with fitted values; SE correction)
+  - Example: returns to education (MROZ dataset, Stata output, 2SLS vs OLS comparison)
+- **Color scheme:** blue = exogenous (X's, Z's, equation counts), red = endogenous (Y's, coefficient counts, identification condition)
+- **Proofreading:** 6 changes — 5 language tightening, 1 overflow fix (second-stage equation split into align*)
+- **RevealJS check:** clean, no issues
+- **Rendering:** all three formats OK, 0 KaTeX errors
+- **Output:** `output/326_20_2SLS.html`, `output/326_20_2SLS.pdf`, `output/326_20_2SLS_slides.html`
