@@ -180,7 +180,7 @@ Defined in `.claude/commands/proofread.md`. Delegates to the `proofread-326` age
 
 ### `proofread-326`
 
-Defined in `.claude/agents/proofread-326.md` (project-level, managed by chezmoi). Proofreads a single QMD lecture file through 10 sequential passes:
+Defined in `.claude/agents/proofread-326.md` (project-level). Proofreads a single QMD lecture file through 10 sequential passes:
 
 | Pass | What it checks |
 |------|----------------|

@@ -42,9 +42,9 @@
 ## 2026-03-17
 
 **File changes:**
-- `.claude/agents/proofread-326.md` — converted from chezmoi symlink to regular file (same content)
-- `.claude/commands/proofread.md` — converted from chezmoi symlink to regular file (same content)
-- `.claude/settings.local.json` — converted from chezmoi symlink to regular file (same content, gitignored)
+- `.claude/agents/proofread-326.md` — converted from symlink to regular file (same content)
+- `.claude/commands/proofread.md` — converted from symlink to regular file (same content)
+- `.claude/settings.local.json` — converted from symlink to regular file (same content, gitignored)
 
 **New global files (in `~/.claude/`):**
 - `agents/revealjs-check.md` — new 6-pass RevealJS layout auditor agent (YAML & structure, reveal order auto-fix, fenced div integrity, width/margin flags, content overflow flags, compilation & HTML audit)
@@ -55,8 +55,8 @@
 - Ran `revealjs-check` on `326_12_mreg_testing.qmd`: 0 fixes needed (clean), 11 width/overflow flags
 - Both compilations succeeded with 0 KaTeX errors
 
-**Chezmoi cleanup:**
-- Removed chezmoi management of Econ 326 `.claude/` files (now regular files in git, no longer symlinks)
+**Config cleanup:**
+- Removed the old symlink-based management of Econ 326 `.claude/` files (now regular files in git)
 
 **Lecture 12 edits (`326_12_mreg_testing.qmd`):**
 - Removed redundant "Conditional on $\mathbf{X}$," prefix from items 2–4 on "The model" slide (lines 52, 54, 56) — the math already contains `\mid \mathbf{X}`
@@ -256,7 +256,7 @@
 - Q4: Propose one-sided CI (-inf, U] for beta_1 using t critical values; prove coverage = 1-alpha under normality
 
 **Config changes:**
-- Added "Session notes" and "TODO list" sections to project CLAUDE.md (chezmoi source)
+- Added "Session notes" and "TODO list" sections to project CLAUDE.md
 - Added user preferences (session notes, TODO tracking) to project MEMORY.md
 
 ## 2026-03-17
