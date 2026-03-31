@@ -143,7 +143,7 @@ format:
   y_cf <- c(alpha + gamma, alpha + delta + gamma)
 
   plot(c(0, 1), y_ctrl, type = "b", pch = 16, lwd = 2, col = "blue",
-       xlab = "Time period", ylab = "Outcome",
+       xlab = "Time period", ylab = "Average outcome",
        xlim = c(-0.2, 1.7), ylim = c(3, 13),
        xaxt = "n", main = "Difference-in-differences")
   axis(1, at = c(0, 1), labels = c("t = 0\n(Before)", "t = 1\n(After)"))
@@ -391,72 +391,88 @@ format:
 
 - With only two time periods, anticipation effects **cannot** be separately identified.
 
-- With **multiple pre-treatment periods**, use an **event study** design. Data span $t = -T, \ldots, -1, 0, 1, \ldots, T'$, treatment at $t = 0$. Replace the single interaction $\beta(t \cdot D_i)$ with a separate coefficient per period:
+- With **multiple pre-treatment periods**, use an **event study** design. Data span $t = -T, \ldots, -1, 0, 1, \ldots, T'$, where ${\color{red}t = 0}$ **is now the treatment date** (not "before" as in the two-period model).
+
+- Replace the single interaction $\beta(t \cdot D_i)$ with a separate coefficient per period. The baseline is $t = -1$ (last pre-treatment period):
 
   \begin{align*}
-  Y_{it} &= \alpha + \sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i \\
-  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  Y_{it} &= \alpha + \sum_{s \neq -1} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s] + {\color{purple}\gamma} D_i \\
+  &\quad + \sum_{s \neq -1} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   \end{align*}
 
-- ${\color{blue}\delta_s}$: time effect in period $s$ relative to $t = 0$ (generalizes ${\color{blue}\delta}$). ${\color{teal}\beta_s}$: treatment-control difference in period $s$, beyond ${\color{purple}\gamma}$ and ${\color{blue}\delta_s}$.
+- Expected outcomes for $t = -2$ and $t = -1$:
 
-- The pre-treatment coefficients $\beta_s$ for $s < 0$ serve as a diagnostic:
+  | | $D_i = 0$ (Control) | $D_i = 1$ (Treatment) |
+  |---|---|---|
+  | $t = -1$ | $\alpha$ | $\alpha + {\color{purple}\gamma}$ |
+  | $t = -2$ | $\alpha + {\color{blue}\delta_{-2}}$ | $\alpha + {\color{blue}\delta_{-2}} + {\color{purple}\gamma} + {\color{teal}\beta_{-2}}$ |
+  | Backward trend ($t\!:\! -1 \to -2$) | ${\color{blue}\delta_{-2}}$ | ${\color{blue}\delta_{-2}} + {\color{teal}\beta_{-2}}$ |
 
-  | Pattern in $\beta_s$ for $s < 0$ | Interpretation |
-  |---|---|
-  | All close to zero: $\beta_{-3} \approx \beta_{-2} \approx \beta_{-1} \approx 0$ | Both assumptions look plausible |
-  | Sharp break right before treatment: $\beta_{-3} \approx \beta_{-2} \approx 0$ but $\beta_{-1} \neq 0$ | **Anticipation**: units react to news of upcoming treatment |
-  | Gradual trend across pre-periods: $|\beta_{-3}| < |\beta_{-2}| < |\beta_{-1}|$, growing steadily | **Parallel trends violation**, not anticipation: groups were already diverging before treatment |
+- ${\color{teal}\beta_{-2}}$ is the difference in backward trends from $t = -2$ to $t = -1$ between treatment and control: $({\color{blue}\delta_{-2}} + {\color{teal}\beta_{-2}}) - {\color{blue}\delta_{-2}} = {\color{teal}\beta_{-2}}$.
+
+- More generally, ${\color{teal}\beta_s}$ for $s \leq -2$ is the difference in backward trends from $t = s$ to $t = -1$ between treatment and control.
+
+- No anticipation + parallel pre-trends $\implies$ ${\color{teal}\beta_s} = 0$ for all $s \leq -2$. However, we never observe $Y_{it}(0)$ for the treated group, so nonzero ${\color{teal}\beta_s}$ tests the **joint** hypothesis: we cannot determine which assumption failed.
+
+- The critical point: with multiple pre-treatment periods, we can **compare the two groups before treatment**. Since ${\color{teal}\beta_s}$ for $s \leq -2$ are estimable from pre-treatment data, ${\color{teal}\beta_s} = 0$ is a **testable** implication of the joint hypothesis.
+
+- ${\color{teal}\beta_s}$ all equal and nonzero **suggests anticipation** at $t = -1$: backward trends are the same for all $s \leq -2$, but something shifts at the baseline period.
+
+- ${\color{teal}\beta_s}$ nonzero and unequal **suggests a parallel trends violation**: groups were already diverging before treatment.
+
+- For $s \geq 0$: under parallel trends and no anticipation, ${\color{teal}\beta_s}$ measures the **treatment effect** at period $s$ relative to $t = -1$.
 
 ## Time fixed effects
 
 - In the two-period model, the term ${\color{blue}\delta} \cdot t$ creates two intercepts: $\alpha$ at $t = 0$ and $\alpha + {\color{blue}\delta}$ at $t = 1$.
 
-- With multiple periods $t = 0, 1, 2, \ldots$, we cannot use ${\color{blue}\delta} \cdot t$ because that forces a **linear** trend. Instead, include a separate dummy for each period. The regression actually estimated is:
+- With multiple periods $t = -T, \ldots, -1, 0, 1, \ldots, T'$, we cannot use ${\color{blue}\delta} \cdot t$ because that forces a **linear** trend: the time effect at period $s$ would be $\delta \cdot s$, with no flexibility.
+
+- Instead, include a separate dummy for each period. The regression actually estimated is:
 
   \begin{align*}
-  Y_{it} &= \alpha + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + {\color{blue}\delta_2} \cdot \mathbb{1}[t = 2] + \cdots \\
+  Y_{it} &= \alpha + \cdots + {\color{blue}\delta_{-2}} \cdot \mathbb{1}[t = -2] + {\color{blue}\delta_0} \cdot \mathbb{1}[t = 0] + {\color{blue}\delta_1} \cdot \mathbb{1}[t = 1] + \cdots \\
   &\quad + {\color{purple}\gamma} D_i + \cdots + U_{it}.
   \end{align*}
 
-- The key property: $\mathbb{1}[t = s]$ equals $1$ when $t = s$ and $0$ otherwise. At $t = 0$ all dummies are zero (baseline). At any other $t$, exactly one dummy equals $1$:
+- The key property: $\mathbb{1}[t = s]$ equals $1$ when $t = s$ and $0$ otherwise. At $t = -1$ all dummies are zero (baseline). At any other $t$, exactly one dummy equals $1$:
 
   | Period | Active dummy | Intercept |
   |---|---|---|
-  | $t = 0$ | none (baseline) | $\alpha$ |
+  | $t = -1$ | none (baseline) | $\alpha$ |
+  | $t = 0$ | $\mathbb{1}[t = 0] = 1$ | $\alpha + {\color{blue}\delta_0}$ |
   | $t = 1$ | $\mathbb{1}[t = 1] = 1$ | $\alpha + {\color{blue}\delta_1}$ |
-  | $t = 2$ | $\mathbb{1}[t = 2] = 1$ | $\alpha + {\color{blue}\delta_2}$ |
 
-- Each period gets its own intercept. The compact notation $\sum_{s \neq 0} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]$ writes the time dummies as a sum. The event study model with all the dummies written out:
+- Each period gets its own intercept. The compact notation $\sum_{s \neq -1} {\color{blue}\delta_s} \cdot \mathbb{1}[t = s]$ writes the time dummies as a sum. The event study model with all the dummies written out:
 
   \begin{align*}
-  Y_{it} &= \alpha + {\color{blue}\delta_1} \mathbb{1}[t\!=\!1] + {\color{blue}\delta_2} \mathbb{1}[t\!=\!2] + \cdots \\
-  &\quad + {\color{purple}\gamma} D_i + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + {\color{teal}\beta_2} D_i \mathbb{1}[t\!=\!2] + \cdots + U_{it}.
+  Y_{it} &= \alpha + \cdots + {\color{blue}\delta_{-2}} \mathbb{1}[t\!=\!-2] + {\color{blue}\delta_0} \mathbb{1}[t\!=\!0] + {\color{blue}\delta_1} \mathbb{1}[t\!=\!1] + \cdots \\
+  &\quad + {\color{purple}\gamma} D_i + \cdots + {\color{teal}\beta_{-2}} D_i \mathbb{1}[t\!=\!-2] + {\color{teal}\beta_0} D_i \mathbb{1}[t\!=\!0] + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + \cdots + U_{it}.
   \end{align*}
 
-- At each $t$, exactly one time dummy survives (and at $t = 0$ none do). So $\alpha + {\color{blue}\delta_t}$ is the intercept at time $t$. Define ${\color{blue}\lambda_t} = \alpha + {\color{blue}\delta_t}$ (with $\delta_0 = 0$):
+- At each $t$, exactly one time dummy survives (and at $t = -1$ none do). So $\alpha + {\color{blue}\delta_t}$ is the intercept at time $t$. Define ${\color{blue}\lambda_t} = \alpha + {\color{blue}\delta_t}$ (with $\delta_{-1} = 0$):
 
   $$
-  {\color{blue}\lambda_0} = \alpha, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad {\color{blue}\lambda_2} = \alpha + {\color{blue}\delta_2}, \quad \ldots
+  \ldots, \quad {\color{blue}\lambda_{-1}} = \alpha, \quad {\color{blue}\lambda_0} = \alpha + {\color{blue}\delta_0}, \quad {\color{blue}\lambda_1} = \alpha + {\color{blue}\delta_1}, \quad \ldots
   $$
 
   The ${\color{blue}\lambda_t}$'s are called **time fixed effects**. This is the regression we actually run in OLS, with a dummy for each period:
 
   \begin{align*}
-  Y_{it} &= {\color{blue}\lambda_0} \mathbb{1}[t\!=\!0] + {\color{blue}\lambda_1} \mathbb{1}[t\!=\!1] + {\color{blue}\lambda_2} \mathbb{1}[t\!=\!2] + \cdots \\
-  &\quad + {\color{purple}\gamma} D_i + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + \cdots + U_{it}.
+  Y_{it} &= \cdots + {\color{blue}\lambda_{-1}} \mathbb{1}[t\!=\!-1] + {\color{blue}\lambda_0} \mathbb{1}[t\!=\!0] + {\color{blue}\lambda_1} \mathbb{1}[t\!=\!1] + \cdots \\
+  &\quad + {\color{purple}\gamma} D_i + \cdots + {\color{teal}\beta_{-2}} D_i \mathbb{1}[t\!=\!-2] + {\color{teal}\beta_0} D_i \mathbb{1}[t\!=\!0] + {\color{teal}\beta_1} D_i \mathbb{1}[t\!=\!1] + \cdots + U_{it}.
   \end{align*}
 
 - At each $t$, exactly one $\lambda$-dummy equals $1$ and all others are zero:
 
   $$
-  \underbrace{{\color{blue}\lambda_0} \cdot 0 + \cdots + {\color{blue}\lambda_t} \cdot 1 + \cdots}_{\text{only } {\color{blue}\lambda_t} \text{ survives}} = {\color{blue}\lambda_t}.
+  \underbrace{\cdots + {\color{blue}\lambda_t} \cdot 1 + \cdots}_{\text{only } {\color{blue}\lambda_t} \text{ survives}} = {\color{blue}\lambda_t}.
   $$
 
   The notation ${\color{blue}\lambda_t}$ is shorthand for this — it represents whichever $\lambda$ is active at time $t$:
 
   $$
-  Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  Y_{it} = {\color{blue}\lambda_t} + {\color{purple}\gamma} D_i + \sum_{s \neq -1} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   $$
 
 ## Individual fixed effects
@@ -481,14 +497,14 @@ format:
 
   \begin{align*}
   Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} + {\color{red}\cancel{{\color{purple}\gamma} D_i}} \\
-  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  &\quad + \sum_{s \neq -1} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   \end{align*}
 
 - Since $D_i$ does **not change over time** for any individual, it is already captured by ${\color{purple}\alpha_i}$. Including both ${\color{purple}\alpha_i}$ and ${\color{purple}\gamma} D_i$ would be **perfect multicollinearity**, so we drop ${\color{purple}\gamma} D_i$:
 
   \begin{align*}
   Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
-  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
+  &\quad + \sum_{s \neq -1} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it}.
   \end{align*}
 
 - The interaction terms ${\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s]$ survive because they vary across **both** individuals and time.
@@ -499,9 +515,9 @@ format:
 
   \begin{align*}
   Y_{it} &= {\color{purple}\alpha_i} + {\color{blue}\lambda_t} \\
-  &\quad + \sum_{s \neq 0} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
+  &\quad + \sum_{s \neq -1} {\color{teal}\beta_s} \cdot D_i \cdot \mathbb{1}[t = s] + U_{it},
   \end{align*}
 
   where ${\color{purple}\alpha_i}$ is the individual fixed effect and ${\color{blue}\lambda_t}$ is the time fixed effect.
 
-- This is the standard specification for event studies and DID with multiple periods.
+- This is the standard **event study** specification used in the literature for DID with multiple periods.
