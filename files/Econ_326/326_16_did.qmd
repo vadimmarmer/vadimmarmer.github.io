@@ -51,7 +51,9 @@ format:
 
 - Previous lecture: treatment effects from **cross-sectional** data, assuming selection on observables (treatment is as good as random after controlling for covariates).
 
-- Often hard to justify. Alternative: exploit **panel data** (repeated observations on the same units over time).
+- Often hard to justify. Alternative: exploit data over time:
+  - **Panel data**: repeated observations on the exact same units over time.
+  - **Repeated cross-sections**: observations on different units from the same populations at different points in time.
 
 - **Difference-in-differences (DID)**: compare changes over time between a treatment group and a control group.
 
@@ -267,6 +269,8 @@ format:
 
 - Kiel and McClain (1995): did a garbage incinerator in North Andover, MA reduce nearby house prices?
 
+- This is a **repeated cross-section**: the houses sold in 1981 (after) are different from the houses sold in 1978 (before).
+
 - Data: `kielmc` from the `wooldridge` package:
 
   ```{r}
@@ -333,13 +337,29 @@ format:
 
 - **No anticipation:** before the incinerator was announced, living near the future site did not affect house prices.
 
-## DID with covariates
+## Why add covariates? Compositional changes
 
-- Basic DID requires parallel trends to hold unconditionally. If near houses are systematically different (e.g., older) and age affects price trends, the groups may follow different trajectories even without the incinerator.
+- Because this is a **repeated cross-section**, the houses sold in 1981 are different from those sold in 1978.
 
-- Omitting age biases ${\color{blue}\delta}$, which biases ${\color{teal}\beta}$.
+- What if the *mix* of houses sold changed over time? Look at the average age of houses sold:
 
-- Adding covariates: **parallel trends conditional on age**. Among houses of the same age, near and far would follow the same trend.
+  ```{r}
+  #| echo: true
+  means_age <- tapply(kielmc$age, list(kielmc$y81, kielmc$nearinc), mean)
+  colnames(means_age) <- c("Far (nearinc=0)", "Near (nearinc=1)")
+  rownames(means_age) <- c("1978 (y81=0)", "1981 (y81=1)")
+  round(means_age, 2)
+  ```
+
+- **Compositional change**: In the "Far" group, houses sold in 1981 were 4.25 years newer than in 1978. But in the "Near" group, they were **11.84 years newer**.
+
+- The "Near" group got disproportionately newer. Since newer houses generally sell for more, this drastic change in composition artificially pushes the "Near" average prices up.
+
+- This artificial price bump from the change in age composition partially **masked** the negative effect of the incinerator in our simple DID regression.
+
+## DID regression with covariates
+
+- To remove this bias, we must control for age. This adjusts for the fact that the two groups experienced different compositional changes over time.
 
   ```{r}
   #| echo: true
@@ -350,42 +370,7 @@ format:
 
 - With age controls: $\hat{\beta} = -\$21{,}920$ (SE $= 6{,}360$, $p = 0.0006$) — nearly twice as large, highly significant.
 
-- The change suggests the basic DID was biased by age-driven trend differences.
-
-## Where does the bias come from?
-
-- Under no anticipation, the decomposition from the earlier slide gives:
-
-  \begin{align*}
-  {\color{teal}\beta} &= {\color{teal}\text{ATT}} \\
-  &\quad + \underbrace{{\color{blue}\E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 1} - \E{Y_{i1}(0) - Y_{i0}(0) \mid D_i = 0}}}_{\color{blue}\text{difference in trends}}.
-  \end{align*}
-
-- **No anticipation is plausible:** incinerator not publicly known in 1978.
-
-- Bias must come from ${\color{blue}\text{difference in trends}}$: a **parallel trends** violation.
-
-- Near houses are systematically older:
-
-  ```{r}
-  #| echo: true
-  #| fig-width: 5
-  #| fig-height: 3.5
-  #| fig-align: center
-  boxplot(age ~ nearinc, data = kielmc,
-          names = c("Far (D=0)", "Near (D=1)"),
-          ylab = "House age (years)",
-          col = c("lightblue", "salmon"))
-  ```
-
-- Age affects price trends nonlinearly, so near and far groups would have had **different price trends even without the incinerator**.
-
-- Estimated bias: $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$ — the age-driven trend difference partially masked the incinerator's negative effect.
-
-  | Assumption | Violated? | Reasoning |
-  |---|---|---|
-  | No anticipation | No | Incinerator not yet announced in 1978 |
-  | Parallel trends | Yes (unconditionally) | Near houses are older; older houses had different price trends |
+- Estimated bias from compositional change: $-\$11{,}864 - (-\$21{,}920) \approx +\$10{,}056$. The simple DID was severely biased upward because the "Near" houses sold in 1981 were unusually new.
 
 ## Detecting anticipation and pre-trends
 
@@ -408,9 +393,9 @@ format:
   | $t = -2$ | $\alpha + {\color{blue}\delta_{-2}}$ | $\alpha + {\color{blue}\delta_{-2}} + {\color{purple}\gamma} + {\color{teal}\beta_{-2}}$ |
   | Backward trend ($t\!:\! -1 \to -2$) | ${\color{blue}\delta_{-2}}$ | ${\color{blue}\delta_{-2}} + {\color{teal}\beta_{-2}}$ |
 
-- ${\color{teal}\beta_{-2}}$ is the difference in backward trends from $t = -2$ to $t = -1$ between treatment and control: $({\color{blue}\delta_{-2}} + {\color{teal}\beta_{-2}}) - {\color{blue}\delta_{-2}} = {\color{teal}\beta_{-2}}$.
+- ${\color{teal}\beta_{-2}}$ is the difference in backward trends from $t = -1$ to $t = -2$ between treatment and control: $({\color{blue}\delta_{-2}} + {\color{teal}\beta_{-2}}) - {\color{blue}\delta_{-2}} = {\color{teal}\beta_{-2}}$.
 
-- More generally, ${\color{teal}\beta_s}$ for $s \leq -2$ is the difference in backward trends from $t = s$ to $t = -1$ between treatment and control.
+- More generally, ${\color{teal}\beta_s}$ for $s \leq -2$ is the difference in backward trends from $t = -1$ to $t = s$ between treatment and control.
 
 - No anticipation + parallel pre-trends $\implies$ ${\color{teal}\beta_s} = 0$ for all $s \leq -2$. However, we never observe $Y_{it}(0)$ for the treated group, so nonzero ${\color{teal}\beta_s}$ tests the **joint** hypothesis: we cannot determine which assumption failed.
 
@@ -477,6 +462,8 @@ format:
 
 ## Individual fixed effects
 
+- **Note**: The following requires **panel data** (observing the exact same individuals over time). It cannot be used with repeated cross-sections like the incinerator example.
+
 - The same idea can be applied to individuals. In the event study model, the intercept for individual $i$ is $\alpha + {\color{purple}\gamma} D_i$. This allows only **two** values:
 
   | Group | Intercept |
@@ -520,4 +507,4 @@ format:
 
   where ${\color{purple}\alpha_i}$ is the individual fixed effect and ${\color{blue}\lambda_t}$ is the time fixed effect.
 
-- This is the standard **event study** specification used in the literature for DID with multiple periods.
+- This is the standard **event study** specification used in the literature for DID with multiple periods of **panel data**.

@@ -1,5 +1,16 @@
 # Session Notes — Econ 326
 
+## 2026-04-01
+
+**Lecture 16 (326_16_did.qmd):**
+- Fixed conflation between panel data and repeated cross-sections
+- Clarified that Kiel and McClain (1995) garbage incinerator example is a repeated cross-section
+- Refactored covariates explanation to focus on compositional changes in house age instead of trends
+- Corrected wording for backward trends from baseline (=-1$ to =-2$ and =s$)
+- Added note that individual fixed effects and TWFE event study specifications require panel data
+- Rendered all formats (.html, .pdf, _slides.html)
+
+
 ## 2026-03-17 (session 4)
 
 **Created `326_14_treatment_did.qmd` — Lecture 14: Treatment effects and difference-in-differences (new content, no LaTeX source):**
