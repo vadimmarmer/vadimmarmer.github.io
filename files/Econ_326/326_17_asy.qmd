@@ -150,6 +150,66 @@ format:
 
   Since $\varepsilon_{1} > \varepsilon_{2}$, the $\varepsilon_{2}$-band is narrower, so it takes more terms for the sequence to stay inside it: $N_{2} > N_{1}$. Smaller $\varepsilon$ requires larger $N$.
 
+- A sequence that **does not converge**: $a_{n} = a + c\sin(n)$ oscillates indefinitely around $a$.
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 7
+  #| fig-height: 4.5
+  n_vals <- 1:30
+  a <- 1
+  cc <- 0.5
+  a_n <- a + cc * sin(n_vals)
+  eps1 <- 0.7
+  eps2 <- 0.3
+
+  col1 <- "steelblue"
+  col2 <- "firebrick"
+
+  par(mar = c(5, 4, 1, 4))
+  plot(n_vals, a_n, type = "n",
+       xlim = c(0, 33), ylim = c(-0.1, 2.1),
+       xlab = expression(italic(n)), ylab = expression(italic(a[n])),
+       axes = FALSE)
+
+  # Shade epsilon bands
+  rect(-1, a - eps1, 34, a + eps1, col = adjustcolor(col1, 0.1), border = NA)
+  rect(-1, a - eps2, 34, a + eps2, col = adjustcolor(col2, 0.12), border = NA)
+
+  # Band boundaries
+  abline(h = c(a + eps1, a - eps1), lty = 2, col = col1, lwd = 1)
+  abline(h = c(a + eps2, a - eps2), lty = 2, col = col2, lwd = 1)
+
+  # Limit line
+  abline(h = a, lwd = 1.5)
+
+  # Connecting lines to show the wave
+  lines(n_vals, a_n, col = "gray50", lwd = 0.8)
+
+  # Points — red if outside eps2 band
+  outside <- abs(a_n - a) >= eps2
+  pt_col <- ifelse(outside, col2, "black")
+  points(n_vals, a_n, pch = 19, cex = 0.8, col = pt_col)
+
+  # Axes
+  axis(1)
+  axis(2, at = c(a - eps1, a - eps2, a, a + eps2, a + eps1),
+       labels = FALSE, tcl = -0.3)
+  mtext(expression(italic(a) - epsilon[1]), side = 2, at = a - eps1,
+        las = 1, line = 0.5, cex = 0.8, col = col1)
+  mtext(expression(italic(a) - epsilon[2]), side = 2, at = a - eps2,
+        las = 1, line = 0.5, cex = 0.8, col = col2)
+  mtext(expression(italic(a)), side = 2, at = a,
+        las = 1, line = 0.5, cex = 0.8)
+  mtext(expression(italic(a) + epsilon[2]), side = 2, at = a + eps2,
+        las = 1, line = 0.5, cex = 0.8, col = col2)
+  mtext(expression(italic(a) + epsilon[1]), side = 2, at = a + eps1,
+        las = 1, line = 0.5, cex = 0.8, col = col1)
+  ```
+
+  For $\varepsilon_{1} > c$, all terms lie within the $\varepsilon_{1}$-band. But for $\varepsilon_{2} < c$, terms keep falling outside the $\varepsilon_{2}$-band (red dots) no matter how far along the sequence we go. Convergence requires the condition to hold for **all** $\varepsilon > 0$, so the sequence does not converge.
+
 - Our estimator $\hat{\beta}_{n}$ is **random**: its value changes with each sample. To apply the concept of convergence, we need to convert it into a **non-random** sequence indexed by $n$.
 
 - We take $a_{n} = P\left(\left\vert \hat{\beta}_{n}-\beta \right\vert \geq \varepsilon \right)$, which is a non-random number for each $n$. We say $\hat{\beta}_{n}$ **converges in probability** to $\beta$ if $a_{n} \to 0$ for all $\varepsilon > 0$.
