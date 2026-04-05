@@ -41,6 +41,7 @@ format:
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\nfrac#1#2{{}^{#1}\!/\!{}_{#2}}
 :::
 
 - **Random experiment**: an experiment the outcome of which cannot be predicted with certainty, even if the experiment is repeated under the same conditions.
@@ -533,11 +534,19 @@ $$
 - Joint PMF of $X \in \{0, 1\}$ and $Y \in \{1, 2, 3\}$:
 :::
 
+```{=latex}
+\renewcommand{\arraystretch}{1.4}
+```
+
 |  | $Y=1$ | $Y=2$ | $Y=3$ | $P(X=x)$ |
 |---|---|---|---|---|
-| $X=0$ | $\tfrac{1}{10}$ | $\tfrac{2}{10}$ | $\tfrac{2}{10}$ | $\tfrac{1}{2}$ |
-| $X=1$ | $\tfrac{2}{10}$ | $\tfrac{2}{10}$ | $\tfrac{1}{10}$ | $\tfrac{1}{2}$ |
-| $P(Y=y)$ | $\tfrac{3}{10}$ | $\tfrac{4}{10}$ | $\tfrac{3}{10}$ |  |
+| $X=0$ | $\nfrac{1}{10}$ | $\nfrac{2}{10}$ | $\nfrac{2}{10}$ | $\nfrac{1}{2}$ |
+| $X=1$ | $\nfrac{2}{10}$ | $\nfrac{2}{10}$ | $\nfrac{1}{10}$ | $\nfrac{1}{2}$ |
+| $P(Y=y)$ | $\nfrac{3}{10}$ | $\nfrac{4}{10}$ | $\nfrac{3}{10}$ |  |
+
+```{=latex}
+\renewcommand{\arraystretch}{1.0}
+```
 
 - Conditional PMFs (divide joint probabilities by marginal of $X$):
 $$
@@ -673,8 +682,8 @@ If $X$ and $Y$ have a bivariate normal distribution:
     & = \Var{Y - \beta X}  &&\quad (\text{def. of } U)\\
     & = \Var{Y} + \Var{\beta X} - 2\Cov{Y, \beta X}  &&\quad (\text{prop. of var.})\\
     & = \Var{Y} + \beta^2 \Var{X} - 2\beta \Cov{X, Y}  &&\quad (\text{prop. of var., cov.})\\
-    & = \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^2}_{=\beta^2} \Var{X} &&\\
-    & \qquad - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y}  &&\quad (\text{def. of } \beta)\\
+    & = \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^{\!2}}_{=\beta^2} \!\Var{X} &&\\
+    & \phantom{=\Var{Y}} - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y}  &&\quad (\text{def. of } \beta)\\
     & = \Var{Y} + \frac{\Cov{X, Y}^2}{\Var{X}} - 2 \frac{\Cov{X, Y}^2}{\Var{X}}   &&\\
     & = \Var{Y} - \frac{\Cov{X, Y}^2}{\Var{X}}. &&
   \end{alignat*}
@@ -691,7 +700,9 @@ If $X$ and $Y$ have a bivariate normal distribution:
 
   [$\quad= \Var{Y} + \beta^2 \Var{X} - 2\beta \Cov{X, Y} \quad (\text{prop. of var., cov.})$]{.fragment}
 
-  [$\quad= \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^2}_{=\beta^2} \Var{X} - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y} \quad (\text{def. of } \beta)$]{.fragment}
+  [$\quad= \Var{Y} + \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}}\right)^{\!2}}_{=\beta^2} \!\Var{X}$]{.fragment}
+
+  [$\quad\phantom{=\Var{Y}} - 2 \underbrace{\left(\frac{\Cov{X, Y}}{\Var{X}} \right)}_{=\beta}\Cov{X, Y} \quad (\text{def. of } \beta)$]{.fragment}
 
   [$\quad= \Var{Y} + \frac{\Cov{X, Y}^2}{\Var{X}} - 2 \frac{\Cov{X, Y}^2}{\Var{X}}$]{.fragment}
 
