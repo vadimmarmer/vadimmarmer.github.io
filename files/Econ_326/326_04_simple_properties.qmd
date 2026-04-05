@@ -3,6 +3,8 @@ title: "Lecture 4: Properties of OLS"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
+date: today
+date-format: "MMMM D, YYYY"
 format:
   html:
     output-file: 326_04_simple_properties.html
@@ -23,6 +25,7 @@ format:
     classoption: fleqn
   revealjs:
     output-file: 326_04_simple_properties_slides.html
+    date: ""
     theme: solarized
     css: slides_no_caps.css
     smaller: true

@@ -3,6 +3,8 @@ title: "Lecture 6: Estimating the variance of errors"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
+date: today
+date-format: "MMMM D, YYYY"
 format:
   html:
     output-file: 326_06_errors_variance.html
@@ -23,6 +25,7 @@ format:
     classoption: fleqn
   revealjs:
     output-file: 326_06_errors_variance_slides.html
+    date: ""
     theme: solarized
     css: slides_no_caps.css
     smaller: true

@@ -3,6 +3,8 @@ title: "Lecture 17: Asymptotics"
 subtitle: "Economics 326 — Introduction to Econometrics II"
 author:
   - name: "Vadim Marmer, UBC"
+date: today
+date-format: "MMMM D, YYYY"
 format:
   html:
     output-file: 326_17_asy.html
@@ -27,6 +29,7 @@ format:
         \newcommand{\fragment}[1]{#1}
   revealjs:
     output-file: 326_17_asy_slides.html
+    date: ""
     theme: solarized
     css: slides_no_caps.css
     smaller: true
