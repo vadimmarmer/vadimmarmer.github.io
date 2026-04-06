@@ -20,7 +20,7 @@ files/               # Downloadable files: papers, supplements, lecture notes
   Econ_326/          # Econ 326 Quarto lecture notes (.qmd sources + output/)
   Econ_327/          # Econ 327 materials
   Econ_527/          # Econ 527 materials
-  Econ_627/          # Econ 627 materials
+  Econ_627/          # Econ 627 lecture note PDFs (has own CLAUDE.md)
   Lima_2017/         # Lima workshop 2017
   Lima_2023/         # Lima workshop 2023
 ```
@@ -33,6 +33,10 @@ files/               # Downloadable files: papers, supplements, lecture notes
 | Econ 327 | `_teaching/2015-01-Econ-327.md` | `files/Econ_327/` |
 | Econ 527 | `_teaching/2023-09-Econ-527.md` | `files/Econ_527/` |
 | Econ 627 | `_teaching/2020-01-Econ-627.md` | `files/Econ_627/` |
+
+## Econ 627 lecture notes
+
+PhD Econometrics II lecture notes. PDFs are in `files/Econ_627/`; LaTeX sources are in a separate private repo [`vadimmarmer/Econ_627`](https://github.com/vadimmarmer/Econ_627) under `lecture_notes/`. See `files/Econ_627/CLAUDE.md` for details.
 
 ## Econ 326 lecture conversion (active project)
 
