@@ -18,8 +18,8 @@ assets/              # Site-wide CSS/JS
 images/              # Site images (avatar, etc.)
 files/               # Downloadable files: papers, supplements, lecture notes
   Econ_326/          # Econ 326 Quarto lecture notes (.qmd sources + output/)
-  Econ_327/          # Econ 327 materials
-  Econ_527/          # Econ 527 materials
+  Econ_327/          # Econ 327 lecture note PDFs (has own CLAUDE.md)
+  Econ_527/          # Econ 527 lecture note PDFs (has own CLAUDE.md)
   Econ_627/          # Econ 627 lecture note PDFs (has own CLAUDE.md)
   Lima_2017/         # Lima workshop 2017
   Lima_2023/         # Lima workshop 2023
@@ -33,6 +33,14 @@ files/               # Downloadable files: papers, supplements, lecture notes
 | Econ 327 | `_teaching/2015-01-Econ-327.md` | `files/Econ_327/` |
 | Econ 527 | `_teaching/2023-09-Econ-527.md` | `files/Econ_527/` |
 | Econ 627 | `_teaching/2020-01-Econ-627.md` | `files/Econ_627/` |
+
+## Econ 327 lecture notes
+
+Introduction to Empirical Methods (undergrad probability/statistics). PDFs are in `files/Econ_327/`; LaTeX sources are in a separate private repo [`vadimmarmer/Econ-327`](https://github.com/vadimmarmer/Econ-327) under `lecture_notes/` (working directory: `/Users/vmarmer/Documents/teaching/Econ_327/lecture_notes/`). See `files/Econ_327/CLAUDE.md` for details.
+
+## Econ 527 lecture notes
+
+Econometrics II (masters). PDFs are in `files/Econ_527/`; LaTeX sources are in a separate private repo [`vadimmarmer/Econ-527`](https://github.com/vadimmarmer/Econ-527) under `lecture_notes/` (working directory: `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/`). See `files/Econ_527/CLAUDE.md` for details.
 
 ## Econ 627 lecture notes
 
