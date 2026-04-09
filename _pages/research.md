@@ -3,6 +3,7 @@ layout: archive
 title: "Research"
 permalink: /research/
 author_profile: true
+sidebar_image: research.png
 ---
 
 ## Working Papers
