@@ -39,7 +39,7 @@ format:
     transition: none
 ---
 
-## Multiple linear IV model
+## Beyond the simple IV model
 
 ::: {.hidden}
 \gdef\E#1{\mathrm{E}\left[#1\right]}
@@ -49,159 +49,138 @@ format:
 \gdef\se#1{\mathrm{se}\left(#1\right)}
 :::
 
-- In practice, we often estimate models with multiple endogenous and exogenous regressors.
+- Previously: simple IV model with one endogenous regressor, one instrument, no controls.
 
-- Example:
+- The simple IV formula does not extend to models with:
+
+  1. Exogenous control variables.
+
+  2. Multiple instruments ($l > 1$).
+
+- **Two-stage least squares (2SLS)** handles both extensions.
+
+- **Notation:** $y$ = dependent variable, $Y$ = endogenous regressor, $X$'s = exogenous controls, $Z$'s = instruments.
+
+## IV model with exogenous controls
+
+- The model:
   $$
-  \ln \text{Wage}_i = {\color{blue}\gamma_0 + \gamma_1 \text{Age}_i + \gamma_2 \text{Sex}_i} + {\color{red}\beta_1 \text{Educ}_i + \beta_2 \text{Children}_i} + U_i.
-  $$
-
-  - ${\color{blue}\text{Exogenous}}$ regressors: age, sex, and a constant.
-
-  - ${\color{red}\text{Endogenous}}$ regressors: education and children (family size).
-
-## Multiple linear IV model
-
-- General model:
-  $$
-  y_i = {\color{blue}\gamma_0 + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + {\color{red}\beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i}} + U_i,
+  y_i = \gamma_0 + {\color{red}\beta_1 Y_i} + {\color{blue}\gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + U_i,
   $$
   where
 
-  - $y_i$ is the dependent variable.
-
   - $\gamma_0$ is the intercept: $\E{U_i} = 0$.
+
+  - ${\color{red}Y_i}$ is the **endogenous** regressor: $\Cov{Y_i, U_i} \neq 0$.
 
   - ${\color{blue}X_{1,i}, \ldots, X_{k,i}}$ are $k$ **exogenous** regressors:
     $$
     \Cov{X_{1,i}, U_i} = \ldots = \Cov{X_{k,i}, U_i} = 0.
     $$
 
-  - ${\color{red}Y_{1,i}, \ldots, Y_{m,i}}$ are $m$ **endogenous** regressors:
-    $$
-    \Cov{Y_{1,i}, U_i} \neq 0, \ldots, \Cov{Y_{m,i}, U_i} \neq 0.
-    $$
+- $l$ instruments ${\color{blue}Z_{1,i}, \ldots, Z_{l,i}}$, excluded from the regression.
 
-## Identification problem
+## Identification with instruments
 
-- There are ${\color{red}k + 1 + m}$ unknown coefficients:
+- There are ${\color{red}k + 2}$ unknown coefficients:
   $$
-  y_i = {\color{red}\gamma_0} + {\color{red}\gamma_1} X_{1,i} + \ldots + {\color{red}\gamma_k} X_{k,i} + {\color{red}\beta_1} Y_{1,i} + \ldots + {\color{red}\beta_m} Y_{m,i} + U_i.
+  y_i = {\color{red}\gamma_0} + {\color{red}\beta_1} Y_i + {\color{red}\gamma_1} X_{1,i} + \ldots + {\color{red}\gamma_k} X_{k,i} + U_i.
   $$
 
-- The exogeneity conditions give only ${\color{blue}k + 1}$ equations:
+- Exogeneity gives only ${\color{blue}k + 1}$ equations:
   $$
   \E{U_i} = 0, \quad \Cov{X_{j,i}, U_i} = 0, \quad j = 1, \ldots, k.
   $$
 
-- More unknowns than equations: the covariances between $X$'s, $Y$'s, and $y$ do not suffice to recover the coefficients.
-
-- Without additional information, the coefficients are **not identified** even at the population level.
-
-- We need **at least** $m$ additional equations!
-
-## Instrumental variables
-
-- Suppose we observe $l$ additional **exogenous** variables (IVs) ${\color{blue}Z_{1,i}, \ldots, Z_{l,i}}$.
-
-- The IVs are **excluded** from the **structural equation**:
-  $$
-  y_i = \gamma_0 + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i} + \beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i} + U_i,
-  $$
-  so there are still ${\color{red}k + 1 + m}$ structural coefficients.
-
-- Since the IVs are exogenous, we gain $l$ additional moment conditions:
+- $l$ instruments provide $l$ additional moment conditions:
   $$
   \Cov{Z_{j,i}, U_i} = 0, \quad j = 1, \ldots, l,
   $$
-  bringing the total to ${\color{blue}k + 1 + l}$ equations.
+  for a total of ${\color{blue}k + 1 + l}$ equations.
 
-- **Necessary condition** for identification: ${\color{red}l \geq m}$.
+- **Order condition:** $l \geq 1$.
 
-## First-stage equations
+  - $l = 1$: exactly identified.
+  - $l > 1$: overidentified.
 
-- The IVs must also determine the endogenous regressors.
+## The first-stage equation
 
-- The system consists of the **structural equation** and $m$ **first-stage** (**reduced-form**) equations:
-  \begin{align*}
-  Y_{1,i} &= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
-  &\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
-  &\;\;\vdots \\
-  Y_{m,i} &= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
-  &\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
-  \end{align*}
-
-- The exogenous regressors $X$'s appear in the first-stage equations because they can be correlated with $Y$'s.
-
-- The $X$'s and $Z$'s are **uncorrelated** with all errors $U$ and $V$'s.
-
-## Order condition for identification
-
-- Necessary condition: for every endogenous regressor $Y$, there must be **at least** one excluded exogenous variable $Z$:
+- Consider a system of two equations. The original regression becomes the **second stage**; a new **first-stage** equation describes how $Y_i$ depends on $Z$'s and $X$'s:
   $$
-  {\color{red}l \geq m}.
+  \begin{aligned}
+  \text{(first stage)} \quad Y_i &= \pi_0 + \pi_1 Z_{1,i} + \ldots + \pi_l Z_{l,i} \\
+  &\quad + \pi_{l+1} X_{1,i} + \ldots + \pi_{l+k} X_{k,i} + V_i \\[4pt]
+  \text{(second stage)} \quad y_i &= \gamma_0 + \beta_1 Y_i + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i} + U_i
+  \end{aligned}
   $$
 
-- $l = m$: the system is **exactly identified**.
+- All RHS variables in the first-stage equation are exogenous → the $\pi$'s can be estimated consistently by OLS.
 
-- $l > m$: the system is **overidentified**.
+- $Y_i$ is endogenous because $\Cov{U_i, V_i} \neq 0$.
 
-- $l < m$: the system is **underidentified**; the structural coefficients $\gamma$'s and $\beta$'s cannot be estimated.
+- **IV relevance condition:** at least one $\pi_j \neq 0$ for $j = 1, \ldots, l$.
 
-## 2SLS: the first stage
+- $Y_i$ contains both exogenous variation (driven by $Z$'s and $X$'s) and endogenous variation (correlated with $U_i$).
 
-- The first-stage equations:
-  \begin{align*}
-  Y_{1,i} &= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
-  &\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
-  &\;\;\vdots \\
-  Y_{m,i} &= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
-  &\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
-  \end{align*}
+- OLS uses all variation in $Y_i$ → **inconsistent**.
 
-- All right-hand side variables are exogenous.
+- **Idea:** estimate $\beta_1$ using only the **exogenous variation** in $Y_i$.
 
-- The first-stage coefficients $\pi$'s can be estimated consistently by OLS, regressing each $Y$ against $Z$'s and $X$'s.
+- The first stage extracts this variation: $\hat{Y}_i$ captures the part of $Y_i$ explained by $Z$'s and $X$'s.
 
-## 2SLS: the first stage
+- $X$'s appear in the first stage because they affect $Y_i$ directly and can be correlated with $Z$'s.
 
-- Let $\hat{\pi}$'s denote the OLS estimators of $\pi$'s. Obtain the fitted values:
-  \begin{align*}
-  \hat{Y}_{1,i} &= \hat{\pi}_{0,1} + \hat{\pi}_{1,1} Z_{1,i} + \ldots + \hat{\pi}_{l,1} Z_{l,i} \\
-  &\quad + \hat{\pi}_{l+1,1} X_{1,i} + \ldots + \hat{\pi}_{l+k,1} X_{k,i}, \\
-  &\;\;\vdots \\
-  \hat{Y}_{m,i} &= \hat{\pi}_{0,m} + \hat{\pi}_{1,m} Z_{1,i} + \ldots + \hat{\pi}_{l,m} Z_{l,i} \\
-  &\quad + \hat{\pi}_{l+1,m} X_{1,i} + \ldots + \hat{\pi}_{l+k,m} X_{k,i}.
-  \end{align*}
+- $\hat{Y}_i$ depends only on exogenous variables → uncorrelated with $U_i$.
 
-- The $\hat{Y}$'s are functions of $Z$'s and $X$'s (all exogenous), so they are asymptotically uncorrelated with the errors.
+## 2SLS: two stages
 
-## 2SLS: the second stage
+- **Stage 1:** Regress $Y_i$ on $Z_{1,i}, \ldots, Z_{l,i}, X_{1,i}, \ldots, X_{k,i}$ by OLS. Obtain fitted values:
+  $$
+  \begin{aligned}
+  \hat{Y}_i &= \hat{\pi}_0 + \hat{\pi}_1 Z_{1,i} + \ldots + \hat{\pi}_l Z_{l,i} \\
+  &\quad + \hat{\pi}_{l+1} X_{1,i} + \ldots + \hat{\pi}_{l+k} X_{k,i}.
+  \end{aligned}
+  $$
 
-- In the second stage, regress (OLS) $y$ against a constant, $X$'s, and the fitted values $\hat{Y}$'s:
-  \begin{align*}
-  y_i &= \hat{\gamma}_0^{2SLS} + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} \\
-  &\quad + \hat{\beta}_1^{2SLS} \hat{Y}_{1,i} + \ldots + \hat{\beta}_m^{2SLS} \hat{Y}_{m,i} + \hat{U}_i.
-  \end{align*}
+- **Stage 2:** Regress $y_i$ on $\hat{Y}_i$ and $X_{1,i}, \ldots, X_{k,i}$ by OLS:
+  $$
+  \begin{aligned}
+  y_i &= \hat{\gamma}_0^{2SLS} + \hat{\beta}_1^{2SLS} \hat{Y}_i \\
+  &\quad + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} + \hat{U}_i.
+  \end{aligned}
+  $$
 
-- The 2SLS estimators $\hat{\gamma}_0^{2SLS}, \ldots, \hat{\gamma}_k^{2SLS}, \hat{\beta}_1^{2SLS}, \ldots, \hat{\beta}_m^{2SLS}$ are **consistent** and **asymptotically normal**.
+- The 2SLS estimators are **consistent** and **asymptotically normal**.
 
-- Standard errors from naïve second-stage OLS are **incorrect**: they do not account for the estimation error in $\hat{\pi}$'s from the first stage.
+- Standard errors from naïve second-stage OLS are **incorrect**; statistical packages report corrected standard errors.
 
-- Statistical packages report the corrected standard errors.
+## 2SLS with a single instrument
 
-## Example: returns to education
+- Special case: $l = 1$ (one instrument $Z_i$), $k = 0$ (no exogenous controls).
+
+- Stage 1: regress $Y_i$ on $Z_i$ → $\hat{Y}_i = \hat{\alpha}_0 + \hat{\alpha}_1 Z_i$.
+
+- Stage 2: regress $y_i$ on $\hat{Y}_i$.
+
+- The 2SLS estimator coincides with the simple IV estimator from the previous lecture.
+
+- With exogenous controls or multiple instruments, the simple IV formula no longer works; 2SLS is the standard approach.
+
+## Example: returns to education (setup)
 
 - Estimate the returns to education using the MROZ dataset (Wooldridge, 2006):
   $$
-  \ln \text{Wage}_i = \gamma_0 + \beta_1 \text{Educ}_i + \gamma_1 \text{Exper}_i + \gamma_2 \text{Exper}_i^2 + U_i.
+  \begin{aligned}
+  \ln \text{Wage}_i &= \gamma_0 + {\color{red}\beta_1 \text{Educ}_i} \\
+  &\quad + \gamma_1 \text{Exper}_i + \gamma_2 \text{Exper}_i^2 + U_i.
+  \end{aligned}
   $$
 
-  - **Endogenous**: $\text{Educ}$ (education).
+  - **Endogenous**: ${\color{red}\text{Educ}}$ (education).
   - **Instruments**: $\text{MotherEduc}$ and $\text{FatherEduc}$ (parents' education).
   - **Exogenous**: $\text{Exper}$ and $\text{Exper}^2$ (experience).
 
-- The system is **overidentified** ($l = 2 > m = 1$).
+- The model is **overidentified** ($l = 2 > 1$).
 
 - In R, use `ivreg()` from the `AER` package with `vcovHC(..., type = "HC1")` for heteroskedasticity-robust standard errors.
 
@@ -218,7 +197,7 @@ d <- subset(mroz, inlf == 1)
 d$expersq <- d$exper^2
 ```
 
-## Example: returns to education
+## Example: first stage
 
 **First-stage regression** ($\text{Educ}$ on instruments and exogenous regressors):
 
@@ -229,21 +208,125 @@ coeftest(first_stage, vcov = vcovHC(first_stage, type = "HC1"))
 
 Both instruments (`motheduc`, `fatheduc`) are statistically significant. First-stage $R^2 =$ `r round(summary(first_stage)$r.squared, 4)`.
 
-## Example: returns to education
+## Example: 2SLS vs OLS
 
-**2SLS second stage:**
+- **2SLS second stage:**
 
-```{r}
-iv_fit <- ivreg(lwage ~ educ + exper + expersq |
-                  exper + expersq + motheduc + fatheduc, data = d)
-coeftest(iv_fit, vcov = vcovHC(iv_fit, type = "HC1"))
-```
+  ```{r}
+  iv_fit <- ivreg(lwage ~ educ + exper + expersq |
+                    exper + expersq + motheduc + fatheduc, data = d)
+  coeftest(iv_fit, vcov = vcovHC(iv_fit, type = "HC1"))
+  ```
 
-**OLS for comparison:**
+- **OLS for comparison:**
 
-```{r}
-ols_fit <- lm(lwage ~ educ + exper + expersq, data = d)
-coeftest(ols_fit, vcov = vcovHC(ols_fit, type = "HC1"))
-```
+  ```{r}
+  ols_fit <- lm(lwage ~ educ + exper + expersq, data = d)
+  coeftest(ols_fit, vcov = vcovHC(ols_fit, type = "HC1"))
+  ```
 
-The 2SLS estimate of the return to education ($\hat{\beta}_1^{2SLS} = 0.061$) is smaller than the OLS estimate ($\hat{\beta}_1^{OLS} = 0.107$), consistent with upward ability bias.
+- The 2SLS estimate ($\hat{\beta}_1^{2SLS} = 0.061$) is smaller than OLS ($\hat{\beta}_1^{OLS} = 0.107$), consistent with upward ability bias.
+
+- The 2SLS standard error ($0.033$) is larger than OLS ($0.013$): 2SLS uses only the exogenous variation in $\text{Educ}$, so estimates are noisier.
+
+## Multiple endogenous regressors
+
+- So far: one endogenous variable with exogenous controls and multiple instruments.
+
+- In practice, models may have several endogenous regressors.
+
+- Example:
+  $$
+  \begin{aligned}
+  \ln \text{Wage}_i &= \gamma_0 + {\color{red}\beta_1 \text{Educ}_i + \beta_2 \text{Children}_i} \\
+  &\quad + {\color{blue}\gamma_1 \text{Age}_i + \gamma_2 \text{Sex}_i} + U_i.
+  \end{aligned}
+  $$
+
+  - ${\color{red}\text{Endogenous}}$ regressors: education and children (family size).
+
+  - ${\color{blue}\text{Exogenous}}$ regressors: age, sex, and a constant.
+
+## General model
+
+- General model with $m$ endogenous regressors:
+  $$
+  \begin{aligned}
+  y_i &= \gamma_0 + {\color{red}\beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i}} \\
+  &\quad + {\color{blue}\gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + U_i,
+  \end{aligned}
+  $$
+  where
+
+  - ${\color{red}Y_{1,i}, \ldots, Y_{m,i}}$ are $m$ **endogenous** regressors:
+    $$
+    \Cov{Y_{1,i}, U_i} \neq 0, \ldots, \Cov{Y_{m,i}, U_i} \neq 0.
+    $$
+
+  - ${\color{blue}X_{1,i}, \ldots, X_{k,i}}$ are $k$ **exogenous** regressors:
+    $$
+    \Cov{X_{1,i}, U_i} = \ldots = \Cov{X_{k,i}, U_i} = 0.
+    $$
+
+## Identification and the order condition
+
+- There are ${\color{red}k + 1 + m}$ unknown coefficients, but exogeneity of $X$'s gives only ${\color{blue}k + 1}$ equations. We need $m$ more.
+
+- $l$ additional exogenous IVs ${\color{blue}Z_{1,i}, \ldots, Z_{l,i}}$, excluded from the second-stage equation, provide $l$ moment conditions:
+  $$
+  \Cov{Z_{j,i}, U_i} = 0, \quad j = 1, \ldots, l.
+  $$
+
+- **Order condition:** ${\color{red}l \geq m}$.
+
+  - $l = m$: exactly identified.
+  - $l > m$: overidentified.
+  - $l < m$: underidentified (coefficients cannot be estimated).
+
+## First-stage equations
+
+- The system has $m$ **first-stage** equations, one per endogenous regressor:
+  $$
+  \begin{aligned}
+  Y_{1,i} &= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
+  &\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
+  &\;\;\vdots \\
+  Y_{m,i} &= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
+  &\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
+  \end{aligned}
+  $$
+
+- The exogenous regressors $X$'s appear because they can be correlated with $Y$'s.
+
+- The $X$'s and $Z$'s are **uncorrelated** with all errors $U$ and $V$'s.
+
+## 2SLS: the first stage
+
+- Estimate each first-stage equation by OLS. The fitted values are:
+  $$
+  \begin{aligned}
+  \hat{Y}_{1,i} &= \hat{\pi}_{0,1} + \hat{\pi}_{1,1} Z_{1,i} + \ldots + \hat{\pi}_{l,1} Z_{l,i} \\
+  &\quad + \hat{\pi}_{l+1,1} X_{1,i} + \ldots + \hat{\pi}_{l+k,1} X_{k,i}, \\
+  &\;\;\vdots \\
+  \hat{Y}_{m,i} &= \hat{\pi}_{0,m} + \hat{\pi}_{1,m} Z_{1,i} + \ldots + \hat{\pi}_{l,m} Z_{l,i} \\
+  &\quad + \hat{\pi}_{l+1,m} X_{1,i} + \ldots + \hat{\pi}_{l+k,m} X_{k,i}.
+  \end{aligned}
+  $$
+
+- The $\hat{Y}$'s are functions of $Z$'s and $X$'s (all exogenous), so they are asymptotically uncorrelated with the errors.
+
+## 2SLS: the second stage
+
+- In the second stage, regress (OLS) $y$ on a constant, $\hat{Y}$'s, and $X$'s:
+  $$
+  \begin{aligned}
+  y_i &= \hat{\gamma}_0^{2SLS} + \hat{\beta}_1^{2SLS} \hat{Y}_{1,i} + \ldots + \hat{\beta}_m^{2SLS} \hat{Y}_{m,i} \\
+  &\quad + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} + \hat{U}_i.
+  \end{aligned}
+  $$
+
+- The 2SLS estimators $\hat{\beta}_1^{2SLS}, \ldots, \hat{\beta}_m^{2SLS}, \hat{\gamma}_0^{2SLS}, \ldots, \hat{\gamma}_k^{2SLS}$ are **consistent** and **asymptotically normal**.
+
+- Standard errors from naïve second-stage OLS are **incorrect**: they do not account for the estimation error in $\hat{\pi}$'s from the first stage.
+
+- Statistical packages report the corrected standard errors.

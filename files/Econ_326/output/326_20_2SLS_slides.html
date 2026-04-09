@@ -1141,149 +1141,127 @@ Vadim Marmer, UBC
 </div>
 
 </section>
-<section id="multiple-linear-iv-model" class="slide level2">
-<h2>Multiple linear IV model</h2>
+<section id="beyond-the-simple-iv-model" class="slide level2 scrollable">
+<h2>Beyond the simple IV model</h2>
 <div class="hidden">
 
 </div>
 <ul>
-<li class="fragment"><p>In practice, we often estimate models with multiple endogenous and exogenous regressors.</p></li>
-<li class="fragment"><p>Example: <span class="math display">
-\ln \text{Wage}_i = {\color{blue}\gamma_0 + \gamma_1 \text{Age}_i + \gamma_2 \text{Sex}_i} + {\color{red}\beta_1 \text{Educ}_i + \beta_2 \text{Children}_i} + U_i.
-</span></p>
-<ul>
-<li class="fragment"><p><span class="math inline">{\color{blue}\text{Exogenous}}</span> regressors: age, sex, and a constant.</p></li>
-<li class="fragment"><p><span class="math inline">{\color{red}\text{Endogenous}}</span> regressors: education and children (family size).</p></li>
-</ul></li>
+<li class="fragment"><p>Previously: simple IV model with one endogenous regressor, one instrument, no controls.</p></li>
+<li class="fragment"><p>The simple IV formula does not extend to models with:</p>
+<ol type="1">
+<li class="fragment"><p>Exogenous control variables.</p></li>
+<li class="fragment"><p>Multiple instruments (<span class="math inline">l &gt; 1</span>).</p></li>
+</ol></li>
+<li class="fragment"><p><strong>Two-stage least squares (2SLS)</strong> handles both extensions.</p></li>
+<li class="fragment"><p><strong>Notation:</strong> <span class="math inline">y</span> = dependent variable, <span class="math inline">Y</span> = endogenous regressor, <span class="math inline">X</span>’s = exogenous controls, <span class="math inline">Z</span>’s = instruments.</p></li>
 </ul>
 </section>
-<section id="multiple-linear-iv-model-1" class="slide level2">
-<h2>Multiple linear IV model</h2>
+<section id="iv-model-with-exogenous-controls" class="slide level2">
+<h2>IV model with exogenous controls</h2>
 <ul>
-<li class="fragment"><p>General model: <span class="math display">
-y_i = {\color{blue}\gamma_0 + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + {\color{red}\beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i}} + U_i,
+<li class="fragment"><p>The model: <span class="math display">
+y_i = \gamma_0 + {\color{red}\beta_1 Y_i} + {\color{blue}\gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + U_i,
 </span> where</p>
 <ul>
-<li class="fragment"><p><span class="math inline">y_i</span> is the dependent variable.</p></li>
 <li class="fragment"><p><span class="math inline">\gamma_0</span> is the intercept: <span class="math inline">\mathrm{E}\left[U_i\right] = 0</span>.</p></li>
+<li class="fragment"><p><span class="math inline">{\color{red}Y_i}</span> is the <strong>endogenous</strong> regressor: <span class="math inline">\mathrm{Cov}\left(Y_i, U_i\right) \neq 0</span>.</p></li>
 <li class="fragment"><p><span class="math inline">{\color{blue}X_{1,i}, \ldots, X_{k,i}}</span> are <span class="math inline">k</span> <strong>exogenous</strong> regressors: <span class="math display">
 \mathrm{Cov}\left(X_{1,i}, U_i\right) = \ldots = \mathrm{Cov}\left(X_{k,i}, U_i\right) = 0.
 </span></p></li>
-<li class="fragment"><p><span class="math inline">{\color{red}Y_{1,i}, \ldots, Y_{m,i}}</span> are <span class="math inline">m</span> <strong>endogenous</strong> regressors: <span class="math display">
-\mathrm{Cov}\left(Y_{1,i}, U_i\right) \neq 0, \ldots, \mathrm{Cov}\left(Y_{m,i}, U_i\right) \neq 0.
+</ul></li>
+<li class="fragment"><p><span class="math inline">l</span> instruments <span class="math inline">{\color{blue}Z_{1,i}, \ldots, Z_{l,i}}</span>, excluded from the regression.</p></li>
+</ul>
+</section>
+<section id="identification-with-instruments" class="slide level2">
+<h2>Identification with instruments</h2>
+<ul>
+<li class="fragment"><p>There are <span class="math inline">{\color{red}k + 2}</span> unknown coefficients: <span class="math display">
+y_i = {\color{red}\gamma_0} + {\color{red}\beta_1} Y_i + {\color{red}\gamma_1} X_{1,i} + \ldots + {\color{red}\gamma_k} X_{k,i} + U_i.
 </span></p></li>
+<li class="fragment"><p>Exogeneity gives only <span class="math inline">{\color{blue}k + 1}</span> equations: <span class="math display">
+\mathrm{E}\left[U_i\right] = 0, \quad \mathrm{Cov}\left(X_{j,i}, U_i\right) = 0, \quad j = 1, \ldots, k.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">l</span> instruments provide <span class="math inline">l</span> additional moment conditions: <span class="math display">
+\mathrm{Cov}\left(Z_{j,i}, U_i\right) = 0, \quad j = 1, \ldots, l,
+</span> for a total of <span class="math inline">{\color{blue}k + 1 + l}</span> equations.</p></li>
+<li class="fragment"><p><strong>Order condition:</strong> <span class="math inline">l \geq 1</span>.</p>
+<ul>
+<li class="fragment"><span class="math inline">l = 1</span>: exactly identified.</li>
+<li class="fragment"><span class="math inline">l &gt; 1</span>: overidentified.</li>
 </ul></li>
 </ul>
 </section>
-<section id="identification-problem" class="slide level2">
-<h2>Identification problem</h2>
+<section id="the-first-stage-equation" class="slide level2">
+<h2>The first-stage equation</h2>
 <ul>
-<li class="fragment"><p>There are <span class="math inline">{\color{red}k + 1 + m}</span> unknown coefficients: <span class="math display">
-y_i = {\color{red}\gamma_0} + {\color{red}\gamma_1} X_{1,i} + \ldots + {\color{red}\gamma_k} X_{k,i} + {\color{red}\beta_1} Y_{1,i} + \ldots + {\color{red}\beta_m} Y_{m,i} + U_i.
+<li class="fragment"><p>Consider a system of two equations. The original regression becomes the <strong>second stage</strong>; a new <strong>first-stage</strong> equation describes how <span class="math inline">Y_i</span> depends on <span class="math inline">Z</span>’s and <span class="math inline">X</span>’s: <span class="math display">
+\begin{aligned}
+\text{(first stage)} \quad Y_i &amp;= \pi_0 + \pi_1 Z_{1,i} + \ldots + \pi_l Z_{l,i} \\
+&amp;\quad + \pi_{l+1} X_{1,i} + \ldots + \pi_{l+k} X_{k,i} + V_i \\[4pt]
+\text{(second stage)} \quad y_i &amp;= \gamma_0 + \beta_1 Y_i + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i} + U_i
+\end{aligned}
 </span></p></li>
-<li class="fragment"><p>The exogeneity conditions give only <span class="math inline">{\color{blue}k + 1}</span> equations: <span class="math display">
-\mathrm{E}\left[U_i\right] = 0, \quad \mathrm{Cov}\left(X_{j,i}, U_i\right) = 0, \quad j = 1, \ldots, k.
+<li class="fragment"><p>All RHS variables in the first-stage equation are exogenous → the <span class="math inline">\pi</span>’s can be estimated consistently by OLS.</p></li>
+<li class="fragment"><p><span class="math inline">Y_i</span> is endogenous because <span class="math inline">\mathrm{Cov}\left(U_i, V_i\right) \neq 0</span>.</p></li>
+<li class="fragment"><p><strong>IV relevance condition:</strong> at least one <span class="math inline">\pi_j \neq 0</span> for <span class="math inline">j = 1, \ldots, l</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Y_i</span> contains both exogenous variation (driven by <span class="math inline">Z</span>’s and <span class="math inline">X</span>’s) and endogenous variation (correlated with <span class="math inline">U_i</span>).</p></li>
+<li class="fragment"><p>OLS uses all variation in <span class="math inline">Y_i</span> → <strong>inconsistent</strong>.</p></li>
+<li class="fragment"><p><strong>Idea:</strong> estimate <span class="math inline">\beta_1</span> using only the <strong>exogenous variation</strong> in <span class="math inline">Y_i</span>.</p></li>
+<li class="fragment"><p>The first stage extracts this variation: <span class="math inline">\hat{Y}_i</span> captures the part of <span class="math inline">Y_i</span> explained by <span class="math inline">Z</span>’s and <span class="math inline">X</span>’s.</p></li>
+<li class="fragment"><p><span class="math inline">X</span>’s appear in the first stage because they affect <span class="math inline">Y_i</span> directly and can be correlated with <span class="math inline">Z</span>’s.</p></li>
+<li class="fragment"><p><span class="math inline">\hat{Y}_i</span> depends only on exogenous variables → uncorrelated with <span class="math inline">U_i</span>.</p></li>
+</ul>
+</section>
+<section id="sls-two-stages" class="slide level2">
+<h2>2SLS: two stages</h2>
+<ul>
+<li class="fragment"><p><strong>Stage 1:</strong> Regress <span class="math inline">Y_i</span> on <span class="math inline">Z_{1,i}, \ldots, Z_{l,i}, X_{1,i}, \ldots, X_{k,i}</span> by OLS. Obtain fitted values: <span class="math display">
+\begin{aligned}
+\hat{Y}_i &amp;= \hat{\pi}_0 + \hat{\pi}_1 Z_{1,i} + \ldots + \hat{\pi}_l Z_{l,i} \\
+&amp;\quad + \hat{\pi}_{l+1} X_{1,i} + \ldots + \hat{\pi}_{l+k} X_{k,i}.
+\end{aligned}
 </span></p></li>
-<li class="fragment"><p>More unknowns than equations: the covariances between <span class="math inline">X</span>’s, <span class="math inline">Y</span>’s, and <span class="math inline">y</span> do not suffice to recover the coefficients.</p></li>
-<li class="fragment"><p>Without additional information, the coefficients are <strong>not identified</strong> even at the population level.</p></li>
-<li class="fragment"><p>We need <strong>at least</strong> <span class="math inline">m</span> additional equations!</p></li>
-</ul>
-</section>
-<section id="instrumental-variables" class="slide level2">
-<h2>Instrumental variables</h2>
-<ul>
-<li class="fragment"><p>Suppose we observe <span class="math inline">l</span> additional <strong>exogenous</strong> variables (IVs) <span class="math inline">{\color{blue}Z_{1,i}, \ldots, Z_{l,i}}</span>.</p></li>
-<li class="fragment"><p>The IVs are <strong>excluded</strong> from the <strong>structural equation</strong>: <span class="math display">
-y_i = \gamma_0 + \gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i} + \beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i} + U_i,
-</span> so there are still <span class="math inline">{\color{red}k + 1 + m}</span> structural coefficients.</p></li>
-<li class="fragment"><p>Since the IVs are exogenous, we gain <span class="math inline">l</span> additional moment conditions: <span class="math display">
-\mathrm{Cov}\left(Z_{j,i}, U_i\right) = 0, \quad j = 1, \ldots, l,
-</span> bringing the total to <span class="math inline">{\color{blue}k + 1 + l}</span> equations.</p></li>
-<li class="fragment"><p><strong>Necessary condition</strong> for identification: <span class="math inline">{\color{red}l \geq m}</span>.</p></li>
-</ul>
-</section>
-<section id="first-stage-equations" class="slide level2">
-<h2>First-stage equations</h2>
-<ul>
-<li class="fragment"><p>The IVs must also determine the endogenous regressors.</p></li>
-<li class="fragment"><p>The system consists of the <strong>structural equation</strong> and <span class="math inline">m</span> <strong>first-stage</strong> (<strong>reduced-form</strong>) equations: <span class="math display">\begin{align*}
-Y_{1,i} &amp;= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
-&amp;\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
-&amp;\;\;\vdots \\
-Y_{m,i} &amp;= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
-&amp;\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
-\end{align*}</span></p></li>
-<li class="fragment"><p>The exogenous regressors <span class="math inline">X</span>’s appear in the first-stage equations because they can be correlated with <span class="math inline">Y</span>’s.</p></li>
-<li class="fragment"><p>The <span class="math inline">X</span>’s and <span class="math inline">Z</span>’s are <strong>uncorrelated</strong> with all errors <span class="math inline">U</span> and <span class="math inline">V</span>’s.</p></li>
-</ul>
-</section>
-<section id="order-condition-for-identification" class="slide level2">
-<h2>Order condition for identification</h2>
-<ul>
-<li class="fragment"><p>Necessary condition: for every endogenous regressor <span class="math inline">Y</span>, there must be <strong>at least</strong> one excluded exogenous variable <span class="math inline">Z</span>: <span class="math display">
-{\color{red}l \geq m}.
+<li class="fragment"><p><strong>Stage 2:</strong> Regress <span class="math inline">y_i</span> on <span class="math inline">\hat{Y}_i</span> and <span class="math inline">X_{1,i}, \ldots, X_{k,i}</span> by OLS: <span class="math display">
+\begin{aligned}
+y_i &amp;= \hat{\gamma}_0^{2SLS} + \hat{\beta}_1^{2SLS} \hat{Y}_i \\
+&amp;\quad + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} + \hat{U}_i.
+\end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">l = m</span>: the system is <strong>exactly identified</strong>.</p></li>
-<li class="fragment"><p><span class="math inline">l &gt; m</span>: the system is <strong>overidentified</strong>.</p></li>
-<li class="fragment"><p><span class="math inline">l &lt; m</span>: the system is <strong>underidentified</strong>; the structural coefficients <span class="math inline">\gamma</span>’s and <span class="math inline">\beta</span>’s cannot be estimated.</p></li>
+<li class="fragment"><p>The 2SLS estimators are <strong>consistent</strong> and <strong>asymptotically normal</strong>.</p></li>
+<li class="fragment"><p>Standard errors from naïve second-stage OLS are <strong>incorrect</strong>; statistical packages report corrected standard errors.</p></li>
 </ul>
 </section>
-<section id="sls-the-first-stage" class="slide level2">
-<h2>2SLS: the first stage</h2>
+<section id="sls-with-a-single-instrument" class="slide level2">
+<h2>2SLS with a single instrument</h2>
 <ul>
-<li class="fragment"><p>The first-stage equations: <span class="math display">\begin{align*}
-Y_{1,i} &amp;= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
-&amp;\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
-&amp;\;\;\vdots \\
-Y_{m,i} &amp;= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
-&amp;\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
-\end{align*}</span></p></li>
-<li class="fragment"><p>All right-hand side variables are exogenous.</p></li>
-<li class="fragment"><p>The first-stage coefficients <span class="math inline">\pi</span>’s can be estimated consistently by OLS, regressing each <span class="math inline">Y</span> against <span class="math inline">Z</span>’s and <span class="math inline">X</span>’s.</p></li>
+<li class="fragment"><p>Special case: <span class="math inline">l = 1</span> (one instrument <span class="math inline">Z_i</span>), <span class="math inline">k = 0</span> (no exogenous controls).</p></li>
+<li class="fragment"><p>Stage 1: regress <span class="math inline">Y_i</span> on <span class="math inline">Z_i</span> → <span class="math inline">\hat{Y}_i = \hat{\alpha}_0 + \hat{\alpha}_1 Z_i</span>.</p></li>
+<li class="fragment"><p>Stage 2: regress <span class="math inline">y_i</span> on <span class="math inline">\hat{Y}_i</span>.</p></li>
+<li class="fragment"><p>The 2SLS estimator coincides with the simple IV estimator from the previous lecture.</p></li>
+<li class="fragment"><p>With exogenous controls or multiple instruments, the simple IV formula no longer works; 2SLS is the standard approach.</p></li>
 </ul>
 </section>
-<section id="sls-the-first-stage-1" class="slide level2">
-<h2>2SLS: the first stage</h2>
-<ul>
-<li class="fragment"><p>Let <span class="math inline">\hat{\pi}</span>’s denote the OLS estimators of <span class="math inline">\pi</span>’s. Obtain the fitted values: <span class="math display">\begin{align*}
-\hat{Y}_{1,i} &amp;= \hat{\pi}_{0,1} + \hat{\pi}_{1,1} Z_{1,i} + \ldots + \hat{\pi}_{l,1} Z_{l,i} \\
-&amp;\quad + \hat{\pi}_{l+1,1} X_{1,i} + \ldots + \hat{\pi}_{l+k,1} X_{k,i}, \\
-&amp;\;\;\vdots \\
-\hat{Y}_{m,i} &amp;= \hat{\pi}_{0,m} + \hat{\pi}_{1,m} Z_{1,i} + \ldots + \hat{\pi}_{l,m} Z_{l,i} \\
-&amp;\quad + \hat{\pi}_{l+1,m} X_{1,i} + \ldots + \hat{\pi}_{l+k,m} X_{k,i}.
-\end{align*}</span></p></li>
-<li class="fragment"><p>The <span class="math inline">\hat{Y}</span>’s are functions of <span class="math inline">Z</span>’s and <span class="math inline">X</span>’s (all exogenous), so they are asymptotically uncorrelated with the errors.</p></li>
-</ul>
-</section>
-<section id="sls-the-second-stage" class="slide level2">
-<h2>2SLS: the second stage</h2>
-<ul>
-<li class="fragment"><p>In the second stage, regress (OLS) <span class="math inline">y</span> against a constant, <span class="math inline">X</span>’s, and the fitted values <span class="math inline">\hat{Y}</span>’s: <span class="math display">\begin{align*}
-y_i &amp;= \hat{\gamma}_0^{2SLS} + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} \\
-&amp;\quad + \hat{\beta}_1^{2SLS} \hat{Y}_{1,i} + \ldots + \hat{\beta}_m^{2SLS} \hat{Y}_{m,i} + \hat{U}_i.
-\end{align*}</span></p></li>
-<li class="fragment"><p>The 2SLS estimators <span class="math inline">\hat{\gamma}_0^{2SLS}, \ldots, \hat{\gamma}_k^{2SLS}, \hat{\beta}_1^{2SLS}, \ldots, \hat{\beta}_m^{2SLS}</span> are <strong>consistent</strong> and <strong>asymptotically normal</strong>.</p></li>
-<li class="fragment"><p>Standard errors from naïve second-stage OLS are <strong>incorrect</strong>: they do not account for the estimation error in <span class="math inline">\hat{\pi}</span>’s from the first stage.</p></li>
-<li class="fragment"><p>Statistical packages report the corrected standard errors.</p></li>
-</ul>
-</section>
-<section id="example-returns-to-education" class="slide level2">
-<h2>Example: returns to education</h2>
+<section id="example-returns-to-education-setup" class="slide level2">
+<h2>Example: returns to education (setup)</h2>
 <ul>
 <li class="fragment"><p>Estimate the returns to education using the MROZ dataset (Wooldridge, 2006): <span class="math display">
-\ln \text{Wage}_i = \gamma_0 + \beta_1 \text{Educ}_i + \gamma_1 \text{Exper}_i + \gamma_2 \text{Exper}_i^2 + U_i.
+\begin{aligned}
+\ln \text{Wage}_i &amp;= \gamma_0 + {\color{red}\beta_1 \text{Educ}_i} \\
+&amp;\quad + \gamma_1 \text{Exper}_i + \gamma_2 \text{Exper}_i^2 + U_i.
+\end{aligned}
 </span></p>
 <ul>
-<li class="fragment"><strong>Endogenous</strong>: <span class="math inline">\text{Educ}</span> (education).</li>
+<li class="fragment"><strong>Endogenous</strong>: <span class="math inline">{\color{red}\text{Educ}}</span> (education).</li>
 <li class="fragment"><strong>Instruments</strong>: <span class="math inline">\text{MotherEduc}</span> and <span class="math inline">\text{FatherEduc}</span> (parents’ education).</li>
 <li class="fragment"><strong>Exogenous</strong>: <span class="math inline">\text{Exper}</span> and <span class="math inline">\text{Exper}^2</span> (experience).</li>
 </ul></li>
-<li class="fragment"><p>The system is <strong>overidentified</strong> (<span class="math inline">l = 2 &gt; m = 1</span>).</p></li>
+<li class="fragment"><p>The model is <strong>overidentified</strong> (<span class="math inline">l = 2 &gt; 1</span>).</p></li>
 <li class="fragment"><p>In R, use <code>ivreg()</code> from the <code>AER</code> package with <code>vcovHC(..., type = &quot;HC1&quot;)</code> for heteroskedasticity-robust standard errors.</p></li>
 </ul>
 </section>
-<section id="example-returns-to-education-1" class="slide level2">
-<h2>Example: returns to education</h2>
+<section id="example-first-stage" class="slide level2">
+<h2>Example: first stage</h2>
 <p><strong>First-stage regression</strong> (<span class="math inline">\text{Educ}</span> on instruments and exogenous regressors):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a>first_stage <span class="ot">&lt;-</span> <span class="fu">lm</span>(educ <span class="sc">~</span> exper <span class="sc">+</span> expersq <span class="sc">+</span> motheduc <span class="sc">+</span> fatheduc, <span class="at">data =</span> d)</span>
@@ -1304,9 +1282,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 <p>Both instruments (<code>motheduc</code>, <code>fatheduc</code>) are statistically significant. First-stage <span class="math inline">R^2 =</span> 0.2115.</p>
 </section>
-<section id="example-returns-to-education-2" class="slide level2">
-<h2>Example: returns to education</h2>
-<p><strong>2SLS second stage:</strong></p>
+<section id="example-2sls-vs-ols" class="slide level2">
+<h2>Example: 2SLS vs OLS</h2>
+<ul>
+<li class="fragment"><p><strong>2SLS second stage:</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href></a>iv_fit <span class="ot">&lt;-</span> <span class="fu">ivreg</span>(lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> expersq <span class="sc">|</span></span>
 <span id="cb3-2"><a href></a>                  exper <span class="sc">+</span> expersq <span class="sc">+</span> motheduc <span class="sc">+</span> fatheduc, <span class="at">data =</span> d)</span>
@@ -1323,8 +1302,8 @@ expersq     -0.00089897  0.00043008 -2.0902 0.037193 *
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-</div>
-<p><strong>OLS for comparison:</strong></p>
+</div></li>
+<li class="fragment"><p><strong>OLS for comparison:</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a>ols_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> expersq, <span class="at">data =</span> d)</span>
 <span id="cb5-2"><a href></a><span class="fu">coeftest</span>(ols_fit, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(ols_fit, <span class="at">type =</span> <span class="st">&quot;HC1&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1340,8 +1319,106 @@ expersq     -0.00081119  0.00042007 -1.9311            0.054139 .
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-</div>
-<p>The 2SLS estimate of the return to education (<span class="math inline">\hat{\beta}_1^{2SLS} = 0.061</span>) is smaller than the OLS estimate (<span class="math inline">\hat{\beta}_1^{OLS} = 0.107</span>), consistent with upward ability bias.</p>
+</div></li>
+<li class="fragment"><p>The 2SLS estimate (<span class="math inline">\hat{\beta}_1^{2SLS} = 0.061</span>) is smaller than OLS (<span class="math inline">\hat{\beta}_1^{OLS} = 0.107</span>), consistent with upward ability bias.</p></li>
+<li class="fragment"><p>The 2SLS standard error (<span class="math inline">0.033</span>) is larger than OLS (<span class="math inline">0.013</span>): 2SLS uses only the exogenous variation in <span class="math inline">\text{Educ}</span>, so estimates are noisier.</p></li>
+</ul>
+</section>
+<section id="multiple-endogenous-regressors" class="slide level2">
+<h2>Multiple endogenous regressors</h2>
+<ul>
+<li class="fragment"><p>So far: one endogenous variable with exogenous controls and multiple instruments.</p></li>
+<li class="fragment"><p>In practice, models may have several endogenous regressors.</p></li>
+<li class="fragment"><p>Example: <span class="math display">
+\begin{aligned}
+\ln \text{Wage}_i &amp;= \gamma_0 + {\color{red}\beta_1 \text{Educ}_i + \beta_2 \text{Children}_i} \\
+&amp;\quad + {\color{blue}\gamma_1 \text{Age}_i + \gamma_2 \text{Sex}_i} + U_i.
+\end{aligned}
+</span></p>
+<ul>
+<li class="fragment"><p><span class="math inline">{\color{red}\text{Endogenous}}</span> regressors: education and children (family size).</p></li>
+<li class="fragment"><p><span class="math inline">{\color{blue}\text{Exogenous}}</span> regressors: age, sex, and a constant.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="general-model" class="slide level2">
+<h2>General model</h2>
+<ul>
+<li class="fragment"><p>General model with <span class="math inline">m</span> endogenous regressors: <span class="math display">
+\begin{aligned}
+y_i &amp;= \gamma_0 + {\color{red}\beta_1 Y_{1,i} + \ldots + \beta_m Y_{m,i}} \\
+&amp;\quad + {\color{blue}\gamma_1 X_{1,i} + \ldots + \gamma_k X_{k,i}} + U_i,
+\end{aligned}
+</span> where</p>
+<ul>
+<li class="fragment"><p><span class="math inline">{\color{red}Y_{1,i}, \ldots, Y_{m,i}}</span> are <span class="math inline">m</span> <strong>endogenous</strong> regressors: <span class="math display">
+\mathrm{Cov}\left(Y_{1,i}, U_i\right) \neq 0, \ldots, \mathrm{Cov}\left(Y_{m,i}, U_i\right) \neq 0.
+</span></p></li>
+<li class="fragment"><p><span class="math inline">{\color{blue}X_{1,i}, \ldots, X_{k,i}}</span> are <span class="math inline">k</span> <strong>exogenous</strong> regressors: <span class="math display">
+\mathrm{Cov}\left(X_{1,i}, U_i\right) = \ldots = \mathrm{Cov}\left(X_{k,i}, U_i\right) = 0.
+</span></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="identification-and-the-order-condition" class="slide level2">
+<h2>Identification and the order condition</h2>
+<ul>
+<li class="fragment"><p>There are <span class="math inline">{\color{red}k + 1 + m}</span> unknown coefficients, but exogeneity of <span class="math inline">X</span>’s gives only <span class="math inline">{\color{blue}k + 1}</span> equations. We need <span class="math inline">m</span> more.</p></li>
+<li class="fragment"><p><span class="math inline">l</span> additional exogenous IVs <span class="math inline">{\color{blue}Z_{1,i}, \ldots, Z_{l,i}}</span>, excluded from the second-stage equation, provide <span class="math inline">l</span> moment conditions: <span class="math display">
+\mathrm{Cov}\left(Z_{j,i}, U_i\right) = 0, \quad j = 1, \ldots, l.
+</span></p></li>
+<li class="fragment"><p><strong>Order condition:</strong> <span class="math inline">{\color{red}l \geq m}</span>.</p>
+<ul>
+<li class="fragment"><span class="math inline">l = m</span>: exactly identified.</li>
+<li class="fragment"><span class="math inline">l &gt; m</span>: overidentified.</li>
+<li class="fragment"><span class="math inline">l &lt; m</span>: underidentified (coefficients cannot be estimated).</li>
+</ul></li>
+</ul>
+</section>
+<section id="first-stage-equations" class="slide level2">
+<h2>First-stage equations</h2>
+<ul>
+<li class="fragment"><p>The system has <span class="math inline">m</span> <strong>first-stage</strong> equations, one per endogenous regressor: <span class="math display">
+\begin{aligned}
+Y_{1,i} &amp;= \pi_{0,1} + \pi_{1,1} Z_{1,i} + \ldots + \pi_{l,1} Z_{l,i} \\
+&amp;\quad + \pi_{l+1,1} X_{1,i} + \ldots + \pi_{l+k,1} X_{k,i} + V_{1,i}, \\
+&amp;\;\;\vdots \\
+Y_{m,i} &amp;= \pi_{0,m} + \pi_{1,m} Z_{1,i} + \ldots + \pi_{l,m} Z_{l,i} \\
+&amp;\quad + \pi_{l+1,m} X_{1,i} + \ldots + \pi_{l+k,m} X_{k,i} + V_{m,i}.
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>The exogenous regressors <span class="math inline">X</span>’s appear because they can be correlated with <span class="math inline">Y</span>’s.</p></li>
+<li class="fragment"><p>The <span class="math inline">X</span>’s and <span class="math inline">Z</span>’s are <strong>uncorrelated</strong> with all errors <span class="math inline">U</span> and <span class="math inline">V</span>’s.</p></li>
+</ul>
+</section>
+<section id="sls-the-first-stage" class="slide level2">
+<h2>2SLS: the first stage</h2>
+<ul>
+<li class="fragment"><p>Estimate each first-stage equation by OLS. The fitted values are: <span class="math display">
+\begin{aligned}
+\hat{Y}_{1,i} &amp;= \hat{\pi}_{0,1} + \hat{\pi}_{1,1} Z_{1,i} + \ldots + \hat{\pi}_{l,1} Z_{l,i} \\
+&amp;\quad + \hat{\pi}_{l+1,1} X_{1,i} + \ldots + \hat{\pi}_{l+k,1} X_{k,i}, \\
+&amp;\;\;\vdots \\
+\hat{Y}_{m,i} &amp;= \hat{\pi}_{0,m} + \hat{\pi}_{1,m} Z_{1,i} + \ldots + \hat{\pi}_{l,m} Z_{l,i} \\
+&amp;\quad + \hat{\pi}_{l+1,m} X_{1,i} + \ldots + \hat{\pi}_{l+k,m} X_{k,i}.
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>The <span class="math inline">\hat{Y}</span>’s are functions of <span class="math inline">Z</span>’s and <span class="math inline">X</span>’s (all exogenous), so they are asymptotically uncorrelated with the errors.</p></li>
+</ul>
+</section>
+<section id="sls-the-second-stage" class="slide level2">
+<h2>2SLS: the second stage</h2>
+<ul>
+<li class="fragment"><p>In the second stage, regress (OLS) <span class="math inline">y</span> on a constant, <span class="math inline">\hat{Y}</span>’s, and <span class="math inline">X</span>’s: <span class="math display">
+\begin{aligned}
+y_i &amp;= \hat{\gamma}_0^{2SLS} + \hat{\beta}_1^{2SLS} \hat{Y}_{1,i} + \ldots + \hat{\beta}_m^{2SLS} \hat{Y}_{m,i} \\
+&amp;\quad + \hat{\gamma}_1^{2SLS} X_{1,i} + \ldots + \hat{\gamma}_k^{2SLS} X_{k,i} + \hat{U}_i.
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>The 2SLS estimators <span class="math inline">\hat{\beta}_1^{2SLS}, \ldots, \hat{\beta}_m^{2SLS}, \hat{\gamma}_0^{2SLS}, \ldots, \hat{\gamma}_k^{2SLS}</span> are <strong>consistent</strong> and <strong>asymptotically normal</strong>.</p></li>
+<li class="fragment"><p>Standard errors from naïve second-stage OLS are <strong>incorrect</strong>: they do not account for the estimation error in <span class="math inline">\hat{\pi}</span>’s from the first stage.</p></li>
+<li class="fragment"><p>Statistical packages report the corrected standard errors.</p></li>
+</ul>
 
 </section>
     </div>

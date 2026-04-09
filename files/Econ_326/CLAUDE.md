@@ -197,6 +197,22 @@ Defined in `.claude/agents/proofread-326.md` (project-level). Proofreads a singl
 
 Can also be invoked directly via the Task tool with `subagent_type: "proofread-326"`.
 
+## Related project: Documents Econ 326
+
+The source LaTeX files and assignments live at `/Users/vmarmer/Documents/teaching/Econ 326/`. It has its own CLAUDE.md and project memory. When working on assignments or lectures, also consult:
+
+- **Documents CLAUDE.md:** `/Users/vmarmer/Documents/teaching/Econ 326/CLAUDE.md`
+- **Documents project memory:** `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ-326/memory/MEMORY.md`
+
+## Assignment writing guidelines
+
+When writing assignment questions, follow these feedback memories:
+
+- [Assignment design](/Users/vmarmer/.claude/projects/-Users-vmarmer-GitHub-vadimmarmer-github-io/memory/feedback_assignment_design.md) — Formal mathematical definitions, compact notation ($\alpha_i$ not expanded dummies), no scaffolding or warm-ups, don't reveal answers in the question framing
+- [Follow instructions closely](/Users/vmarmer/.claude/projects/-Users-vmarmer-GitHub-vadimmarmer-github-io/memory/feedback_follow_instructions_closely.md) — Implement exactly what was asked; don't add extra parts, examples, or hints not requested
+
+Assignments are LaTeX `.tex` files in `/Users/vmarmer/Documents/teaching/Econ 326/326_ps_NN.tex`. Use the preamble and enumeration format from existing assignments (e.g., `326_ps_09.tex`).
+
 ## Session notes
 
 Maintain `SESSION_NOTES.md` in the Econ_326 working directory. Update it at the end of **every** session with a dated summary entry (newest first). See global `CLAUDE.md` for format.
