@@ -8,7 +8,6 @@
 # Site Settings
 locale                   : "en"
 title                    : "Vadim Marmer"
-masthead_title           : "Home"
 title_separator          : "-"
 name                     : &name "Vadim Marmer"
 description              : &description "personal description"
