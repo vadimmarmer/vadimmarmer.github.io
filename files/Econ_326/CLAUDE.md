@@ -197,12 +197,18 @@ Defined in `.claude/agents/proofread-326.md` (project-level). Proofreads a singl
 
 Can also be invoked directly via the Task tool with `subagent_type: "proofread-326"`.
 
-## Related project: Documents Econ 326
+## Related projects
 
-The source LaTeX files and assignments live at `/Users/vmarmer/Documents/teaching/Econ 326/`. It has its own CLAUDE.md and project memory. When working on assignments or lectures, also consult:
+Econ 326 spans two working directories. Each has its own CLAUDE.md and project memory:
 
-- **Documents CLAUDE.md:** `/Users/vmarmer/Documents/teaching/Econ 326/CLAUDE.md`
-- **Documents project memory:** `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ-326/memory/MEMORY.md`
+- **Teaching project:** `/Users/vmarmer/Documents/teaching/Econ 326/`
+  - **CLAUDE.md:** `/Users/vmarmer/Documents/teaching/Econ 326/CLAUDE.md` — assignment writing guidelines, LaTeX sources, additional conversion context
+  - **Project memory:** `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ-326/memory/MEMORY.md` — feedback on notation, conversion workflow, assignment design
+- **Website repo (parent):** `/Users/vmarmer/GitHub/vadimmarmer.github.io/`
+  - **CLAUDE.md:** `/Users/vmarmer/GitHub/vadimmarmer.github.io/CLAUDE.md` — repo structure, build commands, course pages
+  - **Project memory:** `/Users/vmarmer/.claude/projects/-Users-vmarmer-GitHub-vadimmarmer-github-io/memory/MEMORY.md` — Econ 326 feedback on derivation style, slide conciseness, color usage, etc.
+
+When working on lectures or assignments, consult both project memories for accumulated feedback.
 
 ## Assignment writing guidelines
 

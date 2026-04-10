@@ -59,6 +59,18 @@ Key paths:
 | QMD files | `files/Econ_326/326_*.qmd` |
 | Rendered output | `files/Econ_326/output/` (HTML, PDF, RevealJS slides) |
 
+### Related Econ 326 projects
+
+Econ 326 spans two working directories. Each has its own CLAUDE.md and project memory with accumulated feedback:
+
+- **Teaching project:** `/Users/vmarmer/Documents/teaching/Econ 326/`
+  - **CLAUDE.md:** `/Users/vmarmer/Documents/teaching/Econ 326/CLAUDE.md` — assignment writing guidelines, LaTeX sources, additional conversion context
+  - **Project memory:** `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ-326/memory/MEMORY.md`
+- **GitHub Econ_326 subdirectory:** `files/Econ_326/`
+  - **CLAUDE.md:** `/Users/vmarmer/GitHub/vadimmarmer.github.io/files/Econ_326/CLAUDE.md` — conversion rules, YAML template, notation, verification checklist
+
+When working on Econ 326 lectures or assignments, consult both project memories (this repo's and the teaching project's) for feedback on derivation style, slide conciseness, assignment design, etc.
+
 ## Build commands
 
 ```bash
