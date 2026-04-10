@@ -222,6 +222,7 @@ defaults:
     values:
       layout: single
       author_profile: true
+      sidebar_image: teaching.jpg
       share: false
       comments: true
   # _publications
