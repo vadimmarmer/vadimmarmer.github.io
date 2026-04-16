@@ -78,7 +78,7 @@ For the full update workflow (finding conference details, cross-checking against
 
 Key sources for conference details:
 - Reimbursement folders: `/Users/vmarmer/Documents/reimbursements/paid/` (and `../` for unpaid)
-- Word CV and annual reports: `/Users/vmarmer/Documents/vita and reports/`
+- Word CV and annual reports: `/Users/vmarmer/Documents/vita and reports/` (has its own `CLAUDE.md`)
 
 ## Build commands
 
