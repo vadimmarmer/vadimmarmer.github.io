@@ -252,7 +252,7 @@ Competition Bureau Canada, 2020
 
 **2005** CIREQ Time Series Conference, Montreal
 
-## Invited Lecture Series
+## Invited Lectures
 
 **2025** Asian Summer School in Econometrics and Statistics, Econometric Society, Xiamen University, Xiamen, China; Lima Summer School in Economics, Universidad de Piura, Lima, Peru
 
