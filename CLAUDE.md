@@ -71,6 +71,15 @@ Econ 326 spans two working directories. Each has its own CLAUDE.md and project m
 
 When working on Econ 326 lectures or assignments, consult both project memories (this repo's and the teaching project's) for feedback on derivation style, slide conciseness, assignment design, etc.
 
+## CV updates
+
+Source: `_pages/cv.md`. Render with `bash render-cv.sh` (never `quarto render` directly).
+For the full update workflow (finding conference details, cross-checking against Word CV/annual reports, formatting conventions), see project memory `workflow_cv_update.md`.
+
+Key sources for conference details:
+- Reimbursement folders: `/Users/vmarmer/Documents/reimbursements/paid/` (and `../` for unpaid)
+- Word CV and annual reports: `/Users/vmarmer/Documents/vita and reports/`
+
 ## Build commands
 
 ```bash
