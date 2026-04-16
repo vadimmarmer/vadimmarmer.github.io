@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-Updated: March 19, 2026
+Updated: April 15, 2026
 
 [Download PDF](/files/vadim_marmer_CV.pdf)
 
@@ -41,7 +41,8 @@ Personal website: [vadimmarmer.com](https://vadimmarmer.com)
 
 ## Research Grants
 
-- 2024--2029 NSERC Discovery Grant, $120,000
+- 2025--2028 SSHRC Insight Grant, $95,964
+- 2024--2029 NSERC Discovery Grant, $155,000
 - 2020--2025 SSHRC Insight Grant, $80,000
 - 2017--2021 SSHRC Insight Grant, $69,600
 - 2013--2016 SSHRC Insight Grant, $75,029
@@ -63,7 +64,7 @@ Personal website: [vadimmarmer.com](https://vadimmarmer.com)
 
 - Associate Editor, *Econometric Reviews*, since September 2020
 - Associate Editor, *Econometric Theory*, since January 2026
-- Associate Editor, *Journal of Econometric Methods*, since September 2023
+- Associate Editor, *Journal of Econometric Methods*, since September 2024
 
 ## Consulting
 
@@ -127,11 +128,13 @@ Competition Bureau Canada, 2020
 
 ## Seminar and Invited Conference Presentations
 
-**2023--2024** Empirical Industrial Organization Workshop on Auctions and Price Discrimination, CY Cergy Paris Université, Paris, France; University of Hong Kong; McMaster University; Advances in Econometrics: Conference in honor of Joon Park, Indiana University, Bloomington, USA
+**2024--2025** Texas A&M University; University of Oxford
 
-**2022--2023** CIREQ Econometric Conference, Montreal, Canada; Vanderbilt University; Central European University, Vienna, Austria.
+**2023--2024** Empirical Industrial Organization Workshop on Auctions and Price Discrimination, CY Cergy Paris Université, Paris, France; University of Hong Kong; McMaster University; Advances in Econometrics: Conference in honor of Joon Park, Indiana University, Bloomington
 
-**2021--2022** University of Victoria
+**2022--2023** CIREQ Econometric Conference, Montreal; Vanderbilt University; Central European University, Vienna, Austria.
+
+**2021--2022** University of Victoria; UBC, Institute for Applied Mathematics
 
 **2020--2021** SUNY, Albany; Stockholm School of Economics, Sweden; Industrial Organization World Wide (IOWW) Conference on Collusion (Bank of Canada - University of Toronto)
 
@@ -165,9 +168,13 @@ Competition Bureau Canada, 2020
 
 ## Conference Presentations
 
-**2024** International Association for Applied Econometrics (IAAE) Annual Conference, Xiamen University, Xiamen, China; North American Summer Meeting of the Econometric Society, Vanderbilt University, Nashville, USA
+**2026** North American Winter Meeting of the Econometric Society, Philadelphia
 
-**2023** Bristol Econometric Study Group Conference, University of Bristol, Bristol, UK; 2023 European Summer Meeting of the Econometric Society, Barcelona School of Economics, Barcelona, Spain; 2023 NBER-NSF Time Series Conference, UQAM, Montreal (poster); Canadian Econometric Study Group, McMaster University, Hamilton, Canada
+**2025** World Congress of the Econometric Society, Seoul, Korea; California Econometrics Conference, University of Victoria, Victoria; 2025 NBER-NSF Time Series Conference, Rutgers University, New Brunswick (poster); 40th Annual Meeting of the Canadian Econometric Study Group, Carleton University, Ottawa; 2025 Conference on Econometrics: Celebrating Don Andrews, Cowles Foundation, Yale University, New Haven
+
+**2024** International Association for Applied Econometrics (IAAE) Annual Conference, Xiamen University, Xiamen, China; North American Summer Meeting of the Econometric Society, Vanderbilt University, Nashville; 2024 European Meeting of the Econometric Society, Erasmus University Rotterdam, Rotterdam, Netherlands; 39th Annual Meeting of the Canadian Econometric Study Group, York University, Toronto (poster)
+
+**2023** Bristol Econometric Study Group Conference, University of Bristol, Bristol, UK; 2023 European Summer Meeting of the Econometric Society, Barcelona School of Economics, Barcelona, Spain; 2023 NBER-NSF Time Series Conference, UQAM, Montreal (poster); Canadian Econometric Study Group, McMaster University, Hamilton
 
 **2022** Barcelona Summer Forum, Barcelona School of Economics, Barcelona, Spain; 2022 European Meeting of the Econometric Society, Milan, Bocconi University, Italy
 
@@ -205,6 +212,8 @@ Competition Bureau Canada, 2020
 
 ## Conference Organization/Participation
 
+**2025** Conference on Econometrics: Celebrating Don Andrews, Cowles Foundation, Yale University (scientific committee member, session chair)
+
 **2024** International Association for Applied Econometrics (IAAE) Annual Conference, Xiamen (scientific committee member)
 
 **2022** Canadian Economic Association Annual Conference (session chair)
@@ -217,11 +226,17 @@ Competition Bureau Canada, 2020
 
 **2016** Seattle-Vancouver Econometrics Workshop (local organizing committee member)
 
+**2015** "Frontiers of Theoretical Econometrics" Conference in honour of D.W.K Andrews, University of Konstanz (program committee member)
+
+**2014** 31st Annual Meeting of the Canadian Econometric Study Group, Simon Fraser University, Vancouver (program committee member)
+
 **2010** 27th Annual Meeting of the Canadian Econometric Study Group, Vancouver (local organizing and program committees member)
 
 **2009** 26th Annual Meeting of the Canadian Econometric Study Group, Ottawa (program committee member)
 
 ## Conference Discussions
+
+**2025** 40th Annual Meeting of the Canadian Econometric Study Group, Carleton University, Ottawa
 
 **2014** CIREQ Montreal Econometrics Conference: Time Series and Financial Econometrics; 48th Annual Conference of the CEA, Simon Fraser University, Vancouver; 31st Annual Meeting of the Canadian Econometric Study Group, Simon Fraser University, Vancouver
 
@@ -231,9 +246,23 @@ Competition Bureau Canada, 2020
 
 **2010** 27th Annual Meeting of the Canadian Econometric Study Group, Vancouver
 
+**2007** 41st Annual Meeting of the Canadian Economic Association, Dalhousie University, Halifax
+
 **2006** CIREQ Time Series Conference, Montreal; 23rd Canadian Econometrics Study Group Conference, Niagara Falls
 
 **2005** CIREQ Time Series Conference, Montreal
+
+## Invited Summer School Lectures
+
+**2025** Asian Summer School in Econometrics and Statistics, Econometric Society, Xiamen University, Xiamen, China; Lima Summer School in Economics, Universidad de Piura, Lima, Peru
+
+**2023** Lima Summer School in Economics, Universidad de Piura, Lima, Peru
+
+**2021** Lima Summer School in Economics, Universidad de Piura, Lima, Peru
+
+**2019** Universidad de Piura, Piura, Peru
+
+**2017** Lima Summer School in Economics, Universidad de Piura, Lima, Peru
 
 ## Service to the Department
 
