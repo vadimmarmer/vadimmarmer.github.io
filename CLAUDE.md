@@ -76,6 +76,8 @@ When working on Econ 326 lectures or assignments, consult both project memories 
 Source: `_pages/cv.md`. Render with `bash render-cv.sh` (never `quarto render` directly).
 For the full update workflow (finding conference details, cross-checking against Word CV/annual reports, formatting conventions), see project memory `workflow_cv_update.md`.
 
+**Always run `bash render-cv.sh` after any edit to `_pages/cv.md`, before committing.** The `Updated: Month D, YYYY` line on line 10 of `_pages/cv.md` is a hardcoded literal (no Liquid/`\today` equivalent). The render script sed-rewrites that line to today's date (`$(date "+%B %-d, %Y")`) and then regenerates `files/vadim_marmer_CV.pdf`. Skipping the render leaves the web page date stale. Commit both `_pages/cv.md` and `files/vadim_marmer_CV.pdf` together.
+
 Key sources for conference details:
 - Reimbursement folders: `/Users/vmarmer/Documents/reimbursements/paid/` (and `../` for unpaid)
 - Word CV and annual reports: `/Users/vmarmer/Documents/vita and reports/` (has its own `CLAUDE.md`)
