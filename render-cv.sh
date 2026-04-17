@@ -1,6 +1,11 @@
 #!/bin/bash
 # Render CV PDF locally (same pipeline as GitHub Actions)
 set -e
+# Auto-bump the "Updated: <Month D, YYYY>" line in _pages/cv.md to today's
+# date. Runs on every render so the markdown (shown on GitHub Pages) and
+# the PDF always reflect the latest render date.
+TODAY=$(date "+%B %-d, %Y")
+sed -i '' -E "s/^Updated:.*$/Updated: ${TODAY}/" _pages/cv.md
 sed '1{/^---$/!q;};1,/^---$/d' _pages/cv.md > /tmp/cv_body.md
 sed -i '' '/^\[Download PDF\]/d' /tmp/cv_body.md
 UPDATED=$(grep -m1 '^Updated:' /tmp/cv_body.md || true)
