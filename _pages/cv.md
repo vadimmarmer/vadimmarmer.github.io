@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-Updated: April 15, 2026
+Updated: April 16, 2026
 
 [Download PDF](/files/vadim_marmer_CV.pdf)
 
