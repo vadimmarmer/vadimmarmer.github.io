@@ -42,7 +42,7 @@ with D. Kojevnikov and K. Song<br>
 *Journal of Econometrics*, 2021<br>
 [Working paper](https://arxiv.org/pdf/1903.01059.pdf)
 
-**[Inference for First-Price Auctions with Guerre, Perrigne, and Vuong's Estimator](https://doi.org/10.1016/j.jeconom.201902.006)**<br>
+**[Inference for First-Price Auctions with Guerre, Perrigne, and Vuong's Estimator](https://doi.org/10.1016/j.jeconom.2019.02.006)**<br>
 with J. Ma and A. Shneyerov<br>
 *Journal of Econometrics*, 2019<br>
 [Working paper](https://arxiv.org/pdf/1903.06401.pdf)
@@ -89,12 +89,12 @@ with A. Shneyerov<br>
 **[Testing the Null Hypothesis of No Regime Switching with an Application to GDP Growth Rates](https://link.springer.com/article/10.1007/s00181-007-0145-2)**<br>
 *Empirical Economics*, 2008
 
-**[Exactly Distribution-Free Inference in Instrumental Variables Regression with Possibly Weak Instruments](https://doi.org/10.1016/j.jeconom.200705.012)**<br>
+**[Exactly Distribution-Free Inference in Instrumental Variables Regression with Possibly Weak Instruments](https://doi.org/10.1016/j.jeconom.2007.05.012)**<br>
 with D.W.K. Andrews<br>
 *Journal of Econometrics*, 2008<br>
 [Working paper](https://elischolar.library.yale.edu/cowles-discussion-paper-series/1783)
 
-**[Nonlinearity, Nonstationarity, and Spurious Forecasts](https://doi.org/10.1016/j.jeconom.200703.002)**<br>
+**[Nonlinearity, Nonstationarity, and Spurious Forecasts](https://doi.org/10.1016/j.jeconom.2007.03.002)**<br>
 *Journal of Econometrics*, 2008<br>
 [Working paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3824487)
 
