@@ -12,7 +12,7 @@ sidebar_image: research.png
 **[Policy Learning with Compliance Guarantee](/files/Policy_Learning_With_Compliance_Guarantee.pdf)**<br>
 with T. Chan and K. Song
 
-**[Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://www.arxiv.org/pdf/2509.15401)**<br>
+**[Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models](https://arxiv.org/pdf/2509.15401)**<br>
 with J. Ma and Z. Yu
 
 **[Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf)**<br>
