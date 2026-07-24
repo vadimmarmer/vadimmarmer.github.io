@@ -21,7 +21,7 @@ with J. Ma and Z. Yu
 **[Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf)**<br>
 with J. Ma and P. Xu<br>
 *RAND Journal of Economics*, accepted<br>
-[Supplement](/files/auction-supp-v12.pdf) | [Replication package](https://github.com/vadimmarmer/auction-failure-replication)
+[Supplement](/files/selective_entry_copula_supp.pdf) | [Replication package](https://github.com/vadimmarmer/auction-failure-replication)
 
 **[Modeling Long Cycles](https://doi.org/10.1016/j.jeconom.2024.105751)**<br>
 with D.N. Kang<br>
