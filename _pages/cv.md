@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-Updated: April 16, 2026
+Updated: July 23, 2026
 
 [Download PDF](/files/vadim_marmer_CV.pdf)
 
@@ -66,55 +66,51 @@ Personal website: [vadimmarmer.com](https://vadimmarmer.com)
 - Associate Editor, *Econometric Theory*, since January 2026
 - Associate Editor, *Journal of Econometric Methods*, since September 2024
 
-## Consulting
-
-Competition Bureau Canada, 2020
-
 ## Refereed Publications
 
-1. Kang, D.N. and V. Marmer (2024): "Modelling Long Cycles," *Journal of Econometrics*, 242(1), 105751.
+1. Ma, J., V. Marmer, and P. Xu: "Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?" *RAND Journal of Economics*, accepted.
 
-2. Ma, J., V. Marmer, Z. Yu (2023): "Inference on Individual Treatment Effects in Nonseparable Triangular Models," *Journal of Econometrics*, 235(2), 2096--2124.
+2. Kang, D.N. and V. Marmer (2024): "Modelling Long Cycles," *Journal of Econometrics*, 242(1), 105751.
 
-3. Ma, J., V. Marmer, A. Shneyerov, and Pai Xu (2021): "Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions," *Econometric Reviews*, 40(10), 944--982.
+3. Ma, J., V. Marmer, Z. Yu (2023): "Inference on Individual Treatment Effects in Nonseparable Triangular Models," *Journal of Econometrics*, 235(2), 2096--2124.
 
-4. Kojevnikov, D., V. Marmer, and K. Song (2021): "Limit Theorems for Network Dependent Random Variables," *Journal of Econometrics*, 222(2), 882--908.
+4. Ma, J., V. Marmer, A. Shneyerov, and Pai Xu (2021): "Monotonicity-Constrained Nonparametric Estimation and Inference for First-Price Auctions," *Econometric Reviews*, 40(10), 944--982.
 
-5. Ma, J., V. Marmer, and A. Shneyerov (2019): "Inference for First-Price Auctions with Guerre, Perrigne, and Vuong's Estimator," *Journal of Econometrics*, 211(2), 507--538.
+5. Kojevnikov, D., V. Marmer, and K. Song (2021): "Limit Theorems for Network Dependent Random Variables," *Journal of Econometrics*, 222(2), 882--908.
 
-6. Andrews, D. W. K., Marmer, V., and Z. Yu (2019): "On Optimal Inference in the Linear IV Regression Model," *Quantitative Economics*, 10(2), 457--485.
+6. Ma, J., V. Marmer, and A. Shneyerov (2019): "Inference for First-Price Auctions with Guerre, Perrigne, and Vuong's Estimator," *Journal of Econometrics*, 211(2), 507--538.
 
-7. Marmer, V., and Slade, M. (2018): "Investment and Uncertainty With Time to Build: Evidence from U.S. Copper Mining," *Journal of Economic Dynamics and Control*, 95 (October), 233--254.
+7. Andrews, D. W. K., Marmer, V., and Z. Yu (2019): "On Optimal Inference in the Linear IV Regression Model," *Quantitative Economics*, 10(2), 457--485.
 
-8. Feir, D., T. Lemieux, and V. Marmer (2016): "Weak Identification in Fuzzy Regression Discontinuity Designs," *Journal of Business & Economic Statistics*, 34(2), 185--196.
+8. Marmer, V., and Slade, M. (2018): "Investment and Uncertainty With Time to Build: Evidence from U.S. Copper Mining," *Journal of Economic Dynamics and Control*, 95 (October), 233--254.
 
-9. Gao, X., V. Hnatkovska, and V. Marmer (2014): "Limited Participation in International Business Cycle Models: A Formal Evaluation," *Journal of Economic Dynamics and Control*, 39 (February), 255--272.
+9. Feir, D., T. Lemieux, and V. Marmer (2016): "Weak Identification in Fuzzy Regression Discontinuity Designs," *Journal of Business & Economic Statistics*, 34(2), 185--196.
 
-10. Marmer, V., A. Shneyerov, and P. Xu (2013): "What Model for Entry in First-Price Auctions? A Nonparametric Approach," *Journal of Econometrics*, 176(1), 46--58.
+10. Gao, X., V. Hnatkovska, and V. Marmer (2014): "Limited Participation in International Business Cycle Models: A Formal Evaluation," *Journal of Economic Dynamics and Control*, 39 (February), 255--272.
 
-11. Marmer, V., and T. Otsu (2012): "Optimal Comparison of Misspecified Moment Restriction Models under a Chosen Measure of Fit," *Journal of Econometrics*, 170(2), 538--550.
+11. Marmer, V., A. Shneyerov, and P. Xu (2013): "What Model for Entry in First-Price Auctions? A Nonparametric Approach," *Journal of Econometrics*, 176(1), 46--58.
 
-12. Hnatkovska, V., V. Marmer, and Y. Tang (2012): "Comparison of Misspecified Calibrated Models: The Minimum Distance Approach," *Journal of Econometrics*, 169(1), 131--138.
+12. Marmer, V., and T. Otsu (2012): "Optimal Comparison of Misspecified Moment Restriction Models under a Chosen Measure of Fit," *Journal of Econometrics*, 170(2), 538--550.
 
-13. Marmer, V. and A. Shneyerov (2012): "Quantile-Based Nonparametric Inference for First-Price Auctions," *Journal of Econometrics*, 167(2), 345--357.
+13. Hnatkovska, V., V. Marmer, and Y. Tang (2012): "Comparison of Misspecified Calibrated Models: The Minimum Distance Approach," *Journal of Econometrics*, 169(1), 131--138.
 
-14. Andrews, D. W. K., and V. Marmer (2008): "Exactly Distribution-Free Inference in Instrumental Variables Regression with Possibly Weak Instruments," *Journal of Econometrics*, 142(1), 183--200.
+14. Marmer, V. and A. Shneyerov (2012): "Quantile-Based Nonparametric Inference for First-Price Auctions," *Journal of Econometrics*, 167(2), 345--357.
 
-15. Marmer, V. (2008): "Nonlinearity, Nonstationarity, and Spurious Forecasts," *Journal of Econometrics*, 142(1), 1--27.
+15. Andrews, D. W. K., and V. Marmer (2008): "Exactly Distribution-Free Inference in Instrumental Variables Regression with Possibly Weak Instruments," *Journal of Econometrics*, 142(1), 183--200.
 
-16. Marmer, V. (2008): "Testing the Hypothesis of No Regime Switching with an Application to GDP Growth Rates," *Empirical Economics*, 35(1), 101--122.
+16. Marmer, V. (2008): "Nonlinearity, Nonstationarity, and Spurious Forecasts," *Journal of Econometrics*, 142(1), 1--27.
 
-17. Marmer, V., D. Shapiro, and P. W. MacAvoy (2007): "Bottlenecks in Regional Markets for Natural Gas Transmission Services," *Energy Economics*, 29(1), 37--45.
+17. Marmer, V. (2008): "Testing the Hypothesis of No Regime Switching with an Application to GDP Growth Rates," *Empirical Economics*, 35(1), 101--122.
 
-18. Andrews, D. W. K., O. Lieberman, and V. Marmer (2006): "Higher-Order Improvements of the Parametric Bootstrap for Long-Memory Gaussian Processes," *Journal of Econometrics*, 133(2), 673--702.
+18. Marmer, V., D. Shapiro, and P. W. MacAvoy (2007): "Bottlenecks in Regional Markets for Natural Gas Transmission Services," *Energy Economics*, 29(1), 37--45.
+
+19. Andrews, D. W. K., O. Lieberman, and V. Marmer (2006): "Higher-Order Improvements of the Parametric Bootstrap for Long-Memory Gaussian Processes," *Journal of Econometrics*, 133(2), 673--702.
 
 ## Working Papers
 
 1. Chan, T., V. Marmer, and K. Song: "Policy Learning with Compliance Guarantee."
 
 2. Ma, J., V. Marmer, and Z. Yu: "Inference on the Distribution of Individual Treatment Effects in Nonseparable Triangular Models."
-
-3. Ma, J., V. Marmer, and P. Xu: "Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?"
 
 ## Inactive Papers
 
@@ -271,3 +267,7 @@ Director of Graduate Studies, July 2017--June 2024
 ## Refereeing
 
 *American Economic Journal: Applied Economics*, *Applied Mathematics and Computation*, Austrian Science Fund (FWF), *Canadian Journal of Economics*, *Communications in Statistics (Theory and Methods)*, *Computational Economics*, *Computational Statistics and Data Analysis*, *Econometric Reviews*, *Econometric Theory*, *Econometrica*, *Econometrics*, *Econometrics and Statistics*, *Econometrics Journal*, *Economic Inquiry*, *Economic Journal*, *Economics Letters*, *Economics of Transition*, *Finance Research Letters*, *Games and Economic Behavior*, *International Economic Review*, *International Journal of Industrial Organization*, Israel Science Foundation, *Journal of Applied Econometrics*, *Journal of Business & Economic Statistics*, *Journal of Causal Inference*, *Journal of Computational and Applied Mathematics*, *Journal of Development Economics*, *Journal of Econometric Methods*, *Journal of Econometrics*, *Journal of Educational and Behavioral Statistics*, *Journal of Financial Econometrics*, *Journal of Multivariate Analysis*, *Journal of Nonparametric Statistics*, *Journal of Public Economics*, *Journal of Statistical Planning and Inference*, National Science Foundation, *Oxford Bulletin of Economics and Statistics*, *Quantitative Economics*, *Review of Economics and Statistics*, Social Sciences and Humanities Research Council of Canada
+
+## Consulting
+
+Competition Bureau Canada, 2020
