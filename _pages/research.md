@@ -18,7 +18,7 @@ with J. Ma and Z. Yu
 ## Publications
 {: .paper-list}
 
-**[Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](/files/selective_entry_copula.pdf)**<br>
+**[Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?](https://arxiv.org/pdf/2503.03996)**<br>
 with J. Ma and P. Xu<br>
 *RAND Journal of Economics*, accepted<br>
 [Supplement](/files/selective_entry_copula_supp.pdf) | [Replication package](https://github.com/vadimmarmer/auction-failure-replication)
