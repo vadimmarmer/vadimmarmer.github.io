@@ -12,5 +12,5 @@ I am a Professor at the [Vancouver School of Economics](https://economics.ubc.ca
 
 My research interests are in econometric theory, including auction econometrics, weak identification, time series, network dependence, causal inference, and model misspecification.
 
-**Office:** Iona 203<br>
+**Office:** Iona 204<br>
 **Phone:** (604) 822-8217
