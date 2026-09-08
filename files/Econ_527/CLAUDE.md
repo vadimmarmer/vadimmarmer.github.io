@@ -20,9 +20,10 @@ The course page lists the slides first and the typed lecture notes below them.
 | Teaching page | `_teaching/2023-09-Econ-527.md` (in parent website repo) |
 | Parent website repo | `/Users/vmarmer/GitHub/vadimmarmer.github.io/` |
 | Econ 326 decks, the model for this setup | `/Users/vmarmer/GitHub/vadimmarmer.github.io/files/Econ_326/` |
-| Handwritten in-class notes | `/Users/vmarmer/Library/CloudStorage/Dropbox/Notability/527/` (Notability PDFs and their transcriptions, has own `CLAUDE.md`; not published, do not copy files from there into this folder) |
+| Handwritten in-class notes and their transcriptions | `/Users/vmarmer/Library/CloudStorage/Dropbox/Notability/527/`, transcriptions in `transcripts/final/`, has own `CLAUDE.md`. A deck is drafted from them, but no file from there is ever copied into this folder, and that folder also holds scanned student exams carrying names and student numbers |
 | Teaching-project guidance | `/Users/vmarmer/Documents/teaching/Econ_527/CLAUDE.md` |
-| Project memory | `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ_527/memory/MEMORY.md` |
+| Project memory for the course | `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ_527/memory/MEMORY.md`, plus an older set under the earlier folder name at `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ-527/memory/MEMORY.md` |
+| Project memory for this repository | `/Users/vmarmer/.claude/projects/-Users-vmarmer-GitHub-vadimmarmer-github-io/memory/MEMORY.md`, which holds the feedback on slide conciseness, derivation style and color that the Econ 326 decks were calibrated on and that applies here too |
 
 ## Slides
 
@@ -54,6 +55,6 @@ Add one numbered line to the Slides section of `_teaching/2023-09-Econ-527.md`, 
 
 ## Workflow
 
-**Slides.** Write and render here, commit the `.qmd` and all three files in `output/` to `vadimmarmer.github.io`, add the line to the course page.
+**Slides.** Draft from the typed lecture notes and the transcriptions of the handwritten class notes, write and render here, commit the `.qmd` and all three files in `output/` to `vadimmarmer.github.io`, add the line to the course page. This repository is not cloud-synced, so the ordinary git commands apply, including `git pull`.
 
 **Lecture notes.** Edit TeX in `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/`, compile with `latexmk -pdf`, copy the PDF here, commit the TeX to `vadimmarmer/Econ-527` and the PDF to `vadimmarmer.github.io`.
