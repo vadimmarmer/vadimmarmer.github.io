@@ -19,7 +19,7 @@ images/              # Site images (avatar, etc.)
 files/               # Downloadable files: papers, supplements, lecture notes
   Econ_326/          # Econ 326 Quarto lecture notes (.qmd sources + output/)
   Econ_327/          # Econ 327 lecture note PDFs (has own CLAUDE.md)
-  Econ_527/          # Econ 527 lecture note PDFs (has own CLAUDE.md)
+  Econ_527/          # Econ 527 Quarto slides (.qmd sources + output/) and lecture note PDFs (has own CLAUDE.md)
   Econ_627/          # Econ 627 lecture note PDFs (has own CLAUDE.md)
   Lima_2017/         # Lima workshop 2017
   Lima_2023/         # Lima workshop 2023
@@ -38,9 +38,19 @@ files/               # Downloadable files: papers, supplements, lecture notes
 
 Introduction to Empirical Methods (undergrad probability/statistics). PDFs are in `files/Econ_327/`; LaTeX sources are in a separate private repo [`vadimmarmer/Econ-327`](https://github.com/vadimmarmer/Econ-327) under `lecture_notes/` (working directory: `/Users/vmarmer/Documents/teaching/Econ_327/lecture_notes/`). See `files/Econ_327/CLAUDE.md` for details.
 
-## Econ 527 lecture notes
+## Econ 527 slides and lecture notes
 
-Econometrics II (masters). PDFs are in `files/Econ_527/`; LaTeX sources are in a separate private repo [`vadimmarmer/Econ-527`](https://github.com/vadimmarmer/Econ-527) under `lecture_notes/` (working directory: `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/`). See `files/Econ_527/CLAUDE.md` for details.
+Econometric Methods (masters). `files/Econ_527/` holds both halves of the course material, and the course page `_teaching/2023-09-Econ-527.md` lists the slides first and the typed lecture notes below them.
+
+- **Quarto slide decks**, `files/Econ_527/527_XX_name.qmd`, written and rendered in that folder, three outputs each in `files/Econ_527/output/` (HTML page, PDF, RevealJS slides). Same setup as the Econ 326 decks. `files/Econ_527/PLAN.md` holds the approved outline of each deck.
+- **16 lecture note PDFs**, `files/Econ_527/527_01.pdf` through `527_16.pdf`; their LaTeX sources are in a separate private repo [`vadimmarmer/Econ-527`](https://github.com/vadimmarmer/Econ-527) under `lecture_notes/` (working directory: `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/`).
+
+See `files/Econ_527/CLAUDE.md` for the render command, the verification check, and the frontmatter conventions.
+
+The course has two further locations, both with their own CLAUDE.md and all of them cross-referenced:
+
+- **Teaching project:** `/Users/vmarmer/Documents/teaching/Econ_527/` holds the LaTeX sources, problem sets, exams, and past-year solutions.
+- **Handwritten in-class notes:** `/Users/vmarmer/Library/CloudStorage/Dropbox/Notability/527/` holds Notability PDFs of the lectures and office hours, 2016 through 2025. They are not published. That folder also holds scanned student exams carrying names and student numbers, so never copy a file from it into `files/`.
 
 ## Econ 627 lecture notes
 
@@ -90,4 +100,7 @@ bundle exec jekyll serve
 
 # Quarto lectures (run from files/Econ_326/)
 quarto render 326_XX_name.qmd
+
+# Quarto slides (run from files/Econ_527/)
+quarto render 527_XX_name.qmd
 ```
