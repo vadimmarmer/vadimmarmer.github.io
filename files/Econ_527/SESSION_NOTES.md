@@ -70,3 +70,30 @@ course page, and pushed. It is live.
   `/Users/vmarmer/Documents/teaching/Econ_527/slides/` are byte-identical as of
   today. That folder keeps the proof audit and the referees' claims, which are
   not published here.
+
+## 2026-09-15 (deck 1, the estimator in matrix form)
+
+### Summary
+
+The slide "The estimator in matrix form" in deck 1 was cut to a single bullet
+at the author's direction, and deck 1 re-rendered and pushed.
+
+### File changes
+
+- Modified `527_01_regression_ols.qmd`, the slide at line 890: deleted the
+  second bullet ("The $\frac{1}{n}$ factors cancel", with the boxed result) and
+  the third ("$X^\top X$ is $k \times k$ ... as it should be"); removed the
+  $1/n$ from the second line of the remaining display; marked the dimensions
+  under $\hat\beta$, $X^\top X$ and $X^\top Y$ with `\underset`, matching the
+  matrix notation slide earlier in the deck.
+- Modified `PLAN.md`, one paragraph added to the deck 1 status.
+- Re-rendered all three outputs.
+
+### Key results
+
+- The $1/n$ step was never needed. The two identities are $X^\top X = \sum_i
+  X_i X_i^\top$ and $X^\top Y = \sum_i X_i Y_i$ exactly, so substituting them
+  gives $(X^\top X)^{-1} X^\top Y$ with nothing to cancel.
+- The boxed form of the result went with the deleted bullet. It is not lost from
+  the deck: the least squares slide states it again and so does the summary.
+- Both HTML outputs pass all five checks, no stray files.

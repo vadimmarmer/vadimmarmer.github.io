@@ -892,17 +892,11 @@ The first identity is the same computation with the second factor $X$ replaced b
 - Substitute the two identities into the method-of-moments formula:
 $$
 \begin{aligned}
-\hat\beta &= \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i \\
-&= \left( \frac{1}{n} X^\top X \right)^{-1} \left( \frac{1}{n} X^\top Y \right).
+\underset{k\times1}{\hat\beta}
+&= \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i \\
+&= \Big( \underset{k\times k}{X^\top X} \Big)^{-1} \underset{k\times1}{X^\top Y}.
 \end{aligned}
 $$
-
-- The $\frac{1}{n}$ factors cancel:
-$$
-\boxed{\ \hat\beta = (X^\top X)^{-1} X^\top Y\ }
-$$
-
-- $X^\top X$ is $k \times k$ and $X^\top Y$ is $k \times 1$, so $\hat\beta$ is $k \times 1$, as it should be.
 
 ## Residuals in matrix form
 

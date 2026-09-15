@@ -110,6 +110,16 @@ Proofread on 2026-09-07 by six independent readers: four covering a quarter of t
 
 A second round on the same day, at the author's direction. The deck now carries six top-level sections, so the page has a real table of contents and the slides have section dividers: motivation and data, probability, conditional expectation, the linear regression model, identification, estimation and least squares. Quarto turns level-one headings into vertical slide stacks, which would have made the right arrow skip whole sections, so `navigation-mode: linear` restores the flat left-to-right order the deck had before. The population and sample normal equations are now named as a pair and both appear in the summaries. The population least squares claim states the model rather than referring to it. The answer to the mean-independence question was removed from the slide, leaving the question for the class.
 
+One further change on 2026-09-15, at the author's direction. "The estimator in
+matrix form" is now a single bullet. The step that inserted $1/n$ into both
+factors and then cancelled it is gone, since the two identities give
+$X^\top X$ and $X^\top Y$ with no $1/n$ in them, and the prose bullet that
+gave the dimensions in words is gone too: the dimensions are marked under
+$\hat\beta$, $X^\top X$ and $X^\top Y$ with `\underset`, the way the matrix
+notation slide already marks them. The boxed form of
+$\hat\beta = (X^\top X)^{-1}X^\top Y$ went with the deleted bullet; the result
+still appears on the least squares slide and in the summary.
+
 The second deck, `527_02_ols_properties.qmd`, was published here on 2026-09-15:
 6 sections, 52 slides, all three outputs in `output/`, the five-signal check
 clean on both HTML files, PDF 15 pages, and its line on the course page beneath

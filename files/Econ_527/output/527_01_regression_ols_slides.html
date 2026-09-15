@@ -1800,16 +1800,13 @@ X^\top X &amp;= \begin{pmatrix} X_1^\top \\ \vdots \\ X_n^\top \end{pmatrix}^{\t
 <section id="the-estimator-in-matrix-form" class="slide level2">
 <h2>The estimator in matrix form</h2>
 <ul>
-<li class="fragment"><p>Substitute the two identities into the method-of-moments formula: <span class="math display">
+<li class="fragment">Substitute the two identities into the method-of-moments formula: <span class="math display">
 \begin{aligned}
-\hat\beta &amp;= \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i \\
-&amp;= \left( \frac{1}{n} X^\top X \right)^{-1} \left( \frac{1}{n} X^\top Y \right).
+\underset{k\times1}{\hat\beta}
+&amp;= \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i \\
+&amp;= \Big( \underset{k\times k}{X^\top X} \Big)^{-1} \underset{k\times1}{X^\top Y}.
 \end{aligned}
-</span></p></li>
-<li class="fragment"><p>The <span class="math inline">\frac{1}{n}</span> factors cancel: <span class="math display">
-\boxed{\ \hat\beta = (X^\top X)^{-1} X^\top Y\ }
-</span></p></li>
-<li class="fragment"><p><span class="math inline">X^\top X</span> is <span class="math inline">k \times k</span> and <span class="math inline">X^\top Y</span> is <span class="math inline">k \times 1</span>, so <span class="math inline">\hat\beta</span> is <span class="math inline">k \times 1</span>, as it should be.</p></li>
+</span></li>
 </ul>
 </section>
 <section id="residuals-in-matrix-form" class="slide level2">
