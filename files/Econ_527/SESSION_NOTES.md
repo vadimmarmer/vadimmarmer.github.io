@@ -28,3 +28,45 @@ Moved the Econ 527 Quarto slide work from `/Users/vmarmer/Documents/teaching/Eco
 - The course page `_teaching/2023-09-Econ-527.md` links to `output/527_01_regression_ols.html`, its PDF, and its slide show.
 - Slide style feedback collected for Econ 326 lives in `/Users/vmarmer/.claude/projects/-Users-vmarmer-GitHub-vadimmarmer-github-io/memory/` and applies to these decks too.
 
+
+## 2026-09-15
+
+### Summary
+
+The second deck, on the properties of the OLS estimator, was copied here from
+`/Users/vmarmer/Documents/teaching/Econ_527/slides/`, rendered, linked on the
+course page, and pushed. It is live.
+
+### File changes
+
+- Created: `527_02_ols_properties.qmd` (886 lines, 6 sections, 52 slides),
+  `PLAN_02.md` (its outline, copied beside it), and the three rendered files
+  `output/527_02_ols_properties.html`, `..._slides.html` and `....pdf`.
+- Modified: `_teaching/2023-09-Econ-527.md`, one numbered line added to the
+  Slides section; `CLAUDE.md`, deck table and a note on what deck 2 needs to
+  render; `PLAN.md`, the second deck moved from sketched to written;
+  `PROJECT_STATE.md`; `.gitignore`, `*-tikzDictionary` added.
+
+### Key results
+
+- The frontmatter needed no adaptation. Deck 2 was already written against deck
+  1's, with only the title and the three output file names different.
+- Deck 2 needs more than Quarto to render. Its two figures go through a
+  `standAlone` `tikzDevice` device, so LaTeX typesets their labels and the
+  figure text matches the mathematics on the slides. The render calls `pdflatex`
+  and `pdftoppm` and needs the R packages `tikzDevice` and `png`.
+- `tikzDevice` writes a string-metrics cache, `527_02_ols_properties-tikzDictionary`,
+  into the folder it renders in. The deck now redirects it with
+  `options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))`, and
+  `*-tikzDictionary` is gitignored in both folders as well.
+- Both HTML outputs pass all five checks, PDF 15 pages, no `_files` directory,
+  both figures embedded as base64 in each HTML file.
+- Pages build `c63295e` is built with no error; all three published URLs and the
+  course page return 200.
+
+### Cross-references
+
+- `527_02_ols_properties.qmd` here and in
+  `/Users/vmarmer/Documents/teaching/Econ_527/slides/` are byte-identical as of
+  today. That folder keeps the proof audit and the referees' claims, which are
+  not published here.
