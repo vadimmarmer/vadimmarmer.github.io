@@ -97,3 +97,28 @@ at the author's direction, and deck 1 re-rendered and pushed.
 - The boxed form of the result went with the deleted bullet. It is not lost from
   the deck: the least squares slide states it again and so does the summary.
 - Both HTML outputs pass all five checks, no stray files.
+
+## 2026-09-15 (deck 1, the second-moment matrix)
+
+### Summary
+
+The first bullet of "The second-moment matrix" in deck 1 was missing the step
+that builds the matrix. It is now written out.
+
+### File changes
+
+- Modified `527_01_regression_ols.qmd`, the slide at line 681. The first bullet
+  now writes $X_i$ as a column of $X_{i1}, \ldots, X_{ik}$ and $X_i^\top$ as a
+  row of the same, multiplies them to the $k \times k$ matrix of products, and
+  adds one line saying entry $(j,l)$ is $X_{ij} X_{il}$. The expectation is the
+  second bullet, unchanged apart from its dimension marker. Dimensions are
+  marked with `\underset` on $X_i$, $X_i^\top$ and $\E{X_i X_i^\top}$, and with
+  a parenthetical on the written-out matrix, which is too tall to sit above an
+  `\underset` label.
+- Modified `PLAN.md`, one paragraph added to the deck 1 status.
+- Re-rendered all three outputs.
+
+### Key results
+
+- Both HTML outputs pass all five checks. The revised slide is page 11 of the
+  PDF and the two-line aligned display fits without an overfull line.

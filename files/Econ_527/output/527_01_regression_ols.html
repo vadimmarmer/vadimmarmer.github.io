@@ -2873,18 +2873,31 @@ U_i = Y_i - X_i^\top \beta
 <section id="the-second-moment-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="the-second-moment-matrix">The second-moment matrix</h2>
 <ul>
-<li>Written out, <span class="math display">
-\mathrm{E}\left[X_i X_i^\top\right]
+<li><p>Write <span class="math inline">X_i</span> as a column and <span class="math inline">X_i^\top</span> as a row, and multiply: <span class="math display">
+\begin{aligned}
+\underset{k\times1}{X_i}\ \underset{1\times k}{X_i^\top}
+&amp;= \begin{pmatrix} X_{i1} \\ X_{i2} \\ \vdots \\ X_{ik} \end{pmatrix}
+\begin{pmatrix} X_{i1} &amp; X_{i2} &amp; \cdots &amp; X_{ik} \end{pmatrix} \\[4pt]
+&amp;= \begin{pmatrix}
+X_{i1}^2 &amp; X_{i1} X_{i2} &amp; \cdots &amp; X_{i1} X_{ik} \\
+X_{i2} X_{i1} &amp; X_{i2}^2 &amp; \cdots &amp; X_{i2} X_{ik} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+X_{ik} X_{i1} &amp; X_{ik} X_{i2} &amp; \cdots &amp; X_{ik}^2
+\end{pmatrix} \quad (k \times k).
+\end{aligned}
+</span> Entry <span class="math inline">(j,l)</span> of the product is <span class="math inline">X_{ij} X_{il}</span>.</p></li>
+<li><p>The expectation is taken entry by entry: <span class="math display">
+\underset{k\times k}{\mathrm{E}\left[X_i X_i^\top\right]}
 = \mathrm{E}\begin{bmatrix}
 X_{i1}^2 &amp; X_{i1} X_{i2} &amp; \cdots &amp; X_{i1} X_{ik} \\
 X_{i2} X_{i1} &amp; X_{i2}^2 &amp; \cdots &amp; X_{i2} X_{ik} \\
 \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
 X_{ik} X_{i1} &amp; X_{ik} X_{i2} &amp; \cdots &amp; X_{ik}^2
 \end{bmatrix}.
-</span></li>
-<li>It is <strong>symmetric</strong>: using <span class="math inline">(AB)^\top = B^\top A^\top</span>, <span class="math display">
+</span></p></li>
+<li><p>It is <strong>symmetric</strong>: using <span class="math inline">(AB)^\top = B^\top A^\top</span>, <span class="math display">
 \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^\top = \mathrm{E}\left[(X_i X_i^\top)^\top\right] = \mathrm{E}\left[X_i X_i^\top\right].
-</span></li>
+</span></p></li>
 </ul>
 </section>
 <section id="the-second-moment-matrix-is-positive-semidefinite" class="level2">

@@ -680,9 +680,25 @@ $$
 
 ## The second-moment matrix
 
-- Written out,
+- Write $X_i$ as a column and $X_i^\top$ as a row, and multiply:
 $$
-\E{X_i X_i^\top}
+\begin{aligned}
+\underset{k\times1}{X_i}\ \underset{1\times k}{X_i^\top}
+&= \begin{pmatrix} X_{i1} \\ X_{i2} \\ \vdots \\ X_{ik} \end{pmatrix}
+\begin{pmatrix} X_{i1} & X_{i2} & \cdots & X_{ik} \end{pmatrix} \\[4pt]
+&= \begin{pmatrix}
+X_{i1}^2 & X_{i1} X_{i2} & \cdots & X_{i1} X_{ik} \\
+X_{i2} X_{i1} & X_{i2}^2 & \cdots & X_{i2} X_{ik} \\
+\vdots & \vdots & \ddots & \vdots \\
+X_{ik} X_{i1} & X_{ik} X_{i2} & \cdots & X_{ik}^2
+\end{pmatrix} \quad (k \times k).
+\end{aligned}
+$$
+Entry $(j,l)$ of the product is $X_{ij} X_{il}$.
+
+- The expectation is taken entry by entry:
+$$
+\underset{k\times k}{\E{X_i X_i^\top}}
 = \mathrm{E}\begin{bmatrix}
 X_{i1}^2 & X_{i1} X_{i2} & \cdots & X_{i1} X_{ik} \\
 X_{i2} X_{i1} & X_{i2}^2 & \cdots & X_{i2} X_{ik} \\

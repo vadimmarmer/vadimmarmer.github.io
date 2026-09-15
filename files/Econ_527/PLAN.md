@@ -120,6 +120,12 @@ notation slide already marks them. The boxed form of
 $\hat\beta = (X^\top X)^{-1}X^\top Y$ went with the deleted bullet; the result
 still appears on the least squares slide and in the summary.
 
+On the same day, "The second-moment matrix" gained the step it was missing.
+It used to go straight from $\E{X_i X_i^\top}$ to the matrix of entries. It now
+writes $X_i$ as a column and $X_i^\top$ as a row first, multiplies them out to
+the $k \times k$ matrix of products, says what entry $(j,l)$ is, and only then
+takes the expectation. Dimensions are marked with `\underset` as elsewhere.
+
 The second deck, `527_02_ols_properties.qmd`, was published here on 2026-09-15:
 6 sections, 52 slides, all three outputs in `output/`, the five-signal check
 clean on both HTML files, PDF 15 pages, and its line on the course page beneath
