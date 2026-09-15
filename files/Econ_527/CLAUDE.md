@@ -27,11 +27,12 @@ The course page lists the slides first and the typed lecture notes below them.
 
 ## Slides
 
-`PLAN.md` holds the approved outline of each deck, what the class actually covered in each teaching year, and the settled notation: transpose is `^\top`, the error is `U_i`, and expectation, variance and covariance use the `\E{}`, `\Var{}` and `\Cov{}` macros defined in a hidden block after the first heading. Read it before writing or extending a deck.
+`PLAN.md` holds the outline of the first deck, what the class actually covered in each teaching year, and the settled notation; `PLAN_02.md` holds the outline of the second deck the same way: transpose is `^\top`, the error is `U_i`, and expectation, variance and covariance use the `\E{}`, `\Var{}` and `\Cov{}` macros defined in a hidden block after the first heading. Read it before writing or extending a deck.
 
 | Deck | File | Topic |
 |---|---|---|
 | 1 | `527_01_regression_ols.qmd` | Regression, identification, and the OLS estimator |
+| 2 | `527_02_ols_properties.qmd` | Properties of the OLS estimator: unbiasedness, variance, Gauss-Markov |
 
 Each deck renders to three files in `output/`: an HTML page with a table of contents, a PDF, and a RevealJS slide show. All three are committed, because the HTML page and the slide show are what the course page links to.
 
@@ -42,6 +43,13 @@ python3 /Users/vmarmer/.claude/scripts/qmd_render_check.py \
 python3 /Users/vmarmer/.claude/scripts/qmd_render_check.py \
   output/527_01_regression_ols_slides.html 527_01_regression_ols.qmd
 ```
+
+Deck 2 needs more than Quarto. Its two figures are drawn through a `standAlone`
+`tikzDevice` device so that LaTeX itself typesets their labels, which means the
+render calls `pdflatex` and `pdftoppm` and needs the R packages `tikzDevice` and
+`png`. The helper that does it, `tikz_fig()`, sits in a hidden chunk just after
+the macro block; `PLAN_02.md` explains it and records why the figure is drawn
+into the chunk's own device rather than handed to `knitr::include_graphics()`.
 
 The check must report clean on both HTML files before the work is finished: no math errors, no raw command leaks, no undefined macros, no macro block showing in the text, and self-contained output.
 

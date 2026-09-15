@@ -88,7 +88,7 @@ Two things the class does that the typed notes do not. Probability arrives when 
 
 Sketched, for approval later.
 
-- **Second deck, finite-sample properties.** Unbiasedness conditional on $X$ and unconditionally; why $E X_iU_i=0$ alone is not enough, with the parabolic counterexample; independence, mean independence and zero correlation compared; the variance of a random vector; homoskedasticity and no autocorrelation; $\operatorname{Var}(\hat\beta\mid X)=\sigma^2(X^\top X)^{-1}$ and the scalar picture; Gauss-Markov and BLUE, with the proof.
+- **Second deck, finite-sample properties.** Written and published as `527_02_ols_properties.qmd`; its own outline is `PLAN_02.md`. The slide on independence, mean independence and zero correlation was dropped along the way, and the two slides on the halves of Assumption 3 were merged into one.
 - **Third deck, geometry.** The column space, the fitted value as the closest point in it, orthogonality of the residual, the two projection matrices, $\hat\sigma^2$, goodness of fit.
 - **Possible fourth deck, median and quantile regression.** Taught in Fall 2022, with no typed counterpart: the conditional median, the check function, least absolute deviations, the normal example where the mean and median slopes coincide, conditional heteroskedasticity and slopes that vary with the quantile, and the random-coefficient reading.
 
@@ -110,4 +110,16 @@ Proofread on 2026-09-07 by six independent readers: four covering a quarter of t
 
 A second round on the same day, at the author's direction. The deck now carries six top-level sections, so the page has a real table of contents and the slides have section dividers: motivation and data, probability, conditional expectation, the linear regression model, identification, estimation and least squares. Quarto turns level-one headings into vertical slide stacks, which would have made the right arrow skip whole sections, so `navigation-mode: linear` restores the flat left-to-right order the deck had before. The population and sample normal equations are now named as a pair and both appear in the summaries. The population least squares claim states the model rather than referring to it. The answer to the mean-independence question was removed from the slide, leaving the question for the class.
 
-Next: the second deck, finite-sample properties, once the first has been used or reviewed.
+The second deck, `527_02_ols_properties.qmd`, was published here on 2026-09-15:
+6 sections, 52 slides, all three outputs in `output/`, the five-signal check
+clean on both HTML files, PDF 15 pages, and its line on the course page beneath
+the first deck's. It was drafted and audited in
+`/Users/vmarmer/Documents/teaching/Econ_527/slides/`, which also holds the proof
+audit and the record of the referees' claims; those stay there and are not part
+of what is published. `PLAN_02.md`, copied here beside it, is its outline.
+
+One thing to know before re-rendering deck 2. Its two figures are drawn through
+`tikzDevice`, so the render needs the R packages `tikzDevice` and `png` and needs
+`pdflatex` and `pdftoppm` on the path. `PLAN_02.md` gives the details.
+
+Next: the third deck, on the geometry of OLS.
