@@ -3,11 +3,11 @@ project:
 
 format:
   html:
+    embed-resources: true
     theme: cosmo
     toc: true
     toc-depth: 2
     number-sections: false
-    embed-resources: true
     fig-width: 8
     fig-height: 6
 
@@ -22,6 +22,7 @@ format:
     fig-height: 4
 
   revealjs:
+    embed-resources: true
     theme: simple
     slide-number: true
     preview-links: auto

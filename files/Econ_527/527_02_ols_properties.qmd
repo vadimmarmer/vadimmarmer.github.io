@@ -1,8 +1,9 @@
 ---
-# Rendered files go to output/, set by `output-dir` in _quarto.yml.
-# Quarto has no document-level setting for this: it finds _quarto.yml by
-# walking up from this file, so the destination holds wherever the render
-# is started from. Both HTML formats below must stay self-contained.
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
 title: "Lecture 2: Properties of the OLS estimator"
 subtitle: "Economics 527: Econometric Methods"
 author:
@@ -17,7 +18,6 @@ format:
     theme: cosmo
     smooth-scroll: true
     html-math-method: katex
-    embed-resources: true
   pdf:
     output-file: 527_02_ols_properties.pdf
     pdf-engine: xelatex
@@ -37,7 +37,6 @@ format:
     navigation-mode: linear
     scrollable: true
     chalkboard: false
-    self-contained: true
     transition: none
 ---
 

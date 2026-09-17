@@ -1822,7 +1822,8 @@ X^\top \hat U &amp;= X^\top (Y - X\hat\beta) = X^\top Y - X^\top X\, \underbrace
 <h2>The sample rank condition</h2>
 <ul>
 <li class="fragment"><p><span class="math inline">\operatorname{rank}\left(X^\top X\right)= \operatorname{rank}\left(X\right)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">(X^\top X)^{-1}</span> exists exactly when <span class="math inline">\operatorname{rank}\left(X\right) = k</span>, meaning the columns of <span class="math inline">X</span> are linearly independent: <span class="math display">
+<li class="fragment"><p>Since <span class="math inline">X^\top X</span> is <span class="math inline">k\times k</span>, its inverse exists exactly when <span class="math inline">\operatorname{rank}\left(X\right) = k</span>, meaning the columns of <span class="math inline">X</span> are linearly independent.</p></li>
+<li class="fragment"><p>Let <span class="math inline">c \in \mathbb{R}^k</span> and consider the linear combination of the columns of <span class="math inline">X</span>: <span class="math display">
 X c = c_1 \begin{pmatrix} X_{11} \\ \vdots \\ X_{n1} \end{pmatrix} + \cdots + c_k \begin{pmatrix} X_{1k} \\ \vdots \\ X_{nk} \end{pmatrix} = 0 \quad\text{only if}\quad c = 0,
 </span> In particular <span class="math inline">n \ge k</span>: at least as many observations as coefficients.</p></li>
 <li class="fragment"><p>What it means observation by observation: <span class="math inline">c_1 X_{i1} + \cdots + c_k X_{ik} = 0</span> for all <span class="math inline">i = 1, \ldots, n</span> only if <span class="math inline">c = 0</span>.</p></li>
