@@ -2277,7 +2277,6 @@ window.Quarto = {
   <li><a href="#when-positive-definiteness-fails" id="toc-when-positive-definiteness-fails" class="nav-link" data-scroll-target="#when-positive-definiteness-fails">When positive definiteness fails</a></li>
   <li><a href="#positive-definiteness-and-the-rank-condition" id="toc-positive-definiteness-and-the-rank-condition" class="nav-link" data-scroll-target="#positive-definiteness-and-the-rank-condition">Positive definiteness and the rank condition</a></li>
   <li><a href="#identification-the-result" id="toc-identification-the-result" class="nav-link" data-scroll-target="#identification-the-result">Identification: the result</a></li>
-  <li><a href="#identification-under-a-weaker-assumption" id="toc-identification-under-a-weaker-assumption" class="nav-link" data-scroll-target="#identification-under-a-weaker-assumption">Identification under a weaker assumption</a></li>
   </ul></li>
   <li><a href="#estimation-and-least-squares" id="toc-estimation-and-least-squares" class="nav-link" data-scroll-target="#estimation-and-least-squares">Estimation and least squares</a>
   <ul class="collapse">
@@ -2286,8 +2285,7 @@ window.Quarto = {
   <li><a href="#the-estimator-is-not-the-parameter" id="toc-the-estimator-is-not-the-parameter" class="nav-link" data-scroll-target="#the-estimator-is-not-the-parameter">The estimator is not the parameter</a></li>
   <li><a href="#sample-orthogonality" id="toc-sample-orthogonality" class="nav-link" data-scroll-target="#sample-orthogonality">Sample orthogonality</a></li>
   <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix notation</a></li>
-  <li><a href="#two-identities" id="toc-two-identities" class="nav-link" data-scroll-target="#two-identities">Two identities</a></li>
-  <li><a href="#the-estimator-in-matrix-form" id="toc-the-estimator-in-matrix-form" class="nav-link" data-scroll-target="#the-estimator-in-matrix-form">The estimator in matrix form</a></li>
+  <li><a href="#two-identities-and-the-matrix-form-of-the-estimator" id="toc-two-identities-and-the-matrix-form-of-the-estimator" class="nav-link" data-scroll-target="#two-identities-and-the-matrix-form-of-the-estimator">Two identities and the matrix form of the estimator</a></li>
   <li><a href="#residuals-in-matrix-form" id="toc-residuals-in-matrix-form" class="nav-link" data-scroll-target="#residuals-in-matrix-form">Residuals in matrix form</a></li>
   <li><a href="#the-sample-rank-condition" id="toc-the-sample-rank-condition" class="nav-link" data-scroll-target="#the-sample-rank-condition">The sample rank condition</a></li>
   <li><a href="#least-squares" id="toc-least-squares" class="nav-link" data-scroll-target="#least-squares">Least squares</a></li>
@@ -2852,9 +2850,10 @@ Y_i = \alpha + (\beta^\ast+\gamma) X_i^\ast + \underbrace{(U_i^\ast - \alpha-\ga
 U_i = Y_i - X_i^\top \beta
 </span></p></li>
 <li><p>Obtain the <strong>population normal equations</strong>: <span class="math display">
-\boxed{\ \mathrm{E}\left[X_i \big(Y_i - X_i^\top \beta\big)\right] = 0\ }.
+\boxed{\ 0 = \mathrm{E}\left[X_i U_i\right]
+= \mathrm{E}\left[X_i \big(Y_i - X_i^\top \beta\big)\right].\ }
 </span></p></li>
-<li><p>Multiply out, one step at a time: <span class="math display">
+<li><p>Multiply out, one step at a time, distribute the expectation: <span class="math display">
 \begin{aligned}
 0 = \mathrm{E}\left[X_i U_i\right]
 &amp;= \mathrm{E}\left[X_i \big(Y_i - X_i^\top \beta\big)\right] \\
@@ -2908,7 +2907,7 @@ X_{ik} X_{i1} &amp; X_{ik} X_{i2} &amp; \cdots &amp; X_{ik}^2
 W_i = X_i^\top c = c_1 X_{i1} + \cdots + c_k X_{ik}, \qquad c^\top X_i = (X_i^\top c)^\top = W_i.
 </span></p></li>
 <li><p>Then the quadratic form is the expectation of a square: <span class="math display">
-c^\top\, \mathrm{E}\left[X_i X_i^\top\right]\, c = \mathrm{E}\left[c^\top X_i X_i^\top c\right] = \mathrm{E}\left[\underbrace{W_i^2}_{\ge 0}\right] \ge 0.
+c^\top\, \mathrm{E}\left[X_i X_i^\top\right]\, c = \mathrm{E}\left[\underbrace{c^\top X_i}_{W_i} \underbrace{X_i^\top c}_{{W_i}}\right] = \mathrm{E}\left[\underbrace{W_i^2}_{\ge 0}\right] \ge 0.
 </span></p></li>
 <li><p>So <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span> is p.s.d. whatever the distribution of the regressors. Positive <strong>definiteness</strong> is the extra step, and it can fail.</p></li>
 </ul>
@@ -2935,43 +2934,34 @@ X_{i1} = -\frac{\tilde c_2}{\tilde c_1} X_{i2} - \cdots - \frac{\tilde c_k}{\til
 \begin{aligned}
 \mathrm{E}\left[X_i X_i^\top\right] \text{ is p.d.}
 &amp;\;\Longleftrightarrow\;
-X_i^\top c = 0 \text{ with probability } 1 \text{ only if } c = 0 \\
+X_i^\top c = 0 \text{ only if } c = 0 \\
+&amp;\;\Longleftrightarrow\;
+\mathrm{E}\left[X_i X_i^\top\right] c=0 \text{ only if } c = 0 \\
 &amp;\;\Longleftrightarrow\;
 \operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k.
 \end{aligned}
 </span></p></li>
-<li><p>The relation has to be exact and linear. A relation <span class="math inline">c_1 X_{i1} + c_2 X_{i2} = 0</span> holding with probability one for some <span class="math inline">(c_1, c_2) \neq (0,0)</span> is ruled out; <span class="math inline">X_{i2} = X_{i1}^2</span> is not linear and is fine, unless <span class="math inline">X_{i1}</span> is binary, when <span class="math inline">X_{i1}^2 = X_{i1}</span>.</p></li>
+<li><p>Ruled out: A relation <span class="math inline">c_1 X_{i1} + c_2 X_{i2} = 0</span> for some <span class="math inline">(c_1, c_2) \neq (0,0)</span>.</p></li>
+<li><p><span class="math inline">X_{i2} = X_{i1}^2</span> is not linear and is fine, unless <span class="math inline">X_{i1}</span> is binary, when <span class="math inline">X_{i1}^2 = X_{i1}</span>.</p></li>
 </ul>
 </section>
 <section id="identification-the-result" class="level2">
 <h2 class="anchored" data-anchor-id="identification-the-result">Identification: the result</h2>
 <ul>
-<li><p><strong>Assume</strong></p>
+<li><strong>Assume</strong>
 <ol type="1">
 <li><span class="math inline">Y_i = X_i^\top \beta + U_i</span> with <span class="math inline">\beta \in \mathbb{R}^k</span>;</li>
 <li><span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = 0</span>;</li>
 <li>No perfect multicollinearity: <span class="math inline">\operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k</span>.</li>
 </ol></li>
-<li><p>Then <span class="math inline">\beta</span> is identified, and <span class="math display">
-\boxed{\ \beta = \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1}\, \mathrm{E}\left[X_i Y_i\right]\ }
-</span></p></li>
-<li><p>Assumptions 1 and 2 give the population normal equations <span class="math inline">\mathrm{E}\left[X_i (Y_i - X_i^\top \beta)\right] = 0</span>, that is <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]\beta = \mathrm{E}\left[X_i Y_i\right]</span>; assumption 3 makes the matrix invertible.</p></li>
-<li><p>With a single regressor and no intercept (<span class="math inline">k = 1</span>), <span class="math display">
-\mathrm{E}\left[X_i Y_i\right] = \mathrm{E}\left[X_i^2\right]\,\beta \quad\Longrightarrow\quad \beta = \frac{\mathrm{E}\left[X_i Y_i\right]}{\mathrm{E}\left[X_i^2\right]}.
-</span></p></li>
-</ul>
-</section>
-<section id="identification-under-a-weaker-assumption" class="level2">
-<h2 class="anchored" data-anchor-id="identification-under-a-weaker-assumption">Identification under a weaker assumption</h2>
+<li>Then <span class="math inline">\beta</span> is identified:
 <ul>
-<li><p>Replace <span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = 0</span> with a weaker condition: <span class="math display">
-\mathrm{E}\left[X_i U_i\right] = 0.
-</span></p></li>
-<li><p>Assume <span class="math inline">Y_i= X_i^\top \beta + U_i</span> and <span class="math inline">\operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k</span>.</p></li>
-<li><p>Then we can proceed as before: <span class="math inline">\beta = (\mathrm{E}\left[X_i X_i^\top\right])^{-1}\mathrm{E}\left[X_i Y_i\right]</span>, so <span class="math inline">\beta</span> is still identified.</p></li>
-<li><p>What changes is the meaning of <span class="math inline">\beta</span>. Without <span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = 0</span> we can no longer conclude that <span class="math inline">X_i^\top \beta</span> is the conditional mean, since in general <span class="math display">
-\mathrm{E}\left[Y_i \mid X_i\right] = X_i^\top \beta + \mathrm{E}\left[U_i \mid X_i\right].
-</span></p></li>
+<li>Assumption 1 and 2 produce: <span class="math inline">\mathrm{E}\left[X_i (Y_i - X_i^\top \beta)\right] = 0</span>.</li>
+<li>This implies <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]\beta = \mathrm{E}\left[X_i Y_i\right]</span>.</li>
+<li>Assumption 3 makes <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span> invertible, so <span class="math display">
+\boxed{\ \beta = \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1}\, \mathrm{E}\left[X_i Y_i\right]\ }
+</span></li>
+</ul></li>
 </ul>
 </section>
 </section>
@@ -2983,7 +2973,6 @@ X_i^\top c = 0 \text{ with probability } 1 \text{ only if } c = 0 \\
 <li><p>Identification wrote <span class="math inline">\beta</span> as a function of population moments: <span class="math display">
 \beta = \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1}\, \mathrm{E}\left[X_i Y_i\right].
 </span></p></li>
-<li><p>Everything below assumes the sample counterpart of the rank condition, <span class="math inline">\operatorname{rank}(X) = k</span>, so that the inverse exists. We return to it once the matrix notation is in place.</p></li>
 <li><p><strong>Method of moments.</strong> Replace each expectation <span class="math inline">\mathrm{E}\left[\cdot\right]</span> by the sample average <span class="math inline">\frac{1}{n}\sum_{i=1}^n (\cdot)</span>: <span class="math display">
 \hat\beta = \left( \frac{1}{n}\sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \frac{1}{n}\sum_{i=1}^{n} X_i Y_i
 = \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i.
@@ -3000,7 +2989,9 @@ X_i^\top c = 0 \text{ with probability } 1 \text{ only if } c = 0 \\
 \sum_{i=1}^{n} X_i X_i^\top\, \hat\beta = \sum_{i=1}^{n} X_i Y_i,
 </span> which is the same <span class="math inline">\hat\beta</span>.</p></li>
 <li><p><span class="math inline">\hat U_i = Y_i - X_i^\top \hat\beta</span> is the <strong>residual</strong>: the sample counterpart of the error <span class="math inline">U_i = Y_i - X_i^\top \beta</span>. Unlike <span class="math inline">U_i</span>, it is computable.</p></li>
-<li><p><span class="math inline">\hat\beta</span> is built to make the residuals satisfy the sample version of <span class="math inline">\mathrm{E}\left[X_i U_i\right] = 0</span>.</p></li>
+<li><p><span class="math inline">\hat\beta</span> is built to make the residuals satisfy <span class="math display">
+\frac{1}{n} \sum_{i=1}^{n} X_i \hat U_i = 0,
+</span> which is the sample version of <span class="math inline">\mathrm{E}\left[X_i U_i\right] = 0</span>.</p></li>
 </ul>
 </section>
 <section id="the-estimator-is-not-the-parameter" class="level2">
@@ -3025,10 +3016,6 @@ X_i^\top c = 0 \text{ with probability } 1 \text{ only if } c = 0 \\
 \begin{pmatrix} \sum_{i=1}^{n} X_{i1} \hat U_i \\ \vdots \\ \sum_{i=1}^{n} X_{ik} \hat U_i \end{pmatrix}
 = \begin{pmatrix} 0 \\ \vdots \\ 0 \end{pmatrix}.
 </span></p></li>
-<li><p>One equation per regressor: each regressor is orthogonal to the residual vector, <span class="math display">
-\begin{pmatrix} X_{1j} \\ \vdots \\ X_{nj} \end{pmatrix}^{\top}
-\begin{pmatrix} \hat U_1 \\ \vdots \\ \hat U_n \end{pmatrix} = \sum_{i=1}^{n} X_{ij}\, \hat U_i = 0, \qquad j = 1, \ldots, k.
-</span></p></li>
 <li><p>If the first regressor is the constant, <span class="math inline">X_{i1} = 1</span>, the first equation says <span class="math inline">\sum_{i=1}^n \hat U_i = 0</span>: the residuals average to zero.</p></li>
 </ul>
 </section>
@@ -3050,8 +3037,8 @@ Y = \begin{pmatrix} X_1^\top \beta \\ \vdots \\ X_n^\top \beta \end{pmatrix} + \
 </span></p></li>
 </ul>
 </section>
-<section id="two-identities" class="level2">
-<h2 class="anchored" data-anchor-id="two-identities">Two identities</h2>
+<section id="two-identities-and-the-matrix-form-of-the-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="two-identities-and-the-matrix-form-of-the-estimator">Two identities and the matrix form of the estimator</h2>
 <ul>
 <li><p><strong>Claim.</strong> <span class="math display">
 X^\top Y = \sum_{i=1}^{n} X_i Y_i \quad (k \times 1),
@@ -3065,44 +3052,36 @@ X^\top X &amp;= \begin{pmatrix} X_1^\top \\ \vdots \\ X_n^\top \end{pmatrix}^{\t
 &amp;= \underbrace{X_1 X_1^\top}_{k\times k} + \cdots + X_n X_n^\top = \sum_{i=1}^{n} X_i X_i^\top.
 \end{aligned}
 </span> The first identity is the same computation with the second factor <span class="math inline">X</span> replaced by <span class="math inline">Y</span>, whose <span class="math inline">i</span>th row is the scalar <span class="math inline">Y_i</span>.</p></li>
-</ul>
-</section>
-<section id="the-estimator-in-matrix-form" class="level2">
-<h2 class="anchored" data-anchor-id="the-estimator-in-matrix-form">The estimator in matrix form</h2>
-<ul>
-<li>Substitute the two identities into the method-of-moments formula: <span class="math display">
+<li><p>Substitute the two identities into the method-of-moments formula: <span class="math display">
 \begin{aligned}
 \underset{k\times1}{\hat\beta}
 &amp;= \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i \\
 &amp;= \Big( \underset{k\times k}{X^\top X} \Big)^{-1} \underset{k\times1}{X^\top Y}.
 \end{aligned}
-</span></li>
+</span></p></li>
 </ul>
 </section>
 <section id="residuals-in-matrix-form" class="level2">
 <h2 class="anchored" data-anchor-id="residuals-in-matrix-form">Residuals in matrix form</h2>
 <ul>
-<li><p>Residual vector and its defining property: <span class="math display">
+<li>Residual vector and its defining property: <span class="math display">
 \begin{aligned}
 \hat U &amp;= Y - X \hat\beta, \\
 X^\top \hat U &amp;= X^\top (Y - X\hat\beta) = X^\top Y - X^\top X\, \underbrace{(X^\top X)^{-1} X^\top Y}_{\hat\beta} \\
 &amp;= X^\top Y - X^\top Y = 0.
 \end{aligned}
-</span></p></li>
-<li><p>These are the <strong>sample normal equations</strong>, <span class="math inline">X^\top (Y - X\hat\beta) = X^\top \hat U = 0</span>, the sample counterpart of <span class="math inline">\mathrm{E}\left[X_i (Y_i - X_i^\top \beta)\right] = 0</span>. They are the same <span class="math inline">k</span> equations as before: <span class="math display">
-X^\top \hat U = \sum_{i=1}^{n} X_i \hat U_i = \begin{pmatrix} \sum_{i=1}^{n} X_{i1} \hat U_i \\ \vdots \\ \sum_{i=1}^{n} X_{ik} \hat U_i \end{pmatrix}.
-</span></p></li>
-<li><p>Population: <span class="math inline">\mathrm{E}\left[X_i U_i\right] = 0</span>. Sample: <span class="math inline">\frac{1}{n} \sum_{i=1}^n X_i \hat U_i = 0</span>. The estimator is the value of the coefficient vector that makes the sample mimic the population.</p></li>
+</span></li>
 </ul>
 </section>
 <section id="the-sample-rank-condition" class="level2">
 <h2 class="anchored" data-anchor-id="the-sample-rank-condition">The sample rank condition</h2>
 <ul>
-<li><p><span class="math inline">(X^\top X)^{-1}</span> exists exactly when the columns of <span class="math inline">X</span> are linearly independent: <span class="math display">
+<li><p><span class="math inline">\operatorname{rank}\left(X^\top X\right)= \operatorname{rank}\left(X\right)</span>.</p></li>
+<li><p><span class="math inline">(X^\top X)^{-1}</span> exists exactly when <span class="math inline">\operatorname{rank}\left(X\right) = k</span>, meaning the columns of <span class="math inline">X</span> are linearly independent: <span class="math display">
 X c = c_1 \begin{pmatrix} X_{11} \\ \vdots \\ X_{n1} \end{pmatrix} + \cdots + c_k \begin{pmatrix} X_{1k} \\ \vdots \\ X_{nk} \end{pmatrix} = 0 \quad\text{only if}\quad c = 0,
-</span> that is, <span class="math inline">\operatorname{rank}(X) = k</span>. In particular <span class="math inline">n \ge k</span>: at least as many observations as coefficients.</p></li>
-<li><p>If it fails, <span class="math inline">\operatorname{rank}(X^\top X) = \operatorname{rank}(X) &lt; k</span>, and the normal equations have infinitely many solutions.</p></li>
-<li><p>This is the sample counterpart of <span class="math inline">\operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k</span>.</p></li>
+</span> In particular <span class="math inline">n \ge k</span>: at least as many observations as coefficients.</p></li>
+<li><p>What it means observation by observation: <span class="math inline">c_1 X_{i1} + \cdots + c_k X_{ik} = 0</span> for all <span class="math inline">i = 1, \ldots, n</span> only if <span class="math inline">c = 0</span>.</p></li>
+<li><p>But this is equivalent to the population condition <span class="math inline">\operatorname{rank}(\mathrm{E}\left[X_i X_i^\top\right]) = k</span>, when <span class="math inline">n\geq k</span>.</p></li>
 </ul>
 </section>
 <section id="least-squares" class="level2">
@@ -3126,7 +3105,8 @@ S(b) = \sum_{i=1}^{n} \big(Y_i - X_i^\top b\big)^2
 <section id="proof-completing-the-square" class="level2">
 <h2 class="anchored" data-anchor-id="proof-completing-the-square">Proof: completing the square</h2>
 <ul>
-<li><p>Add and subtract <span class="math inline">X\hat\beta</span> inside the criterion, and use <span class="math inline">(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v</span>: <span class="math display">
+<li><p>We will use <span class="math inline">(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v</span>.</p></li>
+<li><p>Add and subtract <span class="math inline">X\hat\beta</span> inside the criterion: <span class="math display">
 \begin{aligned}
 (Y - Xb)^\top (Y - Xb)
 &amp;= \big(\underbrace{Y - X\hat\beta}_{\hat U} + X(\hat\beta - b)\big)^\top \big(\hat U + X(\hat\beta - b)\big) \\
@@ -3146,7 +3126,7 @@ S(b) = \sum_{i=1}^{n} \big(Y_i - X_i^\top b\big)^2
 a^\top X^\top X a = (Xa)^\top (Xa) = z^\top z = \sum_{i=1}^{n} z_i^2 \ge 0,
 </span> so <span class="math inline">X^\top X</span> is p.s.d. It is also symmetric, since <span class="math inline">(X^\top X)^\top = X^\top X</span>.</p></li>
 <li><p>Under the rank condition, <span class="math inline">Xa = 0</span> only if <span class="math inline">a = 0</span>, so <span class="math inline">\sum_i z_i^2 = 0</span> only if <span class="math inline">a = 0</span>: <span class="math inline">X^\top X</span> is <strong>positive definite</strong>.</p></li>
-<li><p>Apply this with <span class="math inline">a = \hat\beta - b</span>: <span class="math display">
+<li><p>We have: <span class="math display">
 S(b) = S(\hat\beta) + \underbrace{(\hat\beta - b)^\top X^\top X (\hat\beta - b)}_{\ge\, 0,\ \text{and}\ =\,0 \text{ iff } b = \hat\beta} \;\ge\; S(\hat\beta).
 </span></p></li>
 <li><p>Hence <span class="math inline">\hat\beta = (X^\top X)^{-1} X^\top Y</span> is the unique minimiser of the sum of squared residuals: it <strong>is</strong> the OLS estimator.</p></li>

@@ -230,22 +230,7 @@ $$
 
 - Existence is not automatic: with $n = k = 1$, a regressor uniform on $(0, 1)$ and a mean-zero error independent of it, the noise term $U / X$ has no mean, although its conditional mean is zero.
 
-## The scalar case
 
-- Take $k = 1$, so $X$ is $n \times 1$ and
-$$
-X^\top X = \sum_{i=1}^n X_i^2, \qquad X^\top Y = \sum_{i=1}^n X_i Y_i.
-$$
-
-- The estimator and its sampling error:
-$$
-\hat\beta = \frac{\sum_i X_i Y_i}{\sum_i X_i^2} = \beta + \frac{\sum_i X_i U_i}{\sum_i X_i^2}.
-$$
-
-- Conditioning on $X_1, \ldots, X_n$ makes the denominator and every $X_i$ in the numerator known:
-$$
-\E{\hat\beta \mid X} = \beta + \frac{\sum_i X_i \overbrace{\E{U_i \mid X}}^{=\,0}}{\sum_i X_i^2} = \beta.
-$$
 
 ## A weaker condition
 
@@ -255,7 +240,7 @@ $$
 $$
 which, together with $\E{U_i} = 0$, says that each regressor is uncorrelated with the error.
 
-- The first lecture showed that $\beta$ is still identified under this condition.
+- $\beta$ is still identified under this condition.
 
 - It is not enough for unbiasedness:
 $$
@@ -264,63 +249,8 @@ $$
 
 - So $\hat\beta$ need not be unbiased. The noise term is a nonlinear function of $X$ and $U$, and once $\E{U \mid X}$ is not zero, nothing forces its mean to vanish.
 
-## Zero correlation does not pin down the conditional mean
 
-- Take one regressor, so $X_i$ is a scalar with density $f_X$, and write $g(x) = \E{U_i \mid X_i = x}$. By iterated expectations,
-$$
-\E{X_i U_i} = \E{\E{X_i U_i \mid X_i}} = \E{X_i\, g(X_i)} = \int x\, g(x) f_X(x)\, dx.
-$$
 
-- Assumption 2 says $g(x) = 0$ at every $x$, which makes the integral zero. The weaker condition says only that the integral is zero.
-
-- An integral vanishes when the positive and negative parts cancel, so
-$$
-\int x\, g(x) f_X(x)\, dx = 0 \;\text{ does not imply }\; g(x) = 0 \ \text{ for all } x.
-$$
-
-## The parabola
-
-- Let the conditional mean of the error be a parabola in the regressor, centred at zero and shifted down so that $\E{U_i} = \E{g(X_i)} = 0$, and let the regressor be symmetric about zero. Then $g$ is even, so $x\, g(x)$ is odd and $\E{X_i U_i} = 0$, while $\E{U_i \mid X_i} \neq 0$ at every value of $X_i$ except the two zeros of $g$.
-
-- The parabola shows that the conditional mean is not zero. It does not by itself bias $\hat\beta$: with $g$ even, the conditional mean of the noise term, $\sum_i X_i g(X_i) / \sum_i X_i^2$, changes sign when every $X_i$ does. The regressors are symmetric about zero, so the noise term has mean zero. Bias needs one of those two symmetries broken, as on the next slide but one.
-
-- Read the horizontal axis as education and the vertical axis as ability: ability is low at middling education and high at both ends.
-
-  ```{r}
-  #| echo: false
-  #| fig-align: center
-  #| fig-width: 9
-  #| fig-height: 3.6
-  #| fig-dpi: 300
-  tikz_fig("parabola", 9, 3.6, {
-    set.seed(2)
-    op <- par(mfrow = c(1, 2), mar = c(3.8, 2.4, 2.2, 0.6), font.main = 1)
-    xg <- seq(-2.5, 2.5, length.out = 400)
-    xs <- runif(140, -2.5, 2.5)
-    panel <- function(u_values, main_tex, draw_curve) {
-      plot(NA, xlim = c(-2.5, 2.5), ylim = c(-3, 6), xlab = "", ylab = "",
-           axes = FALSE, main = main_tex)
-      box()
-      mtext("$x$", side = 1, line = 1.1)
-      mtext("$u$", side = 2, line = 1.0)
-      mtext("$\\mathrm{E}[X_i U_i] = 0$", side = 1, line = 2.9)
-      points(xs, u_values, pch = 19, cex = 0.5, col = "gray60")
-      abline(h = 0, lwd = 2, col = "#d95f02")
-      if (draw_curve) lines(xg, xg^2 - 25/12, lwd = 2, col = "#1b9e77")
-    }
-    panel(xs^2 - 25/12 + rnorm(140, sd = 0.7),
-          "$\\mathrm{E}[U_i \\mid X_i] \\neq 0$", TRUE)
-    panel(rnorm(140, sd = 0.7),
-          "$\\mathrm{E}[U_i \\mid X_i] = 0$", FALSE)
-    par(op)
-  })
-  ```
-
-## What survives under the weaker condition
-
-- Under $\E{X_i U_i} = 0$ and $\E{U_i} = 0$ in place of Assumption 2: $\beta$ is identified, and $\hat\beta$ is still the method-of-moments and least-squares estimator.
-
-- What is lost: $X_i^\top\beta$ need not be the conditional mean any more, and $\hat\beta$ is no longer guaranteed to be unbiased at any sample size.
 
 # The variance of a random vector
 

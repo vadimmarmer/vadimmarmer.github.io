@@ -45,6 +45,7 @@ format:
 \gdef\E#1{\mathrm{E}\left[#1\right]}
 \gdef\Var#1{\mathrm{Var}\left(#1\right)}
 \gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
 :::
 
 - Suppose wages are generated according to:
@@ -654,10 +655,11 @@ is **known** (we are at the population level). You have no information about $U_
   $$
 - Obtain the **population normal equations**:
 $$
-\boxed{\ \E{X_i \big(Y_i - X_i^\top \beta\big)} = 0\ }.
+\boxed{\ 0 = \E{X_i U_i}
+= \E{X_i \big(Y_i - X_i^\top \beta\big)}.\ }
 $$
 
-- Multiply out, one step at a time:
+- Multiply out, one step at a time, distribute the expectation:
 $$
 \begin{aligned}
 0 = \E{X_i U_i}
@@ -724,7 +726,7 @@ $$
 
 - Then the quadratic form is the expectation of a square:
 $$
-c^\top\, \E{X_i X_i^\top}\, c = \E{c^\top X_i X_i^\top c} = \E{\underbrace{W_i^2}_{\ge 0}} \ge 0.
+c^\top\, \E{X_i X_i^\top}\, c = \E{\underbrace{c^\top X_i}_{W_i} \underbrace{X_i^\top c}_{{W_i}}} = \E{\underbrace{W_i^2}_{\ge 0}} \ge 0.
 $$
 
 - So $\E{X_i X_i^\top}$ is p.s.d. whatever the distribution of the regressors. Positive **definiteness** is the extra step, and it can fail.
@@ -753,13 +755,16 @@ $$
 \begin{aligned}
 \E{X_i X_i^\top} \text{ is p.d.}
 &\;\Longleftrightarrow\;
-X_i^\top c = 0 \text{ with probability } 1 \text{ only if } c = 0 \\
+X_i^\top c = 0 \text{ only if } c = 0 \\
+&\;\Longleftrightarrow\; 
+\E{X_i X_i^\top} c=0 \text{ only if } c = 0 \\
 &\;\Longleftrightarrow\;
 \operatorname{rank}\big(\E{X_i X_i^\top}\big) = k.
 \end{aligned}
 $$
 
-- The relation has to be exact and linear. A relation $c_1 X_{i1} + c_2 X_{i2} = 0$ holding with probability one for some $(c_1, c_2) \neq (0,0)$ is ruled out; $X_{i2} = X_{i1}^2$ is not linear and is fine, unless $X_{i1}$ is binary, when $X_{i1}^2 = X_{i1}$.
+- Ruled out: A relation $c_1 X_{i1} + c_2 X_{i2} = 0$ for some $(c_1, c_2) \neq (0,0)$.
+- $X_{i2} = X_{i1}^2$ is not linear and is fine, unless $X_{i1}$ is binary, when $X_{i1}^2 = X_{i1}$.
 
 ## Identification: the result
 
@@ -768,32 +773,15 @@ $$
   2. $\E{U_i \mid X_i} = 0$;
   3. No perfect multicollinearity: $\operatorname{rank}\big(\E{X_i X_i^\top}\big) = k$.
 
-- Then $\beta$ is identified, and
-$$
-\boxed{\ \beta = \big(\E{X_i X_i^\top}\big)^{-1}\, \E{X_i Y_i}\ }
-$$
-
-- Assumptions 1 and 2 give the population normal equations $\E{X_i (Y_i - X_i^\top \beta)} = 0$, that is $\E{X_i X_i^\top}\beta = \E{X_i Y_i}$; assumption 3 makes the matrix invertible.
-
-- With a single regressor and no intercept ($k = 1$),
-$$
-\E{X_i Y_i} = \E{X_i^2}\,\beta \quad\Longrightarrow\quad \beta = \frac{\E{X_i Y_i}}{\E{X_i^2}}.
-$$
-
-## Identification under a weaker assumption
-
-- Replace $\E{U_i \mid X_i} = 0$ with a weaker condition:
-$$
-\E{X_i U_i} = 0.
-$$
-
-- Assume $Y_i= X_i^\top \beta + U_i$ and $\operatorname{rank}\big(\E{X_i X_i^\top}\big) = k$. 
-- Then we can proceed as before: $\beta = (\E{X_i X_i^\top})^{-1}\E{X_i Y_i}$, so $\beta$ is still identified.
-
-- What changes is the meaning of $\beta$. Without $\E{U_i \mid X_i} = 0$ we can no longer conclude that $X_i^\top \beta$ is the conditional mean, since in general
+- Then $\beta$ is identified:
+  - Assumption 1 and 2 produce: $\E{X_i (Y_i - X_i^\top \beta)} = 0$.
+  - This implies $\E{X_i X_i^\top}\beta = \E{X_i Y_i}$.
+  - Assumption 3 makes $\E{X_i X_i^\top}$ invertible, so
   $$
-  \E{Y_i \mid X_i} = X_i^\top \beta + \E{U_i \mid X_i}.
+  \boxed{\ \beta = \big(\E{X_i X_i^\top}\big)^{-1}\, \E{X_i Y_i}\ }
   $$
+
+
 
 # Estimation and least squares
 
@@ -803,8 +791,6 @@ $$
 $$
 \beta = \big(\E{X_i X_i^\top}\big)^{-1}\, \E{X_i Y_i}.
 $$
-
-- Everything below assumes the sample counterpart of the rank condition, $\operatorname{rank}(X) = k$, so that the inverse exists. We return to it once the matrix notation is in place.
 
 - **Method of moments.** Replace each expectation $\E{\cdot}$ by the sample average $\frac{1}{n}\sum_{i=1}^n (\cdot)$:
 $$
@@ -827,7 +813,11 @@ which is the same $\hat\beta$.
 
 - $\hat U_i = Y_i - X_i^\top \hat\beta$ is the **residual**: the sample counterpart of the error $U_i = Y_i - X_i^\top \beta$. Unlike $U_i$, it is computable.
 
-- $\hat\beta$ is built to make the residuals satisfy the sample version of $\E{X_i U_i} = 0$.
+- $\hat\beta$ is built to make the residuals satisfy 
+  $$
+  \frac{1}{n} \sum_{i=1}^{n} X_i \hat U_i = 0,
+  $$
+  which is the sample version of $\E{X_i U_i} = 0$.
 
 ## The estimator is not the parameter
 
@@ -855,11 +845,6 @@ $$
 = \begin{pmatrix} 0 \\ \vdots \\ 0 \end{pmatrix}.
 $$
 
-- One equation per regressor: each regressor is orthogonal to the residual vector,
-$$
-\begin{pmatrix} X_{1j} \\ \vdots \\ X_{nj} \end{pmatrix}^{\top}
-\begin{pmatrix} \hat U_1 \\ \vdots \\ \hat U_n \end{pmatrix} = \sum_{i=1}^{n} X_{ij}\, \hat U_i = 0, \qquad j = 1, \ldots, k.
-$$
 
 - If the first regressor is the constant, $X_{i1} = 1$, the first equation says $\sum_{i=1}^n \hat U_i = 0$: the residuals average to zero.
 
@@ -884,7 +869,7 @@ Y = \begin{pmatrix} X_1^\top \beta \\ \vdots \\ X_n^\top \beta \end{pmatrix} + \
 \underset{n\times1}{Y} = \underset{n\times k}{X}\ \underset{k\times1}{\beta} + \underset{n\times1}{U}.
 $$
 
-## Two identities
+## Two identities and the matrix form of the estimator
 
 - **Claim.**
 $$
@@ -902,8 +887,6 @@ X^\top X &= \begin{pmatrix} X_1^\top \\ \vdots \\ X_n^\top \end{pmatrix}^{\top} 
 \end{aligned}
 $$
 The first identity is the same computation with the second factor $X$ replaced by $Y$, whose $i$th row is the scalar $Y_i$.
-
-## The estimator in matrix form
 
 - Substitute the two identities into the method-of-moments formula:
 $$
@@ -925,24 +908,17 @@ X^\top \hat U &= X^\top (Y - X\hat\beta) = X^\top Y - X^\top X\, \underbrace{(X^
 \end{aligned}
 $$
 
-- These are the **sample normal equations**, $X^\top (Y - X\hat\beta) = X^\top \hat U = 0$, the sample counterpart of $\E{X_i (Y_i - X_i^\top \beta)} = 0$. They are the same $k$ equations as before:
-$$
-X^\top \hat U = \sum_{i=1}^{n} X_i \hat U_i = \begin{pmatrix} \sum_{i=1}^{n} X_{i1} \hat U_i \\ \vdots \\ \sum_{i=1}^{n} X_{ik} \hat U_i \end{pmatrix}.
-$$
-
-- Population: $\E{X_i U_i} = 0$. Sample: $\frac{1}{n} \sum_{i=1}^n X_i \hat U_i = 0$. The estimator is the value of the coefficient vector that makes the sample mimic the population.
-
 ## The sample rank condition
 
-- $(X^\top X)^{-1}$ exists exactly when the columns of $X$ are linearly independent:
+- $\rank{X^\top X}= \rank{X}$.
+- $(X^\top X)^{-1}$ exists exactly when $\rank{X} = k$, meaning the columns of $X$ are linearly independent:
 $$
 X c = c_1 \begin{pmatrix} X_{11} \\ \vdots \\ X_{n1} \end{pmatrix} + \cdots + c_k \begin{pmatrix} X_{1k} \\ \vdots \\ X_{nk} \end{pmatrix} = 0 \quad\text{only if}\quad c = 0,
 $$
-that is, $\operatorname{rank}(X) = k$. In particular $n \ge k$: at least as many observations as coefficients.
+In particular $n \ge k$: at least as many observations as coefficients.
 
-- If it fails, $\operatorname{rank}(X^\top X) = \operatorname{rank}(X) < k$, and the normal equations have infinitely many solutions.
-
-- This is the sample counterpart of $\operatorname{rank}\big(\E{X_i X_i^\top}\big) = k$.
+- What it means observation by observation: $c_1 X_{i1} + \cdots + c_k X_{ik} = 0$ for all $i = 1, \ldots, n$ only if $c = 0$. 
+- But this is equivalent to the population condition $\operatorname{rank}(\E{X_i X_i^\top}) = k$, when $n\geq k$.
 
 ## Least squares
 
@@ -967,7 +943,8 @@ $$
 
 ## Proof: completing the square
 
-- Add and subtract $X\hat\beta$ inside the criterion, and use $(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v$:
+- We will use $(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v$.
+- Add and subtract $X\hat\beta$ inside the criterion:
 $$
 \begin{aligned}
 (Y - Xb)^\top (Y - Xb)
@@ -992,7 +969,7 @@ so $X^\top X$ is p.s.d. It is also symmetric, since $(X^\top X)^\top = X^\top X$
 
 - Under the rank condition, $Xa = 0$ only if $a = 0$, so $\sum_i z_i^2 = 0$ only if $a = 0$: $X^\top X$ is **positive definite**.
 
-- Apply this with $a = \hat\beta - b$:
+- We have:
 $$
 S(b) = S(\hat\beta) + \underbrace{(\hat\beta - b)^\top X^\top X (\hat\beta - b)}_{\ge\, 0,\ \text{and}\ =\,0 \text{ iff } b = \hat\beta} \;\ge\; S(\hat\beta).
 $$
