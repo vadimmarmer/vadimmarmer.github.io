@@ -945,91 +945,56 @@ $$
 
 - **Claim.** $\hat\beta^{\,\text{OLS}} = \hat\beta = (X^\top X)^{-1} X^\top Y$: least squares and the method of moments deliver the same estimator.
 
-## Proof: completing the square
+## Proof
 
-- We will use $(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v$.
-- Add and subtract $X\hat\beta$ inside the criterion:
+- We will use:
+  -  $(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v$.
+  -  Add and subtract $X\hat\beta$ inside the criterion:
+    $$
+    Y-Xb=Y-X\hat\beta+X\hat\beta-Xb=\underbrace{Y-X\hat\beta}_{\hat U}+X(\hat\beta-b).
+    $$
+- We have:
 $$
 \begin{aligned}
 (Y - Xb)^\top (Y - Xb)
-&= \big(\underbrace{Y - X\hat\beta}_{\hat U} + X(\hat\beta - b)\big)^\top \big(\hat U + X(\hat\beta - b)\big) \\
 &= \hat U^\top \hat U + (\hat\beta - b)^\top X^\top X (\hat\beta - b) \\
-&\qquad + 2\, \underbrace{\hat U^\top X}_{=\,(X^\top \hat U)^\top =\, 0}\, (\hat\beta - b) \\
-&= \underbrace{\hat U^\top \hat U}_{\text{free of } b} + (\hat\beta - b)^\top X^\top X (\hat\beta - b).
+&\qquad + 2\, {\color{red} {\hat U^\top X}} (\hat\beta - b)
 \end{aligned}
 $$
 
-- The cross term vanishes by the normal equations $X^\top \hat U = 0$. That is the only place the definition of $\hat\beta$ enters.
+- The cross term vanishes by the normal equations ${\color{red} X^\top \hat U = 0}$:
+  $$
+  \boxed{(Y - Xb)^\top (Y - Xb)= \underbrace{\hat U^\top \hat U}_{\text{free of } b} + (\hat\beta - b)^\top X^\top X (\hat\beta - b).}
+  $$
 
-- So minimising $S(b)$ over $b$ is the same as minimising the quadratic form $(\hat\beta - b)^\top X^\top X (\hat\beta - b)$.
+- So minimising $(Y - Xb)^\top (Y - Xb)$ is the same as minimising  $(\hat\beta - b)^\top X^\top X (\hat\beta - b)$.
+- $(\hat\beta - b)^\top X^\top X (\hat\beta - b)\ge 0$ as this is a quadratic form in $X^\top X$, which is always p.s.d. 
+- When $\rank{X}=k$, $X^\top X$ is p.d. and
+  $$
+  (\hat\beta - b)^\top X^\top X (\hat\beta - b) =0 \quad\Longleftrightarrow\quad \hat\beta-b=0.
+  $$
+- Hence, $\hat\beta$ is the unique minimiser of $(Y - Xb)^\top (Y - Xb)$ .
 
-## Proof: the quadratic form
 
-- For any $a \in \mathbb{R}^k$, with $z = Xa \in \mathbb{R}^n$,
+
+## Other linear estimators, for comparison
+
+- Other estimators can be easily constructed. 
+- For a known symmetric positive definite $n \times n$ matrix $W$, let
 $$
-a^\top X^\top X a = (Xa)^\top (Xa) = z^\top z = \sum_{i=1}^{n} z_i^2 \ge 0,
+\tilde\beta_W = (X^\top W X)^{-1} X^\top W Y
 $$
-so $X^\top X$ is p.s.d. It is also symmetric, since $(X^\top X)^\top = X^\top X$.
+ 
+- Note $W = I_n$ gives back $\hat\beta$.
 
-- Under the rank condition, $Xa = 0$ only if $a = 0$, so $\sum_i z_i^2 = 0$ only if $a = 0$: $X^\top X$ is **positive definite**.
-
-- We have:
-$$
-S(b) = S(\hat\beta) + \underbrace{(\hat\beta - b)^\top X^\top X (\hat\beta - b)}_{\ge\, 0,\ \text{and}\ =\,0 \text{ iff } b = \hat\beta} \;\ge\; S(\hat\beta).
-$$
-
-- Hence $\hat\beta = (X^\top X)^{-1} X^\top Y$ is the unique minimiser of the sum of squared residuals: it **is** the OLS estimator.
-
-## The same result from the first-order condition
-
-- Expand the criterion, $S(b) = Y^\top Y - 2\, b^\top X^\top Y + b^\top X^\top X b$, and use $\partial (x^\top c)/\partial x = c$ together with $\partial (x^\top A x)/\partial x = 2Ax$ for symmetric $A$:
-$$
-\frac{\partial S(b)}{\partial b} = -2 X^\top Y + 2 X^\top X b = 0
-\quad\Longrightarrow\quad
-b = (X^\top X)^{-1} X^\top Y.
-$$
-
-- The Hessian $\partial^2 S / \partial b\, \partial b^\top = 2 X^\top X$ is positive definite under the rank condition, so this is a minimum.
-
-- The first-order condition, rewritten as $X^\top (Y - Xb) = 0$, **is** the normal equations. Least squares and the method of moments are two routes to one estimator.
-
-## Population least squares
-
-- The population has its own least-squares problem, and $\beta$ solves it.
-
-- **Claim.** Suppose $Y_i = X_i^\top \beta + U_i$ with $\E{U_i \mid X_i} = 0$, and $\operatorname{rank}\big(\E{X_i X_i^\top}\big) = k$. Then
-$$
-\beta = \underset{b \in \mathbb{R}^k}{\arg\min}\ \E{(Y_i - X_i^\top b)^2},
-$$
-and the minimiser is unique.
-
-- So OLS is the sample analogue of $\beta$ in two ways: replace population moments with sample moments, or replace expected squared error with average squared error.
-
-## Population least squares: proof
-
-- Condition on $X_i$, use that the conditional mean minimises conditional mean squared error, then apply the LIE:
-$$
-\begin{aligned}
-\E{(Y_i - X_i^\top b)^2}
-&= \E{\,\E{(Y_i - X_i^\top b)^2 \mid X_i}\,} \\
-&\ge \E{\,\E{(Y_i - \underbrace{\E{Y_i \mid X_i}}_{X_i^\top \beta})^2 \mid X_i}\,} \\
-&= \E{(Y_i - X_i^\top \beta)^2}.
-\end{aligned}
-$$
-
-- Equality at some $b^\ast$ requires $X_i^\top b^\ast = \E{Y_i \mid X_i} = X_i^\top \beta$ with probability one, so $X_i^\top (b^\ast - \beta) = 0$ with probability one, and with no multicollinearity $b^\ast = \beta$.
-
-## Other linear estimators, for contrast
-
-- Nothing forces the weights in the normal equations to be equal across observations. For a known symmetric positive definite $n \times n$ matrix $W$,
-$$
-\tilde\beta = (X^\top W X)^{-1} X^\top W Y
-$$
-is also a function of the sample, and $W = I_n$ gives back $\hat\beta$.
-
-- In general $\tilde\beta$ minimises $(Y - Xb)^\top W (Y - Xb)$. With $W$ diagonal, $W = \operatorname{diag}(w_1, \ldots, w_n)$ and $w_i > 0$, this is **weighted least squares**: it minimises $\sum_i w_i (Y_i - X_i^\top b)^2$. Taking $W$ to be the inverse of the variance matrix of the errors gives **generalised least squares**.
+- With $W$ diagonal, $W = \operatorname{diag}(w_1, \ldots, w_n)$ and $w_i > 0$, this is **weighted least squares**: 
+  $$
+  \tilde\beta_W = \left(\sum_{i=1}^{n} w_i X_i X_i^\top\right)^{-1} \sum_{i=1}^{n} w_i X_i Y_i.
+  $$
 
 - Which of these is a good estimator, and in what sense, is the subject of the next lecture: bias, variance, and the Gauss-Markov theorem.
+
+# Summary
 
 ## Summary: the model and identification
 
@@ -1051,3 +1016,4 @@ $$
 which is also the unique minimiser of $\sum_i (Y_i - X_i^\top b)^2$: the OLS estimator.
 
 - $\hat\beta$ solves the sample normal equations $X^\top (Y - X\hat\beta) = 0$, that is $X^\top \hat U = 0$: the sample counterpart of the population normal equations $\E{X_i (Y_i - X_i^\top \beta)} = 0$.
+- $\hat\beta$ is also the OLS estimator as it solves $\min_b \|Y-Xb\|^2$.

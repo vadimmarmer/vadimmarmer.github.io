@@ -2289,12 +2289,11 @@ window.Quarto = {
   <li><a href="#residuals-in-matrix-form" id="toc-residuals-in-matrix-form" class="nav-link" data-scroll-target="#residuals-in-matrix-form">Residuals in matrix form</a></li>
   <li><a href="#the-sample-rank-condition" id="toc-the-sample-rank-condition" class="nav-link" data-scroll-target="#the-sample-rank-condition">The sample rank condition</a></li>
   <li><a href="#least-squares" id="toc-least-squares" class="nav-link" data-scroll-target="#least-squares">Least squares</a></li>
-  <li><a href="#proof-completing-the-square" id="toc-proof-completing-the-square" class="nav-link" data-scroll-target="#proof-completing-the-square">Proof: completing the square</a></li>
-  <li><a href="#proof-the-quadratic-form" id="toc-proof-the-quadratic-form" class="nav-link" data-scroll-target="#proof-the-quadratic-form">Proof: the quadratic form</a></li>
-  <li><a href="#the-same-result-from-the-first-order-condition" id="toc-the-same-result-from-the-first-order-condition" class="nav-link" data-scroll-target="#the-same-result-from-the-first-order-condition">The same result from the first-order condition</a></li>
-  <li><a href="#population-least-squares" id="toc-population-least-squares" class="nav-link" data-scroll-target="#population-least-squares">Population least squares</a></li>
-  <li><a href="#population-least-squares-proof" id="toc-population-least-squares-proof" class="nav-link" data-scroll-target="#population-least-squares-proof">Population least squares: proof</a></li>
-  <li><a href="#other-linear-estimators-for-contrast" id="toc-other-linear-estimators-for-contrast" class="nav-link" data-scroll-target="#other-linear-estimators-for-contrast">Other linear estimators, for contrast</a></li>
+  <li><a href="#proof" id="toc-proof" class="nav-link" data-scroll-target="#proof">Proof</a></li>
+  <li><a href="#other-linear-estimators-for-comparison" id="toc-other-linear-estimators-for-comparison" class="nav-link" data-scroll-target="#other-linear-estimators-for-comparison">Other linear estimators, for comparison</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
   <li><a href="#summary-the-model-and-identification" id="toc-summary-the-model-and-identification" class="nav-link" data-scroll-target="#summary-the-model-and-identification">Summary: the model and identification</a></li>
   <li><a href="#summary-the-estimator" id="toc-summary-the-estimator" class="nav-link" data-scroll-target="#summary-the-estimator">Summary: the estimator</a></li>
   </ul></li>
@@ -3103,82 +3102,51 @@ S(b) = \sum_{i=1}^{n} \big(Y_i - X_i^\top b\big)^2
 <li><p><strong>Claim.</strong> <span class="math inline">\hat\beta^{\,\text{OLS}} = \hat\beta = (X^\top X)^{-1} X^\top Y</span>: least squares and the method of moments deliver the same estimator.</p></li>
 </ul>
 </section>
-<section id="proof-completing-the-square" class="level2">
-<h2 class="anchored" data-anchor-id="proof-completing-the-square">Proof: completing the square</h2>
+<section id="proof" class="level2">
+<h2 class="anchored" data-anchor-id="proof">Proof</h2>
 <ul>
-<li><p>We will use <span class="math inline">(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v</span>.</p></li>
-<li><p>Add and subtract <span class="math inline">X\hat\beta</span> inside the criterion: <span class="math display">
+<li><p>We will use:</p>
+<ul>
+<li><span class="math inline">(u + v)^\top (u + v) = u^\top u + v^\top v + 2 u^\top v</span>.</li>
+<li>Add and subtract <span class="math inline">X\hat\beta</span> inside the criterion: <span class="math display">
+  Y-Xb=Y-X\hat\beta+X\hat\beta-Xb=\underbrace{Y-X\hat\beta}_{\hat U}+X(\hat\beta-b).
+  </span></li>
+</ul></li>
+<li><p>We have: <span class="math display">
 \begin{aligned}
 (Y - Xb)^\top (Y - Xb)
-&amp;= \big(\underbrace{Y - X\hat\beta}_{\hat U} + X(\hat\beta - b)\big)^\top \big(\hat U + X(\hat\beta - b)\big) \\
 &amp;= \hat U^\top \hat U + (\hat\beta - b)^\top X^\top X (\hat\beta - b) \\
-&amp;\qquad + 2\, \underbrace{\hat U^\top X}_{=\,(X^\top \hat U)^\top =\, 0}\, (\hat\beta - b) \\
-&amp;= \underbrace{\hat U^\top \hat U}_{\text{free of } b} + (\hat\beta - b)^\top X^\top X (\hat\beta - b).
+&amp;\qquad + 2\, {\color{red} {\hat U^\top X}} (\hat\beta - b)
 \end{aligned}
 </span></p></li>
-<li><p>The cross term vanishes by the normal equations <span class="math inline">X^\top \hat U = 0</span>. That is the only place the definition of <span class="math inline">\hat\beta</span> enters.</p></li>
-<li><p>So minimising <span class="math inline">S(b)</span> over <span class="math inline">b</span> is the same as minimising the quadratic form <span class="math inline">(\hat\beta - b)^\top X^\top X (\hat\beta - b)</span>.</p></li>
-</ul>
-</section>
-<section id="proof-the-quadratic-form" class="level2">
-<h2 class="anchored" data-anchor-id="proof-the-quadratic-form">Proof: the quadratic form</h2>
-<ul>
-<li><p>For any <span class="math inline">a \in \mathbb{R}^k</span>, with <span class="math inline">z = Xa \in \mathbb{R}^n</span>, <span class="math display">
-a^\top X^\top X a = (Xa)^\top (Xa) = z^\top z = \sum_{i=1}^{n} z_i^2 \ge 0,
-</span> so <span class="math inline">X^\top X</span> is p.s.d. It is also symmetric, since <span class="math inline">(X^\top X)^\top = X^\top X</span>.</p></li>
-<li><p>Under the rank condition, <span class="math inline">Xa = 0</span> only if <span class="math inline">a = 0</span>, so <span class="math inline">\sum_i z_i^2 = 0</span> only if <span class="math inline">a = 0</span>: <span class="math inline">X^\top X</span> is <strong>positive definite</strong>.</p></li>
-<li><p>We have: <span class="math display">
-S(b) = S(\hat\beta) + \underbrace{(\hat\beta - b)^\top X^\top X (\hat\beta - b)}_{\ge\, 0,\ \text{and}\ =\,0 \text{ iff } b = \hat\beta} \;\ge\; S(\hat\beta).
+<li><p>The cross term vanishes by the normal equations <span class="math inline">{\color{red} X^\top \hat U = 0}</span>: <span class="math display">
+\boxed{(Y - Xb)^\top (Y - Xb)= \underbrace{\hat U^\top \hat U}_{\text{free of } b} + (\hat\beta - b)^\top X^\top X (\hat\beta - b).}
 </span></p></li>
-<li><p>Hence <span class="math inline">\hat\beta = (X^\top X)^{-1} X^\top Y</span> is the unique minimiser of the sum of squared residuals: it <strong>is</strong> the OLS estimator.</p></li>
-</ul>
-</section>
-<section id="the-same-result-from-the-first-order-condition" class="level2">
-<h2 class="anchored" data-anchor-id="the-same-result-from-the-first-order-condition">The same result from the first-order condition</h2>
-<ul>
-<li><p>Expand the criterion, <span class="math inline">S(b) = Y^\top Y - 2\, b^\top X^\top Y + b^\top X^\top X b</span>, and use <span class="math inline">\partial (x^\top c)/\partial x = c</span> together with <span class="math inline">\partial (x^\top A x)/\partial x = 2Ax</span> for symmetric <span class="math inline">A</span>: <span class="math display">
-\frac{\partial S(b)}{\partial b} = -2 X^\top Y + 2 X^\top X b = 0
-\quad\Longrightarrow\quad
-b = (X^\top X)^{-1} X^\top Y.
+<li><p>So minimising <span class="math inline">(Y - Xb)^\top (Y - Xb)</span> is the same as minimising <span class="math inline">(\hat\beta - b)^\top X^\top X (\hat\beta - b)</span>.</p></li>
+<li><p><span class="math inline">(\hat\beta - b)^\top X^\top X (\hat\beta - b)\ge 0</span> as this is a quadratic form in <span class="math inline">X^\top X</span>, which is always p.s.d.</p></li>
+<li><p>When <span class="math inline">\operatorname{rank}\left(X\right)=k</span>, <span class="math inline">X^\top X</span> is p.d. and <span class="math display">
+(\hat\beta - b)^\top X^\top X (\hat\beta - b) =0 \quad\Longleftrightarrow\quad \hat\beta-b=0.
 </span></p></li>
-<li><p>The Hessian <span class="math inline">\partial^2 S / \partial b\, \partial b^\top = 2 X^\top X</span> is positive definite under the rank condition, so this is a minimum.</p></li>
-<li><p>The first-order condition, rewritten as <span class="math inline">X^\top (Y - Xb) = 0</span>, <strong>is</strong> the normal equations. Least squares and the method of moments are two routes to one estimator.</p></li>
+<li><p>Hence, <span class="math inline">\hat\beta</span> is the unique minimiser of <span class="math inline">(Y - Xb)^\top (Y - Xb)</span> .</p></li>
 </ul>
 </section>
-<section id="population-least-squares" class="level2">
-<h2 class="anchored" data-anchor-id="population-least-squares">Population least squares</h2>
+<section id="other-linear-estimators-for-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="other-linear-estimators-for-comparison">Other linear estimators, for comparison</h2>
 <ul>
-<li><p>The population has its own least-squares problem, and <span class="math inline">\beta</span> solves it.</p></li>
-<li><p><strong>Claim.</strong> Suppose <span class="math inline">Y_i = X_i^\top \beta + U_i</span> with <span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = 0</span>, and <span class="math inline">\operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k</span>. Then <span class="math display">
-\beta = \underset{b \in \mathbb{R}^k}{\arg\min}\ \mathrm{E}\left[(Y_i - X_i^\top b)^2\right],
-</span> and the minimiser is unique.</p></li>
-<li><p>So OLS is the sample analogue of <span class="math inline">\beta</span> in two ways: replace population moments with sample moments, or replace expected squared error with average squared error.</p></li>
-</ul>
-</section>
-<section id="population-least-squares-proof" class="level2">
-<h2 class="anchored" data-anchor-id="population-least-squares-proof">Population least squares: proof</h2>
-<ul>
-<li><p>Condition on <span class="math inline">X_i</span>, use that the conditional mean minimises conditional mean squared error, then apply the LIE: <span class="math display">
-\begin{aligned}
-\mathrm{E}\left[(Y_i - X_i^\top b)^2\right]
-&amp;= \mathrm{E}\left[\,\mathrm{E}\left[(Y_i - X_i^\top b)^2 \mid X_i\right]\,\right] \\
-&amp;\ge \mathrm{E}\left[\,\mathrm{E}\left[(Y_i - \underbrace{\mathrm{E}\left[Y_i \mid X_i\right]}_{X_i^\top \beta})^2 \mid X_i\right]\,\right] \\
-&amp;= \mathrm{E}\left[(Y_i - X_i^\top \beta)^2\right].
-\end{aligned}
+<li><p>Other estimators can be easily constructed.</p></li>
+<li><p>For a known symmetric positive definite <span class="math inline">n \times n</span> matrix <span class="math inline">W</span>, let <span class="math display">
+\tilde\beta_W = (X^\top W X)^{-1} X^\top W Y
 </span></p></li>
-<li><p>Equality at some <span class="math inline">b^\ast</span> requires <span class="math inline">X_i^\top b^\ast = \mathrm{E}\left[Y_i \mid X_i\right] = X_i^\top \beta</span> with probability one, so <span class="math inline">X_i^\top (b^\ast - \beta) = 0</span> with probability one, and with no multicollinearity <span class="math inline">b^\ast = \beta</span>.</p></li>
-</ul>
-</section>
-<section id="other-linear-estimators-for-contrast" class="level2">
-<h2 class="anchored" data-anchor-id="other-linear-estimators-for-contrast">Other linear estimators, for contrast</h2>
-<ul>
-<li><p>Nothing forces the weights in the normal equations to be equal across observations. For a known symmetric positive definite <span class="math inline">n \times n</span> matrix <span class="math inline">W</span>, <span class="math display">
-\tilde\beta = (X^\top W X)^{-1} X^\top W Y
-</span> is also a function of the sample, and <span class="math inline">W = I_n</span> gives back <span class="math inline">\hat\beta</span>.</p></li>
-<li><p>In general <span class="math inline">\tilde\beta</span> minimises <span class="math inline">(Y - Xb)^\top W (Y - Xb)</span>. With <span class="math inline">W</span> diagonal, <span class="math inline">W = \operatorname{diag}(w_1, \ldots, w_n)</span> and <span class="math inline">w_i &gt; 0</span>, this is <strong>weighted least squares</strong>: it minimises <span class="math inline">\sum_i w_i (Y_i - X_i^\top b)^2</span>. Taking <span class="math inline">W</span> to be the inverse of the variance matrix of the errors gives <strong>generalised least squares</strong>.</p></li>
+<li><p>Note <span class="math inline">W = I_n</span> gives back <span class="math inline">\hat\beta</span>.</p></li>
+<li><p>With <span class="math inline">W</span> diagonal, <span class="math inline">W = \operatorname{diag}(w_1, \ldots, w_n)</span> and <span class="math inline">w_i &gt; 0</span>, this is <strong>weighted least squares</strong>: <span class="math display">
+\tilde\beta_W = \left(\sum_{i=1}^{n} w_i X_i X_i^\top\right)^{-1} \sum_{i=1}^{n} w_i X_i Y_i.
+</span></p></li>
 <li><p>Which of these is a good estimator, and in what sense, is the subject of the next lecture: bias, variance, and the Gauss-Markov theorem.</p></li>
 </ul>
 </section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
 <section id="summary-the-model-and-identification" class="level2">
 <h2 class="anchored" data-anchor-id="summary-the-model-and-identification">Summary: the model and identification</h2>
 <ul>
@@ -3196,6 +3164,7 @@ b = (X^\top X)^{-1} X^\top Y.
 \hat\beta = \left( \sum_{i=1}^{n} X_i X_i^\top \right)^{-1} \sum_{i=1}^{n} X_i Y_i = (X^\top X)^{-1} X^\top Y,
 </span> which is also the unique minimiser of <span class="math inline">\sum_i (Y_i - X_i^\top b)^2</span>: the OLS estimator.</p></li>
 <li><p><span class="math inline">\hat\beta</span> solves the sample normal equations <span class="math inline">X^\top (Y - X\hat\beta) = 0</span>, that is <span class="math inline">X^\top \hat U = 0</span>: the sample counterpart of the population normal equations <span class="math inline">\mathrm{E}\left[X_i (Y_i - X_i^\top \beta)\right] = 0</span>.</p></li>
+<li><p><span class="math inline">\hat\beta</span> is also the OLS estimator as it solves <span class="math inline">\min_b \|Y-Xb\|^2</span>.</p></li>
 </ul>
 </section>
 </section>
