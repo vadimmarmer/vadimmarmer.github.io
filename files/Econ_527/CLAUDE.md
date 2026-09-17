@@ -36,6 +36,11 @@ The course page lists the slides first and the typed lecture notes below them.
 
 Each deck renders to three files in `output/`: an HTML page with a table of contents, a PDF, and a RevealJS slide show. All three are committed, because the HTML page and the slide show are what the course page links to.
 
+Two rules hold for every render.
+
+- **Everything a render produces goes into `output/`, never into this folder.** `_quarto.yml` sets `output-dir: output`, so run `quarto render` from this folder and let Quarto place the files; do not pass an output path on the command line. A `.tex`, `.log`, `.aux` file or a `_files/` folder left sitting here means the render stopped before it finished: delete the leftovers and render again.
+- **Both HTML files must carry everything they need inside them.** `embed-resources: true` on the page and `self-contained: true` on the slide show, so that images, styles, fonts and scripts are embedded. The `_files/` folders Quarto writes otherwise are not committed, so an HTML file that points at them breaks the moment it is published. The last line the check prints, `self-contained: yes`, is what confirms this.
+
 ```bash
 quarto render 527_01_regression_ols.qmd
 python3 /Users/vmarmer/.claude/scripts/qmd_render_check.py \
@@ -44,16 +49,16 @@ python3 /Users/vmarmer/.claude/scripts/qmd_render_check.py \
   output/527_01_regression_ols_slides.html 527_01_regression_ols.qmd
 ```
 
-Deck 2 needs more than Quarto. Its two figures are drawn through a `standAlone`
-`tikzDevice` device so that LaTeX itself typesets their labels, which means the
-render calls `pdflatex` and `pdftoppm` and needs the R packages `tikzDevice` and
-`png`. The helper that does it, `tikz_fig()`, sits in a hidden chunk just after
+Deck 2 needs more than Quarto. Its figure, the two panels comparing a spread-out
+regressor with a concentrated one, is drawn through a `standAlone` `tikzDevice`
+device so that LaTeX itself typesets the labels, which means the render calls
+`pdflatex` and `pdftoppm` and needs the R packages `tikzDevice` and `png`. The helper that does it, `tikz_fig()`, sits in a hidden chunk just after
 the macro block; `PLAN_02.md` explains it and records why the figure is drawn
 into the chunk's own device rather than handed to `knitr::include_graphics()`.
 
 The check must report clean on both HTML files before the work is finished: no math errors, no raw command leaks, no undefined macros, no macro block showing in the text, and self-contained output.
 
-The three formats are configured per deck in the YAML frontmatter (`_quarto.yml` sets only the output directory and shared defaults). Copy the frontmatter of `527_01_regression_ols.qmd` for a new deck and change the three output file names. Both HTML outputs must stay self-contained (`embed-resources: true` on the page, `self-contained: true` on the slides); without that the published version breaks, because the external `_files/` directories are not committed.
+The three formats are configured per deck in the YAML frontmatter (`_quarto.yml` sets only the output directory and shared defaults). Copy the frontmatter of `527_01_regression_ols.qmd` for a new deck and change the three output file names; it already carries the two settings that keep the HTML files self-contained.
 
 Two settings worth knowing. `navigation-mode: linear` is required: level-one headings become section dividers, and without it the right arrow skips whole sections instead of moving slide by slide. `slides_no_caps.css` stops RevealJS from upper-casing headings.
 

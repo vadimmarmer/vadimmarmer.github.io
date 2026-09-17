@@ -1,4 +1,8 @@
 ---
+# Rendered files go to output/, set by `output-dir` in _quarto.yml.
+# Quarto has no document-level setting for this: it finds _quarto.yml by
+# walking up from this file, so the destination holds wherever the render
+# is started from. Both HTML formats below must stay self-contained.
 title: "Lecture 2: Properties of the OLS estimator"
 subtitle: "Economics 527: Econometric Methods"
 author:

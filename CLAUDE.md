@@ -104,3 +104,8 @@ quarto render 326_XX_name.qmd
 # Quarto slides (run from files/Econ_527/)
 quarto render 527_XX_name.qmd
 ```
+
+Two rules hold for every Quarto render in this repository.
+
+- **Rendered files go into the `output/` folder beside the source, never into the source folder.** The `output-dir` line in that folder's `_quarto.yml` sets this, and Quarto finds `_quarto.yml` by walking up from the file being rendered, so the destination holds wherever the render is started from. Do not pass an output path on the command line. A `.tex`, `.log` or `.aux` file or a `_files/` folder left in the source folder means the render stopped early: delete the leftovers and render again.
+- **Every HTML file that is committed must carry everything it needs inside it**, with images, styles, fonts and scripts embedded: `embed-resources: true` on a page and `self-contained: true` on a RevealJS slide show. The `_files/` folders Quarto writes otherwise are not committed, so a page that points at them breaks as soon as it is published.
