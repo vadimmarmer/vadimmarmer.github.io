@@ -2230,10 +2230,10 @@ window.Quarto = {
   <li><a href="#where-the-first-lecture-ended" id="toc-where-the-first-lecture-ended" class="nav-link" data-scroll-target="#where-the-first-lecture-ended">Where the first lecture ended</a></li>
   <li><a href="#the-model-in-matrix-form" id="toc-the-model-in-matrix-form" class="nav-link" data-scroll-target="#the-model-in-matrix-form">The model in matrix form</a></li>
   <li><a href="#the-four-assumptions" id="toc-the-four-assumptions" class="nav-link" data-scroll-target="#the-four-assumptions">The four assumptions</a></li>
-  <li><a href="#what-unbiased-means" id="toc-what-unbiased-means" class="nav-link" data-scroll-target="#what-unbiased-means">What unbiased means</a></li>
   </ul></li>
   <li><a href="#unbiasedness" id="toc-unbiasedness" class="nav-link" data-scroll-target="#unbiasedness">Unbiasedness</a>
   <ul class="collapse">
+  <li><a href="#what-unbiased-means" id="toc-what-unbiased-means" class="nav-link" data-scroll-target="#what-unbiased-means">What unbiased means</a></li>
   <li><a href="#the-sampling-error" id="toc-the-sampling-error" class="nav-link" data-scroll-target="#the-sampling-error">The sampling error</a></li>
   <li><a href="#taking-expectations-first-attempt" id="toc-taking-expectations-first-attempt" class="nav-link" data-scroll-target="#taking-expectations-first-attempt">Taking expectations, first attempt</a></li>
   <li><a href="#the-expectation-of-a-ratio" id="toc-the-expectation-of-a-ratio" class="nav-link" data-scroll-target="#the-expectation-of-a-ratio">The expectation of a ratio</a></li>
@@ -2359,11 +2359,12 @@ window.Quarto = {
 <li><p><strong>Assumption 1.</strong> <span class="math inline">Y = X\beta + U</span> for some <span class="math inline">\beta \in \mathbb{R}^k</span>.</p></li>
 <li><p><strong>Assumption 2.</strong> <span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>.</p></li>
 <li><p><strong>Assumption 3.</strong> <span class="math inline">\mathrm{Var}\left(U \mid X\right) = \sigma^2 I_n</span> for some <span class="math inline">\sigma^2 &gt; 0</span>.</p></li>
-<li><p><strong>Assumption 4.</strong> <span class="math inline">\operatorname{rank}(X) = k</span>, so <span class="math inline">n \ge k</span> and no regressor is an exact linear combination of the others.</p></li>
-<li><p>The numbering is the typed notes’. Assumption 4 is the sample rank condition, the sample counterpart of <span class="math inline">\operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k</span> from the first lecture.</p></li>
-<li><p>Assumption 3 is new, and nothing before the variance of <span class="math inline">\hat\beta</span> uses it.</p></li>
+<li><p><strong>Assumption 4.</strong> <span class="math inline">\operatorname{rank}(X) = k</span>.</p></li>
 </ul>
 </section>
+</section>
+<section id="unbiasedness" class="level1">
+<h1>Unbiasedness</h1>
 <section id="what-unbiased-means" class="level2">
 <h2 class="anchored" data-anchor-id="what-unbiased-means">What unbiased means</h2>
 <ul>
@@ -2377,9 +2378,6 @@ window.Quarto = {
 <li><p>The conditional statement is the stronger one, and it is the one this lecture proves.</p></li>
 </ul>
 </section>
-</section>
-<section id="unbiasedness" class="level1">
-<h1>Unbiasedness</h1>
 <section id="the-sampling-error" class="level2">
 <h2 class="anchored" data-anchor-id="the-sampling-error">The sampling error</h2>
 <ul>

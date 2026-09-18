@@ -119,11 +119,10 @@ $$
 
 - **Assumption 3.** $\Var{U \mid X} = \sigma^2 I_n$ for some $\sigma^2 > 0$.
 
-- **Assumption 4.** $\operatorname{rank}(X) = k$, so $n \ge k$ and no regressor is an exact linear combination of the others.
+- **Assumption 4.** $\operatorname{rank}(X) = k$.
 
-- The numbering is the typed notes'. Assumption 4 is the sample rank condition, the sample counterpart of $\operatorname{rank}\big(\E{X_i X_i^\top}\big) = k$ from the first lecture.
 
-- Assumption 3 is new, and nothing before the variance of $\hat\beta$ uses it.
+# Unbiasedness
 
 ## What unbiased means
 
@@ -142,7 +141,7 @@ whatever the true value of $\theta$: the estimator is a rule that does not know 
 
 - The conditional statement is the stronger one, and it is the one this lecture proves.
 
-# Unbiasedness
+
 
 ## The sampling error
 

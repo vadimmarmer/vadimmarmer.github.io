@@ -1101,10 +1101,13 @@ Vadim Marmer, UBC
 <li class="fragment"><p><strong>Assumption 1.</strong> <span class="math inline">Y = X\beta + U</span> for some <span class="math inline">\beta \in \mathbb{R}^k</span>.</p></li>
 <li class="fragment"><p><strong>Assumption 2.</strong> <span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>.</p></li>
 <li class="fragment"><p><strong>Assumption 3.</strong> <span class="math inline">\mathrm{Var}\left(U \mid X\right) = \sigma^2 I_n</span> for some <span class="math inline">\sigma^2 &gt; 0</span>.</p></li>
-<li class="fragment"><p><strong>Assumption 4.</strong> <span class="math inline">\operatorname{rank}(X) = k</span>, so <span class="math inline">n \ge k</span> and no regressor is an exact linear combination of the others.</p></li>
-<li class="fragment"><p>The numbering is the typed notes’. Assumption 4 is the sample rank condition, the sample counterpart of <span class="math inline">\operatorname{rank}\big(\mathrm{E}\left[X_i X_i^\top\right]\big) = k</span> from the first lecture.</p></li>
-<li class="fragment"><p>Assumption 3 is new, and nothing before the variance of <span class="math inline">\hat\beta</span> uses it.</p></li>
+<li class="fragment"><p><strong>Assumption 4.</strong> <span class="math inline">\operatorname{rank}(X) = k</span>.</p></li>
 </ul>
+</section></section>
+<section>
+<section id="unbiasedness" class="title-slide slide level1 center">
+<h1>Unbiasedness</h1>
+
 </section>
 <section id="what-unbiased-means" class="slide level2">
 <h2>What unbiased means</h2>
@@ -1118,11 +1121,6 @@ Vadim Marmer, UBC
 </span> whatever the true value of <span class="math inline">\theta</span>: the estimator is a rule that does not know <span class="math inline">\theta</span>, and the equality must hold for every value <span class="math inline">\theta</span> could take.</p></li>
 <li class="fragment"><p>The conditional statement is the stronger one, and it is the one this lecture proves.</p></li>
 </ul>
-</section></section>
-<section>
-<section id="unbiasedness" class="title-slide slide level1 center">
-<h1>Unbiasedness</h1>
-
 </section>
 <section id="the-sampling-error" class="slide level2">
 <h2>The sampling error</h2>
