@@ -155,7 +155,7 @@ $$
 \end{aligned}
 $$
 
-- The first term collapses, and what is left is the **sampling error**:
+- The first term produces $\beta$, and we have signal+noise decomposition:
 $$
 \boxed{\ \hat\beta = \underbrace{\beta}_{\text{signal}} + \underbrace{{\color{blue}(X^\top X)^{-1} X^\top U}}_{\text{noise}}\ }
 $$
@@ -220,18 +220,15 @@ $$
 
 - The third line takes out what is known, as in the first lecture. Given $X$, the matrix $(X^\top X)^{-1}X^\top$ is known and comes out of the expectation.
 
-- This is exactly the step the unconditional version could not take.
 
 ## From conditional to unconditional
 
-- The law of iterated expectations, from the first lecture, finishes the proof whenever $\E{\hat\beta}$ exists:
+- The law of iterated expectations, from the first lecture, finishes the proof:
 $$
 \E{\hat\beta} = \E{\E{\hat\beta \mid X}} = \E{\beta} = \beta.
 $$
 
 - Conditional unbiasedness implies unbiasedness whenever the unconditional mean exists. The converse does not hold.
-
-- Existence is not automatic: with $n = k = 1$, a regressor uniform on $(0, 1)$ and a mean-zero error independent of it, the noise term $U / X$ has no mean, although its conditional mean is zero.
 
 
 
@@ -284,7 +281,7 @@ $$
 
 - $\Var{V}^\top = \Var{V}$, because $\Cov{V_i, V_j} = \Cov{V_j, V_i}$.
 
-- The same statement from the definition, using that the transpose passes through the expectation entry by entry, and then $(AB)^\top = B^\top A^\top$:
+- The same statement from the definition, using that the transpose passes through the expectation, and then $(AB)^\top = B^\top A^\top$:
 $$
 \Var{V}^\top = \E{\big((V - \E{V})(V - \E{V})^\top\big)^\top} = \E{(V - \E{V})(V - \E{V})^\top} = \Var{V}.
 $$

@@ -2390,7 +2390,7 @@ window.Quarto = {
 &amp;= \underbrace{(X^\top X)^{-1} X^\top X}_{=\, I_k}\, \beta + (X^\top X)^{-1} X^\top U.
 \end{aligned}
 </span></p></li>
-<li><p>The first term collapses, and what is left is the <strong>sampling error</strong>: <span class="math display">
+<li><p>The first term produces <span class="math inline">\beta</span>, and we have signal+noise decomposition: <span class="math display">
 \boxed{\ \hat\beta = \underbrace{\beta}_{\text{signal}} + \underbrace{{\color{blue}(X^\top X)^{-1} X^\top U}}_{\text{noise}}\ }
 </span></p></li>
 <li><p>Everything in this section and the next is a statement about the noise term.</p></li>
@@ -2446,17 +2446,15 @@ window.Quarto = {
 \end{aligned}
 </span></p></li>
 <li><p>The third line takes out what is known, as in the first lecture. Given <span class="math inline">X</span>, the matrix <span class="math inline">(X^\top X)^{-1}X^\top</span> is known and comes out of the expectation.</p></li>
-<li><p>This is exactly the step the unconditional version could not take.</p></li>
 </ul>
 </section>
 <section id="from-conditional-to-unconditional" class="level2">
 <h2 class="anchored" data-anchor-id="from-conditional-to-unconditional">From conditional to unconditional</h2>
 <ul>
-<li><p>The law of iterated expectations, from the first lecture, finishes the proof whenever <span class="math inline">\mathrm{E}\left[\hat\beta\right]</span> exists: <span class="math display">
+<li><p>The law of iterated expectations, from the first lecture, finishes the proof: <span class="math display">
 \mathrm{E}\left[\hat\beta\right] = \mathrm{E}\left[\mathrm{E}\left[\hat\beta \mid X\right]\right] = \mathrm{E}\left[\beta\right] = \beta.
 </span></p></li>
 <li><p>Conditional unbiasedness implies unbiasedness whenever the unconditional mean exists. The converse does not hold.</p></li>
-<li><p>Existence is not automatic: with <span class="math inline">n = k = 1</span>, a regressor uniform on <span class="math inline">(0, 1)</span> and a mean-zero error independent of it, the noise term <span class="math inline">U / X</span> has no mean, although its conditional mean is zero.</p></li>
 </ul>
 </section>
 <section id="a-weaker-condition" class="level2">
@@ -2502,7 +2500,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="symmetry">Symmetry</h2>
 <ul>
 <li><p><span class="math inline">\mathrm{Var}\left(V\right)^\top = \mathrm{Var}\left(V\right)</span>, because <span class="math inline">\mathrm{Cov}\left(V_i, V_j\right) = \mathrm{Cov}\left(V_j, V_i\right)</span>.</p></li>
-<li><p>The same statement from the definition, using that the transpose passes through the expectation entry by entry, and then <span class="math inline">(AB)^\top = B^\top A^\top</span>: <span class="math display">
+<li><p>The same statement from the definition, using that the transpose passes through the expectation, and then <span class="math inline">(AB)^\top = B^\top A^\top</span>: <span class="math display">
 \mathrm{Var}\left(V\right)^\top = \mathrm{E}\left[\big((V - \mathrm{E}\left[V\right])(V - \mathrm{E}\left[V\right])^\top\big)^\top\right] = \mathrm{E}\left[(V - \mathrm{E}\left[V\right])(V - \mathrm{E}\left[V\right])^\top\right] = \mathrm{Var}\left(V\right).
 </span></p></li>
 </ul>
