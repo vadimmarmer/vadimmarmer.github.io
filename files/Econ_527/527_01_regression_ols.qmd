@@ -720,7 +720,7 @@ $$
 
 ## The second-moment matrix is positive semidefinite
 
-- **Definitions.** A $k\times k$ matrix $A$ is **positive semidefinite** (p.s.d.) if $c^\top A c \ge 0$ for all $c \in \mathbb{R}^k$, and **positive definite** (p.d.) if $c^\top A c > 0$ for all $c \neq 0$.
+- **Definitions.** A $k\times k$ symmetric matrix $A$ is **positive semidefinite** (p.s.d.) if $c^\top A c \ge 0$ for all $c \in \mathbb{R}^k$, and **positive definite** (p.d.) if $c^\top A c > 0$ for all $c \neq 0$.
 
 - Take any $c \in \mathbb{R}^k$ and define the scalar
 $$
