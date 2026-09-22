@@ -1,0 +1,1116 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 3: Geometry of OLS and partitioned regression"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_03_ols_geometry.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_03_ols_geometry.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_03_ols_geometry_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Geometry of OLS
+
+## Least squares as a distance
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+# The picture the class drew for k = 1, n = 2: S(X) is the line through X and
+# the fitted vector is the foot of the perpendicular dropped from Y.
+# full = TRUE adds the coordinates and the angle; full = FALSE labels the two
+# projections instead. Steps 0:5 add axes, X, S(X), Y, the perpendicular and
+# fitted vector, then the residual label. The default is the complete picture.
+proj_picture <- function(full, step = 5L) {
+  X <- c(1.2, 0.6); Y <- c(1.9, 3.7)
+  Yh <- X * sum(X * Y) / sum(X * X)
+  d <- X / sqrt(sum(X^2)); p <- c(-d[2], d[1])
+  red <- "#d7301f"; green <- "#1b9e77"; blue <- "#1f78b4"
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-0.7, 5.3), ylim = c(-0.5, 4.3), asp = 1)
+  arrows(-0.4, 0, 5.1, 0, length = 0.08)
+  arrows(0, -0.4, 0, 4.2, length = 0.08)
+  if (step >= 2L) {
+    segments(-0.45 * d[1], -0.45 * d[2], 4.9 * d[1], 4.9 * d[2],
+             col = red, lwd = 1.5)
+    text(4.9 * d[1] + 0.1, 4.9 * d[2] + 0.25, "$S(X)$", col = red)
+  }
+  if (full) {
+    for (j in which(c(step >= 1L, step >= 3L))) {
+      v <- list(X, Y)[[j]]
+      segments(v[1], v[2], v[1], 0, lty = 3)
+      segments(v[1], v[2], 0, v[2], lty = 3)
+    }
+    if (step >= 4L) {
+      segments(Yh[1], Yh[2], Yh[1], 0, lty = 3, col = green)
+      segments(Yh[1], Yh[2], 0, Yh[2], lty = 3, col = green)
+    }
+    shown <- c(step >= 1L, step >= 3L)
+    if (any(shown)) {
+      text(c(X[1], Y[1])[shown], -0.25, c("$X_1$", "$Y_1$")[shown])
+      text(-0.3, c(X[2], Y[2])[shown], c("$X_2$", "$Y_2$")[shown])
+    }
+    if (step >= 4L) {
+      text(Yh[1], -0.25, "$\\hat Y_1$", col = green)
+      text(-0.3, Yh[2], "$\\hat Y_2$", col = green)
+    }
+    if (step >= 3L) {
+      a <- seq(atan2(d[2], d[1]), atan2(Y[2], Y[1]), length.out = 40)
+      lines(0.9 * cos(a), 0.9 * sin(a))
+      text(1.15 * cos(mean(a)), 1.15 * sin(mean(a)), "$\\theta$")
+    }
+  }
+  if (step >= 4L)
+    arrows(0, 0, Yh[1], Yh[2], col = green, lwd = 3, length = 0.1)
+  if (step >= 1L)
+    arrows(0, 0, X[1], X[2], lwd = 2, length = 0.1)
+  if (step >= 3L)
+    arrows(0, 0, Y[1], Y[2], lwd = 2, length = 0.1)
+  if (step >= 4L) {
+    segments(Yh[1], Yh[2], Y[1], Y[2], col = blue, lwd = 2,
+             lty = if (full) 2 else 1)
+    s <- 0.2
+    lines(Yh[1] + s * c(-d[1], -d[1] + p[1], p[1]),
+          Yh[2] + s * c(-d[2], -d[2] + p[2], p[2]), col = blue)
+  }
+  if (step >= 3L) text(Y[1] + 0.05, Y[2] + 0.22, "$Y$")
+  if (step >= 1L) text(X[1] + 0.2, X[2] - 0.2, "$X$")
+  m <- (Y + Yh) / 2
+  if (full) {
+    if (step >= 4L)
+      text(Yh[1] + 0.25, Yh[2] - 0.2, "$\\hat Y$", col = green)
+    if (step >= 5L)
+      text(m[1] + 0.3, m[2] + 0.15, "$\\hat U$", col = blue)
+  } else {
+    if (step >= 4L)
+      text(Yh[1] + 0.15, Yh[2] - 0.25, "$\\hat Y = P_X Y$", col = green, adj = 0)
+    if (step >= 5L)
+      text(m[1] + 0.15, m[2] + 0.1, "$M_X Y = \\hat U$", col = blue, adj = 0)
+  }
+  par(op)
+}
+```
+
+- OLS, first lecture:
+  $$
+  \hat\beta = \underset{b \in \mathbb{R}^k}{\arg\min}\ \underbrace{(Y - Xb)^\top (Y - Xb)}_{=\, \|Y - Xb\|^2}
+  $$
+
+- Norm of $a \in \mathbb{R}^n$:
+  $$
+  \begin{aligned}
+  \|a\| &= \sqrt{\sum_{i=1}^n a_i^2} \\
+  &= \sqrt{a^\top a}
+  \end{aligned}
+  $$
+
+## The column space $S(X)$
+
+- Column space of $X$:
+  $$
+  S(X) = \big\{\, v \in \mathbb{R}^n : v = \underset{n\times k}{X}\, \underbrace{b}_{k\times 1} \ \text{ for some } b \in \mathbb{R}^k \,\big\}
+  $$
+
+- Partition $X$ column-wise:
+  $$
+  \underbrace{X}_{n\times k} = \big[\, \underbrace{\underline{X}_1}_{n\times 1} \ \cdots \ \underbrace{\underline{X}_k}_{n\times 1} \,\big], 
+  $$
+  where $\underline{X}_j$ is the $n \times 1$ vector of the observations on the $j$-th regressor.
+
+- What the elements of $S(X)$ look like, in terms of the columns of $X$:
+  $$
+  \begin{aligned}
+  \underbrace{X}_{n\times k}\underbrace{b}_{k\times 1} &= \underbrace{\big[\, \underline{X}_1 \ \cdots \ \underline{X}_k \,\big]}_{=X} \begin{bmatrix} b_1 \\ \vdots \\ b_k \end{bmatrix} \\
+  &= b_1 \underline{X}_1 + \cdots + b_k \underline{X}_k \\
+  &= \sum_{j=1}^{k} b_j \underline{X}_j
+  \end{aligned}
+  $$
+
+- Each $\underline{X}_j \in S(X)$, since we can take $b_j = 1$, $b_i = 0$ for $i \ne j$:
+  $$
+  \begin{aligned}
+  Xb &= \big[\, \underline{X}_1 \ \cdots \ \underline{X}_k \,\big] \begin{bmatrix} 0 \\ \vdots \\ 1 \\ \vdots \\ 0 \end{bmatrix} \\
+  &= \underline{X}_j \in S(X)
+  \end{aligned}
+  $$
+
+- $S(X) \subset \mathbb{R}^n$: $k$-dimensional subspace; $\rank{X} = k < n$.
+
+## $\hat Y$: closest to $Y$ in $S(X)$
+
+- We can re-state the OLS problem in terms of $S(X)$:
+  $$
+  \begin{aligned}
+  & \hat\beta = \underset{b \in \mathbb{R}^k}{\arg\min}\ \|Y - Xb\|^2, \qquad \hat Y = X\hat\beta \\
+  & \Longleftrightarrow \\
+  \hat Y &= \underset{v \in S(X)}{\arg\min}\ \|Y - v\|^2
+  \end{aligned}
+  $$
+
+- When $k = 1$, $n = 2$, we can visualize the solution: You can find the closest element by dropping a perpendicular from $Y$ to $S(X)$.
+
+- $Y = (Y_1, Y_2)^\top$, $X = (X_1, X_2)^\top$, and $S(X)=\{(bX_1, bX_2)^\top : b \in \mathbb{R}\}$.
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 4.6
+  #| fig-dpi: 300
+  if (identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    # Cumulative, opaque frames share one grid cell, so advancing or going
+    # back uses Reveal's normal fragment controls without shifting the figure.
+    # Only this slide gets these styles; ordinary HTML/PDF uses one full plot.
+    cat('```{=html}\n<style>
+    .reveal .ols-projection-build {
+      display: grid; width: 576px; max-width: 100%; margin: 1em auto;
+    }
+    .reveal .ols-projection-build > img {
+      grid-area: 1 / 1; width: 100%; max-width: 100%; max-height: none;
+      margin: 0; background: white; transition: none;
+    }
+    </style>\n<div class="ols-projection-build">\n')
+    descriptions <- c("Coordinate axes", "Vector X and its coordinates",
+                      "The span S(X)", "Vector Y and its coordinates",
+                      "Perpendicular from Y to S(X) and fitted vector Y-hat",
+                      "Complete projection diagram with residual U-hat")
+    for (step in 0:5) {
+      frame <- tikz_fig(paste0("geometry-step-", step), 6, 4.6, {
+        proj_picture(full = TRUE, step = step)
+      }, draw = FALSE)
+      cat(sprintf('<img class="%s" data-projection-step="%d" src="%s" alt="%s">\n',
+                  if (step == 0L) "" else "fragment", step,
+                  knitr::image_uri(frame), descriptions[step + 1L]))
+    }
+    cat('</div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const diagram = document.querySelector(".ols-projection-build");
+      const parentFragment = diagram.closest(".fragment");
+      function keepDiagramVisible(event) {
+        if (diagram.contains(event.fragment) ||
+            (event.type === "fragmentshown" && event.fragment === parentFragment)) {
+          diagram.scrollIntoView({ block: "center", behavior: "instant" });
+        }
+      }
+      Reveal.on("fragmentshown", keepDiagramVisible);
+      Reveal.on("fragmenthidden", keepDiagramVisible);
+    });
+    </script>\n```\n')
+  } else {
+    tikz_fig("geometry", 6, 4.6, {
+      proj_picture(full = TRUE)
+    })
+  }
+  ```
+
+- The coefficient $\hat\beta$ is determined by the angle $\theta$ between $X$ and $Y$:
+  $$
+  \begin{aligned}
+  \cos\theta &= \frac{X^\top Y}{\|X\|\,\|Y\|} \\
+  \hat\beta &= \frac{X^\top Y}{\|X\|^2} \\
+  &= \cos\theta \cdot \frac{\|Y\|}{\|X\|}
+  \end{aligned}
+  $$
+
+- Residuals, perpendicular to $S(X)$:
+  $$
+  \begin{aligned}
+  \hat U &= Y - \hat Y = Y - X\hat\beta
+  \end{aligned}
+  $$
+
+## Dropping the perpendicular: the algebra
+
+- Fitted values:
+  $$
+  \begin{aligned}
+  \hat Y &= X\hat\beta \\
+  &= \underbrace{X (X^\top X)^{-1} X^\top}_{P_X}\, Y \\
+  &= P_X Y
+  \end{aligned}
+  $$
+
+- Residuals:
+  $$
+  \begin{aligned}
+  \hat U &= Y - \hat Y \\
+  &= Y - X\hat\beta \\
+  &= Y - X (X^\top X)^{-1} X^\top Y \\
+  &= Y - P_X Y \\
+  &= \underbrace{(I_n - P_X)}_{=\, M_X}\, Y \\
+  &= M_X Y
+  \end{aligned}
+  $$
+
+- Both $n \times n$:
+  $$
+  \boxed{\ P_X = \underset{n\times k}{X}\ \underset{k\times k}{(X^\top X)}^{-1} \underset{k\times n}{X}^\top \qquad M_X = \underset{n\times n}{I_n} - \underset{n\times n}{P_X}\ }
+  $$
+
+# Projection matrices
+
+## $P_X Y$ and $M_X Y$
+
+- For $Y \in \mathbb{R}^n$:
+  $$
+  \begin{aligned}
+  P_X + M_X &= I_n \\
+  \Longrightarrow\quad P_X Y + M_X Y &= Y
+  \end{aligned}
+  $$
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 4.6
+  #| fig-dpi: 300
+  tikz_fig("projections", 6, 4.6, {
+    proj_picture(full = FALSE)
+  })
+  ```
+
+## Properties of $P_X$
+
+- Symmetric, by $(AB)^\top = B^\top A^\top$:
+  $$
+  \begin{aligned}
+  P_X^\top &= \big( X (X^\top X)^{-1} X^\top \big)^\top \\
+  &= X (X^\top X)^{-1} X^\top \\
+  &= P_X
+  \end{aligned}
+  $$
+
+- $P_X X = X$:
+  $$
+  \begin{aligned}
+  P_X X &= \underbrace{X (X^\top X)^{-1} X^\top}_{P_X}\, X \\
+  &= X
+  \end{aligned}
+  $$
+
+- Column by column, $P_X \underline{X}_j = \underline{X}_j$ for $j = 1, \ldots, k$:
+  $$
+  \begin{aligned}
+  P_X X &= P_X \big[\, \underset{n\times 1}{\underline{X}_1} \ \cdots \ \underset{n\times 1}{\underline{X}_k} \,\big] \\
+  &= \big[\, P_X \underline{X}_1 \ \cdots \ P_X \underline{X}_k \,\big] \\
+  &= \big[\, \underline{X}_1 \ \cdots \ \underline{X}_k \,\big],
+  \end{aligned}
+  $$
+  where the last equality holds because $P_X X=X$.
+
+- Idempotent:
+  $$
+  \begin{aligned}
+  P_X^2 &= P_X P_X \\
+  &= \underbrace{P_X X}_{=\, X}\, (X^\top X)^{-1} X^\top \\
+  &= P_X
+  \end{aligned}
+  $$
+
+## $P_X$: p.s.d., trace $k$
+
+- For $a \in \mathbb{R}^n$:
+  $$
+  \begin{aligned}
+  a^\top P_X a &= \underbrace{a^\top X}_{w^\top}\ \underbrace{(X^\top X)^{-1}}_{\text{p.d.}}\ \underbrace{X^\top a}_{w} \\
+  &\ge 0
+  \end{aligned}
+  $$
+
+- We will use: $\operatorname{tr}(AB) = \operatorname{tr}(BA)$.
+  $$
+  \begin{aligned}
+  \operatorname{tr}(P_X) &= \operatorname{tr}\big( X (X^\top X)^{-1} X^\top \big) \\
+  &= \operatorname{tr}\big( (X^\top X)^{-1} \underbrace{\underset{k\times n}{X^\top}\, \underset{n\times k}{X}}_{k\times k} \big) \\
+  &= \operatorname{tr}(I_k) \\
+  &= k
+  \end{aligned}
+  $$
+
+- $P_X$: $n \times n$, symmetric, p.s.d., idempotent, rank $k$.
+
+- $P_X: \mathbb{R}^n \longrightarrow S(X)$.
+
+## Properties of $M_X$
+
+- Symmetric:
+  $$
+  \begin{aligned}
+  M_X^\top &= I_n^\top - P_X^\top \\
+  &= I_n - P_X \\
+  &= M_X
+  \end{aligned}
+  $$
+
+- $M_X X = 0$:
+  $$
+  \begin{aligned}
+  M_X X &= (I_n - P_X) X \\
+  &= I_n X - P_X X \\
+  &= X - \underbrace{P_X X}_{=\, X} \\
+  &= X - X \\
+  &= 0
+  \end{aligned}
+  $$
+
+- $v = Xb \in S(X)$, $b \in \mathbb{R}^k$:
+  $$
+  \begin{aligned}
+  M_X v &= M_X X b \\
+  &= 0
+  \end{aligned}
+  $$
+
+## $M_X P_X = 0$ and idempotency
+
+- $M_X P_X = 0$ and $P_X M_X = 0$:
+  $$
+  \begin{aligned}
+  M_X P_X &= \underbrace{M_X X}_{=\, 0}\, (X^\top X)^{-1} X^\top \\
+  &= 0 \\
+  P_X M_X &= (M_X P_X)^\top \\
+  &= 0
+  \end{aligned}
+  $$
+
+- Idempotent:
+  $$
+  \begin{aligned}
+  M_X M_X &= (I_n - P_X) M_X \\
+  &= M_X - \underbrace{P_X M_X}_{=\, 0} \\
+  &= M_X
+  \end{aligned}
+  $$
+
+## The orthogonal complement $S^\perp(X)$
+
+- Orthogonal complement of $S(X)$:
+  $$
+  S^\perp(X) = \big\{\, v \in \mathbb{R}^n : v^\top X = 0 \,\big\}
+  $$
+
+- Normal equations, first lecture:
+  $$
+  \begin{aligned}
+  X^\top \hat U &= X^\top (Y - X\hat\beta) \\
+  &= X^\top Y - X^\top X \underbrace{\hat\beta}_{=\, (X^\top X)^{-1} X^\top Y} \\
+  &= X^\top Y - X^\top Y \\
+  &= 0 \\
+  \Longrightarrow\quad \hat U^\top X &= 0 \\
+  \Longrightarrow\quad \hat U &= M_X Y \in S^\perp(X)
+  \end{aligned}
+  $$
+
+- $M_X: \mathbb{R}^n \longrightarrow S^\perp(X)$.
+
+## $M_X$: rank $n - k$, p.s.d.
+
+- Rank:
+  $$
+  \begin{aligned}
+  \rank{M_X} &= \operatorname{tr}(M_X) \\
+  &= \operatorname{tr}(I_n - P_X) \\
+  &= \operatorname{tr}(I_n) - \operatorname{tr}(P_X) \\
+  &= n - \operatorname{tr}(P_X) \\
+  &= n - \operatorname{tr}\big( X (X^\top X)^{-1} X^\top \big) \\
+  &= n - \operatorname{tr}\big( \underbrace{(X^\top X)^{-1} X^\top X}_{I_k} \big) \\
+  &= n - k
+  \end{aligned}
+  $$
+
+- $M_X$: $n \times n$; no inverse.
+
+- **Claim.** $M_X$: p.s.d. For $a \in \mathbb{R}^n$ and $w = M_X a$:
+  $$
+  \begin{aligned}
+  a^\top M_X a &= a^\top M_X M_X a \quad \text{(idempotent)} \\
+  &= \underbrace{a^\top M_X^\top}_{w^\top}\ \underbrace{M_X a}_{w} \quad \text{(symmetric)} \\
+  &= w^\top w \\
+  &= \|w\|^2 \\
+  &\ge 0
+  \end{aligned}
+  $$
+
+## $Y = \hat Y + \hat U$
+
+- Decomposition:
+  $$
+  \underset{\in\, \mathbb{R}^n}{Y} = \underset{\in\, S(X)}{\hat Y} + \underset{\in\, S^\perp(X)}{\hat U}, \qquad S(X) + S^\perp(X) = \mathbb{R}^n
+  $$
+
+- Fitted values:
+  $$
+  \begin{aligned}
+  \hat Y &= X\hat\beta \\
+  &= P_X Y \in S(X), \quad \text{dimension } k
+  \end{aligned}
+  $$
+
+- Residuals:
+  $$
+  \begin{aligned}
+  \hat U &= Y - \hat Y \\
+  &= M_X Y \in S^\perp(X), \quad \text{dimension } n - k
+  \end{aligned}
+  $$
+
+- Orthogonality:
+  $$
+  \begin{aligned}
+  \hat Y^\top \hat U &= Y^\top P_X^\top M_X Y \\
+  &= Y^\top \underbrace{P_X M_X}_{=\, 0}\, Y \\
+  &= 0
+  \end{aligned}
+  $$
+
+# Estimation of $\sigma^2$
+
+## Two estimators of $\sigma^2$
+
+- Assumptions 2 and 3:
+  $$
+  \begin{aligned}
+  \Var{U \mid X} &= \E{U U^\top \mid X} \\
+  &= \sigma^2 I_n
+  \end{aligned}
+  $$
+
+- Unknown parameter:
+  $$
+  \begin{aligned}
+  \sigma^2 &= \E{U_i^2 \mid X} \\
+  &= \E{U_i^2}
+  \end{aligned}
+  $$
+
+- Estimators:
+  $$
+  \begin{aligned}
+  \hat\sigma^2 &= \frac{1}{n} \sum_{i=1}^n \hat U_i^2 \\
+  &= \frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top \underset{k\times 1}{\hat\beta})^2 \\
+  &= \frac{1}{n}\, \hat U^\top \hat U \\
+  s^2 &= \frac{1}{n-k} \sum_{i=1}^n \hat U_i^2
+  \end{aligned}
+  $$
+
+- **Claim.** Under Assumptions 1 to 4:
+  $$
+  \E{s^2 \mid X} = \sigma^2
+  $$
+
+## Proof, step 1: residuals to errors
+
+- Residuals:
+  $$
+  \begin{aligned}
+  \hat U &= M_X Y \\
+  &= M_X (X\beta + U) \quad \text{(Assumption 1)} \\
+  &= M_X U \quad (M_X X = 0)
+  \end{aligned}
+  $$
+
+- Dimensions:
+  $$
+  \underset{n\times 1}{\hat U} = \underset{n\times n}{M_X}\ \underset{n\times 1}{U}, \qquad \rank{M_X} = n - k
+  $$
+
+- Sum of squared residuals:
+  $$
+  \begin{aligned}
+  \sum_{i=1}^n \hat U_i^2 &= \|\hat U\|^2 \\
+  &= \hat U^\top \hat U \\
+  &= (M_X U)^\top (M_X U) \\
+  &= U^\top M_X^\top M_X U \\
+  &= U^\top M_X U \quad \text{(symmetric, idempotent)}
+  \end{aligned}
+  $$
+
+## Proof, step 2: a quadratic form
+
+- To find:
+  $$
+  \E{\hat U^\top \hat U \mid X} = \E{\overbrace{\underset{1\times n}{U^\top}\ \underset{n\times n}{M_X}\ \underset{n\times 1}{U}}^{1\times 1} \mid X}
+  $$
+
+- Does not factor:
+  $$
+  \E{U^\top M_X U \mid X} \ \ne\ \E{U^\top \mid X}\, M_X\, \E{U \mid X}
+  $$
+
+- Quadratic form:
+  $$
+  \underset{1\times n}{U^\top}\ \underset{n\times n}{A}\ \underset{n\times 1}{U} = \sum_{i=1}^n \sum_{j=1}^n A_{ij} U_i U_j
+  $$
+
+- $\E{U_i U_j} \ne \E{U_i}\E{U_j}$ unless uncorrelated; $\E{U_i^2} \ne \E{U_i}\E{U_i}$.
+
+## Proof, step 3: the trace trick
+
+- We will use:
+  - $1 \times 1$ matrix: its own trace;
+  - $\operatorname{tr}(AB) = \operatorname{tr}(BA)$;
+  - $\E{\sum \cdot} = \sum \E{\cdot}$;
+  - $M_X$: known given $X$.
+- We have:
+  $$
+  \begin{aligned}
+  \E{\hat U^\top \hat U \mid X} &= \E{U^\top M_X U \mid X} \\
+  &= \E{\operatorname{tr}\big({\color{red} U^\top} M_X U\big) \mid X} \\
+  &= \E{\operatorname{tr}\big(M_X U {\color{red} U^\top}\big) \mid X} \\
+  &= \operatorname{tr}\big(\E{M_X U U^\top \mid X}\big) \\
+  &= \operatorname{tr}\big(M_X \underbrace{\E{U U^\top \mid X}}_{=\, \sigma^2 I_n}\big) \\
+  &= \sigma^2 \operatorname{tr}(M_X) \\
+  &= \sigma^2 (n - k)
+  \end{aligned}
+  $$
+
+## $\hat\sigma^2$: biased
+
+- Residuals:
+  $$
+  \begin{aligned}
+  \E{\sum_{i=1}^n \hat U_i^2 \mid X} &= \sigma^2 (n - k) \\
+  \Longrightarrow\quad \E{\sum_{i=1}^n \hat U_i^2} &= \sigma^2 (n - k) \quad \text{(LIE)}
+  \end{aligned}
+  $$
+
+- Errors:
+  $$
+  \begin{aligned}
+  \E{U^\top U} &= \E{\sum_{i=1}^n U_i^2} \\
+  &= n \sigma^2
+  \end{aligned}
+  $$
+
+- Biased, by a known factor:
+  $$
+  \begin{aligned}
+  \E{\hat\sigma^2 \mid X} &= \frac{1}{n}\, \E{\hat U^\top \hat U \mid X} \\
+  &= \frac{n-k}{n}\, \sigma^2 \\
+  &\ne \sigma^2
+  \end{aligned}
+  $$
+
+## $s^2$: unbiased
+
+- Correction:
+  $$
+  \begin{aligned}
+  \frac{n}{n-k}\, \E{\hat\sigma^2 \mid X} &= \sigma^2 \\
+  s^2 &= \frac{n}{n-k}\, \hat\sigma^2 \\
+  &= \frac{\hat U^\top \hat U}{n-k} \\
+  &= \frac{\sum_{i=1}^n \hat U_i^2}{n-k} \\
+  &= \frac{\sum_{i=1}^n (Y_i - X_i^\top \hat\beta)^2}{n-k} \\
+  &= \frac{\|Y - X\hat\beta\|^2}{n-k}
+  \end{aligned}
+  $$
+
+- Unbiased:
+  $$
+  \begin{aligned}
+  & \boxed{\ \E{s^2 \mid X} = \sigma^2\ } \\
+  \overset{\text{LIE}}{\Longrightarrow}\quad & \E{s^2} = \sigma^2
+  \end{aligned}
+  $$
+
+## Standard errors
+
+- Second lecture: $\Var{\hat\beta \mid X} = \sigma^2 (X^\top X)^{-1}$. Estimated:
+  $$
+  \widehat{\mathrm{Var}}\big(\hat\beta \mid X\big) = s^2 (X^\top X)^{-1}
+  $$
+
+- Standard error against standard deviation:
+  $$
+  \begin{aligned}
+  \text{std. err}\big(\hat\beta_j\big) &= \sqrt{s^2 \big[(X^\top X)^{-1}\big]_{jj}} \\
+  &= \sqrt{\widehat{\mathrm{Var}}\big(\hat\beta_j \mid X\big)} \\
+  \text{std. dev}\big(\hat\beta_j\big) &= \sqrt{\Var{\hat\beta_j \mid X}}
+  \end{aligned}
+  $$
+
+# Partitioned regression
+
+## The partition
+
+- Two blocks of regressors, $k_1 + k_2 = k$:
+  $$
+  \underset{n\times k}{X} = \big[\ \underset{n\times k_1}{X_1} \quad \underset{n\times k_2}{X_2}\ \big], \qquad
+  \beta = \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix}
+  \begin{matrix} k_1 \times 1 \\ k_2 \times 1 \end{matrix}
+  $$
+
+- Model:
+  $$
+  \begin{aligned}
+  Y &= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix} + U \\
+  &= X_1 \beta_1 + X_2 \beta_2 + U
+  \end{aligned}
+  $$
+
+- OLS:
+  $$
+  \begin{aligned}
+  \underset{k\times 1}{\hat\beta} &= \begin{bmatrix} \underset{k_1\times 1}{\hat\beta_1} \\ \underset{k_2\times 1}{\hat\beta_2} \end{bmatrix} \\
+  &= (X^\top X)^{-1} X^\top Y
+  \end{aligned}
+  $$
+
+## The Frisch-Waugh-Lovell theorem
+
+- **Claim.**
+  $$
+  \hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y, \qquad M_2 = I_n - P_2, \quad P_2 = X_2 (X_2^\top X_2)^{-1} X_2^\top
+  $$
+
+- $M_2$: symmetric, idempotent, $M_2 X_2 = 0$.
+
+- $M_2: \mathbb{R}^n \longrightarrow S^\perp(X_2)$.
+
+- $M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top$:
+  $$
+  \hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y
+  $$
+
+## Proof
+
+- We will use:
+  $$
+  \begin{aligned}
+  \hat U &= Y - X\hat\beta \\
+  &= Y - X_1 \hat\beta_1 - X_2 \hat\beta_2 \\
+  \Longleftrightarrow\quad Y &= X\hat\beta + \hat U \\
+  &= X_1 \hat\beta_1 + X_2 \hat\beta_2 + \hat U
+  \end{aligned}
+  $$
+
+- We have:
+  $$
+  \begin{aligned}
+  & (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y \\
+  &= (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 \big( X_1 \hat\beta_1 + X_2 \hat\beta_2 + \hat U \big) \\
+  &= \underbrace{(X_1^\top M_2 X_1)^{-1} X_1^\top M_2 X_1}_{=\, I_{k_1}}\, \hat\beta_1 \\
+  &\qquad + (X_1^\top M_2 X_1)^{-1} X_1^\top {\color{red} \underbrace{M_2 X_2}_{=\, 0}}\, \hat\beta_2 \\
+  &\qquad + (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 \hat U \\
+  &= \hat\beta_1 + (X_1^\top M_2 X_1)^{-1} X_1^\top \underbrace{M_2 \hat U}_{=\, \hat U} \\
+  &= \hat\beta_1 + (X_1^\top M_2 X_1)^{-1} {\color{red} \underbrace{X_1^\top \hat U}_{=\, 0}} \\
+  &= \boxed{\hat\beta_1}
+  \end{aligned}
+  $$
+
+## $M_2 \hat U = \hat U$
+
+- Normal equations, block by block:
+  $$
+  \begin{aligned}
+  0 &= X^\top \hat U \\
+  &= \big[\ X_1 \quad X_2\ \big]^\top \hat U \\
+  &= \begin{bmatrix} X_1^\top \\ X_2^\top \end{bmatrix} \hat U \\
+  &= \begin{bmatrix} X_1^\top \hat U \\ X_2^\top \hat U \end{bmatrix} \\
+  &= \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+  \end{aligned}
+  $$
+
+- Hence:
+  $$
+  \begin{aligned}
+  M_2 \hat U &= (I_n - P_2) \hat U \\
+  &= \hat U - P_2 \hat U \\
+  &= \hat U - X_2 (X_2^\top X_2)^{-1} \underbrace{X_2^\top \hat U}_{=\, 0} \\
+  &= \hat U
+  \end{aligned}
+  $$
+
+- Hence:
+  $$
+  \begin{aligned}
+  X_1^\top M_2 \hat U &= X_1^\top \hat U \\
+  &= 0
+  \end{aligned}
+  $$
+
+## Residuals on residuals
+
+- We will use: $M_2^\top = M_2$ and $M_2 M_2 = M_2$.
+
+- We have:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &= (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y \\
+  &= (X_1^\top M_2^\top M_2 X_1)^{-1} X_1^\top M_2^\top M_2 Y \\
+  &= \big( (M_2 X_1)^\top (M_2 X_1) \big)^{-1} (M_2 X_1)^\top (M_2 Y) \\
+  &= (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y
+  \end{aligned}
+  $$
+
+- $\tilde X_1 = M_2 X_1$, $\tilde Y = M_2 Y$, $\tilde U = M_2 U$:
+  $$
+  \begin{aligned}
+  Y &= X_1 \beta_1 + X_2 \beta_2 + U \\
+  M_2 Y &= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
+  &= M_2 X_1 \beta_1 + M_2 U \\
+  \tilde Y &= \tilde X_1 \beta_1 + \tilde U
+  \end{aligned}
+  $$
+
+## $\tilde X_1$ and $\tilde Y$: OLS residuals
+
+- Residuals from the regression of the columns of $X_1$ against $X_2$:
+  $$
+  \begin{aligned}
+  \tilde X_1 &= M_2 X_1 \\
+  &= (I_n - P_2) X_1 \\
+  &= X_1 - P_2 X_1 \\
+  &= X_1 - X_2 \underbrace{(X_2^\top X_2)^{-1} X_2^\top X_1}_{\hat\gamma} \\
+  &= X_1 - X_2 \hat\gamma \\
+  \Longleftrightarrow\quad X_1 &= X_2 \hat\gamma + \tilde X_1
+  \end{aligned}
+  $$
+
+- $\tilde X_1^\top X_2 = 0$.
+
+- Residuals from the regression of $Y$ against $X_2$:
+  $$
+  \begin{aligned}
+  \tilde Y &= M_2 Y \\
+  &= Y - X_2 \underbrace{(X_2^\top X_2)^{-1} X_2^\top Y}_{\hat\eta} \\
+  \Longleftrightarrow\quad Y &= X_2 \hat\eta + \tilde Y
+  \end{aligned}
+  $$
+
+- In general: $\hat\eta \ne \hat\beta_2$, $\tilde Y \ne \hat U$.
+
+## The regression in three steps
+
+1. Remove from $X_1$ the part collinear with $X_2$: $\tilde X_1$.
+2. Remove from $Y$ the part collinear with $X_2$: $\tilde Y$.
+3. $\hat\beta_1$: the OLS coefficient from the regression of $\tilde Y$ against $\tilde X_1$.
+
+- $\hat\beta_1$: the estimated effect of $X_1$ after controlling for $X_2$.
+
+- Step 2 optional:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &= (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y \\
+  &= (X_1^\top M_2^\top M_2 X_1)^{-1} X_1^\top M_2^\top Y \\
+  &= \big( (M_2 X_1)^\top (M_2 X_1) \big)^{-1} (M_2 X_1)^\top Y \\
+  &= (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top Y
+  \end{aligned}
+  $$
+
+- Step 1 is not optional:
+  $$
+  (X_1^\top X_1)^{-1} X_1^\top \tilde Y \ \ne\ (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y \quad \text{in general}
+  $$
+
+# Partitioned regression and the intercept
+
+## The intercept as a regressor
+
+- One regressor and an intercept:
+  $$
+  Y_i = \underset{1\times 1}{\beta_1} + \underset{1\times 1}{\beta_2}\, \underset{1\times 1}{X_{i,2}} + U_i
+  $$
+
+- Matrix form, with $\ell$ the $n \times 1$ vector of ones:
+  $$
+  \begin{aligned}
+  X &= \begin{bmatrix} 1 & X_{1,2} \\ \vdots & \vdots \\ 1 & X_{n,2} \end{bmatrix} \\
+  &= \big[\ \ell \quad X_2\ \big] \\
+  Y &= \underset{1\times 1}{\beta_1}\, \underset{n\times 1}{\ell} + \underset{1\times 1}{\beta_2}\, \underset{n\times 1}{X_2} + U
+  \end{aligned}
+  $$
+
+- Partitioned regression:
+  $$
+  \begin{aligned}
+  \underset{1\times 1}{\hat\beta_2} &= \big( \underset{1\times 1}{X_2^\top M_\ell X_2} \big)^{-1}\, \underset{1\times n}{X_2^\top}\ \underset{n\times 1}{M_\ell Y} \\
+  M_\ell &= I_n - \ell \big( \underset{1\times 1}{\ell^\top \ell} \big)^{-1} \ell^\top
+  \end{aligned}
+  $$
+
+## $P_\ell$ and $M_\ell$
+
+- $\ell^\top \ell$:
+  $$
+  \begin{aligned}
+  \ell^\top \ell &= \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}^\top \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix} \\
+  &= \sum_{i=1}^n 1 \cdot 1 \\
+  &= n
+  \end{aligned}
+  $$
+
+- Hence:
+  $$
+  \begin{aligned}
+  P_\ell &= \ell (\ell^\top \ell)^{-1} \ell^\top \\
+  &= \frac{\ell \ell^\top}{n} \\
+  M_\ell &= I_n - \frac{\ell \ell^\top}{n}
+  \end{aligned}
+  $$
+
+- For $v = (v_1, \ldots, v_n)^\top$:
+  $$
+  \begin{aligned}
+  (\ell^\top \ell)^{-1} \ell^\top v &= \frac{\ell^\top v}{n} \\
+  &= \frac{\sum_{i=1}^n \ell_i v_i}{n} \\
+  &= \frac{\sum_{i=1}^n v_i}{n} \\
+  &= \bar v
+  \end{aligned}
+  $$
+
+## $P_\ell$: averaging
+
+- For $v \in \mathbb{R}^n$:
+  $$
+  \begin{aligned}
+  P_\ell v &= \ell (\ell^\top \ell)^{-1} \ell^\top v \\
+  &= \frac{\ell \ell^\top}{n}\, v \\
+  &= \ell \left( \frac{\sum_{i=1}^n 1 \cdot v_i}{n} \right) \\
+  &= \ell\, \bar v \\
+  &= \begin{pmatrix} \bar v \\ \vdots \\ \bar v \end{pmatrix}
+  \end{aligned}
+  $$
+
+- Column space of $\ell$:
+  $$
+  \begin{aligned}
+  S(\ell) &= \big\{\, w \in \mathbb{R}^n : w = c\, \ell,\ c \in \mathbb{R} \,\big\} \\
+  &= \left\{\, w \in \mathbb{R}^n : w = \begin{pmatrix} c \\ \vdots \\ c \end{pmatrix},\ c \in \mathbb{R} \,\right\}
+  \end{aligned}
+  $$
+
+## $M_\ell$: deviations from the mean
+
+- For $v \in \mathbb{R}^n$:
+  $$
+  \begin{aligned}
+  M_\ell v &= v - P_\ell v \\
+  &= v - \ell\, \bar v \\
+  &= \begin{pmatrix} v_1 - \bar v \\ \vdots \\ v_n - \bar v \end{pmatrix}
+  \end{aligned}
+  $$
+
+- Orthogonal complement of $S(\ell)$:
+  $$
+  \begin{aligned}
+  S^\perp(\ell) &= \Big\{\, v \in \mathbb{R}^n : \underbrace{v^\top \ell}_{=\, \sum_{i=1}^n v_i} = 0 \,\Big\} \\
+  &= \Big\{\, v \in \mathbb{R}^n : \sum_{i=1}^n v_i = 0 \,\Big\} \\
+  &= \big\{\, v \in \mathbb{R}^n : \bar v = 0 \,\big\}
+  \end{aligned}
+  $$
+
+## $\tilde X_2 = M_\ell X_2$
+
+- Mean of the regressor:
+  $$
+  \begin{aligned}
+  (\ell^\top \ell)^{-1} \ell^\top X_2 &= \frac{\ell^\top X_2}{n} \\
+  &= \frac{1}{n} \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}^\top \begin{bmatrix} X_{1,2} \\ \vdots \\ X_{n,2} \end{bmatrix} \\
+  &= \frac{1}{n} \sum_{i=1}^n 1 \cdot X_{i,2} \\
+  &= \frac{1}{n} \sum_{i=1}^n X_{i,2} \\
+  &= \bar X_2
+  \end{aligned}
+  $$
+
+- The regressor:
+  $$
+  \begin{aligned}
+  \tilde X_2 &= M_\ell X_2 \\
+  &= X_2 - \ell\, \frac{\ell^\top X_2}{n} \\
+  &= X_2 - \bar X_2\, \ell \\
+  &= \begin{pmatrix} X_{1,2} - \bar X_2 \\ \vdots \\ X_{n,2} - \bar X_2 \end{pmatrix}
+  \end{aligned}
+  $$
+
+- The dependent variable: $M_\ell Y = (Y_1 - \bar Y, \ldots, Y_n - \bar Y)^\top$.
+
+## Slope: deviations from the mean
+
+- We will use: $M_\ell^\top = M_\ell$, $M_\ell M_\ell = M_\ell$, and $X_2^\top M_\ell X_2$: $1 \times 1$.
+
+- We have:
+  $$
+  \begin{aligned}
+  \hat\beta_2 &= (X_2^\top M_\ell X_2)^{-1} X_2^\top M_\ell Y \\
+  &= \frac{X_2^\top M_\ell Y}{X_2^\top M_\ell X_2} \\
+  &= \frac{(M_\ell X_2)^\top Y}{(M_\ell X_2)^\top (M_\ell X_2)} \\
+  &= \frac{\tilde X_2^\top Y}{\tilde X_2^\top \tilde X_2} \\
+  &= \frac{(X_2 - \bar X_2\, \ell)^\top Y}{(X_2 - \bar X_2\, \ell)^\top (X_2 - \bar X_2\, \ell)} \\
+  &= \frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)\, Y_i}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2} \\
+  &= \boxed{\frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)(Y_i - \bar Y)}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2}} \quad (X_2^\top M_\ell Y = X_2^\top M_\ell^\top M_\ell Y)
+  \end{aligned}
+  $$
+
+## Several regressors and an intercept
+
+- Intercept $\beta_1$ and slope coefficients $\beta_2$:
+  $$
+  \underset{n\times k}{X} = \big[\ \underset{n\times 1}{\ell} \quad \underset{n\times (k-1)}{X_2}\ \big], \qquad
+  \beta = \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix}, \qquad
+  Y = \beta_1 \ell + X_2 \beta_2 + U
+  $$
+
+- Each regressor minus its mean:
+  $$
+  \begin{aligned}
+  \tilde X_2 &= M_\ell X_2 \\
+  &= M_\ell \big[\, \underline{X}_2 \ \cdots \ \underline{X}_k \,\big] \\
+  &= \big[\, M_\ell \underline{X}_2 \ \cdots \ M_\ell \underline{X}_k \,\big] \\
+  &= \big[\, \underline{\tilde X}_2 \ \cdots \ \underline{\tilde X}_k \,\big]
+  \end{aligned}
+  $$
+
+- Slope coefficients:
+  $$
+  \begin{aligned}
+  \hat\beta_2 &= (X_2^\top M_\ell X_2)^{-1} X_2^\top M_\ell Y \\
+  &= (\tilde X_2^\top \tilde X_2)^{-1} \tilde X_2^\top Y
+  \end{aligned}
+  $$
+
+- Variation of $X_2$ in the sample, with $X_{i,2}$ now $(k-1) \times 1$ and $\bar X_2 = \frac{1}{n} \sum_{i=1}^n X_{i,2}$:
+  $$
+  \begin{aligned}
+  \tilde X_2^\top \tilde X_2 &= \sum_{i=1}^n \tilde X_{i,2} \tilde X_{i,2}^\top \\
+  &= \sum_{i=1}^n (X_{i,2} - \bar X_2)(X_{i,2} - \bar X_2)^\top
+  \end{aligned}
+  $$
+
+## Intercept, 1: deviations from means
+
+- In the sample:
+  $$
+  \begin{aligned}
+  Y_i &= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
+  \bar Y &= \beta_1 + \bar X_2^\top \beta_2 + \bar U \\
+  \underbrace{Y_i - \bar Y}_{\tilde Y_i} &= \underbrace{(X_{i,2} - \bar X_2)^\top}_{\tilde X_{i,2}^\top} \beta_2 + \underbrace{(U_i - \bar U)}_{\tilde U_i} \\
+  \tilde Y_i &= \tilde X_{i,2}^\top \beta_2 + \tilde U_i
+  \end{aligned}
+  $$
+
+- In the population:
+  $$
+  \begin{aligned}
+  Y_i &= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
+  \E{Y_i} &= \beta_1 + \E{X_{i,2}}^\top \beta_2 \\
+  Y_i - \E{Y_i} &= (X_{i,2} - \E{X_{i,2}})^\top \beta_2 + U_i
+  \end{aligned}
+  $$
+
+## Intercept, 2: non-zero error mean
+
+- $\E{U_i \mid X_i} = \mu \ne 0$:
+  $$
+  \begin{aligned}
+  \E{Y_i} &= \beta_1 + \E{X_{i,2}}^\top \beta_2 + \mu \\
+  Y_i - \E{Y_i} &= (X_{i,2} - \E{X_{i,2}})^\top \beta_2 + (U_i - \mu)
+  \end{aligned}
+  $$
+
+- Then:
+  $$
+  \begin{aligned}
+  Y_i &= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
+  &= \beta_1 + X_{i,2}^\top \beta_2 + (U_i - \mu) + \mu \\
+  &= \underbrace{(\beta_1 + \mu)}_{=\, \beta_1^*} + X_{i,2}^\top \beta_2 + \underbrace{(U_i - \mu)}_{=\, U_i^*} \\
+  &= \beta_1^* + X_{i,2}^\top \beta_2 + U_i^*
+  \end{aligned}
+  $$
+
+- $\E{U_i^* \mid X_i} = 0$.
+
+- Estimable: $\beta_2$ and $\beta_1^* = \beta_1 + \mu$.
+
+# Summary
+
+## Projections
+
+- $P_X = X (X^\top X)^{-1} X^\top$ and $M_X = I_n - P_X$: symmetric, idempotent, p.s.d.
+
+- $P_X X = X$, $M_X X = 0$, $P_X M_X = 0$.
+
+- $\operatorname{tr}(P_X) = k$ and $\rank{M_X} = \operatorname{tr}(M_X) = n - k$.
+
+- $Y = \hat Y + \hat U$ with $\hat Y = P_X Y \in S(X)$, $\hat U = M_X Y \in S^\perp(X)$, $\hat Y^\top \hat U = 0$.
+
+## $s^2$ and partitioned regression
+
+- $\hat U = M_X U$, $\hat U^\top \hat U = U^\top M_X U$, $\E{\hat U^\top \hat U \mid X} = \sigma^2 \operatorname{tr}(M_X) = \sigma^2 (n - k)$.
+
+- $\E{\hat\sigma^2 \mid X} = \frac{n-k}{n}\, \sigma^2$; $s^2 = \hat U^\top \hat U / (n - k)$ with $\E{s^2 \mid X} = \sigma^2$; $\widehat{\mathrm{Var}}\big(\hat\beta \mid X\big) = s^2 (X^\top X)^{-1}$.
+
+- Frisch-Waugh-Lovell: $\hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y = (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y$, with $\tilde X_1 = M_2 X_1$ and $\tilde Y = M_2 Y$.
+
+- Intercept, one regressor: $\hat\beta_2 = \sum_i (X_{i,2} - \bar X_2) Y_i \big/ \sum_i (X_{i,2} - \bar X_2)^2$.
