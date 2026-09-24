@@ -722,7 +722,7 @@ for some function of $X$ alone.
 - Both are conditionally unbiased, so taking conditional expectations,
 $$
 \underbrace{\E{\tilde\beta \mid X}}_{=\,\beta} = \underbrace{\E{\hat\beta \mid X}}_{=\,\beta} + \delta(X)
-\quad\Longrightarrow\quad d(X) = 0.
+\quad\Longrightarrow\quad \delta(X) = 0.
 $$
 
 - Therefore $\tilde\beta = \hat\beta$. 
