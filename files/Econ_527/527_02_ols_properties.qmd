@@ -538,7 +538,7 @@ for a matrix $A$ that is $k \times n$ and depends on $X$ alone, not on $Y$.
 
 ## Two more linear estimators
 
-- **The two-point slope.** With $k = 1$, $Y_i = \beta X_i + U_i$ and $X_1 \neq X_n$,
+- **The two-point slope.** With $k = 1$ and $X_1 \neq X_n$,
 $$
 \tilde\beta = \frac{Y_n - Y_1}{X_n - X_1} = -\frac{1}{X_n - X_1} Y_1 + \frac{1}{X_n - X_1} Y_n.
 $$
@@ -548,25 +548,25 @@ It uses two observations and throws the rest away.
 $$
 \tilde\beta = (X^\top W X)^{-1} X^\top W\, Y.
 $$
-OLS is the case $W = I_n$. With $W$ diagonal, this estimator weights observation $i$ by the $i$th diagonal entry $w_i$, as in the first lecture's slide on other linear estimators. The inverse $(X^\top W X)^{-1}$ exists: for $c \neq 0$, $Xc \neq 0$ by Assumption 4, so $c^\top X^\top W X c = (Xc)^\top W (Xc) > 0$.
+OLS is the case $W = I_n$, but for other choices of $W$ the estimator is different.
 
 ## Both are unbiased
 
-- The two-point slope, substituting $Y_i = \beta X_i + U_i$ and using Assumption 2:
+- The two-point slope, assume $Y_i = \beta X_i + U_i$ and $\E{U_i \mid X} = 0$:
 $$
 \tilde\beta = \beta + \frac{U_n - U_1}{X_n - X_1}, \qquad \E{\tilde\beta \mid X} = \beta.
 $$
 
-- Weighted least squares, substituting $Y = X\beta + U$ and using Assumption 2:
+- Weighted least squares, assume $Y = X\beta + U$ and $\E{U \mid X} = 0$:
 $$
 \tilde\beta = \beta + (X^\top W X)^{-1} X^\top W\, U, \qquad \E{\tilde\beta \mid X} = \beta.
 $$
 
-- Being unbiased does not single OLS out. When $n > k$, there are many conditionally unbiased linear estimators.
+- Being linear and unbiased does not single OLS out. There are many conditionally unbiased linear estimators.
 
-## The variance of the weighted estimator
+## The variance of $\tilde\beta = (X^\top W X)^{-1} X^\top W\, Y$
 
-- The route that gave the sandwich formula applies, with $A = (X^\top W X)^{-1} X^\top W$ in place of $\Gamma_X$. Since $W^\top = W$, the matrix $X^\top W X$ and its inverse are symmetric too, so $A^\top = W X (X^\top W X)^{-1}$. Under Assumptions 1, 3 and 4,
+- One can show that under Assumptions 1-4,
 $$
 \Var{\tilde\beta \mid X} = \sigma^2 (X^\top W X)^{-1} X^\top W\, W X (X^\top W X)^{-1},
 $$
@@ -583,20 +583,6 @@ $$
 
 - Here $\ge 0$ means positive semidefinite.
 
-## The Gauss-Markov theorem
-
-- **Theorem.** Under Assumptions 1 to 4, let $\tilde\beta$ satisfy
-  1. **linearity**: $\tilde\beta = A Y$, with $A$ a $k \times n$ matrix depending on $X$ alone;
-  2. **conditional unbiasedness**: $\E{\tilde\beta \mid X} = \beta$ for every value of $\beta$.
-
-- Then
-$$
-\Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X} \ \text{ is positive semidefinite.}
-$$
-
-- OLS is the **best linear unbiased estimator** (BLUE): best in the sense above, linear in $Y$, conditionally unbiased, and an estimator of $\beta$.
-
-- The theorem is about conditional unbiasedness, because it compares conditional variances.
 
 ## Reading the matrix ordering
 
@@ -614,15 +600,25 @@ $$
 
 - So every diagonal entry of a positive semidefinite matrix is non-negative.
 
-- Apply this to $M = \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}$, whose $j$th diagonal entry is the difference of the two variances of the $j$th coefficient:
+- Suppose $M = \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}\ge 0$ in the positive semidefinite sense. Then:
 $$
 \Var{\tilde\beta_j \mid X} \ \ge\ \Var{\hat\beta_j \mid X}, \qquad j = 1, \ldots, k.
 $$
 
-- A general $c$ says the same about every linear combination $c^\top\beta$ of the coefficients, since $\Var{c^\top V \mid X} = c^\top \Var{V \mid X} c$:
+## The Gauss-Markov theorem
+
+- **Theorem.** Under Assumptions 1 to 4, let $\tilde\beta$ satisfy
+  1. **linearity**: $\tilde\beta = A Y$, with $A$ a $k \times n$ matrix depending on $X$ alone;
+  2. **conditional unbiasedness**: $\E{\tilde\beta \mid X} = \beta$ for every value of $\beta$.
+
+- Then
 $$
-\Var{c^\top \tilde\beta \mid X} \ \ge\ \Var{c^\top \hat\beta \mid X} \qquad \text{for every } c \in \mathbb{R}^k.
+\Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}\ge 0 \ \text{(positive semidefinite).}
 $$
+
+- OLS is the **best linear unbiased estimator** (BLUE): best in the sense above, linear in $Y$, conditionally unbiased, and an estimator of $\beta$.
+
+- The theorem is about conditional unbiasedness, because it compares conditional variances.
 
 ## Proof, step 1: linearity and unbiasedness force $A X = I_k$
 
@@ -635,55 +631,48 @@ $$
 \end{aligned}
 $$
 
-- This must hold for every value of $\beta$, which is what unbiasedness means, so
+- This must hold for every value of $\beta$ and all realizations of $X$, so
 $$
 \boxed{\ A X = I_k\ }
 $$
 
 - Linearity plus conditional unbiasedness is exactly this one condition.
 
-## Step 1 checked on the examples
+- In our examples:
+  - OLS: $A = (X^\top X)^{-1} X^\top$, so: 
+  $$
+  A X = (X^\top X)^{-1} X^\top X = I_k.
+  $$
+  - Weighted least squares: $A = (X^\top W X)^{-1} X^\top W$, so:
+  $$
+  A X = (X^\top W X)^{-1} X^\top W X = I_k.
+  $$
 
-- OLS: $A = (X^\top X)^{-1} X^\top$, so $A X = (X^\top X)^{-1} X^\top X = I_k$.
 
-- Weighted least squares: $A = (X^\top W X)^{-1} X^\top W$, so $A X = (X^\top W X)^{-1} X^\top W X = I_k$.
+## Proof, step 2: The covariance between $\tilde\beta$ and $\hat\beta$
 
-- The two-point slope, with $k = 1$: $A$ has $-1/(X_n - X_1)$ in position 1 and $1/(X_n - X_1)$ in position $n$, so
+- Using $A X = I_k$ for the general estimator:
 $$
-A X = \frac{X_n - X_1}{X_n - X_1} = 1.
-$$
-
-## Proof, step 2: the two sampling errors
-
-- Using $A X = I_k$ for the general estimator, and the sampling error for OLS,
-$$
-\hat\beta = \beta + (X^\top X)^{-1} X^\top U, \qquad
 \tilde\beta = A X \beta + A U = \beta + A U.
 $$
 
-- Both estimators differ from $\beta$ only through a known matrix times $U$. Everything that follows is an expectation of $U U^\top$.
 
-## The transpose rule for covariance matrices
+- Therefore: $\E{\tilde\beta \mid X}=\beta$ and
+  \begin{align}
+  \tilde\beta - \beta &= A U.
+  \end{align}
 
-- For a $k \times 1$ random vector $V$ and an $\ell \times 1$ random vector $Z$,
-$$
-\Cov{V, Z} = \E{(V - \E{V})(Z - \E{Z})^\top} \qquad (k \times \ell),
-$$
-and transposing gives
-$$
-\Cov{V, Z}^\top = \E{(Z - \E{Z})(V - \E{V})^\top} = \Cov{Z, V}.
-$$
+- For OLS: $\E{\hat\beta \mid X}=\beta$ and
+  $$
+  \hat\beta - \beta = (X^\top X)^{-1} X^\top U.
+  $$
 
-- The same definition and the same rule hold conditionally, with $\E{\cdot}$ replaced by $\E{\cdot \mid X}$ throughout. Step 4 needs this, because both orders appear there.
-
-## Proof, step 3: the covariance equals the variance of OLS
-
-- Both estimators are conditionally unbiased, so their deviations from their conditional means are the two noise terms of step 2:
+- Consider the covariance between $\tilde\beta$ and $\hat\beta$:
 $$
 \begin{aligned}
 \Cov{\tilde\beta, \hat\beta \mid X}
 &= \E{\big(\tilde\beta - \beta\big)\big(\hat\beta - \beta\big)^\top \,\Big|\, X} \\
-&= \E{A U\, U^\top X (X^\top X)^{-1} \,\big|\, X} \\
+&= \E{\underbrace{A U}_{\tilde\beta - \beta}\, \underbrace{U^\top X (X^\top X)^{-1}}_{(\hat\beta - \beta)^\top} \,\big|\, X} \\
 &= A\, \underbrace{\E{U U^\top \mid X}}_{=\,\sigma^2 I_n \text{ by Assumptions 2 and 3}}\, X (X^\top X)^{-1} \\
 &= \sigma^2 \underbrace{A X}_{=\, I_k} (X^\top X)^{-1} \\
 &= \sigma^2 (X^\top X)^{-1}.
@@ -695,32 +684,29 @@ $$
 \boxed{\ \Cov{\tilde\beta, \hat\beta \mid X} = \Var{\hat\beta \mid X}\ }
 $$
 
-- Every linear conditionally unbiased estimator has the same covariance with OLS, namely the variance of OLS itself. This is the one surprising step in the proof.
+- Every linear conditionally unbiased estimator has the same covariance with OLS, namely the variance of OLS itself. 
 
-## Proof, step 4: the difference of the variances
+## Proof, step 3: the difference of the variances
 
-- As for a scalar, expand the variance of the difference using the definition; the cross terms are the two covariance matrices:
+- Expand the variance of the difference:
 $$
 \begin{aligned}
-\Var{\tilde\beta - \hat\beta \mid X} = \Var{\tilde\beta \mid X} &+ {\color{blue}\Var{\hat\beta \mid X}} \\
-&- {\color{blue}\Cov{\tilde\beta, \hat\beta \mid X}} - {\color{blue}\Cov{\hat\beta, \tilde\beta \mid X}}.
+\Var{\tilde\beta - \hat\beta \mid X} &= \Var{\tilde\beta \mid X} + {\color{blue}\Var{\hat\beta \mid X}} \\
+&\quad- {\color{blue}\Cov{\tilde\beta, \hat\beta \mid X}} - {\color{blue}\Cov{\hat\beta, \tilde\beta \mid X}}\\
+&= \Var{\tilde\beta \mid X} + {\color{blue}\Var{\hat\beta \mid X}} \\
+&\quad - \underbrace{\color{blue}\Var{\hat\beta \mid X}}_{=\Cov{\tilde\beta, \hat\beta \mid X}} - \underbrace{\color{blue}\Var{\hat\beta \mid X}}_{=\Cov{\hat\beta, \tilde\beta \mid X}^\top} \\
+&= \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}.
 \end{aligned}
 $$
 
-- Step 3 gives the first covariance term, the second is its transpose by the rule above, and $\Var{\hat\beta \mid X}$ is symmetric. All three terms in blue equal $\Var{\hat\beta \mid X}$, and they combine into one with a minus sign:
+- Therefore:
 $$
-\Var{\tilde\beta - \hat\beta \mid X} = \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}.
+0\leq \Var{\tilde\beta - \hat\beta \mid X} = \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}.
 $$
-
-- The left-hand side is a conditional variance matrix, hence positive semidefinite. Therefore
-$$
-\Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X} \ \ge\ 0,
-$$
-which is the theorem.
 
 ## Uniqueness
 
-- Suppose some linear conditionally unbiased $\tilde\beta$ attains the same variance matrix. By the identity of step 4,
+- Suppose some linear conditionally unbiased $\tilde\beta$ attains the same variance matrix. By the identity of step 3,
 $$
 \Var{\tilde\beta \mid X} = \Var{\hat\beta \mid X}
 \quad\Longrightarrow\quad
@@ -729,23 +715,23 @@ $$
 
 - A random vector with zero conditional variance equals its conditional mean (the equality case of positive semidefiniteness, one coordinate at a time), so
 $$
-\tilde\beta - \hat\beta = d(X)
+\tilde\beta - \hat\beta = \delta(X)
 $$
 for some function of $X$ alone.
 
 - Both are conditionally unbiased, so taking conditional expectations,
 $$
-\underbrace{\E{\tilde\beta \mid X}}_{=\,\beta} = \underbrace{\E{\hat\beta \mid X}}_{=\,\beta} + d(X)
+\underbrace{\E{\tilde\beta \mid X}}_{=\,\beta} = \underbrace{\E{\hat\beta \mid X}}_{=\,\beta} + \delta(X)
 \quad\Longrightarrow\quad d(X) = 0.
 $$
 
-- Therefore $\tilde\beta = \hat\beta$. A linear conditionally unbiased competitor that is also best attains the same variance matrix: both $M = \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}$ and $-M$ are then positive semidefinite, so $c^\top M c = 0$ for every $c$, and a symmetric matrix with that property is zero. So OLS is not just a best linear unbiased estimator; it is the only one.
+- Therefore $\tilde\beta = \hat\beta$. 
 
 ## Where Assumption 3 was used
 
-- Assumption 3 entered in step 3, where $\E{U U^\top \mid X}$ was replaced by $\sigma^2 I_n$, and again when $\sigma^2 (X^\top X)^{-1}$ was recognised as $\Var{\hat\beta \mid X}$. Without it the cancellation that produced $\sigma^2 A X$ fails, and the covariance need not equal the variance of OLS.
+- Assumption 3 entered in step 2, where $\E{U U^\top \mid X}$ was replaced by $\sigma^2 I_n$, and again when $\sigma^2 (X^\top X)^{-1}$ was recognised as $\Var{\hat\beta \mid X}$. Without it the cancellation that produced $\sigma^2 A X$ fails, and the covariance need not equal the variance of OLS.
 
-- Assumptions 1, 2 and 4 give unbiasedness, and Assumptions 1 and 4 with finite conditional second moments give the sandwich formula. Assumption 3 is what makes OLS efficient.
+
 
 - If Assumption 3 fails, OLS is still unbiased but need not be best: Assumption 3 is sufficient for efficiency, not necessary.
 
@@ -769,22 +755,27 @@ $$
 
 ## If Assumption 3 fails: generalised least squares
 
-- Suppose now that $\Var{U \mid X} = \Omega$ for a known positive definite $\Omega$, not necessarily diagonal, with $\Omega \neq \sigma^2 I_n$ for every $\sigma^2 > 0$. Let $\Omega^{-1/2}$ be the symmetric positive definite matrix with $\Omega^{-1/2}\Omega^{-1/2} = \Omega^{-1}$, built from the eigenvalue decomposition $\Omega = C \Lambda C^\top$, and write $\Omega^{1/2}$ for the inverse of $\Omega^{-1/2}$.
+- Suppose now that $\Var{U \mid X} = \Omega$ for a known positive definite $\Omega$, not necessarily diagonal, with $\Omega \neq \sigma^2 I_n$ for every $\sigma^2 > 0$. 
+- Let $\Omega^{-1/2}$ be the symmetric positive definite matrix with $\Omega^{-1/2}\Omega^{-1/2} = \Omega^{-1}$.
+  - It is built from the eigenvalue decomposition $\Omega^{-1/2} = C \Lambda^{-1/2} C^\top$.
 
 - Multiply the model through by $\Omega^{-1/2}$:
-$$
-\underbrace{\Omega^{-1/2} Y}_{Y^*} = \underbrace{\Omega^{-1/2} X}_{X^*} \beta + \underbrace{\Omega^{-1/2} U}_{U^*},
-\qquad \E{U^* \mid X} = 0, \qquad \Var{U^* \mid X} = \Omega^{-1/2} \Omega \Omega^{-1/2} = I_n,
-$$
-by taking out what is known and by the rule for a linear map.
+\begin{align*}
+&\underbrace{\Omega^{-1/2} Y}_{Y^*} = \underbrace{\Omega^{-1/2} X}_{X^*} \beta + \underbrace{\Omega^{-1/2} U}_{U^*}\\
+&Y^* = X^* \beta + U^*,\\
+& \E{U^* \mid X} = 0,\\
+& \Var{U^* \mid X} = \Omega^{-1/2} \Omega \Omega^{-1/2} = I_n.
+\end{align*}
 
-- The transformed model satisfies all four assumptions ($X^*$ has rank $k$ because $\Omega^{-1/2}$ is nonsingular), so Gauss-Markov applies to it. Since $A \mapsto A\,\Omega^{1/2}$ matches the linear conditionally unbiased estimators of the two models one to one, OLS on the transformed model is also best among estimators linear in $Y$ and conditionally unbiased, and it is
+
+- The transformed model satisfies all four assumptions, so Gauss-Markov applies to it.
+- OLS on the transformed model is the best linear unbiased estimator:
 $$
 \hat\beta^* = (X^{*\top} X^*)^{-1} X^{*\top} Y^* = (X^\top \Omega^{-1} X)^{-1} X^\top \Omega^{-1} Y,
 $$
-which is weighted least squares with $W = \Omega^{-1}$.
+which is weighted least squares with $W = \Omega^{-1}$. This is the **GLS estimator**: generalized least squares.
 
-- In practice $\Omega$ is not known. Later lectures return to this.
+- In practice $\Omega$ is not known. 
 
 ## Summary: unbiasedness and variance
 
@@ -814,4 +805,6 @@ so in particular $\Var{\tilde\beta_j \mid X} \ge \Var{\hat\beta_j \mid X}$ for e
 
 - **Uniqueness.** Equality of the variances forces $\tilde\beta = \hat\beta$.
 
-- Assumption 3 is what buys efficiency. Assumptions 1, 2 and 4 give unbiasedness on their own.
+- Assumption 3 is what buys efficiency. 
+- Assumptions 1 and 2 give unbiasedness.
+- Assumption 4 gives existence of the estimator. 

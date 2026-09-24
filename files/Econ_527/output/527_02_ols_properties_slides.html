@@ -1479,30 +1479,30 @@ X^\top \Omega X = \begin{pmatrix} X_1 &amp; \cdots &amp; X_n \end{pmatrix} \Omeg
 <section id="two-more-linear-estimators" class="slide level2">
 <h2>Two more linear estimators</h2>
 <ul>
-<li class="fragment"><p><strong>The two-point slope.</strong> With <span class="math inline">k = 1</span>, <span class="math inline">Y_i = \beta X_i + U_i</span> and <span class="math inline">X_1 \neq X_n</span>, <span class="math display">
+<li class="fragment"><p><strong>The two-point slope.</strong> With <span class="math inline">k = 1</span> and <span class="math inline">X_1 \neq X_n</span>, <span class="math display">
 \tilde\beta = \frac{Y_n - Y_1}{X_n - X_1} = -\frac{1}{X_n - X_1} Y_1 + \frac{1}{X_n - X_1} Y_n.
 </span> It uses two observations and throws the rest away.</p></li>
 <li class="fragment"><p><strong>Weighted least squares.</strong> For a known <span class="math inline">n \times n</span> matrix <span class="math inline">W</span> that is symmetric and positive definite, and that may depend on <span class="math inline">X</span> but not on <span class="math inline">Y</span>, <span class="math display">
 \tilde\beta = (X^\top W X)^{-1} X^\top W\, Y.
-</span> OLS is the case <span class="math inline">W = I_n</span>. With <span class="math inline">W</span> diagonal, this estimator weights observation <span class="math inline">i</span> by the <span class="math inline">i</span>th diagonal entry <span class="math inline">w_i</span>, as in the first lecture’s slide on other linear estimators. The inverse <span class="math inline">(X^\top W X)^{-1}</span> exists: for <span class="math inline">c \neq 0</span>, <span class="math inline">Xc \neq 0</span> by Assumption 4, so <span class="math inline">c^\top X^\top W X c = (Xc)^\top W (Xc) &gt; 0</span>.</p></li>
+</span> OLS is the case <span class="math inline">W = I_n</span>, but for other choices of <span class="math inline">W</span> the estimator is different.</p></li>
 </ul>
 </section>
 <section id="both-are-unbiased" class="slide level2">
 <h2>Both are unbiased</h2>
 <ul>
-<li class="fragment"><p>The two-point slope, substituting <span class="math inline">Y_i = \beta X_i + U_i</span> and using Assumption 2: <span class="math display">
+<li class="fragment"><p>The two-point slope, assume <span class="math inline">Y_i = \beta X_i + U_i</span> and <span class="math inline">\mathrm{E}\left[U_i \mid X\right] = 0</span>: <span class="math display">
 \tilde\beta = \beta + \frac{U_n - U_1}{X_n - X_1}, \qquad \mathrm{E}\left[\tilde\beta \mid X\right] = \beta.
 </span></p></li>
-<li class="fragment"><p>Weighted least squares, substituting <span class="math inline">Y = X\beta + U</span> and using Assumption 2: <span class="math display">
+<li class="fragment"><p>Weighted least squares, assume <span class="math inline">Y = X\beta + U</span> and <span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>: <span class="math display">
 \tilde\beta = \beta + (X^\top W X)^{-1} X^\top W\, U, \qquad \mathrm{E}\left[\tilde\beta \mid X\right] = \beta.
 </span></p></li>
-<li class="fragment"><p>Being unbiased does not single OLS out. When <span class="math inline">n &gt; k</span>, there are many conditionally unbiased linear estimators.</p></li>
+<li class="fragment"><p>Being linear and unbiased does not single OLS out. There are many conditionally unbiased linear estimators.</p></li>
 </ul>
 </section>
-<section id="the-variance-of-the-weighted-estimator" class="slide level2">
-<h2>The variance of the weighted estimator</h2>
+<section id="the-variance-of-tildebeta-xtop-w-x-1-xtop-w-y" class="slide level2">
+<h2>The variance of <span class="math inline">\tilde\beta = (X^\top W X)^{-1} X^\top W\, Y</span></h2>
 <ul>
-<li class="fragment"><p>The route that gave the sandwich formula applies, with <span class="math inline">A = (X^\top W X)^{-1} X^\top W</span> in place of <span class="math inline">\Gamma_X</span>. Since <span class="math inline">W^\top = W</span>, the matrix <span class="math inline">X^\top W X</span> and its inverse are symmetric too, so <span class="math inline">A^\top = W X (X^\top W X)^{-1}</span>. Under Assumptions 1, 3 and 4, <span class="math display">
+<li class="fragment"><p>One can show that under Assumptions 1-4, <span class="math display">
 \mathrm{Var}\left(\tilde\beta \mid X\right) = \sigma^2 (X^\top W X)^{-1} X^\top W\, W X (X^\top W X)^{-1},
 </span> which reduces to <span class="math inline">\sigma^2 (X^\top X)^{-1}</span> when <span class="math inline">W = I_n</span>.</p></li>
 <li class="fragment"><p>Which of these matrices is smallest, and what smallest means for matrices, are the next questions.</p></li>
@@ -1517,21 +1517,6 @@ X^\top \Omega X = \begin{pmatrix} X_1 &amp; \cdots &amp; X_n \end{pmatrix} \Omeg
 <li class="fragment"><p>Here <span class="math inline">\ge 0</span> means positive semidefinite.</p></li>
 </ul>
 </section>
-<section id="the-gauss-markov-theorem-1" class="slide level2 scrollable">
-<h2>The Gauss-Markov theorem</h2>
-<ul>
-<li class="fragment"><p><strong>Theorem.</strong> Under Assumptions 1 to 4, let <span class="math inline">\tilde\beta</span> satisfy</p>
-<ol type="1">
-<li class="fragment"><strong>linearity</strong>: <span class="math inline">\tilde\beta = A Y</span>, with <span class="math inline">A</span> a <span class="math inline">k \times n</span> matrix depending on <span class="math inline">X</span> alone;</li>
-<li class="fragment"><strong>conditional unbiasedness</strong>: <span class="math inline">\mathrm{E}\left[\tilde\beta \mid X\right] = \beta</span> for every value of <span class="math inline">\beta</span>.</li>
-</ol></li>
-<li class="fragment"><p>Then <span class="math display">
-\mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right) \ \text{ is positive semidefinite.}
-</span></p></li>
-<li class="fragment"><p>OLS is the <strong>best linear unbiased estimator</strong> (BLUE): best in the sense above, linear in <span class="math inline">Y</span>, conditionally unbiased, and an estimator of <span class="math inline">\beta</span>.</p></li>
-<li class="fragment"><p>The theorem is about conditional unbiasedness, because it compares conditional variances.</p></li>
-</ul>
-</section>
 <section id="reading-the-matrix-ordering" class="slide level2">
 <h2>Reading the matrix ordering</h2>
 <ul>
@@ -1543,12 +1528,24 @@ e_j = (0, \ldots, 0, 1, 0, \ldots, 0)^\top, \qquad \text{the } 1 \text{ sitting 
 e_j^\top M e_j = \sum_{l=1}^k \sum_{m=1}^k (e_j)_l\, M_{lm}\, (e_j)_m = M_{jj}.
 </span></p></li>
 <li class="fragment"><p>So every diagonal entry of a positive semidefinite matrix is non-negative.</p></li>
-<li class="fragment"><p>Apply this to <span class="math inline">M = \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right)</span>, whose <span class="math inline">j</span>th diagonal entry is the difference of the two variances of the <span class="math inline">j</span>th coefficient: <span class="math display">
+<li class="fragment"><p>Suppose <span class="math inline">M = \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right)\ge 0</span> in the positive semidefinite sense. Then: <span class="math display">
 \mathrm{Var}\left(\tilde\beta_j \mid X\right) \ \ge\ \mathrm{Var}\left(\hat\beta_j \mid X\right), \qquad j = 1, \ldots, k.
 </span></p></li>
-<li class="fragment"><p>A general <span class="math inline">c</span> says the same about every linear combination <span class="math inline">c^\top\beta</span> of the coefficients, since <span class="math inline">\mathrm{Var}\left(c^\top V \mid X\right) = c^\top \mathrm{Var}\left(V \mid X\right) c</span>: <span class="math display">
-\mathrm{Var}\left(c^\top \tilde\beta \mid X\right) \ \ge\ \mathrm{Var}\left(c^\top \hat\beta \mid X\right) \qquad \text{for every } c \in \mathbb{R}^k.
+</ul>
+</section>
+<section id="the-gauss-markov-theorem-1" class="slide level2 scrollable">
+<h2>The Gauss-Markov theorem</h2>
+<ul>
+<li class="fragment"><p><strong>Theorem.</strong> Under Assumptions 1 to 4, let <span class="math inline">\tilde\beta</span> satisfy</p>
+<ol type="1">
+<li class="fragment"><strong>linearity</strong>: <span class="math inline">\tilde\beta = A Y</span>, with <span class="math inline">A</span> a <span class="math inline">k \times n</span> matrix depending on <span class="math inline">X</span> alone;</li>
+<li class="fragment"><strong>conditional unbiasedness</strong>: <span class="math inline">\mathrm{E}\left[\tilde\beta \mid X\right] = \beta</span> for every value of <span class="math inline">\beta</span>.</li>
+</ol></li>
+<li class="fragment"><p>Then <span class="math display">
+\mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right)\ge 0 \ \text{(positive semidefinite).}
 </span></p></li>
+<li class="fragment"><p>OLS is the <strong>best linear unbiased estimator</strong> (BLUE): best in the sense above, linear in <span class="math inline">Y</span>, conditionally unbiased, and an estimator of <span class="math inline">\beta</span>.</p></li>
+<li class="fragment"><p>The theorem is about conditional unbiasedness, because it compares conditional variances.</p></li>
 </ul>
 </section>
 <section id="proof-step-1-linearity-and-unbiasedness-force-a-x-i_k" class="slide level2">
@@ -1561,51 +1558,38 @@ e_j^\top M e_j = \sum_{l=1}^k \sum_{m=1}^k (e_j)_l\, M_{lm}\, (e_j)_m = M_{jj}.
 &amp;= A X \beta.
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>This must hold for every value of <span class="math inline">\beta</span>, which is what unbiasedness means, so <span class="math display">
+<li class="fragment"><p>This must hold for every value of <span class="math inline">\beta</span> and all realizations of <span class="math inline">X</span>, so <span class="math display">
 \boxed{\ A X = I_k\ }
 </span></p></li>
 <li class="fragment"><p>Linearity plus conditional unbiasedness is exactly this one condition.</p></li>
+<li class="fragment"><p>In our examples:</p>
+<ul>
+<li class="fragment">OLS: <span class="math inline">A = (X^\top X)^{-1} X^\top</span>, so: <span class="math display">
+A X = (X^\top X)^{-1} X^\top X = I_k.
+</span></li>
+<li class="fragment">Weighted least squares: <span class="math inline">A = (X^\top W X)^{-1} X^\top W</span>, so: <span class="math display">
+A X = (X^\top W X)^{-1} X^\top W X = I_k.
+</span></li>
+</ul></li>
 </ul>
 </section>
-<section id="step-1-checked-on-the-examples" class="slide level2">
-<h2>Step 1 checked on the examples</h2>
+<section id="proof-step-2-the-covariance-between-tildebeta-and-hatbeta" class="slide level2">
+<h2>Proof, step 2: The covariance between <span class="math inline">\tilde\beta</span> and <span class="math inline">\hat\beta</span></h2>
 <ul>
-<li class="fragment"><p>OLS: <span class="math inline">A = (X^\top X)^{-1} X^\top</span>, so <span class="math inline">A X = (X^\top X)^{-1} X^\top X = I_k</span>.</p></li>
-<li class="fragment"><p>Weighted least squares: <span class="math inline">A = (X^\top W X)^{-1} X^\top W</span>, so <span class="math inline">A X = (X^\top W X)^{-1} X^\top W X = I_k</span>.</p></li>
-<li class="fragment"><p>The two-point slope, with <span class="math inline">k = 1</span>: <span class="math inline">A</span> has <span class="math inline">-1/(X_n - X_1)</span> in position 1 and <span class="math inline">1/(X_n - X_1)</span> in position <span class="math inline">n</span>, so <span class="math display">
-A X = \frac{X_n - X_1}{X_n - X_1} = 1.
-</span></p></li>
-</ul>
-</section>
-<section id="proof-step-2-the-two-sampling-errors" class="slide level2">
-<h2>Proof, step 2: the two sampling errors</h2>
-<ul>
-<li class="fragment"><p>Using <span class="math inline">A X = I_k</span> for the general estimator, and the sampling error for OLS, <span class="math display">
-\hat\beta = \beta + (X^\top X)^{-1} X^\top U, \qquad
+<li class="fragment"><p>Using <span class="math inline">A X = I_k</span> for the general estimator: <span class="math display">
 \tilde\beta = A X \beta + A U = \beta + A U.
 </span></p></li>
-<li class="fragment"><p>Both estimators differ from <span class="math inline">\beta</span> only through a known matrix times <span class="math inline">U</span>. Everything that follows is an expectation of <span class="math inline">U U^\top</span>.</p></li>
-</ul>
-</section>
-<section id="the-transpose-rule-for-covariance-matrices" class="slide level2">
-<h2>The transpose rule for covariance matrices</h2>
-<ul>
-<li class="fragment"><p>For a <span class="math inline">k \times 1</span> random vector <span class="math inline">V</span> and an <span class="math inline">\ell \times 1</span> random vector <span class="math inline">Z</span>, <span class="math display">
-\mathrm{Cov}\left(V, Z\right) = \mathrm{E}\left[(V - \mathrm{E}\left[V\right])(Z - \mathrm{E}\left[Z\right])^\top\right] \qquad (k \times \ell),
-</span> and transposing gives <span class="math display">
-\mathrm{Cov}\left(V, Z\right)^\top = \mathrm{E}\left[(Z - \mathrm{E}\left[Z\right])(V - \mathrm{E}\left[V\right])^\top\right] = \mathrm{Cov}\left(Z, V\right).
+<li class="fragment"><p>Therefore: <span class="math inline">\mathrm{E}\left[\tilde\beta \mid X\right]=\beta</span> and <span class="math display">\begin{align}
+\tilde\beta - \beta &amp;= A U.
+\end{align}</span></p></li>
+<li class="fragment"><p>For OLS: <span class="math inline">\mathrm{E}\left[\hat\beta \mid X\right]=\beta</span> and <span class="math display">
+\hat\beta - \beta = (X^\top X)^{-1} X^\top U.
 </span></p></li>
-<li class="fragment"><p>The same definition and the same rule hold conditionally, with <span class="math inline">\mathrm{E}\left[\cdot\right]</span> replaced by <span class="math inline">\mathrm{E}\left[\cdot \mid X\right]</span> throughout. Step 4 needs this, because both orders appear there.</p></li>
-</ul>
-</section>
-<section id="proof-step-3-the-covariance-equals-the-variance-of-ols" class="slide level2">
-<h2>Proof, step 3: the covariance equals the variance of OLS</h2>
-<ul>
-<li class="fragment"><p>Both estimators are conditionally unbiased, so their deviations from their conditional means are the two noise terms of step 2: <span class="math display">
+<li class="fragment"><p>Consider the covariance between <span class="math inline">\tilde\beta</span> and <span class="math inline">\hat\beta</span>: <span class="math display">
 \begin{aligned}
 \mathrm{Cov}\left(\tilde\beta, \hat\beta \mid X\right)
 &amp;= \mathrm{E}\left[\big(\tilde\beta - \beta\big)\big(\hat\beta - \beta\big)^\top \,\Big|\, X\right] \\
-&amp;= \mathrm{E}\left[A U\, U^\top X (X^\top X)^{-1} \,\big|\, X\right] \\
+&amp;= \mathrm{E}\left[\underbrace{A U}_{\tilde\beta - \beta}\, \underbrace{U^\top X (X^\top X)^{-1}}_{(\hat\beta - \beta)^\top} \,\big|\, X\right] \\
 &amp;= A\, \underbrace{\mathrm{E}\left[U U^\top \mid X\right]}_{=\,\sigma^2 I_n \text{ by Assumptions 2 and 3}}\, X (X^\top X)^{-1} \\
 &amp;= \sigma^2 \underbrace{A X}_{=\, I_k} (X^\top X)^{-1} \\
 &amp;= \sigma^2 (X^\top X)^{-1}.
@@ -1614,49 +1598,48 @@ A X = \frac{X_n - X_1}{X_n - X_1} = 1.
 <li class="fragment"><p>The right-hand side is <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span>, so <span class="math display">
 \boxed{\ \mathrm{Cov}\left(\tilde\beta, \hat\beta \mid X\right) = \mathrm{Var}\left(\hat\beta \mid X\right)\ }
 </span></p></li>
-<li class="fragment"><p>Every linear conditionally unbiased estimator has the same covariance with OLS, namely the variance of OLS itself. This is the one surprising step in the proof.</p></li>
+<li class="fragment"><p>Every linear conditionally unbiased estimator has the same covariance with OLS, namely the variance of OLS itself.</p></li>
 </ul>
 </section>
-<section id="proof-step-4-the-difference-of-the-variances" class="slide level2">
-<h2>Proof, step 4: the difference of the variances</h2>
+<section id="proof-step-3-the-difference-of-the-variances" class="slide level2">
+<h2>Proof, step 3: the difference of the variances</h2>
 <ul>
-<li class="fragment"><p>As for a scalar, expand the variance of the difference using the definition; the cross terms are the two covariance matrices: <span class="math display">
+<li class="fragment"><p>Expand the variance of the difference: <span class="math display">
 \begin{aligned}
-\mathrm{Var}\left(\tilde\beta - \hat\beta \mid X\right) = \mathrm{Var}\left(\tilde\beta \mid X\right) &amp;+ {\color{blue}\mathrm{Var}\left(\hat\beta \mid X\right)} \\
-&amp;- {\color{blue}\mathrm{Cov}\left(\tilde\beta, \hat\beta \mid X\right)} - {\color{blue}\mathrm{Cov}\left(\hat\beta, \tilde\beta \mid X\right)}.
+\mathrm{Var}\left(\tilde\beta - \hat\beta \mid X\right) &amp;= \mathrm{Var}\left(\tilde\beta \mid X\right) + {\color{blue}\mathrm{Var}\left(\hat\beta \mid X\right)} \\
+&amp;\quad- {\color{blue}\mathrm{Cov}\left(\tilde\beta, \hat\beta \mid X\right)} - {\color{blue}\mathrm{Cov}\left(\hat\beta, \tilde\beta \mid X\right)}\\
+&amp;= \mathrm{Var}\left(\tilde\beta \mid X\right) + {\color{blue}\mathrm{Var}\left(\hat\beta \mid X\right)} \\
+&amp;\quad - \underbrace{\color{blue}\mathrm{Var}\left(\hat\beta \mid X\right)}_{=\mathrm{Cov}\left(\tilde\beta, \hat\beta \mid X\right)} - \underbrace{\color{blue}\mathrm{Var}\left(\hat\beta \mid X\right)}_{=\mathrm{Cov}\left(\hat\beta, \tilde\beta \mid X\right)^\top} \\
+&amp;= \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right).
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Step 3 gives the first covariance term, the second is its transpose by the rule above, and <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span> is symmetric. All three terms in blue equal <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span>, and they combine into one with a minus sign: <span class="math display">
-\mathrm{Var}\left(\tilde\beta - \hat\beta \mid X\right) = \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right).
+<li class="fragment"><p>Therefore: <span class="math display">
+0\leq \mathrm{Var}\left(\tilde\beta - \hat\beta \mid X\right) = \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right).
 </span></p></li>
-<li class="fragment"><p>The left-hand side is a conditional variance matrix, hence positive semidefinite. Therefore <span class="math display">
-\mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right) \ \ge\ 0,
-</span> which is the theorem.</p></li>
 </ul>
 </section>
 <section id="uniqueness" class="slide level2">
 <h2>Uniqueness</h2>
 <ul>
-<li class="fragment"><p>Suppose some linear conditionally unbiased <span class="math inline">\tilde\beta</span> attains the same variance matrix. By the identity of step 4, <span class="math display">
+<li class="fragment"><p>Suppose some linear conditionally unbiased <span class="math inline">\tilde\beta</span> attains the same variance matrix. By the identity of step 3, <span class="math display">
 \mathrm{Var}\left(\tilde\beta \mid X\right) = \mathrm{Var}\left(\hat\beta \mid X\right)
 \quad\Longrightarrow\quad
 \mathrm{Var}\left(\tilde\beta - \hat\beta \mid X\right) = 0.
 </span></p></li>
 <li class="fragment"><p>A random vector with zero conditional variance equals its conditional mean (the equality case of positive semidefiniteness, one coordinate at a time), so <span class="math display">
-\tilde\beta - \hat\beta = d(X)
+\tilde\beta - \hat\beta = \delta(X)
 </span> for some function of <span class="math inline">X</span> alone.</p></li>
 <li class="fragment"><p>Both are conditionally unbiased, so taking conditional expectations, <span class="math display">
-\underbrace{\mathrm{E}\left[\tilde\beta \mid X\right]}_{=\,\beta} = \underbrace{\mathrm{E}\left[\hat\beta \mid X\right]}_{=\,\beta} + d(X)
+\underbrace{\mathrm{E}\left[\tilde\beta \mid X\right]}_{=\,\beta} = \underbrace{\mathrm{E}\left[\hat\beta \mid X\right]}_{=\,\beta} + \delta(X)
 \quad\Longrightarrow\quad d(X) = 0.
 </span></p></li>
-<li class="fragment"><p>Therefore <span class="math inline">\tilde\beta = \hat\beta</span>. A linear conditionally unbiased competitor that is also best attains the same variance matrix: both <span class="math inline">M = \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right)</span> and <span class="math inline">-M</span> are then positive semidefinite, so <span class="math inline">c^\top M c = 0</span> for every <span class="math inline">c</span>, and a symmetric matrix with that property is zero. So OLS is not just a best linear unbiased estimator; it is the only one.</p></li>
+<li class="fragment"><p>Therefore <span class="math inline">\tilde\beta = \hat\beta</span>.</p></li>
 </ul>
 </section>
 <section id="where-assumption-3-was-used" class="slide level2">
 <h2>Where Assumption 3 was used</h2>
 <ul>
-<li class="fragment"><p>Assumption 3 entered in step 3, where <span class="math inline">\mathrm{E}\left[U U^\top \mid X\right]</span> was replaced by <span class="math inline">\sigma^2 I_n</span>, and again when <span class="math inline">\sigma^2 (X^\top X)^{-1}</span> was recognised as <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span>. Without it the cancellation that produced <span class="math inline">\sigma^2 A X</span> fails, and the covariance need not equal the variance of OLS.</p></li>
-<li class="fragment"><p>Assumptions 1, 2 and 4 give unbiasedness, and Assumptions 1 and 4 with finite conditional second moments give the sandwich formula. Assumption 3 is what makes OLS efficient.</p></li>
+<li class="fragment"><p>Assumption 3 entered in step 2, where <span class="math inline">\mathrm{E}\left[U U^\top \mid X\right]</span> was replaced by <span class="math inline">\sigma^2 I_n</span>, and again when <span class="math inline">\sigma^2 (X^\top X)^{-1}</span> was recognised as <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span>. Without it the cancellation that produced <span class="math inline">\sigma^2 A X</span> fails, and the covariance need not equal the variance of OLS.</p></li>
 <li class="fragment"><p>If Assumption 3 fails, OLS is still unbiased but need not be best: Assumption 3 is sufficient for efficiency, not necessary.</p></li>
 </ul>
 </section></section>
@@ -1681,15 +1664,22 @@ V \sim N(\mu, \Sigma) \quad\Longrightarrow\quad \alpha + \Gamma V \sim N\big(\al
 <section id="if-assumption-3-fails-generalised-least-squares" class="slide level2">
 <h2>If Assumption 3 fails: generalised least squares</h2>
 <ul>
-<li class="fragment"><p>Suppose now that <span class="math inline">\mathrm{Var}\left(U \mid X\right) = \Omega</span> for a known positive definite <span class="math inline">\Omega</span>, not necessarily diagonal, with <span class="math inline">\Omega \neq \sigma^2 I_n</span> for every <span class="math inline">\sigma^2 &gt; 0</span>. Let <span class="math inline">\Omega^{-1/2}</span> be the symmetric positive definite matrix with <span class="math inline">\Omega^{-1/2}\Omega^{-1/2} = \Omega^{-1}</span>, built from the eigenvalue decomposition <span class="math inline">\Omega = C \Lambda C^\top</span>, and write <span class="math inline">\Omega^{1/2}</span> for the inverse of <span class="math inline">\Omega^{-1/2}</span>.</p></li>
-<li class="fragment"><p>Multiply the model through by <span class="math inline">\Omega^{-1/2}</span>: <span class="math display">
-\underbrace{\Omega^{-1/2} Y}_{Y^*} = \underbrace{\Omega^{-1/2} X}_{X^*} \beta + \underbrace{\Omega^{-1/2} U}_{U^*},
-\qquad \mathrm{E}\left[U^* \mid X\right] = 0, \qquad \mathrm{Var}\left(U^* \mid X\right) = \Omega^{-1/2} \Omega \Omega^{-1/2} = I_n,
-</span> by taking out what is known and by the rule for a linear map.</p></li>
-<li class="fragment"><p>The transformed model satisfies all four assumptions (<span class="math inline">X^*</span> has rank <span class="math inline">k</span> because <span class="math inline">\Omega^{-1/2}</span> is nonsingular), so Gauss-Markov applies to it. Since <span class="math inline">A \mapsto A\,\Omega^{1/2}</span> matches the linear conditionally unbiased estimators of the two models one to one, OLS on the transformed model is also best among estimators linear in <span class="math inline">Y</span> and conditionally unbiased, and it is <span class="math display">
+<li class="fragment"><p>Suppose now that <span class="math inline">\mathrm{Var}\left(U \mid X\right) = \Omega</span> for a known positive definite <span class="math inline">\Omega</span>, not necessarily diagonal, with <span class="math inline">\Omega \neq \sigma^2 I_n</span> for every <span class="math inline">\sigma^2 &gt; 0</span>.</p></li>
+<li class="fragment"><p>Let <span class="math inline">\Omega^{-1/2}</span> be the symmetric positive definite matrix with <span class="math inline">\Omega^{-1/2}\Omega^{-1/2} = \Omega^{-1}</span>.</p>
+<ul>
+<li class="fragment">It is built from the eigenvalue decomposition <span class="math inline">\Omega^{-1/2} = C \Lambda^{-1/2} C^\top</span>.</li>
+</ul></li>
+<li class="fragment"><p>Multiply the model through by <span class="math inline">\Omega^{-1/2}</span>: <span class="math display">\begin{align*}
+&amp;\underbrace{\Omega^{-1/2} Y}_{Y^*} = \underbrace{\Omega^{-1/2} X}_{X^*} \beta + \underbrace{\Omega^{-1/2} U}_{U^*}\\
+&amp;Y^* = X^* \beta + U^*,\\
+&amp; \mathrm{E}\left[U^* \mid X\right] = 0,\\
+&amp; \mathrm{Var}\left(U^* \mid X\right) = \Omega^{-1/2} \Omega \Omega^{-1/2} = I_n.
+\end{align*}</span></p></li>
+<li class="fragment"><p>The transformed model satisfies all four assumptions, so Gauss-Markov applies to it.</p></li>
+<li class="fragment"><p>OLS on the transformed model is the best linear unbiased estimator: <span class="math display">
 \hat\beta^* = (X^{*\top} X^*)^{-1} X^{*\top} Y^* = (X^\top \Omega^{-1} X)^{-1} X^\top \Omega^{-1} Y,
-</span> which is weighted least squares with <span class="math inline">W = \Omega^{-1}</span>.</p></li>
-<li class="fragment"><p>In practice <span class="math inline">\Omega</span> is not known. Later lectures return to this.</p></li>
+</span> which is weighted least squares with <span class="math inline">W = \Omega^{-1}</span>. This is the <strong>GLS estimator</strong>: generalized least squares.</p></li>
+<li class="fragment"><p>In practice <span class="math inline">\Omega</span> is not known.</p></li>
 </ul>
 </section>
 <section id="summary-unbiasedness-and-variance" class="slide level2">
@@ -1712,7 +1702,9 @@ V \sim N(\mu, \Sigma) \quad\Longrightarrow\quad \alpha + \Gamma V \sim N\big(\al
 </span> so in particular <span class="math inline">\mathrm{Var}\left(\tilde\beta_j \mid X\right) \ge \mathrm{Var}\left(\hat\beta_j \mid X\right)</span> for every coefficient.</p></li>
 <li class="fragment"><p><strong>The proof.</strong> Linearity and conditional unbiasedness force <span class="math inline">A X = I_k</span>. Assumption 3 then makes <span class="math inline">\mathrm{Cov}\left(\tilde\beta, \hat\beta \mid X\right) = \mathrm{Var}\left(\hat\beta \mid X\right)</span>. Expanding <span class="math inline">\mathrm{Var}\left(\tilde\beta - \hat\beta \mid X\right)</span>, which is positive semidefinite, leaves exactly the difference of the two variances.</p></li>
 <li class="fragment"><p><strong>Uniqueness.</strong> Equality of the variances forces <span class="math inline">\tilde\beta = \hat\beta</span>.</p></li>
-<li class="fragment"><p>Assumption 3 is what buys efficiency. Assumptions 1, 2 and 4 give unbiasedness on their own.</p></li>
+<li class="fragment"><p>Assumption 3 is what buys efficiency.</p></li>
+<li class="fragment"><p>Assumptions 1 and 2 give unbiasedness.</p></li>
+<li class="fragment"><p>Assumption 4 gives existence of the estimator.</p></li>
 </ul>
 
 </section></section>
