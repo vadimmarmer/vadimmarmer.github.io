@@ -1048,51 +1048,6 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## Intercept, 1: deviations from means
-
-- In the sample:
-  $$
-  \begin{aligned}
-  Y_i &= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-  \bar Y &= \beta_1 + \bar X_2^\top \beta_2 + \bar U \\
-  \underbrace{Y_i - \bar Y}_{\tilde Y_i} &= \underbrace{(X_{i,2} - \bar X_2)^\top}_{\tilde X_{i,2}^\top} \beta_2 + \underbrace{(U_i - \bar U)}_{\tilde U_i} \\
-  \tilde Y_i &= \tilde X_{i,2}^\top \beta_2 + \tilde U_i
-  \end{aligned}
-  $$
-
-- In the population:
-  $$
-  \begin{aligned}
-  Y_i &= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-  \E{Y_i} &= \beta_1 + \E{X_{i,2}}^\top \beta_2 \\
-  Y_i - \E{Y_i} &= (X_{i,2} - \E{X_{i,2}})^\top \beta_2 + U_i
-  \end{aligned}
-  $$
-
-## Intercept, 2: non-zero error mean
-
-- $\E{U_i \mid X_i} = \mu \ne 0$:
-  $$
-  \begin{aligned}
-  \E{Y_i} &= \beta_1 + \E{X_{i,2}}^\top \beta_2 + \mu \\
-  Y_i - \E{Y_i} &= (X_{i,2} - \E{X_{i,2}})^\top \beta_2 + (U_i - \mu)
-  \end{aligned}
-  $$
-
-- Then:
-  $$
-  \begin{aligned}
-  Y_i &= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-  &= \beta_1 + X_{i,2}^\top \beta_2 + (U_i - \mu) + \mu \\
-  &= \underbrace{(\beta_1 + \mu)}_{=\, \beta_1^*} + X_{i,2}^\top \beta_2 + \underbrace{(U_i - \mu)}_{=\, U_i^*} \\
-  &= \beta_1^* + X_{i,2}^\top \beta_2 + U_i^*
-  \end{aligned}
-  $$
-
-- $\E{U_i^* \mid X_i} = 0$.
-
-- Estimable: $\beta_2$ and $\beta_1^* = \beta_1 + \mu$.
-
 # Summary
 
 ## Projections

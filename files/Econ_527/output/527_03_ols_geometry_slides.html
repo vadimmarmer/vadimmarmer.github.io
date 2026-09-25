@@ -1866,47 +1866,6 @@ Y = \beta_1 \ell + X_2 \beta_2 + U
 \end{aligned}
 </span></p></li>
 </ul>
-</section>
-<section id="intercept-1-deviations-from-means" class="slide level2">
-<h2>Intercept, 1: deviations from means</h2>
-<ul>
-<li class="fragment"><p>In the sample: <span class="math display">
-\begin{aligned}
-Y_i &amp;= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-\bar Y &amp;= \beta_1 + \bar X_2^\top \beta_2 + \bar U \\
-\underbrace{Y_i - \bar Y}_{\tilde Y_i} &amp;= \underbrace{(X_{i,2} - \bar X_2)^\top}_{\tilde X_{i,2}^\top} \beta_2 + \underbrace{(U_i - \bar U)}_{\tilde U_i} \\
-\tilde Y_i &amp;= \tilde X_{i,2}^\top \beta_2 + \tilde U_i
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>In the population: <span class="math display">
-\begin{aligned}
-Y_i &amp;= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-\mathrm{E}\left[Y_i\right] &amp;= \beta_1 + \mathrm{E}\left[X_{i,2}\right]^\top \beta_2 \\
-Y_i - \mathrm{E}\left[Y_i\right] &amp;= (X_{i,2} - \mathrm{E}\left[X_{i,2}\right])^\top \beta_2 + U_i
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="intercept-2-non-zero-error-mean" class="slide level2">
-<h2>Intercept, 2: non-zero error mean</h2>
-<ul>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = \mu \ne 0</span>: <span class="math display">
-\begin{aligned}
-\mathrm{E}\left[Y_i\right] &amp;= \beta_1 + \mathrm{E}\left[X_{i,2}\right]^\top \beta_2 + \mu \\
-Y_i - \mathrm{E}\left[Y_i\right] &amp;= (X_{i,2} - \mathrm{E}\left[X_{i,2}\right])^\top \beta_2 + (U_i - \mu)
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>Then: <span class="math display">
-\begin{aligned}
-Y_i &amp;= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-&amp;= \beta_1 + X_{i,2}^\top \beta_2 + (U_i - \mu) + \mu \\
-&amp;= \underbrace{(\beta_1 + \mu)}_{=\, \beta_1^*} + X_{i,2}^\top \beta_2 + \underbrace{(U_i - \mu)}_{=\, U_i^*} \\
-&amp;= \beta_1^* + X_{i,2}^\top \beta_2 + U_i^*
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^* \mid X_i\right] = 0</span>.</p></li>
-<li class="fragment"><p>Estimable: <span class="math inline">\beta_2</span> and <span class="math inline">\beta_1^* = \beta_1 + \mu</span>.</p></li>
-</ul>
 </section></section>
 <section>
 <section id="summary" class="title-slide slide level1 center">

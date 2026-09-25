@@ -2272,8 +2272,6 @@ window.Quarto = {
   <li><a href="#tilde-x_2-m_ell-x_2" id="toc-tilde-x_2-m_ell-x_2" class="nav-link" data-scroll-target="#tilde-x_2-m_ell-x_2"><span class="math inline">\tilde X_2 = M_\ell X_2</span></a></li>
   <li><a href="#slope-deviations-from-the-mean" id="toc-slope-deviations-from-the-mean" class="nav-link" data-scroll-target="#slope-deviations-from-the-mean">Slope: deviations from the mean</a></li>
   <li><a href="#several-regressors-and-an-intercept" id="toc-several-regressors-and-an-intercept" class="nav-link" data-scroll-target="#several-regressors-and-an-intercept">Several regressors and an intercept</a></li>
-  <li><a href="#intercept-1-deviations-from-means" id="toc-intercept-1-deviations-from-means" class="nav-link" data-scroll-target="#intercept-1-deviations-from-means">Intercept, 1: deviations from means</a></li>
-  <li><a href="#intercept-2-non-zero-error-mean" id="toc-intercept-2-non-zero-error-mean" class="nav-link" data-scroll-target="#intercept-2-non-zero-error-mean">Intercept, 2: non-zero error mean</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
   <ul class="collapse">
@@ -3078,47 +3076,6 @@ Y = \beta_1 \ell + X_2 \beta_2 + U
 &amp;= \sum_{i=1}^n (X_{i,2} - \bar X_2)(X_{i,2} - \bar X_2)^\top
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="intercept-1-deviations-from-means" class="level2">
-<h2 class="anchored" data-anchor-id="intercept-1-deviations-from-means">Intercept, 1: deviations from means</h2>
-<ul>
-<li><p>In the sample: <span class="math display">
-\begin{aligned}
-Y_i &amp;= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-\bar Y &amp;= \beta_1 + \bar X_2^\top \beta_2 + \bar U \\
-\underbrace{Y_i - \bar Y}_{\tilde Y_i} &amp;= \underbrace{(X_{i,2} - \bar X_2)^\top}_{\tilde X_{i,2}^\top} \beta_2 + \underbrace{(U_i - \bar U)}_{\tilde U_i} \\
-\tilde Y_i &amp;= \tilde X_{i,2}^\top \beta_2 + \tilde U_i
-\end{aligned}
-</span></p></li>
-<li><p>In the population: <span class="math display">
-\begin{aligned}
-Y_i &amp;= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-\mathrm{E}\left[Y_i\right] &amp;= \beta_1 + \mathrm{E}\left[X_{i,2}\right]^\top \beta_2 \\
-Y_i - \mathrm{E}\left[Y_i\right] &amp;= (X_{i,2} - \mathrm{E}\left[X_{i,2}\right])^\top \beta_2 + U_i
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="intercept-2-non-zero-error-mean" class="level2">
-<h2 class="anchored" data-anchor-id="intercept-2-non-zero-error-mean">Intercept, 2: non-zero error mean</h2>
-<ul>
-<li><p><span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = \mu \ne 0</span>: <span class="math display">
-\begin{aligned}
-\mathrm{E}\left[Y_i\right] &amp;= \beta_1 + \mathrm{E}\left[X_{i,2}\right]^\top \beta_2 + \mu \\
-Y_i - \mathrm{E}\left[Y_i\right] &amp;= (X_{i,2} - \mathrm{E}\left[X_{i,2}\right])^\top \beta_2 + (U_i - \mu)
-\end{aligned}
-</span></p></li>
-<li><p>Then: <span class="math display">
-\begin{aligned}
-Y_i &amp;= \beta_1 + X_{i,2}^\top \beta_2 + U_i \\
-&amp;= \beta_1 + X_{i,2}^\top \beta_2 + (U_i - \mu) + \mu \\
-&amp;= \underbrace{(\beta_1 + \mu)}_{=\, \beta_1^*} + X_{i,2}^\top \beta_2 + \underbrace{(U_i - \mu)}_{=\, U_i^*} \\
-&amp;= \beta_1^* + X_{i,2}^\top \beta_2 + U_i^*
-\end{aligned}
-</span></p></li>
-<li><p><span class="math inline">\mathrm{E}\left[U_i^* \mid X_i\right] = 0</span>.</p></li>
-<li><p>Estimable: <span class="math inline">\beta_2</span> and <span class="math inline">\beta_1^* = \beta_1 + \mu</span>.</p></li>
 </ul>
 </section>
 </section>
