@@ -29,6 +29,8 @@ The course page lists the slides first and the typed lecture notes below them.
 
 The settled notation across the decks: transpose is `^\top`, the error is `U_i`, and expectation, variance and covariance use the `\E{}`, `\Var{}` and `\Cov{}` macros, each defined in a hidden block after the first heading of its deck. Match it when writing or extending a deck.
 
+The author's rules for the slides are `/Users/vmarmer/.claude/rules/lecture-slides.md`, which loads whenever a deck file here is read: minimal text, fragments, every derivation one displayed block with one step per line, no step from his class notes skipped. Deck 3 is the model for style and format; decks 1 and 2 are not. A new deck is written through the `lecture-slides` skill.
+
 | Deck | File | Topic |
 |---|---|---|
 | 1 | `527_01_regression_ols.qmd` | Regression, identification, and the OLS estimator |
@@ -70,6 +72,6 @@ Add one numbered line to the Slides section of `_teaching/2023-09-Econ-527.md`, 
 
 ## Workflow
 
-**Slides.** Draft from the typed lecture notes and the transcriptions of the handwritten class notes, in `/Users/vmarmer/Documents/teaching/Econ_527/slides/`. When the author says the deck is ready, move the `.qmd` here, render here, commit the `.qmd` and all three files in `output/` to `vadimmarmer.github.io`, add the line to the course page. This repository is not cloud-synced, so the ordinary git commands apply, including `git pull`.
+**Slides.** With the `lecture-slides` skill, draft from the typed lecture notes and the transcriptions of the handwritten class notes, in `/Users/vmarmer/Documents/teaching/Econ_527/slides/`. When the author says the deck is ready, move the `.qmd` here, render here, commit the `.qmd` and all three files in `output/` to `vadimmarmer.github.io`, add the line to the course page. This repository is not cloud-synced, so the ordinary git commands apply, including `git pull`.
 
 **Lecture notes.** Edit TeX in `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/`, compile with `latexmk -pdf`, copy the PDF here, commit the TeX to `vadimmarmer/Econ-527` and the PDF to `vadimmarmer.github.io`.
