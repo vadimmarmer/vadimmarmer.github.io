@@ -1062,8 +1062,8 @@ Vadim Marmer, UBC
 
 </section>
 <section>
-<section id="the-model-and-the-assumptions" class="title-slide slide level1 center">
-<h1>The model and the assumptions</h1>
+<section id="model-and-assumptions" class="title-slide slide level1 center">
+<h1>Model and assumptions</h1>
 
 </section>
 <section id="where-the-first-lecture-ended" class="slide level2">
@@ -1081,8 +1081,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p>Three questions, taken in this order: whether <span class="math inline">\hat\beta</span> is right on average, how far it moves from sample to sample, and whether a better estimator of the same kind exists.</p></li>
 </ul>
 </section>
-<section id="the-model-in-matrix-form" class="slide level2">
-<h2>The model in matrix form</h2>
+<section id="model-in-matrix-form" class="slide level2">
+<h2>Model in matrix form</h2>
 <ul>
 <li class="fragment"><p>Stack the <span class="math inline">n</span> observations, as in the first lecture: <span class="math display">
 \underset{n\times1}{Y} = \begin{pmatrix} Y_1 \\ \vdots \\ Y_n \end{pmatrix},\qquad
@@ -1095,8 +1095,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p><span class="math inline">\beta</span> is fixed and unknown. <span class="math inline">X</span>, <span class="math inline">Y</span> and <span class="math inline">U</span> are random, and <span class="math inline">U</span> is not observed.</p></li>
 </ul>
 </section>
-<section id="the-four-assumptions" class="slide level2">
-<h2>The four assumptions</h2>
+<section id="four-assumptions" class="slide level2">
+<h2>Four assumptions</h2>
 <ul>
 <li class="fragment"><p><strong>Assumption 1.</strong> <span class="math inline">Y = X\beta + U</span> for some <span class="math inline">\beta \in \mathbb{R}^k</span>.</p></li>
 <li class="fragment"><p><strong>Assumption 2.</strong> <span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>.</p></li>
@@ -1122,8 +1122,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p>The conditional statement is the stronger one, and it is the one this lecture proves.</p></li>
 </ul>
 </section>
-<section id="the-sampling-error" class="slide level2">
-<h2>The sampling error</h2>
+<section id="sampling-error" class="slide level2">
+<h2>Sampling error</h2>
 <ul>
 <li class="fragment"><p>Substitute Assumption 1 into the estimator; Assumption 4 is what makes <span class="math inline">(X^\top X)^{-1}</span> exist: <span class="math display">
 \begin{aligned}
@@ -1153,8 +1153,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p>The two factors are built from the same <span class="math inline">X</span>, and once <span class="math inline">\mathrm{E}\left[U \mid X\right]</span> is not zero, the expectation of their product need not factor.</p></li>
 </ul>
 </section>
-<section id="the-expectation-of-a-ratio" class="slide level2">
-<h2>The expectation of a ratio</h2>
+<section id="expectation-of-a-ratio" class="slide level2">
+<h2>Expectation of a ratio</h2>
 <ul>
 <li class="fragment"><p>The one-regressor case makes the failure visible: <span class="math display">
 \mathrm{E}\left[\frac{\sum_i X_i U_i}{\sum_i X_i^2}\right] \;\text{ need not equal }\; \frac{\mathrm{E}\left[\sum_i X_i U_i\right]}{\mathrm{E}\left[\sum_i X_i^2\right]} = 0.
@@ -1213,12 +1213,12 @@ Vadim Marmer, UBC
 </ul>
 </section></section>
 <section>
-<section id="the-variance-of-a-random-vector" class="title-slide slide level1 center">
-<h1>The variance of a random vector</h1>
+<section id="variance-of-a-random-vector" class="title-slide slide level1 center">
+<h1>Variance of a random vector</h1>
 
 </section>
-<section id="the-definition" class="slide level2">
-<h2>The definition</h2>
+<section id="definition" class="slide level2">
+<h2>Definition</h2>
 <ul>
 <li class="fragment"><p>For a random vector <span class="math inline">V</span> that is <span class="math inline">n \times 1</span> with finite second moments, and with <span class="math inline">\mathrm{E}\left[V\right] = (\mathrm{E}\left[V_1\right], \ldots, \mathrm{E}\left[V_n\right])^\top</span>, <span class="math display">
 \mathrm{Var}\left(V\right) = \mathrm{E}\left[\underset{n\times 1}{(V - \mathrm{E}\left[V\right])}\ \underset{1\times n}{(V - \mathrm{E}\left[V\right])^\top}\right] \qquad (n \times n).
@@ -1226,8 +1226,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p>The product inside is an outer product, not an inner product, so the result is a matrix rather than a number.</p></li>
 </ul>
 </section>
-<section id="the-matrix-entry-by-entry" class="slide level2">
-<h2>The matrix entry by entry</h2>
+<section id="entry-by-entry" class="slide level2">
+<h2>Entry by entry</h2>
 <ul>
 <li class="fragment"><p>Entry <span class="math inline">(i,j)</span> is <span class="math inline">\mathrm{E}\left[(V_i - \mathrm{E}\left[V_i\right])(V_j - \mathrm{E}\left[V_j\right])\right]</span>, so <span class="math display">
 \mathrm{Var}\left(V\right) = \begin{pmatrix}
@@ -1301,8 +1301,8 @@ a_1 (V_1 - \mathrm{E}\left[V_1\right]) + \cdots + a_n (V_n - \mathrm{E}\left[V_n
 <li class="fragment"><p>This is why <span class="math inline">\beta</span> will drop out of the variance of the sampling error.</p></li>
 </ul>
 </section>
-<section id="the-conditional-version" class="slide level2">
-<h2>The conditional version</h2>
+<section id="conditional-version" class="slide level2">
+<h2>Conditional version</h2>
 <ul>
 <li class="fragment"><p>The same definition with conditional expectations throughout: <span class="math display">
 \mathrm{Var}\left(V \mid X\right) = \mathrm{E}\left[\big(V - \mathrm{E}\left[V \mid X\right]\big)\big(V - \mathrm{E}\left[V \mid X\right]\big)^\top \,\Big|\, X\right].
@@ -1314,19 +1314,19 @@ a_1 (V_1 - \mathrm{E}\left[V_1\right]) + \cdots + a_n (V_n - \mathrm{E}\left[V_n
 </ul>
 </section></section>
 <section>
-<section id="the-variance-of-the-ols-estimator" class="title-slide slide level1 center">
-<h1>The variance of the OLS estimator</h1>
+<section id="variance-of-the-ols-estimator" class="title-slide slide level1 center">
+<h1>Variance of the OLS estimator</h1>
 
 </section>
-<section id="the-variance-matrix-of-hatbeta" class="slide level2">
-<h2>The variance matrix of <span class="math inline">\hat\beta</span></h2>
+<section id="variance-matrix-of-hatbeta" class="slide level2">
+<h2>Variance matrix of <span class="math inline">\hat\beta</span></h2>
 <ul>
 <li class="fragment"><p><span class="math inline">\hat\beta</span> is <span class="math inline">k \times 1</span>, so <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span> is <span class="math inline">k \times k</span>: the conditional variance of each estimated coefficient on the diagonal, the conditional covariances between them off it.</p></li>
 <li class="fragment"><p>Conditioning on <span class="math inline">X</span> again, for the same reason it worked for unbiasedness: it makes <span class="math inline">(X^\top X)^{-1}X^\top</span> a known matrix.</p></li>
 </ul>
 </section>
-<section id="the-sandwich-formula" class="slide level2">
-<h2>The sandwich formula</h2>
+<section id="sandwich-formula" class="slide level2">
+<h2>Sandwich formula</h2>
 <ul>
 <li class="fragment"><p>Start from the sampling error and name the matrix that multiplies <span class="math inline">U</span>: <span class="math display">
 \hat\beta = \beta + \underbrace{(X^\top X)^{-1} X^\top}_{\Gamma_X}\, U.
@@ -1340,8 +1340,8 @@ a_1 (V_1 - \mathrm{E}\left[V_1\right]) + \cdots + a_n (V_n - \mathrm{E}\left[V_n
 </span></p></li>
 </ul>
 </section>
-<section id="the-sandwich-formula-written-out" class="slide level2">
-<h2>The sandwich formula written out</h2>
+<section id="sandwich-formula-written-out" class="slide level2">
+<h2>Sandwich formula written out</h2>
 <ul>
 <li class="fragment"><p>Substituting <span class="math inline">\Gamma_X = (X^\top X)^{-1}X^\top</span>, with <span class="math inline">\Gamma_X^\top = X (X^\top X)^{-1}</span> because <span class="math inline">X^\top X</span> and its inverse are symmetric: <span class="math display">
 \boxed{\ \mathrm{Var}\left(\hat\beta \mid X\right) = (X^\top X)^{-1} X^\top\ \mathrm{Var}\left(U \mid X\right)\ X (X^\top X)^{-1}\ }
@@ -1367,8 +1367,8 @@ a_1 (V_1 - \mathrm{E}\left[V_1\right]) + \cdots + a_n (V_n - \mathrm{E}\left[V_n
 <li class="fragment"><p>Assumption 3 is these two statements together, and nothing more. It does not say the errors are independent, and it does not say they are normal.</p></li>
 </ul>
 </section>
-<section id="the-variance-of-ols-under-assumption-3" class="slide level2">
-<h2>The variance of OLS under Assumption 3</h2>
+<section id="variance-of-ols-under-assumption-3" class="slide level2">
+<h2>Variance of OLS under Assumption 3</h2>
 <ul>
 <li class="fragment"><p>Put <span class="math inline">\mathrm{Var}\left(U \mid X\right) = \sigma^2 I_n</span> into the sandwich: <span class="math display">
 \begin{aligned}
@@ -1462,8 +1462,8 @@ X^\top \Omega X = \begin{pmatrix} X_1 &amp; \cdots &amp; X_n \end{pmatrix} \Omeg
 </table>
 </section></section>
 <section>
-<section id="the-gauss-markov-theorem" class="title-slide slide level1 center">
-<h1>The Gauss-Markov theorem</h1>
+<section id="gauss-markov-theorem" class="title-slide slide level1 center">
+<h1>Gauss-Markov theorem</h1>
 
 </section>
 <section id="linear-estimators" class="slide level2">
@@ -1497,19 +1497,14 @@ X^\top \Omega X = \begin{pmatrix} X_1 &amp; \cdots &amp; X_n \end{pmatrix} \Omeg
 \tilde\beta = \beta + (X^\top W X)^{-1} X^\top W\, U, \qquad \mathrm{E}\left[\tilde\beta \mid X\right] = \beta.
 </span></p></li>
 <li class="fragment"><p>Being linear and unbiased does not single OLS out. There are many conditionally unbiased linear estimators.</p></li>
-</ul>
-</section>
-<section id="the-variance-of-tildebeta-xtop-w-x-1-xtop-w-y" class="slide level2">
-<h2>The variance of <span class="math inline">\tilde\beta = (X^\top W X)^{-1} X^\top W\, Y</span></h2>
-<ul>
 <li class="fragment"><p>One can show that under Assumptions 1-4, <span class="math display">
 \mathrm{Var}\left(\tilde\beta \mid X\right) = \sigma^2 (X^\top W X)^{-1} X^\top W\, W X (X^\top W X)^{-1},
 </span> which reduces to <span class="math inline">\sigma^2 (X^\top X)^{-1}</span> when <span class="math inline">W = I_n</span>.</p></li>
 <li class="fragment"><p>Which of these matrices is smallest, and what smallest means for matrices, are the next questions.</p></li>
 </ul>
 </section>
-<section id="the-comparison-to-settle" class="slide level2">
-<h2>The comparison to settle</h2>
+<section id="comparison-to-settle" class="slide level2">
+<h2>Comparison to settle</h2>
 <ul>
 <li class="fragment"><p>For every linear conditionally unbiased <span class="math inline">\tilde\beta</span>, compare the two conditional variance matrices: <span class="math display">
 \underset{k\times k}{\mathrm{Var}\left(\tilde\beta \mid X\right)} - \underset{k\times k}{\mathrm{Var}\left(\hat\beta \mid X\right)} \ \overset{?}{\ge}\ 0.
@@ -1533,19 +1528,26 @@ e_j^\top M e_j = \sum_{l=1}^k \sum_{m=1}^k (e_j)_l\, M_{lm}\, (e_j)_m = M_{jj}.
 </span></p></li>
 </ul>
 </section>
-<section id="the-gauss-markov-theorem-1" class="slide level2 scrollable">
-<h2>The Gauss-Markov theorem</h2>
+<section id="gauss-markov-theorem-1" class="slide level2 scrollable">
+<h2>Gauss-Markov theorem</h2>
 <ul>
-<li class="fragment"><p><strong>Theorem.</strong> Under Assumptions 1 to 4, let <span class="math inline">\tilde\beta</span> satisfy</p>
+<li class="fragment"><p><strong>Theorem.</strong> Suppose Assumptions 1 to 4 hold:</p>
 <ol type="1">
-<li class="fragment"><strong>linearity</strong>: <span class="math inline">\tilde\beta = A Y</span>, with <span class="math inline">A</span> a <span class="math inline">k \times n</span> matrix depending on <span class="math inline">X</span> alone;</li>
-<li class="fragment"><strong>conditional unbiasedness</strong>: <span class="math inline">\mathrm{E}\left[\tilde\beta \mid X\right] = \beta</span> for every value of <span class="math inline">\beta</span>.</li>
+<li class="fragment"><span class="math inline">Y = X\beta + U</span> for some <span class="math inline">\beta \in \mathbb{R}^k</span>;</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>;</li>
+<li class="fragment"><span class="math inline">\mathrm{Var}\left(U \mid X\right) = \sigma^2 I_n</span> for some <span class="math inline">\sigma^2 &gt; 0</span>;</li>
+<li class="fragment"><span class="math inline">\operatorname{rank}(X) = k</span>.</li>
 </ol></li>
+<li class="fragment"><p>Let <span class="math inline">\hat\beta = (X^\top X)^{-1} X^\top Y</span> be the OLS estimator.</p></li>
+<li class="fragment"><p>Let <span class="math inline">\tilde\beta</span> be any estimator that is</p>
+<ul>
+<li class="fragment"><strong>linear</strong>: <span class="math inline">\tilde\beta = A Y</span>, with <span class="math inline">A</span> a <span class="math inline">k \times n</span> matrix depending on <span class="math inline">X</span> alone;</li>
+<li class="fragment"><strong>conditionally unbiased</strong>: <span class="math inline">\mathrm{E}\left[\tilde\beta \mid X\right] = \beta</span> for every value of <span class="math inline">\beta</span>.</li>
+</ul></li>
 <li class="fragment"><p>Then <span class="math display">
 \mathrm{Var}\left(\tilde\beta \mid X\right) - \mathrm{Var}\left(\hat\beta \mid X\right)\ge 0 \ \text{(positive semidefinite).}
 </span></p></li>
-<li class="fragment"><p>OLS is the <strong>best linear unbiased estimator</strong> (BLUE): best in the sense above, linear in <span class="math inline">Y</span>, conditionally unbiased, and an estimator of <span class="math inline">\beta</span>.</p></li>
-<li class="fragment"><p>The theorem is about conditional unbiasedness, because it compares conditional variances.</p></li>
+<li class="fragment"><p>Meaning: OLS is the <strong>best linear unbiased estimator</strong> (BLUE): best in the sense above, linear in <span class="math inline">Y</span>, conditionally unbiased, and an estimator of <span class="math inline">\beta</span>.</p></li>
 </ul>
 </section>
 <section id="proof-step-1-linearity-and-unbiasedness-force-a-x-i_k" class="slide level2">
@@ -1574,15 +1576,15 @@ A X = (X^\top W X)^{-1} X^\top W X = I_k.
 </ul>
 </section>
 <section id="proof-step-2-the-covariance-between-tildebeta-and-hatbeta" class="slide level2">
-<h2>Proof, step 2: The covariance between <span class="math inline">\tilde\beta</span> and <span class="math inline">\hat\beta</span></h2>
+<h2>Proof, step 2: the covariance between <span class="math inline">\tilde\beta</span> and <span class="math inline">\hat\beta</span></h2>
 <ul>
 <li class="fragment"><p>Using <span class="math inline">A X = I_k</span> for the general estimator: <span class="math display">
 \tilde\beta = A X \beta + A U = \beta + A U.
 </span></p></li>
-<li class="fragment"><p>Therefore: <span class="math inline">\mathrm{E}\left[\tilde\beta \mid X\right]=\beta</span> and <span class="math display">\begin{align}
+<li class="fragment"><p>Therefore: <span class="math display">\begin{align*}
 \tilde\beta - \beta &amp;= A U.
-\end{align}</span></p></li>
-<li class="fragment"><p>For OLS: <span class="math inline">\mathrm{E}\left[\hat\beta \mid X\right]=\beta</span> and <span class="math display">
+\end{align*}</span></p></li>
+<li class="fragment"><p>For OLS: <span class="math display">
 \hat\beta - \beta = (X^\top X)^{-1} X^\top U.
 </span></p></li>
 <li class="fragment"><p>Consider the covariance between <span class="math inline">\tilde\beta</span> and <span class="math inline">\hat\beta</span>: <span class="math display">
@@ -1642,24 +1644,6 @@ A X = (X^\top W X)^{-1} X^\top W X = I_k.
 <li class="fragment"><p>Assumption 3 entered in step 2, where <span class="math inline">\mathrm{E}\left[U U^\top \mid X\right]</span> was replaced by <span class="math inline">\sigma^2 I_n</span>, and again when <span class="math inline">\sigma^2 (X^\top X)^{-1}</span> was recognised as <span class="math inline">\mathrm{Var}\left(\hat\beta \mid X\right)</span>. Without it the cancellation that produced <span class="math inline">\sigma^2 A X</span> fails, and the covariance need not equal the variance of OLS.</p></li>
 <li class="fragment"><p>If Assumption 3 fails, OLS is still unbiased but need not be best: Assumption 3 is sufficient for efficiency, not necessary.</p></li>
 </ul>
-</section></section>
-<section>
-<section id="two-extensions-and-the-summary" class="title-slide slide level1 center">
-<h1>Two extensions, and the summary</h1>
-
-</section>
-<section id="adding-normality" class="slide level2">
-<h2>Adding normality</h2>
-<ul>
-<li class="fragment"><p><strong>Assumption 5.</strong> <span class="math inline">U \mid X \sim N(0, \sigma^2 I_n)</span>. Assumptions 1 to 5 define the classical normal regression model.</p></li>
-<li class="fragment"><p>Given <span class="math inline">X</span>, <span class="math inline">\hat\beta = \beta + (X^\top X)^{-1}X^\top U</span> is a constant plus a linear function of <span class="math inline">U</span>, and Assumption 5 fixes the conditional distribution of <span class="math inline">U</span>. For non-random <span class="math inline">\alpha</span> and <span class="math inline">\Gamma</span>, such a function of a normal vector is normal: <span class="math display">
-V \sim N(\mu, \Sigma) \quad\Longrightarrow\quad \alpha + \Gamma V \sim N\big(\alpha + \Gamma \mu,\ \Gamma \Sigma \Gamma^\top\big).
-</span></p></li>
-<li class="fragment"><p>Under Assumptions 1, 4 and 5, since Assumption 5 implies Assumptions 2 and 3, the conditional mean and variance are the ones already computed: <span class="math display">
-\boxed{\ \hat\beta \mid X \ \sim\ N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big)\ }
-</span></p></li>
-<li class="fragment"><p>Nothing before this slide needed normality. It is what confidence intervals and tests will be built on.</p></li>
-</ul>
 </section>
 <section id="if-assumption-3-fails-generalised-least-squares" class="slide level2">
 <h2>If Assumption 3 fails: generalised least squares</h2>
@@ -1679,8 +1663,23 @@ V \sim N(\mu, \Sigma) \quad\Longrightarrow\quad \alpha + \Gamma V \sim N\big(\al
 <li class="fragment"><p>OLS on the transformed model is the best linear unbiased estimator: <span class="math display">
 \hat\beta^* = (X^{*\top} X^*)^{-1} X^{*\top} Y^* = (X^\top \Omega^{-1} X)^{-1} X^\top \Omega^{-1} Y,
 </span> which is weighted least squares with <span class="math inline">W = \Omega^{-1}</span>. This is the <strong>GLS estimator</strong>: generalized least squares.</p></li>
+<li class="fragment"><p>Suppose <span class="math inline">\mathrm{E}\left[U_i^2 \mid X\right] = \sigma_i^2</span> and <span class="math inline">\mathrm{E}\left[U_i U_j \mid X\right] = 0</span> for <span class="math inline">i \neq j</span>, so that <span class="math display">
+\Omega = \begin{pmatrix} \sigma_1^2 &amp; &amp; 0 \\ &amp; \ddots &amp; \\ 0 &amp; &amp; \sigma_n^2 \end{pmatrix}.
+</span></p></li>
+<li class="fragment"><p>Then the GLS estimator is: <span class="math display">
+\hat\beta^* = (X^\top \Omega^{-1} X)^{-1} X^\top \Omega^{-1} Y = \left(\sum_{i=1}^n \frac{X_i X_i^\top}{\sigma_i^2}\right)^{-1} \sum_{i=1}^n \frac{X_i Y_i}{\sigma_i^2}.
+</span> Observations with larger <span class="math inline">\sigma_i^2</span> get less weight, and those with smaller <span class="math inline">\sigma_i^2</span> get more weight.</p></li>
+<li class="fragment"><p>This is equivalent transforming the data by scaling each observation <span class="math inline">i</span> by its <span class="math inline">\sigma_i</span>:</p>
+<p><span class="math display">
+\frac{Y_i}{\sigma_i} = \frac{X_i^\top}{\sigma_i} \beta + \frac{U_i}{\sigma_i}, \qquad i = 1, \ldots, n,
+</span> so that <span class="math inline">\mathrm{Var}\left(U_i / \sigma_i \mid X\right) = 1</span> for every <span class="math inline">i</span>.</p></li>
 <li class="fragment"><p>In practice <span class="math inline">\Omega</span> is not known.</p></li>
 </ul>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
 </section>
 <section id="summary-unbiasedness-and-variance" class="slide level2">
 <h2>Summary: unbiasedness and variance</h2>

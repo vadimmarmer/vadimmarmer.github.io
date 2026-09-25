@@ -172,7 +172,7 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## The column space $S(X)$
+## Column space $S(X)$
 
 - Column space of $X$:
   $$
@@ -453,7 +453,7 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## The orthogonal complement $S^\perp(X)$
+## Orthogonal complement $S^\perp(X)$
 
 - Orthogonal complement of $S(X)$:
   $$
@@ -702,7 +702,7 @@ proj_picture <- function(full, step = 5L) {
 
 # Partitioned regression
 
-## The partition
+## Partition
 
 - Two blocks of regressors, $k_1 + k_2 = k$:
   $$
@@ -727,7 +727,7 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## The Frisch-Waugh-Lovell theorem
+## Frisch-Waugh-Lovell theorem
 
 - **Claim.**
   $$
@@ -851,7 +851,7 @@ proj_picture <- function(full, step = 5L) {
 
 - In general: $\hat\eta \ne \hat\beta_2$, $\tilde Y \ne \hat U$.
 
-## The regression in three steps
+## Regression in three steps
 
 1. Remove from $X_1$ the part collinear with $X_2$: $\tilde X_1$.
 2. Remove from $Y$ the part collinear with $X_2$: $\tilde Y$.
@@ -876,7 +876,7 @@ proj_picture <- function(full, step = 5L) {
 
 # Partitioned regression and the intercept
 
-## The intercept as a regressor
+## Intercept as a regressor
 
 - One regressor and an intercept:
   $$

@@ -1120,8 +1120,8 @@ Vadim Marmer, UBC
 <li class="fragment"><p>A symmetric dependent variable is not required by anything that follows, but specifications with logs often “work better” in practice.</p></li>
 </ul>
 </section>
-<section id="the-data" class="slide level2">
-<h2>The data</h2>
+<section id="data" class="slide level2">
+<h2>Data</h2>
 <ul>
 <li class="fragment"><p>We observe a <strong>sample</strong> of <span class="math inline">n</span> workers: <span class="math display">
 \{(Y_i, X_i) : i = 1, \ldots, n\}.
@@ -1451,8 +1451,8 @@ x \longmapsto \mathrm{E}\left[Y \mid X = x\right] =: g(x),
 <li class="fragment"><p>Uncorrelatedness is weaker still: <span class="math inline">\mathrm{Cov}\left(U, X\right) = 0</span> is a single restriction, and it is compatible with a conditional mean <span class="math inline">\mathrm{E}\left[U \mid X\right]</span> that varies with <span class="math inline">X</span>, because <span class="math inline">\mathrm{Cov}\left(U, X\right) = \mathrm{Cov}\left(\mathrm{E}\left[U \mid X\right], X\right)</span>.</p></li>
 </ul>
 </section>
-<section id="the-conditional-mean-minimises-mean-squared-error" class="slide level2">
-<h2>The conditional mean minimises mean squared error</h2>
+<section id="conditional-mean-minimises-mean-squared-error" class="slide level2">
+<h2>Conditional mean minimises mean squared error</h2>
 <ul>
 <li class="fragment"><p>Among all functions <span class="math inline">m</span> of <span class="math inline">X</span>, the conditional mean is the best predictor of <span class="math inline">Y</span> under squared loss. Condition on <span class="math inline">X</span> first: <span class="math display">
 \begin{aligned}
@@ -1468,12 +1468,12 @@ x \longmapsto \mathrm{E}\left[Y \mid X = x\right] =: g(x),
 </ul>
 </section></section>
 <section>
-<section id="the-linear-regression-model" class="title-slide slide level1 center">
-<h1>The linear regression model</h1>
+<section id="linear-regression-model" class="title-slide slide level1 center">
+<h1>Linear regression model</h1>
 
 </section>
-<section id="the-object-of-interest" class="slide level2">
-<h2>The object of interest</h2>
+<section id="object-of-interest" class="slide level2">
+<h2>Object of interest</h2>
 <ul>
 <li class="fragment"><p>The relationship between the regressors and the dependent variable is summarised by the conditional expectation function: <span class="math display">
 \mathrm{E}\left[Y_i \mid X_i\right] = \mathrm{E}\left[Y_i \mid X_{i1}, \ldots, X_{ik}\right],
@@ -1484,8 +1484,8 @@ x \longmapsto \mathrm{E}\left[Y \mid X = x\right] =: g(x),
 <li class="fragment"><p>Without restrictions this is a function of <span class="math inline">k</span> arguments to be learned from <span class="math inline">n</span> points. The <strong>parametric</strong> approach assumes the functional form and leaves a finite number of unknown constants.</p></li>
 </ul>
 </section>
-<section id="the-linear-regression-model-1" class="slide level2">
-<h2>The linear regression model</h2>
+<section id="linear-regression-model-1" class="slide level2">
+<h2>Linear regression model</h2>
 <ul>
 <li class="fragment"><p><strong>Assumption.</strong> The conditional expectation is linear in the parameters: <span class="math display">
 \mathrm{E}\left[Y_i \mid X_i\right] = \beta_1 X_{i1} + \cdots + \beta_k X_{ik} = X_i^\top \beta,
@@ -1499,8 +1499,8 @@ x \longmapsto \mathrm{E}\left[Y \mid X = x\right] =: g(x),
 <li class="fragment"><p>“Linear” refers to <span class="math inline">\beta</span>. The regressors can be anything: squares, logs, products, indicator variables.</p></li>
 </ul>
 </section>
-<section id="the-error-term" class="slide level2">
-<h2>The error term</h2>
+<section id="error-term" class="slide level2">
+<h2>Error term</h2>
 <ul>
 <li class="fragment"><p><strong>Define</strong> the error as the deviation from the conditional mean: <span class="math display">
 U_i := Y_i - \mathrm{E}\left[Y_i \mid X_i\right] = Y_i - X_i^\top \beta.
@@ -1536,8 +1536,8 @@ Y_i &amp;= X_i^\top \beta + U_i \\
 </span></p></li>
 </ul>
 </section>
-<section id="the-intercept" class="slide level2">
-<h2>The intercept</h2>
+<section id="intercept" class="slide level2">
+<h2>Intercept</h2>
 <ul>
 <li class="fragment"><p>Consider an example with a single regressor <span class="math inline">X_i^\ast\in \mathbb{R}</span>.</p></li>
 <li class="fragment"><p>Suppose <span class="math inline">Y_i = \beta^\ast X_i^\ast + U_i^\ast</span> with <span class="math inline">\mathrm{E}\left[U_i^\ast\mid X_i^\ast\right] = \alpha \neq 0</span>.</p></li>
@@ -1612,8 +1612,8 @@ U_i = Y_i - X_i^\top \beta
 <li class="fragment"><p>If <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span> is invertible, the system has exactly one solution. Whether it is invertible is the whole question.</p></li>
 </ul>
 </section>
-<section id="the-second-moment-matrix" class="slide level2">
-<h2>The second-moment matrix</h2>
+<section id="second-moment-matrix" class="slide level2">
+<h2>Second-moment matrix</h2>
 <ul>
 <li class="fragment"><p>Write <span class="math inline">X_i</span> as a column and <span class="math inline">X_i^\top</span> as a row, and multiply: <span class="math display">
 \begin{aligned}
@@ -1642,8 +1642,8 @@ X_{ik} X_{i1} &amp; X_{ik} X_{i2} &amp; \cdots &amp; X_{ik}^2
 </span></p></li>
 </ul>
 </section>
-<section id="the-second-moment-matrix-is-positive-semidefinite" class="slide level2">
-<h2>The second-moment matrix is positive semidefinite</h2>
+<section id="second-moment-matrix-is-positive-semidefinite" class="slide level2">
+<h2>Second-moment matrix is positive semidefinite</h2>
 <ul>
 <li class="fragment"><p><strong>Definitions.</strong> A <span class="math inline">k\times k</span> symmetric matrix <span class="math inline">A</span> is <strong>positive semidefinite</strong> (p.s.d.) if <span class="math inline">c^\top A c \ge 0</span> for all <span class="math inline">c \in \mathbb{R}^k</span>, and <strong>positive definite</strong> (p.d.) if <span class="math inline">c^\top A c &gt; 0</span> for all <span class="math inline">c \neq 0</span>.</p></li>
 <li class="fragment"><p>Take any <span class="math inline">c \in \mathbb{R}^k</span> and define the scalar <span class="math display">
@@ -1725,8 +1725,8 @@ X_i^\top c = 0 \text{ only if } c = 0 \\
 <li class="fragment"><p>An <strong>estimator</strong> is any function of the sample <span class="math inline">\{(Y_i, X_i)\}</span>. It may not depend on <span class="math inline">U_i</span> or on <span class="math inline">\beta</span>, which are unobserved.</p></li>
 </ul>
 </section>
-<section id="the-same-estimator-from-the-moment-condition" class="slide level2">
-<h2>The same estimator from the moment condition</h2>
+<section id="same-estimator-from-the-moment-condition" class="slide level2">
+<h2>Same estimator from the moment condition</h2>
 <ul>
 <li class="fragment"><p>Alternatively, start from <span class="math inline">\mathrm{E}\left[X_i (Y_i - X_i^\top \beta)\right] = 0</span> and replace the expectation by an average, evaluated at the estimator: <span class="math display">
 \frac{1}{n} \sum_{i=1}^{n} X_i \big(\underbrace{Y_i - X_i^\top \hat\beta}_{=:\ \hat U_i}\big) = 0
@@ -1739,8 +1739,8 @@ X_i^\top c = 0 \text{ only if } c = 0 \\
 </span> which is the sample version of <span class="math inline">\mathrm{E}\left[X_i U_i\right] = 0</span>.</p></li>
 </ul>
 </section>
-<section id="the-estimator-is-not-the-parameter" class="slide level2">
-<h2>The estimator is not the parameter</h2>
+<section id="estimator-is-not-the-parameter" class="slide level2">
+<h2>Estimator is not the parameter</h2>
 <ul>
 <li class="fragment"><p>Sample averages are random; expectations are fixed numbers. In general <span class="math display">
 \frac{1}{n}\sum_{i=1}^{n} X_i X_i^\top \neq \mathrm{E}\left[X_i X_i^\top\right],
@@ -1818,8 +1818,8 @@ X^\top \hat U &amp;= X^\top (Y - X\hat\beta) = X^\top Y - X^\top X\, \underbrace
 </span></li>
 </ul>
 </section>
-<section id="the-sample-rank-condition" class="slide level2">
-<h2>The sample rank condition</h2>
+<section id="sample-rank-condition" class="slide level2">
+<h2>Sample rank condition</h2>
 <ul>
 <li class="fragment"><p><span class="math inline">\operatorname{rank}\left(X^\top X\right)= \operatorname{rank}\left(X\right)</span>.</p></li>
 <li class="fragment"><p>Since <span class="math inline">X^\top X</span> is <span class="math inline">k\times k</span>, its inverse exists exactly when <span class="math inline">\operatorname{rank}\left(X\right) = k</span>, meaning the columns of <span class="math inline">X</span> are linearly independent.</p></li>

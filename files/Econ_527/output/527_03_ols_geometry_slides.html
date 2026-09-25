@@ -1083,8 +1083,8 @@ Vadim Marmer, UBC
 </span></p></li>
 </ul>
 </section>
-<section id="the-column-space-sx" class="slide level2">
-<h2>The column space <span class="math inline">S(X)</span></h2>
+<section id="column-space-sx" class="slide level2">
+<h2>Column space <span class="math inline">S(X)</span></h2>
 <ul>
 <li class="fragment"><p>Column space of <span class="math inline">X</span>: <span class="math display">
 S(X) = \big\{\, v \in \mathbb{R}^n : v = \underset{n\times k}{X}\, \underbrace{b}_{k\times 1} \ \text{ for some } b \in \mathbb{R}^k \,\big\}
@@ -1317,8 +1317,8 @@ M_X M_X &amp;= (I_n - P_X) M_X \\
 </span></p></li>
 </ul>
 </section>
-<section id="the-orthogonal-complement-sperpx" class="slide level2">
-<h2>The orthogonal complement <span class="math inline">S^\perp(X)</span></h2>
+<section id="orthogonal-complement-sperpx" class="slide level2">
+<h2>Orthogonal complement <span class="math inline">S^\perp(X)</span></h2>
 <ul>
 <li class="fragment"><p>Orthogonal complement of <span class="math inline">S(X)</span>: <span class="math display">
 S^\perp(X) = \big\{\, v \in \mathbb{R}^n : v^\top X = 0 \,\big\}
@@ -1549,8 +1549,8 @@ s^2 &amp;= \frac{n}{n-k}\, \hat\sigma^2 \\
 <h1>Partitioned regression</h1>
 
 </section>
-<section id="the-partition" class="slide level2">
-<h2>The partition</h2>
+<section id="partition" class="slide level2">
+<h2>Partition</h2>
 <ul>
 <li class="fragment"><p>Two blocks of regressors, <span class="math inline">k_1 + k_2 = k</span>: <span class="math display">
 \underset{n\times k}{X} = \big[\ \underset{n\times k_1}{X_1} \quad \underset{n\times k_2}{X_2}\ \big], \qquad
@@ -1571,8 +1571,8 @@ Y &amp;= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bma
 </span></p></li>
 </ul>
 </section>
-<section id="the-frisch-waugh-lovell-theorem" class="slide level2">
-<h2>The Frisch-Waugh-Lovell theorem</h2>
+<section id="frisch-waugh-lovell-theorem" class="slide level2">
+<h2>Frisch-Waugh-Lovell theorem</h2>
 <ul>
 <li class="fragment"><p><strong>Claim.</strong> <span class="math display">
 \hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y, \qquad M_2 = I_n - P_2, \quad P_2 = X_2 (X_2^\top X_2)^{-1} X_2^\top
@@ -1683,8 +1683,8 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 <li class="fragment"><p>In general: <span class="math inline">\hat\eta \ne \hat\beta_2</span>, <span class="math inline">\tilde Y \ne \hat U</span>.</p></li>
 </ul>
 </section>
-<section id="the-regression-in-three-steps" class="slide level2 scrollable">
-<h2>The regression in three steps</h2>
+<section id="regression-in-three-steps" class="slide level2 scrollable">
+<h2>Regression in three steps</h2>
 <ol type="1">
 <li class="fragment">Remove from <span class="math inline">X_1</span> the part collinear with <span class="math inline">X_2</span>: <span class="math inline">\tilde X_1</span>.</li>
 <li class="fragment">Remove from <span class="math inline">Y</span> the part collinear with <span class="math inline">X_2</span>: <span class="math inline">\tilde Y</span>.</li>
@@ -1710,8 +1710,8 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 <h1>Partitioned regression and the intercept</h1>
 
 </section>
-<section id="the-intercept-as-a-regressor" class="slide level2">
-<h2>The intercept as a regressor</h2>
+<section id="intercept-as-a-regressor" class="slide level2">
+<h2>Intercept as a regressor</h2>
 <ul>
 <li class="fragment"><p>One regressor and an intercept: <span class="math display">
 Y_i = \underset{1\times 1}{\beta_1} + \underset{1\times 1}{\beta_2}\, \underset{1\times 1}{X_{i,2}} + U_i

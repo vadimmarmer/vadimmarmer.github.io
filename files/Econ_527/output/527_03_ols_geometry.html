@@ -2228,7 +2228,7 @@ window.Quarto = {
   <li><a href="#geometry-of-ols" id="toc-geometry-of-ols" class="nav-link active" data-scroll-target="#geometry-of-ols">Geometry of OLS</a>
   <ul class="collapse">
   <li><a href="#least-squares-as-a-distance" id="toc-least-squares-as-a-distance" class="nav-link" data-scroll-target="#least-squares-as-a-distance">Least squares as a distance</a></li>
-  <li><a href="#the-column-space-sx" id="toc-the-column-space-sx" class="nav-link" data-scroll-target="#the-column-space-sx">The column space <span class="math inline">S(X)</span></a></li>
+  <li><a href="#column-space-sx" id="toc-column-space-sx" class="nav-link" data-scroll-target="#column-space-sx">Column space <span class="math inline">S(X)</span></a></li>
   <li><a href="#hat-y-closest-to-y-in-sx" id="toc-hat-y-closest-to-y-in-sx" class="nav-link" data-scroll-target="#hat-y-closest-to-y-in-sx"><span class="math inline">\hat Y</span>: closest to <span class="math inline">Y</span> in <span class="math inline">S(X)</span></a></li>
   <li><a href="#dropping-the-perpendicular-the-algebra" id="toc-dropping-the-perpendicular-the-algebra" class="nav-link" data-scroll-target="#dropping-the-perpendicular-the-algebra">Dropping the perpendicular: the algebra</a></li>
   </ul></li>
@@ -2239,7 +2239,7 @@ window.Quarto = {
   <li><a href="#p_x-p.s.d.-trace-k" id="toc-p_x-p.s.d.-trace-k" class="nav-link" data-scroll-target="#p_x-p.s.d.-trace-k"><span class="math inline">P_X</span>: p.s.d., trace <span class="math inline">k</span></a></li>
   <li><a href="#properties-of-m_x" id="toc-properties-of-m_x" class="nav-link" data-scroll-target="#properties-of-m_x">Properties of <span class="math inline">M_X</span></a></li>
   <li><a href="#m_x-p_x-0-and-idempotency" id="toc-m_x-p_x-0-and-idempotency" class="nav-link" data-scroll-target="#m_x-p_x-0-and-idempotency"><span class="math inline">M_X P_X = 0</span> and idempotency</a></li>
-  <li><a href="#the-orthogonal-complement-sperpx" id="toc-the-orthogonal-complement-sperpx" class="nav-link" data-scroll-target="#the-orthogonal-complement-sperpx">The orthogonal complement <span class="math inline">S^\perp(X)</span></a></li>
+  <li><a href="#orthogonal-complement-sperpx" id="toc-orthogonal-complement-sperpx" class="nav-link" data-scroll-target="#orthogonal-complement-sperpx">Orthogonal complement <span class="math inline">S^\perp(X)</span></a></li>
   <li><a href="#m_x-rank-n---k-p.s.d." id="toc-m_x-rank-n---k-p.s.d." class="nav-link" data-scroll-target="#m_x-rank-n---k-p.s.d."><span class="math inline">M_X</span>: rank <span class="math inline">n - k</span>, p.s.d.</a></li>
   <li><a href="#y-hat-y-hat-u" id="toc-y-hat-y-hat-u" class="nav-link" data-scroll-target="#y-hat-y-hat-u"><span class="math inline">Y = \hat Y + \hat U</span></a></li>
   </ul></li>
@@ -2255,17 +2255,17 @@ window.Quarto = {
   </ul></li>
   <li><a href="#partitioned-regression" id="toc-partitioned-regression" class="nav-link" data-scroll-target="#partitioned-regression">Partitioned regression</a>
   <ul class="collapse">
-  <li><a href="#the-partition" id="toc-the-partition" class="nav-link" data-scroll-target="#the-partition">The partition</a></li>
-  <li><a href="#the-frisch-waugh-lovell-theorem" id="toc-the-frisch-waugh-lovell-theorem" class="nav-link" data-scroll-target="#the-frisch-waugh-lovell-theorem">The Frisch-Waugh-Lovell theorem</a></li>
+  <li><a href="#partition" id="toc-partition" class="nav-link" data-scroll-target="#partition">Partition</a></li>
+  <li><a href="#frisch-waugh-lovell-theorem" id="toc-frisch-waugh-lovell-theorem" class="nav-link" data-scroll-target="#frisch-waugh-lovell-theorem">Frisch-Waugh-Lovell theorem</a></li>
   <li><a href="#proof" id="toc-proof" class="nav-link" data-scroll-target="#proof">Proof</a></li>
   <li><a href="#m_2-hat-u-hat-u" id="toc-m_2-hat-u-hat-u" class="nav-link" data-scroll-target="#m_2-hat-u-hat-u"><span class="math inline">M_2 \hat U = \hat U</span></a></li>
   <li><a href="#residuals-on-residuals" id="toc-residuals-on-residuals" class="nav-link" data-scroll-target="#residuals-on-residuals">Residuals on residuals</a></li>
   <li><a href="#tilde-x_1-and-tilde-y-ols-residuals" id="toc-tilde-x_1-and-tilde-y-ols-residuals" class="nav-link" data-scroll-target="#tilde-x_1-and-tilde-y-ols-residuals"><span class="math inline">\tilde X_1</span> and <span class="math inline">\tilde Y</span>: OLS residuals</a></li>
-  <li><a href="#the-regression-in-three-steps" id="toc-the-regression-in-three-steps" class="nav-link" data-scroll-target="#the-regression-in-three-steps">The regression in three steps</a></li>
+  <li><a href="#regression-in-three-steps" id="toc-regression-in-three-steps" class="nav-link" data-scroll-target="#regression-in-three-steps">Regression in three steps</a></li>
   </ul></li>
   <li><a href="#partitioned-regression-and-the-intercept" id="toc-partitioned-regression-and-the-intercept" class="nav-link" data-scroll-target="#partitioned-regression-and-the-intercept">Partitioned regression and the intercept</a>
   <ul class="collapse">
-  <li><a href="#the-intercept-as-a-regressor" id="toc-the-intercept-as-a-regressor" class="nav-link" data-scroll-target="#the-intercept-as-a-regressor">The intercept as a regressor</a></li>
+  <li><a href="#intercept-as-a-regressor" id="toc-intercept-as-a-regressor" class="nav-link" data-scroll-target="#intercept-as-a-regressor">Intercept as a regressor</a></li>
   <li><a href="#p_ell-and-m_ell" id="toc-p_ell-and-m_ell" class="nav-link" data-scroll-target="#p_ell-and-m_ell"><span class="math inline">P_\ell</span> and <span class="math inline">M_\ell</span></a></li>
   <li><a href="#p_ell-averaging" id="toc-p_ell-averaging" class="nav-link" data-scroll-target="#p_ell-averaging"><span class="math inline">P_\ell</span>: averaging</a></li>
   <li><a href="#m_ell-deviations-from-the-mean" id="toc-m_ell-deviations-from-the-mean" class="nav-link" data-scroll-target="#m_ell-deviations-from-the-mean"><span class="math inline">M_\ell</span>: deviations from the mean</a></li>
@@ -2330,8 +2330,8 @@ window.Quarto = {
 </span></p></li>
 </ul>
 </section>
-<section id="the-column-space-sx" class="level2">
-<h2 class="anchored" data-anchor-id="the-column-space-sx">The column space <span class="math inline">S(X)</span></h2>
+<section id="column-space-sx" class="level2">
+<h2 class="anchored" data-anchor-id="column-space-sx">Column space <span class="math inline">S(X)</span></h2>
 <ul>
 <li><p>Column space of <span class="math inline">X</span>: <span class="math display">
 S(X) = \big\{\, v \in \mathbb{R}^n : v = \underset{n\times k}{X}\, \underbrace{b}_{k\times 1} \ \text{ for some } b \in \mathbb{R}^k \,\big\}
@@ -2536,8 +2536,8 @@ M_X M_X &amp;= (I_n - P_X) M_X \\
 </span></p></li>
 </ul>
 </section>
-<section id="the-orthogonal-complement-sperpx" class="level2">
-<h2 class="anchored" data-anchor-id="the-orthogonal-complement-sperpx">The orthogonal complement <span class="math inline">S^\perp(X)</span></h2>
+<section id="orthogonal-complement-sperpx" class="level2">
+<h2 class="anchored" data-anchor-id="orthogonal-complement-sperpx">Orthogonal complement <span class="math inline">S^\perp(X)</span></h2>
 <ul>
 <li><p>Orthogonal complement of <span class="math inline">S(X)</span>: <span class="math display">
 S^\perp(X) = \big\{\, v \in \mathbb{R}^n : v^\top X = 0 \,\big\}
@@ -2764,8 +2764,8 @@ s^2 &amp;= \frac{n}{n-k}\, \hat\sigma^2 \\
 </section>
 <section id="partitioned-regression" class="level1">
 <h1>Partitioned regression</h1>
-<section id="the-partition" class="level2">
-<h2 class="anchored" data-anchor-id="the-partition">The partition</h2>
+<section id="partition" class="level2">
+<h2 class="anchored" data-anchor-id="partition">Partition</h2>
 <ul>
 <li><p>Two blocks of regressors, <span class="math inline">k_1 + k_2 = k</span>: <span class="math display">
 \underset{n\times k}{X} = \big[\ \underset{n\times k_1}{X_1} \quad \underset{n\times k_2}{X_2}\ \big], \qquad
@@ -2786,8 +2786,8 @@ Y &amp;= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bma
 </span></p></li>
 </ul>
 </section>
-<section id="the-frisch-waugh-lovell-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="the-frisch-waugh-lovell-theorem">The Frisch-Waugh-Lovell theorem</h2>
+<section id="frisch-waugh-lovell-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="frisch-waugh-lovell-theorem">Frisch-Waugh-Lovell theorem</h2>
 <ul>
 <li><p><strong>Claim.</strong> <span class="math display">
 \hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y, \qquad M_2 = I_n - P_2, \quad P_2 = X_2 (X_2^\top X_2)^{-1} X_2^\top
@@ -2898,8 +2898,8 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 <li><p>In general: <span class="math inline">\hat\eta \ne \hat\beta_2</span>, <span class="math inline">\tilde Y \ne \hat U</span>.</p></li>
 </ul>
 </section>
-<section id="the-regression-in-three-steps" class="level2">
-<h2 class="anchored" data-anchor-id="the-regression-in-three-steps">The regression in three steps</h2>
+<section id="regression-in-three-steps" class="level2">
+<h2 class="anchored" data-anchor-id="regression-in-three-steps">Regression in three steps</h2>
 <ol type="1">
 <li>Remove from <span class="math inline">X_1</span> the part collinear with <span class="math inline">X_2</span>: <span class="math inline">\tilde X_1</span>.</li>
 <li>Remove from <span class="math inline">Y</span> the part collinear with <span class="math inline">X_2</span>: <span class="math inline">\tilde Y</span>.</li>
@@ -2923,8 +2923,8 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 </section>
 <section id="partitioned-regression-and-the-intercept" class="level1">
 <h1>Partitioned regression and the intercept</h1>
-<section id="the-intercept-as-a-regressor" class="level2">
-<h2 class="anchored" data-anchor-id="the-intercept-as-a-regressor">The intercept as a regressor</h2>
+<section id="intercept-as-a-regressor" class="level2">
+<h2 class="anchored" data-anchor-id="intercept-as-a-regressor">Intercept as a regressor</h2>
 <ul>
 <li><p>One regressor and an intercept: <span class="math display">
 Y_i = \underset{1\times 1}{\beta_1} + \underset{1\times 1}{\beta_2}\, \underset{1\times 1}{X_{i,2}} + U_i

@@ -113,7 +113,7 @@ the elasticity of $y$ with respect to $x$.
 
 - A symmetric dependent variable is not required by anything that follows, but specifications with logs often "work better" in practice. 
 
-## The data
+## Data
 
 - We observe a **sample** of $n$ workers:
 $$
@@ -503,7 +503,7 @@ and neither arrow reverses.
 
 - Uncorrelatedness is weaker still: $\Cov{U, X} = 0$ is a single restriction, and it is compatible with a conditional mean $\E{U \mid X}$ that varies with $X$, because $\Cov{U, X} = \Cov{\E{U \mid X}, X}$.
 
-## The conditional mean minimises mean squared error
+## Conditional mean minimises mean squared error
 
 - Among all functions $m$ of $X$, the conditional mean is the best predictor of $Y$ under squared loss. Condition on $X$ first:
 $$
@@ -523,9 +523,9 @@ with equality only when $m(X) = \E{Y \mid X}$ with probability one.
 
 - This is the reason regression is about $\E{Y \mid X}$ and not some other feature of the conditional distribution. Change the loss and a different feature wins.
 
-# The linear regression model
+# Linear regression model
 
-## The object of interest
+## Object of interest
 
 - The relationship between the regressors and the dependent variable is summarised by the conditional expectation function:
 $$
@@ -540,7 +540,7 @@ $$
 
 - Without restrictions this is a function of $k$ arguments to be learned from $n$ points. The **parametric** approach assumes the functional form and leaves a finite number of unknown constants.
 
-## The linear regression model
+## Linear regression model
 
 - **Assumption.** The conditional expectation is linear in the parameters:
 $$
@@ -559,7 +559,7 @@ $$
 
 - "Linear" refers to $\beta$. The regressors can be anything: squares, logs, products, indicator variables.
 
-## The error term
+## Error term
 
 - **Define** the error as the deviation from the conditional mean:
 $$
@@ -601,7 +601,7 @@ Y_i &= X_i^\top \beta + U_i \\
 $$
 
 
-## The intercept
+## Intercept
 
 - Consider an example with a single regressor $X_i^\ast\in \mathbb{R}$.
 - Suppose $Y_i = \beta^\ast X_i^\ast + U_i^\ast$ with $\E{U_i^\ast\mid X_i^\ast} = \alpha \neq 0$. 
@@ -683,7 +683,7 @@ $$
 
 - If $\E{X_i X_i^\top}$ is invertible, the system has exactly one solution. Whether it is invertible is the whole question.
 
-## The second-moment matrix
+## Second-moment matrix
 
 - Write $X_i$ as a column and $X_i^\top$ as a row, and multiply:
 $$
@@ -718,7 +718,7 @@ $$
 
 
 
-## The second-moment matrix is positive semidefinite
+## Second-moment matrix is positive semidefinite
 
 - **Definitions.** A $k\times k$ symmetric matrix $A$ is **positive semidefinite** (p.s.d.) if $c^\top A c \ge 0$ for all $c \in \mathbb{R}^k$, and **positive definite** (p.d.) if $c^\top A c > 0$ for all $c \neq 0$.
 
@@ -804,7 +804,7 @@ The two factors of $\frac{1}{n}$ cancel.
 
 - An **estimator** is any function of the sample $\{(Y_i, X_i)\}$. It may not depend on $U_i$ or on $\beta$, which are unobserved.
 
-## The same estimator from the moment condition
+## Same estimator from the moment condition
 
 - Alternatively, start from $\E{X_i (Y_i - X_i^\top \beta)} = 0$ and replace the expectation by an average, evaluated at the estimator:
 $$
@@ -822,7 +822,7 @@ which is the same $\hat\beta$.
   $$
   which is the sample version of $\E{X_i U_i} = 0$.
 
-## The estimator is not the parameter
+## Estimator is not the parameter
 
 - Sample averages are random; expectations are fixed numbers. In general
 $$
@@ -911,7 +911,7 @@ X^\top \hat U &= X^\top (Y - X\hat\beta) = X^\top Y - X^\top X\, \underbrace{(X^
 \end{aligned}
 $$
 
-## The sample rank condition
+## Sample rank condition
 
 - $\rank{X^\top X}= \rank{X}$.
 - Since $X^\top X$  is $k\times k$, its inverse exists exactly when $\rank{X} = k$, meaning the columns of $X$ are linearly independent.

@@ -40,7 +40,7 @@ format:
     transition: none
 ---
 
-# The model and the assumptions
+# Model and assumptions
 
 ## Where the first lecture ended
 
@@ -95,7 +95,7 @@ the unique minimiser of $\sum_{i=1}^n (Y_i - X_i^\top b)^2$.
 
 - Three questions, taken in this order: whether $\hat\beta$ is right on average, how far it moves from sample to sample, and whether a better estimator of the same kind exists.
 
-## The model in matrix form
+## Model in matrix form
 
 - Stack the $n$ observations, as in the first lecture:
 $$
@@ -111,7 +111,7 @@ $$
 
 - $\beta$ is fixed and unknown. $X$, $Y$ and $U$ are random, and $U$ is not observed.
 
-## The four assumptions
+## Four assumptions
 
 - **Assumption 1.** $Y = X\beta + U$ for some $\beta \in \mathbb{R}^k$.
 
@@ -143,7 +143,7 @@ whatever the true value of $\theta$: the estimator is a rule that does not know 
 
 
 
-## The sampling error
+## Sampling error
 
 - Substitute Assumption 1 into the estimator; Assumption 4 is what makes $(X^\top X)^{-1}$ exist:
 $$
@@ -180,7 +180,7 @@ $$
 
 - The two factors are built from the same $X$, and once $\E{U \mid X}$ is not zero, the expectation of their product need not factor.
 
-## The expectation of a ratio
+## Expectation of a ratio
 
 - The one-regressor case makes the failure visible:
 $$
@@ -251,9 +251,9 @@ $$
 
 
 
-# The variance of a random vector
+# Variance of a random vector
 
-## The definition
+## Definition
 
 - For a random vector $V$ that is $n \times 1$ with finite second moments, and with $\E{V} = (\E{V_1}, \ldots, \E{V_n})^\top$,
 $$
@@ -262,7 +262,7 @@ $$
 
 - The product inside is an outer product, not an inner product, so the result is a matrix rather than a number.
 
-## The matrix entry by entry
+## Entry by entry
 
 - Entry $(i,j)$ is $\E{(V_i - \E{V_i})(V_j - \E{V_j})}$, so
 $$
@@ -345,7 +345,7 @@ $$
 
 - This is why $\beta$ will drop out of the variance of the sampling error.
 
-## The conditional version
+## Conditional version
 
 - The same definition with conditional expectations throughout:
 $$
@@ -359,15 +359,15 @@ $$
 \Var{U \mid X} = \E{U U^\top \mid X}.
 $$
 
-# The variance of the OLS estimator
+# Variance of the OLS estimator
 
-## The variance matrix of $\hat\beta$
+## Variance matrix of $\hat\beta$
 
 - $\hat\beta$ is $k \times 1$, so $\Var{\hat\beta \mid X}$ is $k \times k$: the conditional variance of each estimated coefficient on the diagonal, the conditional covariances between them off it.
 
 - Conditioning on $X$ again, for the same reason it worked for unbiasedness: it makes $(X^\top X)^{-1}X^\top$ a known matrix.
 
-## The sandwich formula
+## Sandwich formula
 
 - Start from the sampling error and name the matrix that multiplies $U$:
 $$
@@ -383,7 +383,7 @@ $$
 \end{aligned}
 $$
 
-## The sandwich formula written out
+## Sandwich formula written out
 
 - Substituting $\Gamma_X = (X^\top X)^{-1}X^\top$, with $\Gamma_X^\top = X (X^\top X)^{-1}$ because $X^\top X$ and its inverse are symmetric:
 $$
@@ -417,7 +417,7 @@ $$
 
 - Assumption 3 is these two statements together, and nothing more. It does not say the errors are independent, and it does not say they are normal.
 
-## The variance of OLS under Assumption 3
+## Variance of OLS under Assumption 3
 
 - Put $\Var{U \mid X} = \sigma^2 I_n$ into the sandwich:
 $$
@@ -522,7 +522,7 @@ $$
 | 1, 4, finite conditional second moments | $\Var{\hat\beta \mid X} = \Gamma_X \Var{U \mid X} \Gamma_X^\top$, with $\Gamma_X = (X^\top X)^{-1}X^\top$ |
 | 1, 3, 4 | $\Var{\hat\beta \mid X} = \sigma^2 (X^\top X)^{-1}$ |
 
-# The Gauss-Markov theorem
+# Gauss-Markov theorem
 
 ## Linear estimators
 
@@ -564,8 +564,6 @@ $$
 
 - Being linear and unbiased does not single OLS out. There are many conditionally unbiased linear estimators.
 
-## The variance of $\tilde\beta = (X^\top W X)^{-1} X^\top W\, Y$
-
 - One can show that under Assumptions 1-4,
 $$
 \Var{\tilde\beta \mid X} = \sigma^2 (X^\top W X)^{-1} X^\top W\, W X (X^\top W X)^{-1},
@@ -574,7 +572,7 @@ which reduces to $\sigma^2 (X^\top X)^{-1}$ when $W = I_n$.
 
 - Which of these matrices is smallest, and what smallest means for matrices, are the next questions.
 
-## The comparison to settle
+## Comparison to settle
 
 - For every linear conditionally unbiased $\tilde\beta$, compare the two conditional variance matrices:
 $$
@@ -605,20 +603,26 @@ $$
 \Var{\tilde\beta_j \mid X} \ \ge\ \Var{\hat\beta_j \mid X}, \qquad j = 1, \ldots, k.
 $$
 
-## The Gauss-Markov theorem
+## Gauss-Markov theorem
 
-- **Theorem.** Under Assumptions 1 to 4, let $\tilde\beta$ satisfy
-  1. **linearity**: $\tilde\beta = A Y$, with $A$ a $k \times n$ matrix depending on $X$ alone;
-  2. **conditional unbiasedness**: $\E{\tilde\beta \mid X} = \beta$ for every value of $\beta$.
+- **Theorem.** Suppose Assumptions 1 to 4 hold:
+  1. $Y = X\beta + U$ for some $\beta \in \mathbb{R}^k$;
+  2. $\E{U \mid X} = 0$;
+  3. $\Var{U \mid X} = \sigma^2 I_n$ for some $\sigma^2 > 0$;
+  4. $\operatorname{rank}(X) = k$.
+
+- Let $\hat\beta = (X^\top X)^{-1} X^\top Y$ be the OLS estimator.
+- Let $\tilde\beta$ be any estimator that is
+  - **linear**: $\tilde\beta = A Y$, with $A$ a $k \times n$ matrix depending on $X$ alone;
+  - **conditionally unbiased**: $\E{\tilde\beta \mid X} = \beta$ for every value of $\beta$.
 
 - Then
 $$
 \Var{\tilde\beta \mid X} - \Var{\hat\beta \mid X}\ge 0 \ \text{(positive semidefinite).}
 $$
 
-- OLS is the **best linear unbiased estimator** (BLUE): best in the sense above, linear in $Y$, conditionally unbiased, and an estimator of $\beta$.
+- Meaning: OLS is the **best linear unbiased estimator** (BLUE): best in the sense above, linear in $Y$, conditionally unbiased, and an estimator of $\beta$.
 
-- The theorem is about conditional unbiasedness, because it compares conditional variances.
 
 ## Proof, step 1: linearity and unbiasedness force $A X = I_k$
 
@@ -649,7 +653,7 @@ $$
   $$
 
 
-## Proof, step 2: The covariance between $\tilde\beta$ and $\hat\beta$
+## Proof, step 2: the covariance between $\tilde\beta$ and $\hat\beta$
 
 - Using $A X = I_k$ for the general estimator:
 $$
@@ -657,12 +661,12 @@ $$
 $$
 
 
-- Therefore: $\E{\tilde\beta \mid X}=\beta$ and
-  \begin{align}
+- Therefore:
+  \begin{align*}
   \tilde\beta - \beta &= A U.
-  \end{align}
+  \end{align*}
 
-- For OLS: $\E{\hat\beta \mid X}=\beta$ and
+- For OLS: 
   $$
   \hat\beta - \beta = (X^\top X)^{-1} X^\top U.
   $$
@@ -735,23 +739,6 @@ $$
 
 - If Assumption 3 fails, OLS is still unbiased but need not be best: Assumption 3 is sufficient for efficiency, not necessary.
 
-# Two extensions, and the summary
-
-## Adding normality
-
-- **Assumption 5.** $U \mid X \sim N(0, \sigma^2 I_n)$. Assumptions 1 to 5 define the classical normal regression model.
-
-- Given $X$, $\hat\beta = \beta + (X^\top X)^{-1}X^\top U$ is a constant plus a linear function of $U$, and Assumption 5 fixes the conditional distribution of $U$. For non-random $\alpha$ and $\Gamma$, such a function of a normal vector is normal:
-$$
-V \sim N(\mu, \Sigma) \quad\Longrightarrow\quad \alpha + \Gamma V \sim N\big(\alpha + \Gamma \mu,\ \Gamma \Sigma \Gamma^\top\big).
-$$
-
-- Under Assumptions 1, 4 and 5, since Assumption 5 implies Assumptions 2 and 3, the conditional mean and variance are the ones already computed:
-$$
-\boxed{\ \hat\beta \mid X \ \sim\ N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big)\ }
-$$
-
-- Nothing before this slide needed normality. It is what confidence intervals and tests will be built on.
 
 ## If Assumption 3 fails: generalised least squares
 
@@ -775,7 +762,28 @@ $$
 $$
 which is weighted least squares with $W = \Omega^{-1}$. This is the **GLS estimator**: generalized least squares.
 
+- Suppose $\E{U_i^2 \mid X} = \sigma_i^2$ and $\E{U_i U_j \mid X} = 0$ for $i \neq j$, so that
+  $$
+  \Omega = \begin{pmatrix} \sigma_1^2 & & 0 \\ & \ddots & \\ 0 & & \sigma_n^2 \end{pmatrix}.
+  $$
+- Then the GLS estimator is:
+  $$
+  \hat\beta^* = (X^\top \Omega^{-1} X)^{-1} X^\top \Omega^{-1} Y = \left(\sum_{i=1}^n \frac{X_i X_i^\top}{\sigma_i^2}\right)^{-1} \sum_{i=1}^n \frac{X_i Y_i}{\sigma_i^2}.
+  $$
+  Observations with larger $\sigma_i^2$ get less weight, and those with smaller $\sigma_i^2$ get more weight.
+
+- This is equivalent transforming the data by scaling each observation $i$ by its $\sigma_i$:
+
+  $$
+  \frac{Y_i}{\sigma_i} = \frac{X_i^\top}{\sigma_i} \beta + \frac{U_i}{\sigma_i}, \qquad i = 1, \ldots, n,
+  $$
+  so that $\Var{U_i / \sigma_i \mid X} = 1$ for every $i$.
+
+
+
 - In practice $\Omega$ is not known. 
+
+# Summary
 
 ## Summary: unbiasedness and variance
 
