@@ -1,0 +1,630 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 4: Confidence intervals"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_04_confidence_intervals.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_04_confidence_intervals.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_04_confidence_intervals_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Normal estimator
+
+## Normal regression model
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+red <- "#d7301f"; green <- "#1b9e77"; blue <- "#1f78b4"
+
+# A solid tint of a colour, mixed toward white.
+tint <- function(col, w = 0.2) {
+  rgb(t(col2rgb(col) * w + 255 * (1 - w)), maxColorValue = 255)
+}
+
+# The area under the standard normal density between a and b, shaded.
+shade <- function(a, b, col) {
+  x <- seq(a, b, length.out = 100)
+  polygon(c(a, x, b), c(0, dnorm(x), 0), col = col, border = NA)
+}
+
+# A curly brace over the span x1 to x2, with its base at y0 and its tip at y0 + h.
+brace <- function(x1, x2, y0, h, r = 0.25) {
+  xm <- (x1 + x2) / 2
+  p <- seq(0, pi / 2, length.out = 16)
+  bx <- c(x1 + r - r * cos(p), xm - r + r * sin(p))
+  by <- c(y0 + (h / 2) * sin(p), y0 + h - (h / 2) * cos(p))
+  lines(c(bx, 2 * xm - rev(bx)), c(by, rev(by)))
+}
+
+# Figure 1: the standard normal density with the middle area 1 - alpha and the
+# area alpha/2 in each tail, drawn for alpha = 0.1.
+coverage_picture <- function() {
+  z <- qnorm(0.95)
+  x <- seq(-3.4, 3.4, length.out = 300)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-3.7, 3.7), ylim = c(-0.14, 0.44))
+  shade(-3.4, -z, tint(red)); shade(z, 3.4, tint(red)); shade(-z, z, tint(blue))
+  lines(x, dnorm(x), lwd = 1.5)
+  arrows(-3.6, 0, 3.6, 0, length = 0.08)
+  segments(c(-z, z), 0, c(-z, z), dnorm(z), lty = 2)
+  segments(0, c(0, 0.22), 0, c(0.12, dnorm(0)), lty = 2)
+  text(0, 0.17, "$1-\\alpha$")
+  text(c(-2.35, 2.35), 0.085, "$\\alpha/2$", col = red)
+  text(-z, -0.075, "$z_{\\alpha/2} = -c/\\omega$")
+  text(0, -0.075, "$0$")
+  text(z, -0.075, "$c/\\omega = z_{1-\\alpha/2}$")
+  par(op)
+}
+
+# Figure 2: the interval on a line, with its centre and its two ends marked and
+# the brace CI.
+interval_picture <- function() {
+  a <- 2.2
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-3.6, 3.6), ylim = c(-0.95, 1.5))
+  arrows(-3.5, 0, 3.5, 0, length = 0.08)
+  segments(-a, 0, a, 0, col = blue, lwd = 3)
+  segments(0, -0.15, 0, 0.15, lwd = 2)
+  for (s in c(-1, 1)) {
+    segments(s * a, -0.22, s * a, 0.22, col = blue, lwd = 2)
+    segments(s * a, c(-0.22, 0.22), s * a - s * 0.14, c(-0.22, 0.22),
+             col = blue, lwd = 2)
+  }
+  brace(-a, a, 0.4, 0.4)
+  text(0, 1.12, "$CI_{1-\\alpha}$")
+  text(c(-a, 0, a), -0.55,
+       c("$\\hat\\theta - \\omega z_{1-\\alpha/2}$", "$\\hat\\theta$",
+         "$\\hat\\theta + \\omega z_{1-\\alpha/2}$"))
+  par(op)
+}
+
+# Figure 3: the three upper quantiles and the area to the right of each. A
+# sketch, not drawn for one alpha: the quantiles are spread out so that the two
+# gaps can be told apart, and the two bands between them keep equal areas, as
+# the bands of area alpha/6 each do.
+upper_picture <- function() {
+  q <- c(0.5, 0.9)
+  q <- c(q, qnorm(2 * pnorm(q[2]) - pnorm(q[1])))
+  cols <- c(blue, green, red)
+  h <- c(0.47, 0.42, 0.37)
+  qlab <- c("$z_{1-2\\alpha/3}$", "$z_{1-\\alpha/2}$", "$z_{1-\\alpha/3}$")
+  alab <- c("$2\\alpha/3$", "$\\alpha/2$", "$\\alpha/3$")
+  x <- seq(0, 2.5, length.out = 200)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-0.2, 2.75), ylim = c(-0.12, 0.52))
+  for (i in 1:3) shade(q[i], 2.5, adjustcolor("gray30", alpha.f = 0.2))
+  lines(x, dnorm(x), lwd = 1.5)
+  arrows(-0.15, 0, 2.65, 0, length = 0.08)
+  segments(0, 0, 0, dnorm(0), lty = 2)
+  text(0, -0.055, "$0$"); text(2.68, -0.055, "$z$")
+  for (i in 1:3) {
+    segments(q[i], -0.02, q[i], h[i], lty = 2, col = cols[i])
+    arrows(q[i], h[i], 2.05, h[i], length = 0.07, col = cols[i])
+    text(2.1, h[i], alab[i], col = cols[i], adj = 0)
+    text(q[i], -0.055, qlab[i], col = cols[i])
+  }
+  arrows(q[1], 0.04, q[2], 0.04, length = 0.05, code = 3)
+  text(mean(q[1:2]), 0.09, "$\\Delta$")
+  arrows(q[2], 0.04, q[3], 0.04, length = 0.05, code = 3)
+  text(mean(q[2:3]), 0.09, "$> \\Delta$")
+  par(op)
+}
+```
+
+- **Assumption 1.** $Y = X\beta + U$ for some $\beta \in \mathbb{R}^k$.
+
+- **Assumption 2.** $\E{U \mid X} = 0$.
+
+- **Assumption 3.** For some $\sigma^2 > 0$:
+  $$
+  \begin{aligned}
+  \Var{U \mid X} &= \E{UU^\top \mid X} \\
+  &= \sigma^2 I_n
+  \end{aligned}
+  $$
+
+- **Assumption 4.** $\rank{X} = k$.
+
+- **Assumption 5.**
+  $$
+  U \mid X \sim N\big(\underbrace{0}_{\E{U \mid X}},\ \underbrace{\sigma^2 I_n}_{\Var{U \mid X}}\big)
+  $$
+
+## Distribution of $\hat\beta$
+
+- We will use:
+  $$
+  \begin{aligned}
+  \underset{p\times1}{V} &\sim N\big(\underset{p\times1}{\mu},\ \underset{p\times p}{\Sigma}\big) \\
+  \Longrightarrow\quad \underset{m\times p}{A}\,\underset{p\times1}{V} + \underset{m\times1}{b} &\sim N\big(A\mu + b,\ A\Sigma A^\top\big)
+  \end{aligned}
+  $$
+
+- Write $\hat\beta$ as a linear function of $U$ and apply the result:
+  $$
+  \begin{aligned}
+  \hat\beta &= (X^\top X)^{-1} X^\top Y \\
+  &= \beta + \underbrace{(X^\top X)^{-1} X^\top}_{A}\, U \\
+  \Longrightarrow\quad & \boxed{\ \hat\beta \mid X \sim N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big)\ }
+  \end{aligned}
+  $$
+
+## One coefficient $\hat\beta_1$
+
+- Apply the same result to the first coefficient:
+  $$
+  \begin{aligned}
+  \hat\beta_1 \mid X &= \underbrace{[\,1\ \ 0\ \cdots\ 0\,]}_{e_1^\top}\, \hat\beta \mid X \\
+  &\sim N\Big(e_1^\top \beta,\ \underset{1\times k}{e_1^\top}\ \overbrace{\sigma^2\, \underset{k\times k}{(X^\top X)^{-1}}}^{\Var{\hat\beta \mid X}}\ \underset{k\times 1}{e_1}\Big) \\
+  &= N\big(\beta_1,\ \Var{\hat\beta_1 \mid X}\big)
+  \end{aligned}
+  $$
+
+## Partitioned regression
+
+- Regression on $X = \big[\ X_1 \quad X_2\ \big]$:
+  $$
+  Y = \underset{1\times1}{\beta_1}\, \underset{n\times1}{X_1} + \underset{n\times k_2}{X_2}\, \underset{k_2\times1}{\beta_2} + U
+  $$
+
+- Third lecture, the OLS coefficient on $X_1$, with $M_2 = I_n - X_2 (X_2^\top X_2)^{-1} X_2^\top$:
+  $$
+  \hat\beta_1 = \frac{X_1^\top M_2 Y}{\underbrace{X_1^\top M_2 X_1}_{1\times1}}
+  $$
+
+## Distribution of $\hat\beta_1$
+
+- Under Assumptions 1 to 5:
+  $$
+  \hat\beta_1 \mid X \sim N\Big(\beta_1,\ \frac{\sigma^2}{X_1^\top M_2 X_1}\Big)
+  $$
+
+## Generic estimator $\hat\theta$
+
+- The regression example in generic notation, conditional on $X$:
+  $$
+  \theta = \beta_1, \qquad \hat\theta = \hat\beta_1, \qquad \omega^2 = \frac{\sigma^2}{X_1^\top M_2 X_1}
+  $$
+
+- Generic problem, an exactly normal estimator of $\theta$:
+  $$
+  \underset{1\times1}{\hat\theta} \sim N\big(\underset{1\times1}{\theta},\ \underset{1\times1}{\omega^2}\big)
+  $$
+
+- $\omega^2$: known.
+
+- In the regression example: $\sigma^2$ known $\Longrightarrow$ $\omega^2$ known.
+
+- Probability that $\hat\theta$ equals $\theta$:
+  $$
+  \mathrm{P}(\hat\theta = \theta) = 0
+  $$
+
+# Confidence interval
+
+## Coverage
+
+- **Definition.** $CI_{1-\alpha}$, a confidence interval with coverage $1-\alpha$, is a random interval such that:
+  $$
+  \mathrm{P}(\theta \in CI_{1-\alpha}) = 1-\alpha
+  $$
+
+- Chosen in advance: $\alpha \in (0,1)$, for example $0.01$, $0.05$, $0.1$.
+
+- Regression example:
+  $$
+  \mathrm{P}(\beta_1 \in CI_{1-\alpha} \mid X) = 1-\alpha
+  $$
+
+- At least $1-\alpha$ is acceptable, less is not:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\theta \in CI_{1-\alpha}) &\ge 1-\alpha \\
+  \mathrm{P}(\theta \in CI_{1-\alpha}) &< 1-\alpha \qquad \times
+  \end{aligned}
+  $$
+
+## Symmetric interval
+
+- Symmetric around $\hat\theta$, with $c > 0$:
+  $$
+  CI_{1-\alpha} = [\hat\theta - c,\ \hat\theta + c]
+  $$
+
+- Length of the interval:
+  $$
+  \begin{aligned}
+  \text{length} &=\hat\theta + c - (\hat\theta - c) \\
+  &= 2c
+  \end{aligned}
+  $$
+
+- Problem: choose $c$ for coverage $1-\alpha$:
+  $$
+  \begin{aligned}
+  1-\alpha &= \mathrm{P}\big(\theta \in CI_{1-\alpha}\big) \\
+  &= \mathrm{P}\Big(\underbrace{\theta}_{\text{fixed}} \in \big[\overbrace{\hat\theta}^{\text{random}} - \underbrace{c}_{\text{fixed}},\ \overbrace{\hat\theta}^{\text{random}} + \underbrace{c}_{\text{fixed}}\big]\Big)
+  \end{aligned}
+  $$
+
+## Standard normal quantile
+
+- **Definition.** $z_\tau$ is the fixed number such that, for $Z \sim N(0,1)$:
+  $$
+  \mathrm{P}(Z \le z_\tau) = \tau, \qquad \tau \in (0,1)
+  $$
+
+- The $\tau$-th quantile of $N(0,1)$:
+  $$
+  z_\tau = \Phi^{-1}(\tau), \qquad \Phi(z) = \mathrm{P}(Z \le z)
+  $$
+
+- For example:
+  $$
+  z_{0.975} \approx 1.96, \qquad z_{0.025} \approx -1.96
+  $$
+
+- Symmetry around zero:
+  $$
+  z_\tau = -z_{1-\tau}
+  $$
+
+## Choice of $c$
+
+- Subtract $\theta$ and divide by $\omega$:
+  $$
+  \begin{aligned}
+  \hat\theta &\sim N(\theta,\ \omega^2) \\
+  \Longrightarrow\quad \hat\theta - \theta &\sim N(0,\ \omega^2) \\
+  \Longrightarrow\quad \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} &\sim N(0,\ 1)
+  \end{aligned}
+  $$
+
+- Rewrite the event $\theta \in CI_{1-\alpha}$ in terms of $Z$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\theta \in CI_{1-\alpha}) &= \mathrm{P}\big(\hat\theta - c \le \theta \le \hat\theta + c\big) \\
+  &= \mathrm{P}\bigl(-c \le \theta - \hat\theta \le c\bigr) \\
+  &= \mathrm{P}\bigl(-c \le \hat\theta - \theta \le c\bigr) \\
+  &= \mathrm{P}\Bigl(-\frac{c}{\omega} \le \frac{\hat\theta - \theta}{\omega} \le \frac{c}{\omega}\Bigr) \\
+  &= \mathrm{P}\Bigl(-\frac{c}{\omega} \le Z \le \frac{c}{\omega}\Bigr)
+  \end{aligned}
+  $$
+
+## Value of $c$
+
+- Standard normal density, area $1-\alpha$ between $-c/\omega$ and $c/\omega$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 2.6
+  #| fig-dpi: 300
+  tikz_fig("ci-coverage", 6, 2.6, {
+    coverage_picture()
+  })
+  ```
+
+- Read $c$ off the picture:
+  $$
+  \begin{aligned}
+  -\frac{c}{\omega} &= z_{\alpha/2} \\
+  &= -z_{1-\alpha/2} \\
+  \frac{c}{\omega} &= z_{1-\alpha/2} \\
+  \Longrightarrow\quad c &= z_{1-\alpha/2}\,\omega
+  \end{aligned}
+  $$
+
+## Coverage check
+
+- Substitute $c = z_{1-\alpha/2}\,\omega$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(\theta \in CI_{1-\alpha}\big) &= \mathrm{P}\bigl(-z_{1-\alpha/2} \le Z \le z_{1-\alpha/2}\bigr) \\
+  &= 1 - \frac{\alpha}{2} - \frac{\alpha}{2} \\
+  &= 1 - \alpha
+  \end{aligned}
+  $$
+  where each of the two tails has probability $\alpha/2$.
+
+## Interval for $\theta$
+
+- Symmetric interval with coverage $1-\alpha$:
+  $$
+  \boxed{\ CI_{1-\alpha} = \big[\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega\big]\ }
+  $$
+
+- Centre $\hat\theta$, half-length $\omega z_{1-\alpha/2}$.
+
+- For $\alpha = 0.05$:
+  $$
+  z_{1-\alpha/2} = z_{0.975} \approx 1.96
+  $$
+
+- Coverage, written with an absolute value:
+  $$
+  \mathrm{P}(\theta \in CI_{1-\alpha}) = \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta}{\omega}\Big| \le z_{1-\alpha/2}\Big)
+  $$
+
+## Length of $CI_{1-\alpha}$
+
+- $CI_{1-\alpha}$ around $\hat\theta$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 1.8
+  #| fig-dpi: 300
+  tikz_fig("ci-interval", 6, 1.8, {
+    interval_picture()
+  })
+  ```
+
+- Length:
+  $$
+  2\,\omega\, z_{1-\alpha/2}
+  $$
+
+- Effect of $\alpha$:
+  $$
+  \alpha \downarrow \quad\Longrightarrow\quad z_{1-\alpha/2} \uparrow
+  $$
+
+## Numerical example
+
+- Given:
+  $$
+  \begin{aligned}
+  \hat\theta &= 0.06 \\
+  \alpha = 0.05 &\Longrightarrow z_{1-\alpha/2} \approx 2.0 \\
+  \omega &= 0.01
+  \end{aligned}
+  $$
+
+- Substitute into the interval:
+  $$
+  \begin{aligned}
+  CI_{1-\alpha} &= \big[\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega\big] \\
+  CI_{0.95} &= \big[\,0.06 - 2.0 \cdot 0.01,\ \ 0.06 + 2.0 \cdot 0.01\,\big] \\
+  &= [\,0.04,\ 0.08\,]
+  \end{aligned}
+  $$
+
+- **Question.** What does $CI_{0.95} = [0.04,\ 0.08]$ mean?
+  1. $\mathrm{P}(0.04 \le \theta \le 0.08) = 0.95$
+  2. $\mathrm{P}(0.04 \le \hat\theta \le 0.08) = 0.95$
+  3. $\mathrm{P}\big(\theta \in [0.04,\ 0.08] \mid \text{data}\big) = 0.95$
+  4. None of the above
+
+## Random and computed interval
+
+- Before $CI_{1-\alpha}$ is computed:
+  $$
+  \mathrm{P}\big(\theta \in \underbrace{CI_{1-\alpha}}_{\text{random}}\big) = 1-\alpha
+  $$
+
+- Once computed:
+  $$
+  CI_{0.95} = \underbrace{[\,0.04,\ 0.08\,]}_{\text{not random}}
+  $$
+
+## Interval for $\beta_1$
+
+- With $\hat\theta = \hat\beta_1$ and $\omega^2 = \sigma^2 / (X_1^\top M_2 X_1)$:
+  $$
+  CI_{1-\alpha} = \hat\beta_1 \pm z_{1-\alpha/2} \sqrt{\frac{\sigma^2}{X_1^\top M_2 X_1}}
+  $$
+
+# Other intervals
+
+## Asymmetric interval
+
+- Tails of $Z = (\hat\theta - \theta)/\omega$: $\alpha/3$ below, $2\alpha/3$ above.
+
+- Interval:
+  $$
+  \widetilde{CI} = \big[\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}\big]
+  $$
+
+- Ordering of the quantiles:
+  $$
+  z_{1-2\alpha/3} < z_{1-\alpha/2} < z_{1-\alpha/3}
+  $$
+
+- For $\alpha = 0.1$:
+  $$
+  \begin{aligned}
+  \alpha/2 &= 0.05 \\
+  1 - \alpha/2 &= 0.95 \\
+  1 - \alpha/3 &\approx 0.967 \\
+  1 - 2\alpha/3 &\approx 0.933
+  \end{aligned}
+  $$
+
+## Coverage of $\widetilde{CI}$
+
+- Coverage of $\widetilde{CI}$ is $1-\alpha$:
+  $$
+  \begin{aligned}
+  1-\alpha &= 1 - \frac{2\alpha}{3} - \frac{\alpha}{3} \\
+  &= \Big(1 - \frac{2\alpha}{3}\Big) - \mathrm{P}\big(Z < z_{\alpha/3}\big) \\
+  &= \mathrm{P}\big(Z \le z_{1-2\alpha/3}\big) - \mathrm{P}\big(Z < z_{\alpha/3}\big) \\
+  &= \mathrm{P}\big(z_{\alpha/3} \le Z \le z_{1-2\alpha/3}\big) \\
+  &= \mathrm{P}\Big(z_{\alpha/3} \le \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} \le z_{1-2\alpha/3}\Big) \\
+  &= \mathrm{P}\big(\omega z_{\alpha/3} \le \hat\theta - \theta \le \omega z_{1-2\alpha/3}\big) \\
+  &= \mathrm{P}\big(\omega z_{\alpha/3} - \hat\theta \le -\theta \le \omega z_{1-2\alpha/3} - \hat\theta\big) \\
+  &= \mathrm{P}\big(\hat\theta - \omega z_{1-2\alpha/3} \le \theta \le \hat\theta - \omega z_{\alpha/3}\big) \\
+  &= \mathrm{P}\big(\hat\theta - \omega z_{1-2\alpha/3} \le \theta \le \hat\theta + \omega z_{1-\alpha/3}\big) \\
+  &= \mathrm{P}\big(\theta \in [\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}]\big) \\
+  &= \mathrm{P}\big(\theta \in \widetilde{CI}\big)
+  \end{aligned}
+  $$
+  where $z_{\alpha/3} < 0$ and $-z_{\alpha/3} = z_{1-\alpha/3}$.
+
+## Length of $\widetilde{CI}$
+
+- Asymmetric and symmetric intervals:
+  $$
+  \begin{aligned}
+  \text{length of } \widetilde{CI} &= \omega\big(z_{1-2\alpha/3} + z_{1-\alpha/3}\big) \\
+  \text{length of } CI_{1-\alpha} &= \omega\big(z_{1-\alpha/2} + z_{1-\alpha/2}\big) \\
+  &= 2\omega z_{1-\alpha/2}
+  \end{aligned}
+  $$
+
+- The symmetric interval is shorter:
+  $$
+  2\omega z_{1-\alpha/2} < \omega\big(z_{1-2\alpha/3} + z_{1-\alpha/3}\big)
+  $$
+
+## Upper quantiles
+
+- Area to the right of each of three quantiles:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3
+  #| fig-dpi: 300
+  tikz_fig("ci-quantiles", 6, 3, {
+    upper_picture()
+  })
+  ```
+
+- Density of $N(0,1)$:
+  $$
+  \mathrm{pdf}_{N(0,1)}(z) = \frac{1}{\sqrt{2\pi}}\, e^{-z^2/2}
+  $$
+
+- Gaps between the quantiles:
+  $$
+  \begin{aligned}
+  z_{1-\alpha/2} - z_{1-2\alpha/3} &= \Delta \\
+  z_{1-\alpha/3} - z_{1-\alpha/2} &> \Delta
+  \end{aligned}
+  $$
+
+## One-sided interval
+
+- Only the lower boundary matters:
+  $$
+  [\,t,\ +\infty)
+  $$
+
+- Interval:
+  $$
+  \big[\hat\theta - z_{1-\alpha}\,\omega,\ +\infty\big)
+  $$
+
+- Coverage:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(\theta \in [\hat\theta - z_{1-\alpha}\,\omega,\ +\infty)\big) &= \mathrm{P}\big(\theta \ge \hat\theta - z_{1-\alpha}\,\omega\big) \\
+  &= \mathrm{P}\Big(z_{1-\alpha} \ge \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z}\Big) \\
+  &= \mathrm{P}\big(Z \le z_{1-\alpha}\big) \\
+  &= 1 - \alpha
+  \end{aligned}
+  $$
+
+# Summary
+
+## Estimator and standardization
+
+- $\hat\beta \mid X \sim N\big(\beta, \sigma^2 (X^\top X)^{-1}\big)$ under Assumptions 1 to 5.
+
+- $\hat\beta_1 \mid X \sim N\big(\beta_1, \sigma^2 / (X_1^\top M_2 X_1)\big)$, with $\theta = \beta_1$, $\hat\theta = \hat\beta_1$, $\omega^2 = \sigma^2 / (X_1^\top M_2 X_1)$.
+
+- $\hat\theta \sim N(\theta, \omega^2)$ with $\omega^2$ known, and $\mathrm{P}(\hat\theta = \theta) = 0$.
+
+- $Z = (\hat\theta - \theta)/\omega \sim N(0,1)$; $\mathrm{P}(Z \le z_\tau) = \tau$ and $z_\tau = -z_{1-\tau}$.
+
+## Interval and coverage
+
+- $\mathrm{P}(\theta \in CI_{1-\alpha}) = 1-\alpha$ with $\alpha \in (0,1)$; $CI_{1-\alpha}$ random, its computed value not random.
+
+- $CI_{1-\alpha} = [\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega]$, of length $2\omega z_{1-\alpha/2}$.
+
+- $\alpha = 0.05$: $z_{0.975} \approx 1.96$; $\alpha \downarrow \quad\Longrightarrow\quad z_{1-\alpha/2} \uparrow$.
+
+- Regression example: $CI_{1-\alpha} =\hat\beta_1 \pm z_{1-\alpha/2}\sqrt{\sigma^2 / (X_1^\top M_2 X_1)}$, with $\mathrm{P}(\beta_1 \in CI_{1-\alpha} \mid X) = 1-\alpha$.
+
+## Asymmetric and one-sided intervals
+
+- $\widetilde{CI} = [\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}]$: coverage $1-\alpha$.
+
+- Length of $\widetilde{CI}$ against $CI_{1-\alpha}$: $\omega\big(z_{1-2\alpha/3} + z_{1-\alpha/3}\big) > 2\omega z_{1-\alpha/2}$.
+
+- $[\hat\theta - z_{1-\alpha}\,\omega,\ +\infty)$: coverage $1-\alpha$.
