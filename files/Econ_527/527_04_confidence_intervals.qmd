@@ -148,35 +148,39 @@ interval_picture <- function() {
   par(op)
 }
 
-# Figure 3: the three upper quantiles and the area to the right of each. A
-# sketch, not drawn for one alpha: the quantiles are spread out so that the two
-# gaps can be told apart, and the two bands between them keep equal areas, as
-# the bands of area alpha/6 each do.
+# Figure 3: the three upper quantiles, the area to the right of each (the
+# arrows), and the two bands between them, each of area alpha/6, shaded. The
+# tail to the right of the last quantile is not shaded. The horizontal gaps are
+# marked with braces under the axis. Drawn exactly for alpha = 0.1, the value
+# of the numbers on the slide "Asymmetric interval", and zoomed into the right
+# tail of N(0,1) so that the two gaps can be told apart: the second gap is 1.32
+# times the first (for the normal the ratio never exceeds about 1.4).
 upper_picture <- function() {
-  q <- c(0.5, 0.9)
-  q <- c(q, qnorm(2 * pnorm(q[2]) - pnorm(q[1])))
+  al <- 0.1
+  q <- qnorm(1 - al * c(2 / 3, 1 / 2, 1 / 3))
   cols <- c(blue, green, red)
-  h <- c(0.47, 0.42, 0.37)
+  h <- c(0.19, 0.175, 0.16)
   qlab <- c("$z_{1-2\\alpha/3}$", "$z_{1-\\alpha/2}$", "$z_{1-\\alpha/3}$")
   alab <- c("$2\\alpha/3$", "$\\alpha/2$", "$\\alpha/3$")
-  x <- seq(0, 2.5, length.out = 200)
+  x <- seq(1.33, 2.4, length.out = 200)
   op <- par(mar = rep(0.1, 4))
-  plot.new(); plot.window(xlim = c(-0.2, 2.75), ylim = c(-0.12, 0.52))
-  for (i in 1:3) shade(q[i], 2.5, adjustcolor("gray30", alpha.f = 0.2))
+  plot.new(); plot.window(xlim = c(1.3, 2.5), ylim = c(-0.045, 0.2))
+  shade(q[1], q[2], tint(blue, 0.3)); shade(q[2], q[3], tint(blue, 0.3))
   lines(x, dnorm(x), lwd = 1.5)
-  arrows(-0.15, 0, 2.65, 0, length = 0.08)
-  segments(0, 0, 0, dnorm(0), lty = 2)
-  text(0, -0.055, "$0$"); text(2.68, -0.055, "$z$")
+  arrows(1.3, 0, 2.45, 0, length = 0.08)
+  text(2.47, -0.009, "$z$")
   for (i in 1:3) {
-    segments(q[i], -0.02, q[i], h[i], lty = 2, col = cols[i])
-    arrows(q[i], h[i], 2.05, h[i], length = 0.07, col = cols[i])
-    text(2.1, h[i], alab[i], col = cols[i], adj = 0)
-    text(q[i], -0.055, qlab[i], col = cols[i])
+    segments(q[i], -0.003, q[i], h[i], lty = 2, col = cols[i])
+    arrows(q[i], h[i], 2.2, h[i], length = 0.07, col = cols[i])
+    text(2.23, h[i], alab[i], col = cols[i], adj = 0)
+    text(q[i], -0.009, qlab[i], col = cols[i])
   }
-  arrows(q[1], 0.04, q[2], 0.04, length = 0.05, code = 3)
-  text(mean(q[1:2]), 0.09, "$\\Delta$")
-  arrows(q[2], 0.04, q[3], 0.04, length = 0.05, code = 3)
-  text(mean(q[2:3]), 0.09, "$> \\Delta$")
+  m <- (q[1:2] + q[2:3]) / 2
+  text(m, 0.45 * dnorm(m), "$\\alpha/6$")
+  brace(q[1], q[2], -0.018, -0.008, r = 0.025)
+  text(m[1], -0.035, "$\\Delta$")
+  brace(q[2], q[3], -0.018, -0.008, r = 0.025)
+  text(m[2], -0.035, "$> \\Delta$")
   par(op)
 }
 ```
@@ -551,18 +555,26 @@ upper_picture <- function() {
 
 ## Upper quantiles
 
-- Area to the right of each of three quantiles:
+- Right tail of $N(0,1)$ at $\alpha = 0.1$, with three quantiles and two bands:
 
   ```{r}
   #| echo: false
   #| fig-align: center
   #| fig-width: 6
-  #| fig-height: 3
+  #| fig-height: 3.3
   #| fig-dpi: 300
-  tikz_fig("ci-quantiles", 6, 3, {
+  tikz_fig("ci-quantiles", 6, 3.3, {
     upper_picture()
   })
   ```
+
+- Each band has the same area:
+  $$
+  \begin{aligned}
+  \frac{2\alpha}{3} - \frac{\alpha}{2} &= \frac{\alpha}{6} \\
+  \frac{\alpha}{2} - \frac{\alpha}{3} &= \frac{\alpha}{6}
+  \end{aligned}
+  $$
 
 - Density of $N(0,1)$:
   $$
