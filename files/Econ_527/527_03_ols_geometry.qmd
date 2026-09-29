@@ -304,8 +304,6 @@ proj_picture <- function(full, step = 5L) {
   $$
   \begin{aligned}
   \hat U &= Y - \hat Y \\
-  &= Y - X\hat\beta \\
-  &= Y - X (X^\top X)^{-1} X^\top Y \\
   &= Y - P_X Y \\
   &= \underbrace{(I_n - P_X)}_{=\, M_X}\, Y \\
   &= M_X Y
@@ -321,7 +319,7 @@ proj_picture <- function(full, step = 5L) {
 
 ## $P_X Y$ and $M_X Y$
 
-- For $Y \in \mathbb{R}^n$:
+- Decomposition of $Y \in \mathbb{R}^n$:
   $$
   \begin{aligned}
   P_X + M_X &= I_n \\
@@ -417,7 +415,6 @@ proj_picture <- function(full, step = 5L) {
   $$
   \begin{aligned}
   M_X X &= (I_n - P_X) X \\
-  &= I_n X - P_X X \\
   &= X - \underbrace{P_X X}_{=\, X} \\
   &= X - X \\
   &= 0
@@ -482,9 +479,6 @@ proj_picture <- function(full, step = 5L) {
   \rank{M_X} &= \operatorname{tr}(M_X) \\
   &= \operatorname{tr}(I_n - P_X) \\
   &= \operatorname{tr}(I_n) - \operatorname{tr}(P_X) \\
-  &= n - \operatorname{tr}(P_X) \\
-  &= n - \operatorname{tr}\big( X (X^\top X)^{-1} X^\top \big) \\
-  &= n - \operatorname{tr}\big( \underbrace{(X^\top X)^{-1} X^\top X}_{I_k} \big) \\
   &= n - k
   \end{aligned}
   $$
@@ -596,38 +590,25 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## Proof, step 2: a quadratic form
-
-- To find:
-  $$
-  \E{\hat U^\top \hat U \mid X} = \E{\overbrace{\underset{1\times n}{U^\top}\ \underset{n\times n}{M_X}\ \underset{n\times 1}{U}}^{1\times 1} \mid X}
-  $$
-
-- Does not factor:
-  $$
-  \E{U^\top M_X U \mid X} \ \ne\ \E{U^\top \mid X}\, M_X\, \E{U \mid X}
-  $$
-
-- Quadratic form:
-  $$
-  \underset{1\times n}{U^\top}\ \underset{n\times n}{A}\ \underset{n\times 1}{U} = \sum_{i=1}^n \sum_{j=1}^n A_{ij} U_i U_j
-  $$
-
-- $\E{U_i U_j} \ne \E{U_i}\E{U_j}$ unless uncorrelated; $\E{U_i^2} \ne \E{U_i}\E{U_i}$.
-
 ## Proof, step 3: the trace trick
 
-- We will use:
-  - $1 \times 1$ matrix: its own trace;
-  - $\operatorname{tr}(AB) = \operatorname{tr}(BA)$;
-  - $\E{\sum \cdot} = \sum \E{\cdot}$;
-  - $M_X$: known given $X$.
+- The quadratic form $U^\top M_X U$ is a scalar:
+  $$
+  \overbrace{\underset{1\times n}{U^\top}\ \underset{n\times n}{M_X}\ \underset{n\times 1}{U}}^{1\times 1}
+  $$
+- Treat any scalar $c$ as a $1 \times 1$ matrix: 
+  $$
+  \begin{aligned}
+  c &= \operatorname{tr}(c).
+  \end{aligned}
+  $$ 
+
 - We have:
   $$
   \begin{aligned}
   \E{\hat U^\top \hat U \mid X} &= \E{U^\top M_X U \mid X} \\
-  &= \E{\operatorname{tr}\big({\color{red} U^\top} M_X U\big) \mid X} \\
-  &= \E{\operatorname{tr}\big(M_X U {\color{red} U^\top}\big) \mid X} \\
+  &= \E{\operatorname{tr}\big({\color{red} U^\top} M_X U\big) \mid X} \quad \text{(scalar $=$ its trace)} \\
+  &= \E{\operatorname{tr}\big(M_X U {\color{red} U^\top}\big) \mid X} \quad \text{($\operatorname{tr}(AB) = \operatorname{tr}(BA)$)} \\
   &= \operatorname{tr}\big(\E{M_X U U^\top \mid X}\big) \\
   &= \operatorname{tr}\big(M_X \underbrace{\E{U U^\top \mid X}}_{=\, \sigma^2 I_n}\big) \\
   &= \sigma^2 \operatorname{tr}(M_X) \\

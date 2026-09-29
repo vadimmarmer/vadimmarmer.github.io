@@ -1180,8 +1180,6 @@ margin: 0; background: white; transition: none;
 <li class="fragment"><p>Residuals: <span class="math display">
 \begin{aligned}
 \hat U &amp;= Y - \hat Y \\
-&amp;= Y - X\hat\beta \\
-&amp;= Y - X (X^\top X)^{-1} X^\top Y \\
 &amp;= Y - P_X Y \\
 &amp;= \underbrace{(I_n - P_X)}_{=\, M_X}\, Y \\
 &amp;= M_X Y
@@ -1200,7 +1198,7 @@ margin: 0; background: white; transition: none;
 <section id="p_x-y-and-m_x-y" class="slide level2">
 <h2><span class="math inline">P_X Y</span> and <span class="math inline">M_X Y</span></h2>
 <ul>
-<li class="fragment"><p>For <span class="math inline">Y \in \mathbb{R}^n</span>: <span class="math display">
+<li class="fragment"><p>Decomposition of <span class="math inline">Y \in \mathbb{R}^n</span>: <span class="math display">
 \begin{aligned}
 P_X + M_X &amp;= I_n \\
 \Longrightarrow\quad P_X Y + M_X Y &amp;= Y
@@ -1283,7 +1281,6 @@ M_X^\top &amp;= I_n^\top - P_X^\top \\
 <li class="fragment"><p><span class="math inline">M_X X = 0</span>: <span class="math display">
 \begin{aligned}
 M_X X &amp;= (I_n - P_X) X \\
-&amp;= I_n X - P_X X \\
 &amp;= X - \underbrace{P_X X}_{=\, X} \\
 &amp;= X - X \\
 &amp;= 0
@@ -1344,9 +1341,6 @@ X^\top \hat U &amp;= X^\top (Y - X\hat\beta) \\
 \operatorname{rank}\left(M_X\right) &amp;= \operatorname{tr}(M_X) \\
 &amp;= \operatorname{tr}(I_n - P_X) \\
 &amp;= \operatorname{tr}(I_n) - \operatorname{tr}(P_X) \\
-&amp;= n - \operatorname{tr}(P_X) \\
-&amp;= n - \operatorname{tr}\big( X (X^\top X)^{-1} X^\top \big) \\
-&amp;= n - \operatorname{tr}\big( \underbrace{(X^\top X)^{-1} X^\top X}_{I_k} \big) \\
 &amp;= n - k
 \end{aligned}
 </span></p></li>
@@ -1446,42 +1440,28 @@ s^2 &amp;= \frac{1}{n-k} \sum_{i=1}^n \hat U_i^2
 </span></p></li>
 </ul>
 </section>
-<section id="proof-step-2-a-quadratic-form" class="slide level2">
-<h2>Proof, step 2: a quadratic form</h2>
-<ul>
-<li class="fragment"><p>To find: <span class="math display">
-\mathrm{E}\left[\hat U^\top \hat U \mid X\right] = \mathrm{E}\left[\overbrace{\underset{1\times n}{U^\top}\ \underset{n\times n}{M_X}\ \underset{n\times 1}{U}}^{1\times 1} \mid X\right]
-</span></p></li>
-<li class="fragment"><p>Does not factor: <span class="math display">
-\mathrm{E}\left[U^\top M_X U \mid X\right] \ \ne\ \mathrm{E}\left[U^\top \mid X\right]\, M_X\, \mathrm{E}\left[U \mid X\right]
-</span></p></li>
-<li class="fragment"><p>Quadratic form: <span class="math display">
-\underset{1\times n}{U^\top}\ \underset{n\times n}{A}\ \underset{n\times 1}{U} = \sum_{i=1}^n \sum_{j=1}^n A_{ij} U_i U_j
-</span></p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i U_j\right] \ne \mathrm{E}\left[U_i\right]\mathrm{E}\left[U_j\right]</span> unless uncorrelated; <span class="math inline">\mathrm{E}\left[U_i^2\right] \ne \mathrm{E}\left[U_i\right]\mathrm{E}\left[U_i\right]</span>.</p></li>
-</ul>
-</section>
 <section id="proof-step-3-the-trace-trick" class="slide level2">
 <h2>Proof, step 3: the trace trick</h2>
 <ul>
-<li class="fragment">We will use:
-<ul>
-<li class="fragment"><span class="math inline">1 \times 1</span> matrix: its own trace;</li>
-<li class="fragment"><span class="math inline">\operatorname{tr}(AB) = \operatorname{tr}(BA)</span>;</li>
-<li class="fragment"><span class="math inline">\mathrm{E}\left[\sum \cdot\right] = \sum \mathrm{E}\left[\cdot\right]</span>;</li>
-<li class="fragment"><span class="math inline">M_X</span>: known given <span class="math inline">X</span>.</li>
-</ul></li>
-<li class="fragment">We have: <span class="math display">
+<li class="fragment"><p>The quadratic form <span class="math inline">U^\top M_X U</span> is a scalar: <span class="math display">
+\overbrace{\underset{1\times n}{U^\top}\ \underset{n\times n}{M_X}\ \underset{n\times 1}{U}}^{1\times 1}
+</span></p></li>
+<li class="fragment"><p>Treat any scalar <span class="math inline">c</span> as a <span class="math inline">1 \times 1</span> matrix: <span class="math display">
+\begin{aligned}
+c &amp;= \operatorname{tr}(c).
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>We have: <span class="math display">
 \begin{aligned}
 \mathrm{E}\left[\hat U^\top \hat U \mid X\right] &amp;= \mathrm{E}\left[U^\top M_X U \mid X\right] \\
-&amp;= \mathrm{E}\left[\operatorname{tr}\big({\color{red} U^\top} M_X U\big) \mid X\right] \\
-&amp;= \mathrm{E}\left[\operatorname{tr}\big(M_X U {\color{red} U^\top}\big) \mid X\right] \\
+&amp;= \mathrm{E}\left[\operatorname{tr}\big({\color{red} U^\top} M_X U\big) \mid X\right] \quad \text{(scalar $=$ its trace)} \\
+&amp;= \mathrm{E}\left[\operatorname{tr}\big(M_X U {\color{red} U^\top}\big) \mid X\right] \quad \text{($\operatorname{tr}(AB) = \operatorname{tr}(BA)$)} \\
 &amp;= \operatorname{tr}\big(\mathrm{E}\left[M_X U U^\top \mid X\right]\big) \\
 &amp;= \operatorname{tr}\big(M_X \underbrace{\mathrm{E}\left[U U^\top \mid X\right]}_{=\, \sigma^2 I_n}\big) \\
 &amp;= \sigma^2 \operatorname{tr}(M_X) \\
 &amp;= \sigma^2 (n - k)
 \end{aligned}
-</span></li>
+</span></p></li>
 </ul>
 </section>
 <section id="hatsigma2-biased" class="slide level2">
