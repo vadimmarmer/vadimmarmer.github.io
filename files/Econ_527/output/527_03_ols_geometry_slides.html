@@ -1703,7 +1703,7 @@ Y &amp;= \underset{1\times 1}{\beta_1}\, \underset{n\times 1}{\ell} + \underset{
 </span></p></li>
 <li class="fragment"><p>Partitioned regression: <span class="math display">
 \begin{aligned}
-\underset{1\times 1}{\hat\beta_2} &amp;= \big( \underset{1\times 1}{X_2^\top M_\ell X_2} \big)^{-1}\, \underset{1\times n}{X_2^\top}\ \underset{n\times 1}{M_\ell Y} \\
+\underset{1\times 1}{\hat\beta_2} &amp;= \big( \underset{1\times 1}{X_2^\top M_\ell X_2} \big)^{-1}\, \underset{1\times n}{X_2^\top}\ \underset{n\times 1}{M_\ell Y} = \frac{X_2^\top M_\ell Y}{X_2^\top M_\ell X_2} \\
 M_\ell &amp;= I_n - \ell \big( \underset{1\times 1}{\ell^\top \ell} \big)^{-1} \ell^\top
 \end{aligned}
 </span></p></li>
@@ -1734,113 +1734,63 @@ M_\ell &amp;= I_n - \frac{\ell \ell^\top}{n}
 &amp;= \bar v
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="p_ell-averaging" class="slide level2">
-<h2><span class="math inline">P_\ell</span>: averaging</h2>
-<ul>
-<li class="fragment"><p>For <span class="math inline">v \in \mathbb{R}^n</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">P_\ell v</span>: <span class="math display">
 \begin{aligned}
-P_\ell v &amp;= \ell (\ell^\top \ell)^{-1} \ell^\top v \\
+P_\ell
 &amp;= \frac{\ell \ell^\top}{n}\, v \\
-&amp;= \ell \left( \frac{\sum_{i=1}^n 1 \cdot v_i}{n} \right) \\
 &amp;= \ell\, \bar v \\
 &amp;= \begin{pmatrix} \bar v \\ \vdots \\ \bar v \end{pmatrix}
 \end{aligned}
-</span></p></li>
-<li class="fragment"><p>Column space of <span class="math inline">\ell</span>: <span class="math display">
-\begin{aligned}
-S(\ell) &amp;= \big\{\, w \in \mathbb{R}^n : w = c\, \ell,\ c \in \mathbb{R} \,\big\} \\
-&amp;= \left\{\, w \in \mathbb{R}^n : w = \begin{pmatrix} c \\ \vdots \\ c \end{pmatrix},\ c \in \mathbb{R} \,\right\}
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="m_ell-deviations-from-the-mean" class="slide level2">
-<h2><span class="math inline">M_\ell</span>: deviations from the mean</h2>
-<ul>
-<li class="fragment"><p>For <span class="math inline">v \in \mathbb{R}^n</span>: <span class="math display">
+</span> `</p></li>
+<li class="fragment"><p><span class="math inline">M_ell v</span>: <span class="math display">
 \begin{aligned}
 M_\ell v &amp;= v - P_\ell v \\
 &amp;= v - \ell\, \bar v \\
 &amp;= \begin{pmatrix} v_1 - \bar v \\ \vdots \\ v_n - \bar v \end{pmatrix}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Orthogonal complement of <span class="math inline">S(\ell)</span>: <span class="math display">
-\begin{aligned}
-S^\perp(\ell) &amp;= \Big\{\, v \in \mathbb{R}^n : \underbrace{v^\top \ell}_{=\, \sum_{i=1}^n v_i} = 0 \,\Big\} \\
-&amp;= \Big\{\, v \in \mathbb{R}^n : \sum_{i=1}^n v_i = 0 \,\Big\} \\
-&amp;= \big\{\, v \in \mathbb{R}^n : \bar v = 0 \,\big\}
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
-<section id="tilde-x_2-m_ell-x_2" class="slide level2">
-<h2><span class="math inline">\tilde X_2 = M_\ell X_2</span></h2>
-<ul>
-<li class="fragment"><p>Mean of the regressor: <span class="math display">
-\begin{aligned}
-(\ell^\top \ell)^{-1} \ell^\top X_2 &amp;= \frac{\ell^\top X_2}{n} \\
-&amp;= \frac{1}{n} \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}^\top \begin{bmatrix} X_{1,2} \\ \vdots \\ X_{n,2} \end{bmatrix} \\
-&amp;= \frac{1}{n} \sum_{i=1}^n 1 \cdot X_{i,2} \\
-&amp;= \frac{1}{n} \sum_{i=1}^n X_{i,2} \\
-&amp;= \bar X_2
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>The regressor: <span class="math display">
-\begin{aligned}
-\tilde X_2 &amp;= M_\ell X_2 \\
-&amp;= X_2 - \ell\, \frac{\ell^\top X_2}{n} \\
-&amp;= X_2 - \bar X_2\, \ell \\
-&amp;= \begin{pmatrix} X_{1,2} - \bar X_2 \\ \vdots \\ X_{n,2} - \bar X_2 \end{pmatrix}
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>The dependent variable: <span class="math inline">M_\ell Y = (Y_1 - \bar Y, \ldots, Y_n - \bar Y)^\top</span>.</p></li>
 </ul>
 </section>
 <section id="slope-estimator-and-deviations-from-the-average" class="slide level2">
 <h2>Slope estimator and deviations from the average</h2>
 <ul>
-<li class="fragment"><p>We will use: <span class="math inline">M_\ell^\top = M_\ell</span>, <span class="math inline">M_\ell M_\ell = M_\ell</span>, and <span class="math inline">X_2^\top M_\ell X_2</span>: <span class="math inline">1 \times 1</span>.</p></li>
-<li class="fragment"><p>We have: <span class="math display">
+<li class="fragment">We have: <span class="math display">
 \begin{aligned}
-\hat\beta_2 &amp;= (X_2^\top M_\ell X_2)^{-1} X_2^\top M_\ell Y \\
+\hat\beta_2
 &amp;= \frac{X_2^\top M_\ell Y}{X_2^\top M_\ell X_2} \\
 &amp;= \frac{(M_\ell X_2)^\top Y}{(M_\ell X_2)^\top (M_\ell X_2)} \\
-&amp;= \frac{\tilde X_2^\top Y}{\tilde X_2^\top \tilde X_2} \\
 &amp;= \frac{(X_2 - \bar X_2\, \ell)^\top Y}{(X_2 - \bar X_2\, \ell)^\top (X_2 - \bar X_2\, \ell)} \\
-&amp;= \frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)\, Y_i}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2} \\
-&amp;= \boxed{\frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)(Y_i - \bar Y)}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2}} \quad (X_2^\top M_\ell Y = X_2^\top M_\ell^\top M_\ell Y)
+&amp;= \frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)\, Y_i}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2}.
 \end{aligned}
-</span></p></li>
+</span></li>
 </ul>
 </section>
 <section id="several-regressors-and-an-intercept" class="slide level2">
 <h2>Several regressors and an intercept</h2>
 <ul>
 <li class="fragment"><p>Intercept <span class="math inline">\beta_1</span> and slope coefficients <span class="math inline">\beta_2</span>: <span class="math display">
-\underset{n\times k}{X} = \big[\ \underset{n\times 1}{\ell} \quad \underset{n\times (k-1)}{X_2}\ \big], \qquad
+\underset{n\times k}{X} = \big[\ \underset{n\times 1}{\ell} \quad \underset{n\times (k-1)}{Z}\ \big], \qquad
 \beta = \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix}, \qquad
-Y = \beta_1 \ell + X_2 \beta_2 + U
+Y = \beta_1 \ell + Z \beta_2 + U
 </span></p></li>
 <li class="fragment"><p>Each regressor minus its mean: <span class="math display">
 \begin{aligned}
-\tilde X_2 &amp;= M_\ell X_2 \\
-&amp;= M_\ell \big[\, \underline{X}_2 \ \cdots \ \underline{X}_k \,\big] \\
-&amp;= \big[\, M_\ell \underline{X}_2 \ \cdots \ M_\ell \underline{X}_k \,\big] \\
-&amp;= \big[\, \underline{\tilde X}_2 \ \cdots \ \underline{\tilde X}_k \,\big]
+\tilde Z &amp;= M_\ell Z \\
+&amp;= M_\ell \big[\, \underline{Z}_1 \ \cdots \ \underline{Z}_{k-1} \,\big] \\
+&amp;= \big[\, M_\ell \underline{Z}_1 \ \cdots \ M_\ell \underline{Z}_{k-1} \,\big] \\
+&amp;= \big[\, \underline{\tilde Z}_1 \ \cdots \ \underline{\tilde Z}_{k-1} \,\big]
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Slope coefficients: <span class="math display">
 \begin{aligned}
-\hat\beta_2 &amp;= (X_2^\top M_\ell X_2)^{-1} X_2^\top M_\ell Y \\
-&amp;= (\tilde X_2^\top \tilde X_2)^{-1} \tilde X_2^\top Y
+\hat\beta_2 &amp;= (Z^\top M_\ell Z)^{-1} Z^\top M_\ell Y \\
+&amp;= (\tilde Z^\top \tilde Z)^{-1} \tilde Z^\top Y
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Variation of <span class="math inline">X_2</span> in the sample, with <span class="math inline">X_{i,2}</span> now <span class="math inline">(k-1) \times 1</span> and <span class="math inline">\bar X_2 = \frac{1}{n} \sum_{i=1}^n X_{i,2}</span>: <span class="math display">
+<li class="fragment"><p>Variation of <span class="math inline">Z</span> in the sample, with <span class="math inline">Z_{i}</span> now <span class="math inline">(k-1) \times 1</span> and <span class="math inline">\bar Z = \frac{1}{n} \sum_{i=1}^n Z_{i}</span>: <span class="math display">
 \begin{aligned}
-\tilde X_2^\top \tilde X_2 &amp;= \sum_{i=1}^n \tilde X_{i,2} \tilde X_{i,2}^\top \\
-&amp;= \sum_{i=1}^n (X_{i,2} - \bar X_2)(X_{i,2} - \bar X_2)^\top
+\tilde Z^\top \tilde Z &amp;= \sum_{i=1}^n \tilde Z_{i} \tilde Z_{i}^\top \\
+&amp;= \sum_{i=1}^n (Z_{i} - \bar Z)(Z_{i} - \bar Z)^\top
 \end{aligned}
 </span></p></li>
 </ul>
@@ -1865,7 +1815,6 @@ Y = \beta_1 \ell + X_2 \beta_2 + U
 <li class="fragment"><p><span class="math inline">\hat U = M_X U</span>, <span class="math inline">\hat U^\top \hat U = U^\top M_X U</span>, <span class="math inline">\mathrm{E}\left[\hat U^\top \hat U \mid X\right] = \sigma^2 \operatorname{tr}(M_X) = \sigma^2 (n - k)</span>.</p></li>
 <li class="fragment"><p><span class="math inline">\mathrm{E}\left[\hat\sigma^2 \mid X\right] = \frac{n-k}{n}\, \sigma^2</span>; <span class="math inline">s^2 = \hat U^\top \hat U / (n - k)</span> with <span class="math inline">\mathrm{E}\left[s^2 \mid X\right] = \sigma^2</span>; <span class="math inline">\widehat{\mathrm{Var}}\big(\hat\beta \mid X\big) = s^2 (X^\top X)^{-1}</span>.</p></li>
 <li class="fragment"><p>Frisch-Waugh-Lovell: <span class="math inline">\hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y = (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y</span>, with <span class="math inline">\tilde X_1 = M_2 X_1</span> and <span class="math inline">\tilde Y = M_2 Y</span>.</p></li>
-<li class="fragment"><p>Intercept, one regressor: <span class="math inline">\hat\beta_2 = \sum_i (X_{i,2} - \bar X_2) Y_i \big/ \sum_i (X_{i,2} - \bar X_2)^2</span>.</p></li>
 </ul>
 
 </section></section>

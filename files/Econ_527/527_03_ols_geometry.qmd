@@ -872,7 +872,7 @@ proj_picture <- function(full, step = 5L) {
 - Partitioned regression:
   $$
   \begin{aligned}
-  \underset{1\times 1}{\hat\beta_2} &= \big( \underset{1\times 1}{X_2^\top M_\ell X_2} \big)^{-1}\, \underset{1\times n}{X_2^\top}\ \underset{n\times 1}{M_\ell Y} \\
+  \underset{1\times 1}{\hat\beta_2} &= \big( \underset{1\times 1}{X_2^\top M_\ell X_2} \big)^{-1}\, \underset{1\times n}{X_2^\top}\ \underset{n\times 1}{M_\ell Y} = \frac{X_2^\top M_\ell Y}{X_2^\top M_\ell X_2} \\
   M_\ell &= I_n - \ell \big( \underset{1\times 1}{\ell^\top \ell} \big)^{-1} \ell^\top
   \end{aligned}
   $$
@@ -907,30 +907,18 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## $P_\ell$: averaging
 
-- For $v \in \mathbb{R}^n$:
+- $P_\ell v$:
   $$
   \begin{aligned}
-  P_\ell v &= \ell (\ell^\top \ell)^{-1} \ell^\top v \\
+  P_\ell 
   &= \frac{\ell \ell^\top}{n}\, v \\
-  &= \ell \left( \frac{\sum_{i=1}^n 1 \cdot v_i}{n} \right) \\
   &= \ell\, \bar v \\
   &= \begin{pmatrix} \bar v \\ \vdots \\ \bar v \end{pmatrix}
   \end{aligned}
   $$
-
-- Column space of $\ell$:
-  $$
-  \begin{aligned}
-  S(\ell) &= \big\{\, w \in \mathbb{R}^n : w = c\, \ell,\ c \in \mathbb{R} \,\big\} \\
-  &= \left\{\, w \in \mathbb{R}^n : w = \begin{pmatrix} c \\ \vdots \\ c \end{pmatrix},\ c \in \mathbb{R} \,\right\}
-  \end{aligned}
-  $$
-
-## $M_\ell$: deviations from the mean
-
-- For $v \in \mathbb{R}^n$:
+`
+- $M_ell v$:
   $$
   \begin{aligned}
   M_\ell v &= v - P_\ell v \\
@@ -939,54 +927,18 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-- Orthogonal complement of $S(\ell)$:
-  $$
-  \begin{aligned}
-  S^\perp(\ell) &= \Big\{\, v \in \mathbb{R}^n : \underbrace{v^\top \ell}_{=\, \sum_{i=1}^n v_i} = 0 \,\Big\} \\
-  &= \Big\{\, v \in \mathbb{R}^n : \sum_{i=1}^n v_i = 0 \,\Big\} \\
-  &= \big\{\, v \in \mathbb{R}^n : \bar v = 0 \,\big\}
-  \end{aligned}
-  $$
 
-## $\tilde X_2 = M_\ell X_2$
-
-- Mean of the regressor:
-  $$
-  \begin{aligned}
-  (\ell^\top \ell)^{-1} \ell^\top X_2 &= \frac{\ell^\top X_2}{n} \\
-  &= \frac{1}{n} \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}^\top \begin{bmatrix} X_{1,2} \\ \vdots \\ X_{n,2} \end{bmatrix} \\
-  &= \frac{1}{n} \sum_{i=1}^n 1 \cdot X_{i,2} \\
-  &= \frac{1}{n} \sum_{i=1}^n X_{i,2} \\
-  &= \bar X_2
-  \end{aligned}
-  $$
-
-- The regressor:
-  $$
-  \begin{aligned}
-  \tilde X_2 &= M_\ell X_2 \\
-  &= X_2 - \ell\, \frac{\ell^\top X_2}{n} \\
-  &= X_2 - \bar X_2\, \ell \\
-  &= \begin{pmatrix} X_{1,2} - \bar X_2 \\ \vdots \\ X_{n,2} - \bar X_2 \end{pmatrix}
-  \end{aligned}
-  $$
-
-- The dependent variable: $M_\ell Y = (Y_1 - \bar Y, \ldots, Y_n - \bar Y)^\top$.
 
 ## Slope estimator and deviations from the average
-
-- We will use: $M_\ell^\top = M_\ell$, $M_\ell M_\ell = M_\ell$, and $X_2^\top M_\ell X_2$: $1 \times 1$.
 
 - We have:
   $$
   \begin{aligned}
-  \hat\beta_2 &= (X_2^\top M_\ell X_2)^{-1} X_2^\top M_\ell Y \\
+  \hat\beta_2 
   &= \frac{X_2^\top M_\ell Y}{X_2^\top M_\ell X_2} \\
   &= \frac{(M_\ell X_2)^\top Y}{(M_\ell X_2)^\top (M_\ell X_2)} \\
-  &= \frac{\tilde X_2^\top Y}{\tilde X_2^\top \tilde X_2} \\
   &= \frac{(X_2 - \bar X_2\, \ell)^\top Y}{(X_2 - \bar X_2\, \ell)^\top (X_2 - \bar X_2\, \ell)} \\
-  &= \frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)\, Y_i}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2} \\
-  &= \boxed{\frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)(Y_i - \bar Y)}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2}} \quad (X_2^\top M_\ell Y = X_2^\top M_\ell^\top M_\ell Y)
+  &= \frac{\sum_{i=1}^n (X_{i,2} - \bar X_2)\, Y_i}{\sum_{i=1}^n (X_{i,2} - \bar X_2)^2}.
   \end{aligned}
   $$
 
@@ -994,34 +946,34 @@ proj_picture <- function(full, step = 5L) {
 
 - Intercept $\beta_1$ and slope coefficients $\beta_2$:
   $$
-  \underset{n\times k}{X} = \big[\ \underset{n\times 1}{\ell} \quad \underset{n\times (k-1)}{X_2}\ \big], \qquad
+  \underset{n\times k}{X} = \big[\ \underset{n\times 1}{\ell} \quad \underset{n\times (k-1)}{Z}\ \big], \qquad
   \beta = \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix}, \qquad
-  Y = \beta_1 \ell + X_2 \beta_2 + U
+  Y = \beta_1 \ell + Z \beta_2 + U
   $$
 
 - Each regressor minus its mean:
   $$
   \begin{aligned}
-  \tilde X_2 &= M_\ell X_2 \\
-  &= M_\ell \big[\, \underline{X}_2 \ \cdots \ \underline{X}_k \,\big] \\
-  &= \big[\, M_\ell \underline{X}_2 \ \cdots \ M_\ell \underline{X}_k \,\big] \\
-  &= \big[\, \underline{\tilde X}_2 \ \cdots \ \underline{\tilde X}_k \,\big]
+  \tilde Z &= M_\ell Z \\
+  &= M_\ell \big[\, \underline{Z}_1 \ \cdots \ \underline{Z}_{k-1} \,\big] \\
+  &= \big[\, M_\ell \underline{Z}_1 \ \cdots \ M_\ell \underline{Z}_{k-1} \,\big] \\
+  &= \big[\, \underline{\tilde Z}_1 \ \cdots \ \underline{\tilde Z}_{k-1} \,\big]
   \end{aligned}
   $$
 
 - Slope coefficients:
   $$
   \begin{aligned}
-  \hat\beta_2 &= (X_2^\top M_\ell X_2)^{-1} X_2^\top M_\ell Y \\
-  &= (\tilde X_2^\top \tilde X_2)^{-1} \tilde X_2^\top Y
+  \hat\beta_2 &= (Z^\top M_\ell Z)^{-1} Z^\top M_\ell Y \\
+  &= (\tilde Z^\top \tilde Z)^{-1} \tilde Z^\top Y
   \end{aligned}
   $$
 
-- Variation of $X_2$ in the sample, with $X_{i,2}$ now $(k-1) \times 1$ and $\bar X_2 = \frac{1}{n} \sum_{i=1}^n X_{i,2}$:
+- Variation of $Z$ in the sample, with $Z_{i}$ now $(k-1) \times 1$ and $\bar Z = \frac{1}{n} \sum_{i=1}^n Z_{i}$:
   $$
   \begin{aligned}
-  \tilde X_2^\top \tilde X_2 &= \sum_{i=1}^n \tilde X_{i,2} \tilde X_{i,2}^\top \\
-  &= \sum_{i=1}^n (X_{i,2} - \bar X_2)(X_{i,2} - \bar X_2)^\top
+  \tilde Z^\top \tilde Z &= \sum_{i=1}^n \tilde Z_{i} \tilde Z_{i}^\top \\
+  &= \sum_{i=1}^n (Z_{i} - \bar Z)(Z_{i} - \bar Z)^\top
   \end{aligned}
   $$
 
@@ -1044,5 +996,3 @@ proj_picture <- function(full, step = 5L) {
 - $\E{\hat\sigma^2 \mid X} = \frac{n-k}{n}\, \sigma^2$; $s^2 = \hat U^\top \hat U / (n - k)$ with $\E{s^2 \mid X} = \sigma^2$; $\widehat{\mathrm{Var}}\big(\hat\beta \mid X\big) = s^2 (X^\top X)^{-1}$.
 
 - Frisch-Waugh-Lovell: $\hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y = (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y$, with $\tilde X_1 = M_2 X_1$ and $\tilde Y = M_2 Y$.
-
-- Intercept, one regressor: $\hat\beta_2 = \sum_i (X_{i,2} - \bar X_2) Y_i \big/ \sum_i (X_{i,2} - \bar X_2)^2$.
