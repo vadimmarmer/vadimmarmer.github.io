@@ -1537,7 +1537,7 @@ s^2 &amp;= \frac{n}{n-k}\, \hat\sigma^2 \\
 \beta = \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix}
 \begin{matrix} k_1 \times 1 \\ k_2 \times 1 \end{matrix}
 </span></p></li>
-<li class="fragment"><p>Model: <span class="math display">
+<li class="fragment"><p>The model can be written as <span class="math display">
 \begin{aligned}
 Y &amp;= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix} + U \\
 &amp;= X_1 \beta_1 + X_2 \beta_2 + U
@@ -1551,16 +1551,15 @@ Y &amp;= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bma
 </span></p></li>
 </ul>
 </section>
-<section id="frisch-waugh-lovell-theorem" class="slide level2">
-<h2>Frisch-Waugh-Lovell theorem</h2>
+<section id="frisch-waugh-lovell-fwl-theorem" class="slide level2">
+<h2>Frisch-Waugh-Lovell (FWL) theorem</h2>
 <ul>
 <li class="fragment"><p><strong>Claim.</strong> <span class="math display">
 \hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y, \qquad M_2 = I_n - P_2, \quad P_2 = X_2 (X_2^\top X_2)^{-1} X_2^\top
 </span></p></li>
 <li class="fragment"><p><span class="math inline">M_2</span>: symmetric, idempotent, <span class="math inline">M_2 X_2 = 0</span>.</p></li>
-<li class="fragment"><p><span class="math inline">M_2: \mathbb{R}^n \longrightarrow S^\perp(X_2)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top</span>: <span class="math display">
-\hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y
+<li class="fragment"><p>Similarly: <span class="math display">
+\hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y, \quad M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top.
 </span></p></li>
 </ul>
 </section>
@@ -1660,7 +1659,6 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 \Longleftrightarrow\quad Y &amp;= X_2 \hat\eta + \tilde Y
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>In general: <span class="math inline">\hat\eta \ne \hat\beta_2</span>, <span class="math inline">\tilde Y \ne \hat U</span>.</p></li>
 </ul>
 </section>
 <section id="regression-in-three-steps" class="slide level2 scrollable">
@@ -1681,7 +1679,7 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Step 1 is not optional: <span class="math display">
-(X_1^\top X_1)^{-1} X_1^\top \tilde Y \ \ne\ (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y \quad \text{in general}
+(X_1^\top X_1)^{-1} X_1^\top \tilde Y = (X_1^\top X_1)^{-1} X_1^\top M_2 Y \ \ne\ ( X_1^\top M_2  X_1)^{-1}  X_1^\top M_2 Y \quad \text{in general}
 </span></p></li>
 </ul>
 </section></section>
@@ -1800,8 +1798,8 @@ S^\perp(\ell) &amp;= \Big\{\, v \in \mathbb{R}^n : \underbrace{v^\top \ell}_{=\,
 <li class="fragment"><p>The dependent variable: <span class="math inline">M_\ell Y = (Y_1 - \bar Y, \ldots, Y_n - \bar Y)^\top</span>.</p></li>
 </ul>
 </section>
-<section id="slope-deviations-from-the-mean" class="slide level2">
-<h2>Slope: deviations from the mean</h2>
+<section id="slope-estimator-and-deviations-from-the-average" class="slide level2">
+<h2>Slope estimator and deviations from the average</h2>
 <ul>
 <li class="fragment"><p>We will use: <span class="math inline">M_\ell^\top = M_\ell</span>, <span class="math inline">M_\ell M_\ell = M_\ell</span>, and <span class="math inline">X_2^\top M_\ell X_2</span>: <span class="math inline">1 \times 1</span>.</p></li>
 <li class="fragment"><p>We have: <span class="math display">

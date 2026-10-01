@@ -692,7 +692,7 @@ proj_picture <- function(full, step = 5L) {
   \begin{matrix} k_1 \times 1 \\ k_2 \times 1 \end{matrix}
   $$
 
-- Model:
+- The model can be written as
   $$
   \begin{aligned}
   Y &= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix} + U \\
@@ -708,7 +708,7 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-## Frisch-Waugh-Lovell theorem
+## Frisch-Waugh-Lovell (FWL) theorem
 
 - **Claim.**
   $$
@@ -717,11 +717,9 @@ proj_picture <- function(full, step = 5L) {
 
 - $M_2$: symmetric, idempotent, $M_2 X_2 = 0$.
 
-- $M_2: \mathbb{R}^n \longrightarrow S^\perp(X_2)$.
-
-- $M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top$:
+- Similarly:
   $$
-  \hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y
+  \hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y, \quad M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top.
   $$
 
 ## Proof
@@ -830,8 +828,6 @@ proj_picture <- function(full, step = 5L) {
   \end{aligned}
   $$
 
-- In general: $\hat\eta \ne \hat\beta_2$, $\tilde Y \ne \hat U$.
-
 ## Regression in three steps
 
 1. Remove from $X_1$ the part collinear with $X_2$: $\tilde X_1$.
@@ -852,7 +848,7 @@ proj_picture <- function(full, step = 5L) {
 
 - Step 1 is not optional:
   $$
-  (X_1^\top X_1)^{-1} X_1^\top \tilde Y \ \ne\ (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y \quad \text{in general}
+  (X_1^\top X_1)^{-1} X_1^\top \tilde Y = (X_1^\top X_1)^{-1} X_1^\top M_2 Y \ \ne\ ( X_1^\top M_2  X_1)^{-1}  X_1^\top M_2 Y \quad \text{in general}
   $$
 
 # Partitioned regression and the intercept
@@ -977,7 +973,7 @@ proj_picture <- function(full, step = 5L) {
 
 - The dependent variable: $M_\ell Y = (Y_1 - \bar Y, \ldots, Y_n - \bar Y)^\top$.
 
-## Slope: deviations from the mean
+## Slope estimator and deviations from the average
 
 - We will use: $M_\ell^\top = M_\ell$, $M_\ell M_\ell = M_\ell$, and $X_2^\top M_\ell X_2$: $1 \times 1$.
 

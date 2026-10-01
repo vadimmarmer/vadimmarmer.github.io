@@ -2255,7 +2255,7 @@ window.Quarto = {
   <li><a href="#partitioned-regression" id="toc-partitioned-regression" class="nav-link" data-scroll-target="#partitioned-regression">Partitioned regression</a>
   <ul class="collapse">
   <li><a href="#partition" id="toc-partition" class="nav-link" data-scroll-target="#partition">Partition</a></li>
-  <li><a href="#frisch-waugh-lovell-theorem" id="toc-frisch-waugh-lovell-theorem" class="nav-link" data-scroll-target="#frisch-waugh-lovell-theorem">Frisch-Waugh-Lovell theorem</a></li>
+  <li><a href="#frisch-waugh-lovell-fwl-theorem" id="toc-frisch-waugh-lovell-fwl-theorem" class="nav-link" data-scroll-target="#frisch-waugh-lovell-fwl-theorem">Frisch-Waugh-Lovell (FWL) theorem</a></li>
   <li><a href="#proof" id="toc-proof" class="nav-link" data-scroll-target="#proof">Proof</a></li>
   <li><a href="#m_2-hat-u-hat-u" id="toc-m_2-hat-u-hat-u" class="nav-link" data-scroll-target="#m_2-hat-u-hat-u"><span class="math inline">M_2 \hat U = \hat U</span></a></li>
   <li><a href="#residuals-on-residuals" id="toc-residuals-on-residuals" class="nav-link" data-scroll-target="#residuals-on-residuals">Residuals on residuals</a></li>
@@ -2269,7 +2269,7 @@ window.Quarto = {
   <li><a href="#p_ell-averaging" id="toc-p_ell-averaging" class="nav-link" data-scroll-target="#p_ell-averaging"><span class="math inline">P_\ell</span>: averaging</a></li>
   <li><a href="#m_ell-deviations-from-the-mean" id="toc-m_ell-deviations-from-the-mean" class="nav-link" data-scroll-target="#m_ell-deviations-from-the-mean"><span class="math inline">M_\ell</span>: deviations from the mean</a></li>
   <li><a href="#tilde-x_2-m_ell-x_2" id="toc-tilde-x_2-m_ell-x_2" class="nav-link" data-scroll-target="#tilde-x_2-m_ell-x_2"><span class="math inline">\tilde X_2 = M_\ell X_2</span></a></li>
-  <li><a href="#slope-deviations-from-the-mean" id="toc-slope-deviations-from-the-mean" class="nav-link" data-scroll-target="#slope-deviations-from-the-mean">Slope: deviations from the mean</a></li>
+  <li><a href="#slope-estimator-and-deviations-from-the-average" id="toc-slope-estimator-and-deviations-from-the-average" class="nav-link" data-scroll-target="#slope-estimator-and-deviations-from-the-average">Slope estimator and deviations from the average</a></li>
   <li><a href="#several-regressors-and-an-intercept" id="toc-several-regressors-and-an-intercept" class="nav-link" data-scroll-target="#several-regressors-and-an-intercept">Several regressors and an intercept</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
@@ -2749,7 +2749,7 @@ s^2 &amp;= \frac{n}{n-k}\, \hat\sigma^2 \\
 \beta = \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix}
 \begin{matrix} k_1 \times 1 \\ k_2 \times 1 \end{matrix}
 </span></p></li>
-<li><p>Model: <span class="math display">
+<li><p>The model can be written as <span class="math display">
 \begin{aligned}
 Y &amp;= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix} + U \\
 &amp;= X_1 \beta_1 + X_2 \beta_2 + U
@@ -2763,16 +2763,15 @@ Y &amp;= \big[\ X_1 \quad X_2\ \big] \begin{bmatrix} \beta_1 \\ \beta_2 \end{bma
 </span></p></li>
 </ul>
 </section>
-<section id="frisch-waugh-lovell-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="frisch-waugh-lovell-theorem">Frisch-Waugh-Lovell theorem</h2>
+<section id="frisch-waugh-lovell-fwl-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="frisch-waugh-lovell-fwl-theorem">Frisch-Waugh-Lovell (FWL) theorem</h2>
 <ul>
 <li><p><strong>Claim.</strong> <span class="math display">
 \hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y, \qquad M_2 = I_n - P_2, \quad P_2 = X_2 (X_2^\top X_2)^{-1} X_2^\top
 </span></p></li>
 <li><p><span class="math inline">M_2</span>: symmetric, idempotent, <span class="math inline">M_2 X_2 = 0</span>.</p></li>
-<li><p><span class="math inline">M_2: \mathbb{R}^n \longrightarrow S^\perp(X_2)</span>.</p></li>
-<li><p><span class="math inline">M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top</span>: <span class="math display">
-\hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y
+<li><p>Similarly: <span class="math display">
+\hat\beta_2 = (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y, \quad M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top.
 </span></p></li>
 </ul>
 </section>
@@ -2872,7 +2871,6 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 \Longleftrightarrow\quad Y &amp;= X_2 \hat\eta + \tilde Y
 \end{aligned}
 </span></p></li>
-<li><p>In general: <span class="math inline">\hat\eta \ne \hat\beta_2</span>, <span class="math inline">\tilde Y \ne \hat U</span>.</p></li>
 </ul>
 </section>
 <section id="regression-in-three-steps" class="level2">
@@ -2893,7 +2891,7 @@ M_2 Y &amp;= M_2 X_1 \beta_1 + \underbrace{M_2 X_2}_{=\, 0}\, \beta_2 + M_2 U \\
 \end{aligned}
 </span></p></li>
 <li><p>Step 1 is not optional: <span class="math display">
-(X_1^\top X_1)^{-1} X_1^\top \tilde Y \ \ne\ (\tilde X_1^\top \tilde X_1)^{-1} \tilde X_1^\top \tilde Y \quad \text{in general}
+(X_1^\top X_1)^{-1} X_1^\top \tilde Y = (X_1^\top X_1)^{-1} X_1^\top M_2 Y \ \ne\ ( X_1^\top M_2  X_1)^{-1}  X_1^\top M_2 Y \quad \text{in general}
 </span></p></li>
 </ul>
 </section>
@@ -3010,8 +3008,8 @@ S^\perp(\ell) &amp;= \Big\{\, v \in \mathbb{R}^n : \underbrace{v^\top \ell}_{=\,
 <li><p>The dependent variable: <span class="math inline">M_\ell Y = (Y_1 - \bar Y, \ldots, Y_n - \bar Y)^\top</span>.</p></li>
 </ul>
 </section>
-<section id="slope-deviations-from-the-mean" class="level2">
-<h2 class="anchored" data-anchor-id="slope-deviations-from-the-mean">Slope: deviations from the mean</h2>
+<section id="slope-estimator-and-deviations-from-the-average" class="level2">
+<h2 class="anchored" data-anchor-id="slope-estimator-and-deviations-from-the-average">Slope estimator and deviations from the average</h2>
 <ul>
 <li><p>We will use: <span class="math inline">M_\ell^\top = M_\ell</span>, <span class="math inline">M_\ell M_\ell = M_\ell</span>, and <span class="math inline">X_2^\top M_\ell X_2</span>: <span class="math inline">1 \times 1</span>.</p></li>
 <li><p>We have: <span class="math display">
