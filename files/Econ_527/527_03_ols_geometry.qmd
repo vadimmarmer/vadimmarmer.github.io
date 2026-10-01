@@ -911,14 +911,13 @@ proj_picture <- function(full, step = 5L) {
 - $P_\ell v$:
   $$
   \begin{aligned}
-  P_\ell 
-  &= \frac{\ell \ell^\top}{n}\, v \\
+  P_\ell v &= \frac{\ell \ell^\top}{n}\, v \\
   &= \ell\, \bar v \\
   &= \begin{pmatrix} \bar v \\ \vdots \\ \bar v \end{pmatrix}
   \end{aligned}
   $$
-`
-- $M_ell v$:
+
+- $M_\ell v$:
   $$
   \begin{aligned}
   M_\ell v &= v - P_\ell v \\
