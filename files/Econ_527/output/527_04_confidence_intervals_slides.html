@@ -1356,39 +1356,30 @@ CI_{1-\alpha} = \hat\beta_1 \pm z_{1-\alpha/2} \sqrt{\frac{\sigma^2}{X_1^\top M_
 <section id="asymmetric-interval" class="slide level2">
 <h2>Asymmetric interval</h2>
 <ul>
-<li class="fragment"><p>Tails of <span class="math inline">Z = (\hat\theta - \theta)/\omega</span>: <span class="math inline">\alpha/3</span> below, <span class="math inline">2\alpha/3</span> above.</p></li>
-<li class="fragment"><p>Interval: <span class="math display">
+<li class="fragment"><p>Asymmetric interval: <span class="math display">
 \widetilde{CI} = \big[\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}\big]
 </span></p></li>
 <li class="fragment"><p>Ordering of the quantiles: <span class="math display">
 z_{1-2\alpha/3} &lt; z_{1-\alpha/2} &lt; z_{1-\alpha/3}
 </span></p></li>
-<li class="fragment"><p>For <span class="math inline">\alpha = 0.1</span>: <span class="math display">
-\begin{aligned}
-\alpha/2 &amp;= 0.05 \\
-1 - \alpha/2 &amp;= 0.95 \\
-1 - \alpha/3 &amp;\approx 0.967 \\
-1 - 2\alpha/3 &amp;\approx 0.933
-\end{aligned}
-</span></p></li>
 </ul>
 </section>
-<section id="coverage-of-widetildeci" class="slide level2">
-<h2>Coverage of <span class="math inline">\widetilde{CI}</span></h2>
+<section id="coverage-of-the-asymmetric-interval-widetildeci" class="slide level2">
+<h2>Coverage of the asymmetric interval <span class="math inline">\widetilde{CI}</span></h2>
 <ul>
 <li class="fragment">Coverage of <span class="math inline">\widetilde{CI}</span> is <span class="math inline">1-\alpha</span>: <span class="math display">
 \begin{aligned}
-1-\alpha &amp;= 1 - \frac{2\alpha}{3} - \frac{\alpha}{3} \\
-&amp;= \Big(1 - \frac{2\alpha}{3}\Big) - \mathrm{P}\big(Z &lt; z_{\alpha/3}\big) \\
-&amp;= \mathrm{P}\big(Z \le z_{1-2\alpha/3}\big) - \mathrm{P}\big(Z &lt; z_{\alpha/3}\big) \\
-&amp;= \mathrm{P}\big(z_{\alpha/3} \le Z \le z_{1-2\alpha/3}\big) \\
-&amp;= \mathrm{P}\Big(z_{\alpha/3} \le \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} \le z_{1-2\alpha/3}\Big) \\
-&amp;= \mathrm{P}\big(\omega z_{\alpha/3} \le \hat\theta - \theta \le \omega z_{1-2\alpha/3}\big) \\
-&amp;= \mathrm{P}\big(\omega z_{\alpha/3} - \hat\theta \le -\theta \le \omega z_{1-2\alpha/3} - \hat\theta\big) \\
-&amp;= \mathrm{P}\big(\hat\theta - \omega z_{1-2\alpha/3} \le \theta \le \hat\theta - \omega z_{\alpha/3}\big) \\
+\mathrm{P}\big(\theta \in \widetilde{CI}\big) &amp;= \mathrm{P}\big(\theta \in [\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}]\big) \\
 &amp;= \mathrm{P}\big(\hat\theta - \omega z_{1-2\alpha/3} \le \theta \le \hat\theta + \omega z_{1-\alpha/3}\big) \\
-&amp;= \mathrm{P}\big(\theta \in [\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}]\big) \\
-&amp;= \mathrm{P}\big(\theta \in \widetilde{CI}\big)
+&amp;= \mathrm{P}\big(-\omega z_{1-2\alpha/3} \le \theta - \hat\theta \le \omega z_{1-\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(-\omega z_{1-\alpha/3} \le \hat\theta - \theta \le \omega z_{1-2\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(\omega z_{\alpha/3} \le \hat\theta - \theta \le \omega z_{1-2\alpha/3}\big) \\
+&amp;= \mathrm{P}\Big(z_{\alpha/3} \le \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} \le z_{1-2\alpha/3}\Big) \\
+&amp;= \mathrm{P}\big(z_{\alpha/3} \le Z \le z_{1-2\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(Z \le z_{1-2\alpha/3}\big) - \mathrm{P}\big(Z &lt; z_{\alpha/3}\big) \\
+&amp;= \Big(1 - \frac{2\alpha}{3}\Big) - \mathrm{P}\big(Z &lt; z_{\alpha/3}\big) \\
+&amp;= 1 - \frac{2\alpha}{3} - \frac{\alpha}{3} \\
+&amp;= 1-\alpha
 \end{aligned}
 </span> where <span class="math inline">z_{\alpha/3} &lt; 0</span> and <span class="math inline">-z_{\alpha/3} = z_{1-\alpha/3}</span>.</li>
 </ul>

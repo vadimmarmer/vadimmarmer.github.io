@@ -1,0 +1,1540 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 5: Hypothesis testing"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_05_hypothesis_testing.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_05_hypothesis_testing.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_05_hypothesis_testing_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Hypotheses and errors
+
+## Estimator and parameter set
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+red <- "#d7301f"; green <- "#1b9e77"; blue <- "#1f78b4"
+
+# A solid tint of a colour, mixed toward white.
+tint <- function(col, w = 0.2) {
+  rgb(t(col2rgb(col) * w + 255 * (1 - w)), maxColorValue = 255)
+}
+
+# The area under the N(m, 1) density between a and b, shaded.
+shade <- function(a, b, col, m = 0) {
+  x <- seq(a, b, length.out = 100)
+  polygon(c(a, x, b), c(0, dnorm(x, m), 0), col = col, border = NA)
+}
+
+# A vertical curly brace from y1 to y2, with its base at x0 and its tip at
+# x0 + w (w < 0 puts the tip on the left).
+vbrace <- function(y1, y2, x0, w, r = 0.04) {
+  ym <- (y1 + y2) / 2
+  p <- seq(0, pi / 2, length.out = 16)
+  by <- c(y1 + r - r * cos(p), ym - r + r * sin(p))
+  bx <- c(x0 + (w / 2) * sin(p), x0 + w - (w / 2) * cos(p))
+  lines(c(bx, rev(bx)), c(by, 2 * ym - rev(by)))
+}
+
+# Power of the two-sided test and of the right-tailed one-sided test at
+# (theta - theta_0) / omega = d, alpha = 0.05, exact from the normal
+# distribution.
+power_two <- function(d, z = qnorm(0.975)) pnorm(-z - d) + 1 - pnorm(z - d)
+power_one <- function(d, z = qnorm(0.95)) 1 - pnorm(z - d)
+# Power of the two-sided test with unequal tails, alpha/3 on the right and
+# 2 alpha/3 on the left: P(Z + d > z_{1-alpha/3}) + P(Z + d < -z_{1-2alpha/3}),
+# exact at alpha = 0.05. Its minimum, 0.0476 at d = 0.147, lies below alpha.
+power_unequal <- function(d, a = 0.05) {
+  1 - pnorm(qnorm(1 - a / 3) - d) + pnorm(-qnorm(1 - 2 * a / 3) - d)
+}
+
+# Figure 1: the density of (theta-hat - theta_0) / omega. Step 1: N(0,1) under
+# H_0 with the two rejection tails. Step 2: the density shifted to
+# (theta_1 - theta_0) / omega with its mass in the rejection region, the power
+# at theta_1. Step 3: a second shift, theta_2 further from theta_0. Drawn for
+# alpha = 0.05.
+densities_picture <- function(step = 3L) {
+  z <- qnorm(0.975); d1 <- 1.3; d2 <- 3.6
+  x <- seq(-3.6, 7.2, length.out = 400)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-4.0, 7.6), ylim = c(-0.2, 0.52))
+  shade(-3.6, -z, tint(blue, 0.45)); shade(z, 3.6, tint(blue, 0.45))
+  if (step >= 2L) shade(z, 7.2, adjustcolor(red, 0.3), m = d1)
+  if (step >= 3L) shade(z, 7.2, adjustcolor(green, 0.3), m = d2)
+  lines(x, dnorm(x), lwd = 1.5)
+  if (step >= 2L) lines(x, dnorm(x, d1), lwd = 1.5, col = red)
+  if (step >= 3L) lines(x, dnorm(x, d2), lwd = 1.5, col = green)
+  arrows(-3.9, 0, 7.5, 0, length = 0.08)
+  segments(0, 0, 0, dnorm(0), lty = 2)
+  segments(c(-z, z), 0, c(-z, z), 0.4, lty = 3)
+  text(c(-z, 0, z), -0.065, c("$-z_{1-\\alpha/2}$", "$0$", "$z_{1-\\alpha/2}$"))
+  text(c(-3.3, 6.6), -0.065, "reject", col = blue)
+  text(-2.75, 0.055, "$\\alpha/2$", col = blue); text(3.0, -0.065, "$\\alpha/2$", col = blue)
+  arrows(2.8, -0.04, 2.25, 0.008, length = 0.05, col = blue)
+  text(0, 0.46, "$N(0,1)$, $\\theta = \\theta_0$")
+  if (step >= 2L) {
+    segments(d1, 0, d1, dnorm(0), lty = 2, col = red)
+    text(d1, -0.15, "$\\frac{\\theta_1 - \\theta_0}{\\omega}$", col = red)
+    text(d1 + 0.3, 0.46, "$\\theta = \\theta_1$", col = red)
+    text(2.4, 0.075, "$\\pi(\\theta_1)$", col = red)
+  }
+  if (step >= 3L) {
+    segments(d2, 0, d2, dnorm(0), lty = 2, col = green)
+    text(d2, -0.15, "$\\frac{\\theta_2 - \\theta_0}{\\omega}$", col = green)
+    text(d2, 0.46, "$\\theta = \\theta_2$", col = green)
+    text(4.2, 0.18, "$\\pi(\\theta_2)$", col = green)
+  }
+  par(op)
+}
+
+# Figure 2: the power function of the two-sided test against theta, with theta
+# measured in units of omega from theta_0. Step 1: the curve alone, with the
+# Type II error probability and the power at one theta marked by braces.
+# Step 2: the power function of the test based on the more precise estimator,
+# omega_* = omega / 2. Step 3: the flat power function of the test that ignores
+# the data.
+power_picture <- function(step = 1L) {
+  al <- 0.05; t1 <- 2.8
+  d <- seq(-4.5, 4.5, length.out = 300)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-4.9, 5.4), ylim = c(-0.16, 1.15))
+  arrows(-4.8, 0, 5.2, 0, length = 0.08)
+  arrows(0, 0, 0, 1.12, length = 0.08)
+  segments(-4.5, 1, 4.8, 1, lty = 2)
+  text(-0.25, 1, "$1$", adj = c(1, -0.3))
+  lines(d, power_two(d), lwd = 2)
+  if (step >= 2L) lines(d, power_two(2 * d), lwd = 2, col = green)
+  if (step >= 3L) segments(-4.5, al, 4.8, al, lwd = 2, lty = 2, col = blue)
+  points(0, al, pch = 16)
+  text(-0.1, al + 0.065, "$\\alpha$", adj = 1)
+  text(0, -0.07, "$\\theta_0$")
+  text(5.2, -0.07, "$\\theta$")
+  text(-3.4, 0.78, "$\\pi(\\theta)$")
+  if (step == 1L) {
+    p1 <- power_two(t1)
+    segments(t1, 0, t1, 1, lty = 2, col = blue)
+    text(t1, -0.07, "$\\theta$", col = blue)
+    # The upper brace and its labels sit left of the dashed line, where the
+    # curve is low; the lower brace and its label sit right of it.
+    vbrace(p1, 1, t1 - 0.12, -0.25)
+    text(t1 - 0.45, (p1 + 1) / 2 + 0.05, "$\\mathrm{P}($Type II error $\\mid \\theta)$", adj = 1, col = blue)
+    text(t1 - 0.45, (p1 + 1) / 2 - 0.05, "$= 1 - \\pi(\\theta)$", adj = 1, col = blue)
+    vbrace(0, p1, t1 + 0.12, 0.25)
+    text(t1 + 0.5, p1 / 2, "$\\pi(\\theta)$", adj = 0, col = blue)
+  }
+  if (step >= 2L) text(0.3, 0.9, "$\\pi^*(\\theta)$", adj = 0, col = green)
+  if (step >= 3L) text(3.3, al + 0.08, "$\\tilde\\pi(\\theta) = \\alpha$", col = blue)
+  par(op)
+}
+
+# Figure 6: the N(0,1) density with the two upper critical values, the area
+# alpha beyond z_{1-alpha} and alpha/2 beyond z_{1-alpha/2}.
+critical_picture <- function() {
+  z1 <- qnorm(0.95); z2 <- qnorm(0.975)
+  x <- seq(-3.4, 3.4, length.out = 300)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-3.7, 3.7), ylim = c(-0.2, 0.52))
+  shade(z1, 3.4, tint(blue, 0.45)); shade(z2, 3.4, tint(blue, 0.8))
+  lines(x, dnorm(x), lwd = 1.5)
+  arrows(-3.6, 0, 3.6, 0, length = 0.08)
+  segments(0, 0, 0, dnorm(0), lty = 2)
+  segments(c(z1, z2), 0, c(z1, z2), c(0.22, 0.15), lty = 3)
+  text(0, -0.07, "$0$")
+  text(z1, -0.07, "$z_{1-\\alpha}$")
+  text(z2, -0.16, "$z_{1-\\alpha/2}$")
+  text(0, 0.46, "$N(0,1)$, $\\theta = \\theta_0$")
+  # The area to the right of each critical value, marked as in deck 4: an
+  # arrow from the top of its dotted line to the right, labelled at its end.
+  arrows(z1, 0.22, 3.1, 0.22, length = 0.06); text(3.2, 0.22, "$\\alpha$", adj = 0)
+  arrows(z2, 0.15, 3.1, 0.15, length = 0.06); text(3.2, 0.15, "$\\alpha/2$", adj = 0)
+  par(op)
+}
+
+# Figure 3: the power functions of the one-sided test (increasing) and of the
+# two-sided test (U-shaped) for the same point null, both equal to alpha at
+# theta_0.
+onesided_picture <- function() {
+  al <- 0.05
+  d <- seq(-4.5, 4.5, length.out = 300)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-4.9, 5.4), ylim = c(-0.16, 1.15))
+  arrows(-4.8, 0, 5.2, 0, length = 0.08)
+  arrows(0, 0, 0, 1.12, length = 0.08)
+  segments(-4.5, 1, 4.8, 1, lty = 2)
+  text(-0.25, 1, "$1$", adj = c(1, -0.3))
+  segments(-4.5, al, 4.8, al, lty = 2, col = blue)
+  lines(d, power_two(d), lwd = 2)
+  lines(d, power_one(d), lwd = 2, col = red)
+  points(0, al, pch = 16)
+  text(-0.1, al + 0.065, "$\\alpha$", adj = 1)
+  text(0, -0.07, "$\\theta_0$")
+  text(5.2, -0.07, "$\\theta$")
+  text(-3.4, 0.78, "$\\pi_2(\\theta)$")
+  text(-2.5, 0.12, "$\\pi_1(\\theta)$", col = red)
+  par(op)
+}
+
+# Figure 4: the N(0,1) density of the statistic under theta = theta_0 with the
+# p-value shaded: the two tails beyond -T and T (two_sided = TRUE), or the one
+# tail beyond the one-sided statistic (two_sided = FALSE), on the right, or on
+# the left with left = TRUE, the part beyond the critical value darker. The
+# critical values at alpha = 0.05 are marked by dotted lines.
+pvalue_picture <- function(two_sided = TRUE, left = FALSE) {
+  tt <- if (two_sided) 1.5 else 1.0
+  x <- seq(-3.4, 3.4, length.out = 300)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-3.7, 3.7), ylim = c(-0.2, 0.52))
+  if (two_sided) {
+    z <- qnorm(0.975)
+    shade(-3.4, -tt, tint(red, 0.4)); shade(tt, 3.4, tint(red, 0.4))
+  } else {
+    z <- qnorm(0.95); s <- if (left) -1 else 1
+    if (left) { shade(-3.4, -tt, tint(red, 0.4)); shade(-3.4, -z, tint(red, 0.8)) } else { shade(tt, 3.4, tint(red, 0.4)); shade(z, 3.4, tint(red, 0.8)) }
+  }
+  lines(x, dnorm(x), lwd = 1.5)
+  arrows(-3.6, 0, 3.6, 0, length = 0.08)
+  segments(0, 0, 0, dnorm(0), lty = 2)
+  text(0, -0.07, "$0$")
+  text(0, 0.46, "$N(0,1)$, $\\theta = \\theta_0$")
+  if (two_sided) {
+    segments(c(-tt, tt), 0, c(-tt, tt), dnorm(tt), lty = 2, col = red)
+    segments(c(-z, z), 0, c(-z, z), 0.3, lty = 3)
+    text(c(-tt, tt), -0.07, c("$-T(\\theta_0)$", "$T(\\theta_0)$"), col = red)
+    text(c(-z, z), -0.16, c("$-z_{1-\\alpha/2}$", "$z_{1-\\alpha/2}$"))
+    # The label sits in the empty upper right; one arrow runs to the right
+    # tail and one across the curve to the left tail, as the class drew it.
+    text(2.6, 0.36, "p-value", col = red)
+    arrows(2.2, 0.33, -1.8, 0.03, length = 0.07, col = red)
+    arrows(2.6, 0.32, 1.8, 0.03, length = 0.07, col = red)
+    text(c(-3.0, 3.0), 0.07, "$\\alpha/2$"); arrows(c(-2.9, 2.9), 0.05, c(-2.3, 2.3), 0.012, length = 0.05)
+  } else {
+    segments(s * tt, 0, s * tt, dnorm(tt), lty = 2, col = red)
+    segments(s * z, 0, s * z, 0.3, lty = 3)
+    text(s * tt, -0.09, "$\\frac{\\hat\\theta - \\theta_0}{\\omega}$", col = red)
+    text(s * z, -0.17, if (left) "$-z_{1-\\alpha}$" else "$z_{1-\\alpha}$")
+    text(s * 2.7, 0.3, "p-value", col = red)
+    arrows(s * 2.45, 0.27, s * 1.3, 0.11, length = 0.07, col = red)
+    arrows(s * 2.6, 0.27, s * 2.0, 0.03, length = 0.07, col = red)
+    text(s * 3.0, 0.07, "$\\alpha$"); arrows(s * 2.9, 0.05, s * 2.5, 0.006, length = 0.05)
+  }
+  par(op)
+}
+
+# Figure 5: the power functions of the equal-tail two-sided test (Test 2,
+# symmetric about theta_0) and of the two-sided test with unequal tails
+# (Test 3, alpha/3 on the right and 2 alpha/3 on the left), both equal to
+# alpha at theta_0. Drawn exactly at alpha = 0.05. The dip of Test 3 below
+# alpha, 0.0024 deep at d = 0.147, is invisible at this scale, so an inset
+# near theta_0 stretches the vertical axis; away from theta_0 Test 3 lies
+# above Test 2 on the left and below it on the right.
+unequal_picture <- function() {
+  al <- 0.05
+  d <- seq(-4.5, 4.5, length.out = 300)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-4.9, 5.4), ylim = c(-0.16, 1.15))
+  arrows(-4.8, 0, 5.2, 0, length = 0.08)
+  arrows(0, 0, 0, 1.12, length = 0.08)
+  segments(-4.5, 1, 4.8, 1, lty = 2)
+  text(-0.25, 1, "$1$", adj = c(1, -0.3))
+  segments(-4.5, al, 4.8, al, lty = 2, col = blue)
+  lines(d, power_two(d), lwd = 2)
+  lines(d, power_unequal(d), lwd = 2, col = red)
+  points(0, al, pch = 16)
+  text(-0.1, al + 0.065, "$\\alpha$", adj = 1)
+  text(0, -0.07, "$\\theta_0$")
+  text(5.2, -0.07, "$\\theta$")
+  text(-3.4, 0.78, "$\\pi_2(\\theta)$")
+  text(3.4, 0.72, "$\\pi_3(\\theta)$", col = red)
+  # Inset: the same two curves near theta_0, vertical scale stretched, so the
+  # dip of pi_3 below alpha (about 0.0024 at alpha = 0.05) can be seen.
+  bx <- c(-1.7, 1.7); by <- c(0.48, 0.98); dr <- c(-0.6, 0.6); yr <- c(0.046, 0.054)
+  mx <- function(u) bx[1] + (u - dr[1]) / diff(dr) * diff(bx)
+  my <- function(v) by[1] + (v - yr[1]) / diff(yr) * diff(by)
+  rect(bx[1], by[1], bx[2], by[2], col = "white", border = "grey40")
+  dd <- seq(dr[1], dr[2], length.out = 2000)
+  segments(mx(dr[1]), my(al), mx(dr[2]), my(al), lty = 2, col = blue)
+  segments(mx(0), by[1], mx(0), by[2], lty = 3)
+  inbox <- function(v) ifelse(v >= yr[1] & v <= yr[2], v, NA)
+  lines(mx(dd), my(inbox(power_two(dd))), lwd = 1.5)
+  lines(mx(dd), my(inbox(power_unequal(dd))), lwd = 1.5, col = red)
+  points(mx(0), my(al), pch = 16, cex = 0.7)
+  text(bx[1] + 0.05, by[2] - 0.05, "near $\\theta_0$", adj = c(0, 1), cex = 0.8)
+  text(bx[2] - 0.05, my(al) + 0.04, "$\\alpha$", adj = c(1, 0), cex = 0.8, col = blue)
+  par(op)
+}
+```
+
+- Normally distributed estimator with known variance $\omega^2$:
+  $$
+  \underset{1\times1}{\hat\theta} \sim N\big(\underset{1\times1}{\theta},\ \underset{1\times1}{\omega^2}\big), \qquad \frac{\hat\theta - \theta}{\omega} = Z \sim N(0,1)
+  $$
+
+- Regression example, conditional on $X$: 
+  $$
+  \theta = \beta_1,\, \hat\theta = \hat\beta_1, \, \omega^2 = \sigma^2 / (X_1^\top M_2 X_1).
+  $$
+
+- Parameter set, for example $\Theta = \mathbb{R}$:
+  $$
+  \theta \in \Theta
+  $$
+
+- Two disjoint parts:
+  $$
+  \begin{aligned}
+  \Theta &= \Theta_0 \cup \Theta_1 \\
+  \Theta_0 \cap \Theta_1 &= \emptyset
+  \end{aligned}
+  $$
+
+- Null and alternative hypotheses:
+  $$
+  H_0 : \theta \in \Theta_0 \qquad \text{vs} \qquad H_1 : \theta \in \Theta_1
+  $$
+
+## Examples of $\Theta_0$ and $\Theta_1$
+
+- Point null, $\Theta = \mathbb{R}$:
+  $$
+  \begin{aligned}
+  \Theta_0 &= \{0\} \\
+  \Theta_1 &= \mathbb{R} \setminus \{0\} \\
+  &\Longleftrightarrow\quad H_0 : \theta = 0 \quad \text{vs} \quad H_1 : \theta \neq 0
+  \end{aligned}
+  $$
+
+- More generally, for a **known** $\theta_0$:
+  $$
+  \begin{aligned}
+  \Theta_0 &= \{\theta_0\} \\
+  \Theta_1 &= \mathbb{R} \setminus \{\theta_0\} \\
+  &\Longleftrightarrow\quad H_0 : \theta = \theta_0 \quad \text{vs} \quad H_1 : \theta \neq \theta_0
+  \end{aligned}
+  $$
+
+- One-sided null:
+  $$
+  \begin{aligned}
+  \Theta_0 &= [\,\theta_0,\ +\infty) \\
+  \Theta_1 &= (-\infty,\ \theta_0) \\
+  &\Longleftrightarrow\quad H_0 : \theta \ge \theta_0 \quad \text{vs} \quad H_1 : \theta < \theta_0
+  \end{aligned}
+  $$
+
+
+- **Definition.** Simple hypothesis: a single-point set; otherwise composite:
+  $$
+  \Theta_0 = \{\theta_0\} : \ \text{simple}, \qquad \Theta_0 = [\,0,\ +\infty) : \ \text{composite}
+  $$
+
+## Test statistic and decision rule
+
+- Test statistic $T$: a function of the data, random, with range $S$:
+  $$
+  \begin{aligned}
+  T &\in S \\
+  S &= S_A \cup S_R, \qquad S_A \cap S_R = \emptyset
+  \end{aligned}
+  $$
+
+- $S_A$: acceptance region; $S_R$: rejection region.
+
+- Decision rule:
+  $$
+  \begin{aligned}
+  T \in S_A \quad &\Longrightarrow \quad \text{decide in favor of } \theta \in \Theta_0 \qquad (\text{fail to reject } H_0) \\
+  T \in S_R \quad &\Longrightarrow \quad \text{decide in favor of } \theta \in \Theta_1 \qquad (\text{reject } H_0)
+  \end{aligned}
+  $$
+
+## Type I and Type II errors
+
+Truth against decision:
+
+| Truth | Decision $H_0$ | Decision $H_1$ |
+|:---:|:---:|:---:|
+| $H_0$ | correct | Type I error |
+| $H_1$ | Type II error | correct |
+
+
+- Probabilities of the errors:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error}) &= \mathrm{P}(T \in S_R \mid \theta \in \Theta_0) \\
+  \mathrm{P}(\text{Type II error}) &= \mathrm{P}(T \notin S_R \mid \theta \in \Theta_1) \\
+  &= \mathrm{P}(T \in S_A \mid \theta \in \Theta_1)
+  \end{aligned}
+  $$
+
+- To make $\mathrm{P}(\text{Type I error})$ smaller:
+  $$
+  \begin{aligned}
+  & S_R \downarrow \\
+  \Longrightarrow\quad & S_A \uparrow \\
+  \Longrightarrow\quad & \mathrm{P}(\text{Type II error}) \uparrow
+  \end{aligned}
+  $$
+
+- We can't make both error probabilities small at the same time.
+
+## Valid test, size, significance level
+
+- **Definition.** Valid test, with $\alpha$ chosen in advance:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error}) &= \mathrm{P}(\text{falsely deciding in favour of } H_1 \mid H_0 \text{ true}) \\
+  &\le \alpha
+  \end{aligned}
+  $$
+
+- Composite $\Theta_0$, supremum of the Type I error probabilities:
+  $$
+  \sup_{\theta \in \Theta_0} \mathrm{P}(T \in S_R \mid \theta) \le \alpha
+  $$
+
+- Size $\alpha$ test:
+  $$
+  \sup_{\theta \in \Theta_0} \mathrm{P}(T \in S_R \mid \theta) = \alpha
+  $$
+
+- Significance level $\alpha$: small, for example $0.01$, $0.05$, $0.1$.
+
+# Two-sided test
+
+## Point null against a two-sided alternative
+
+- Hypotheses, for example $\theta_0 = 0$:
+  $$
+  \underbrace{H_0 : \theta = \theta_0}_{\text{simple}} \qquad \text{vs} \qquad \underbrace{H_1 : \theta \neq \theta_0}_{\text{composite}}
+  $$
+
+- Three objects:
+  $$
+  \begin{aligned}
+  \theta &: \ \text{true value, unknown, fixed} \\
+  \hat\theta &: \ \text{estimator, data, random} \\
+  \theta_0 &: \ \text{chosen by you, known, fixed}
+  \end{aligned}
+  $$
+
+- Regression example, $\theta = \beta_1$ and $\theta_0 = 0$:
+  $$
+  H_0 : \beta_1 = 0 \qquad \text{vs} \qquad H_1 : \beta_1 \neq 0
+  $$
+
+## Test statistic $T(\theta_0)$
+
+- Distance between the data and $H_0$:
+  $$
+  T(\theta_0) = \left|\frac{\hat\theta - \theta_0}{\omega}\right|
+  $$
+
+- Reject $H_0$ when:
+  $$
+  \begin{aligned}
+  & T(\theta_0) \ \text{ is large} \\
+  \Longleftrightarrow\quad & T(\theta_0) > c
+  \end{aligned}
+  $$
+
+- Regions, $c > 0$:
+  $$
+  \begin{aligned}
+  S_R &= (c,\ +\infty) \\
+  S_A &= [\,0,\ c\,] \\
+  S &= S_A \cup S_R = [\,0,\ +\infty)
+  \end{aligned}
+  $$
+
+- Choose $c$ for size control:
+  $$
+  \mathrm{P}(\text{Type I error}) \le \alpha
+  $$
+
+## Choice of $c$
+
+- Size $\alpha$: set the Type I error probability at $\theta = \theta_0$ to $\alpha$:
+  $$
+  \begin{aligned}
+  \alpha &= \mathrm{P}(\text{Type I error}) \\
+  &= \mathrm{P}(\text{reject } H_0 \mid H_0 \text{ true}) \\
+  &= \mathrm{P}\big(T(\theta_0) > c \mid \theta = \theta_0\big) \\
+  &= \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > c \;\Big|\; \theta = \theta_0\Big) \\
+  &\overset{\theta = \theta_0}{=} \mathrm{P}\Big(\Big|\underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z \sim N(0,1)}\Big| > c\Big) \\
+  &= \mathrm{P}(|Z| > c) \\
+  &= \mathrm{P}\big(\underbrace{\{Z > c\}}_{A} \ \text{ or } \ \underbrace{\{-Z > c\}}_{B}\big) \\
+  &= \mathrm{P}(Z > c) + \mathrm{P}(Z < -c)  \\
+  &= 2\,\mathrm{P}(Z > c) \\
+  \Longrightarrow\quad \mathrm{P}(Z > c) &= \frac{\alpha}{2} \\
+  \Longrightarrow\quad \mathrm{P}(Z \le c) &= 1 - \frac{\alpha}{2} \\
+  \Longrightarrow\quad c &= z_{1-\alpha/2} \qquad \big(\mathrm{P}(Z \le z_\tau) = \tau\big)
+  \end{aligned}
+  $$
+
+## Size $\alpha$ two-sided test
+
+- Size $\alpha$ test of $H_0 : \theta = \theta_0$ against $H_1 : \theta \neq \theta_0$:
+  $$
+  \boxed{\ \text{Reject } H_0 \ \text{ if } \ \left|\frac{\hat\theta - \theta_0}{\omega}\right| > z_{1-\alpha/2}\ }
+  $$
+
+- For $\alpha = 0.05$:
+  $$
+  \begin{aligned}
+  & z_{0.975} \approx 1.96 \approx 2 \\
+  \Longrightarrow\quad & \text{reject if } \ \Big|\frac{\hat\theta - \theta_0}{\omega}\Big| \gtrsim 2 \\
+  \Longleftrightarrow\quad & \text{reject if } \ |\hat\theta - \theta_0| \gtrsim 2\,\underbrace{\omega}_{\text{std. dev.}}
+  \end{aligned}
+  $$
+
+- Compare with: Reject if $|\hat\theta - \theta_0| > 5\,\omega$:
+  $$
+  \mathrm{P}(Z > 5) \approx 3 \cdot 10^{-7}, \qquad \alpha = \mathrm{P}(|Z| > 5) \approx 6 \cdot 10^{-7}
+  $$
+
+## Significance at level $\alpha$
+
+- **Definition.** Significance at level $\alpha$, by a size $\alpha$ test:
+  $$
+  \begin{aligned}
+  \Big|\frac{\hat\theta}{\omega}\Big| > z_{1-\alpha/2}
+  \quad&\Longrightarrow\quad H_0 : \theta = 0 \ \text{ rejected in favour of } \ H_1 : \theta \neq 0 \\
+  &\Longrightarrow\quad \hat\theta \ \text{ significant at level } \alpha
+  \end{aligned}
+  $$
+
+## Test and confidence interval
+
+- Solve for $\theta_0$:
+  $$
+  \begin{aligned}
+  H_0 \text{ rejected}
+  \quad&\Longleftrightarrow\quad \left|\frac{\hat\theta - \theta_0}{\omega}\right| > z_{1-\alpha/2} \\
+  H_0 \text{ not rejected}
+  \quad&\Longleftrightarrow\quad \left|\frac{\hat\theta - \theta_0}{\omega}\right| \le z_{1-\alpha/2} \\
+  &\Longleftrightarrow\quad -z_{1-\alpha/2} \le \frac{\hat\theta - \theta_0}{\omega} \le z_{1-\alpha/2} \\
+  &\Longleftrightarrow\quad -z_{1-\alpha/2}\,\omega \le \hat\theta - \theta_0 \le z_{1-\alpha/2}\,\omega \\
+  &\Longleftrightarrow\quad z_{1-\alpha/2}\,\omega \ge \theta_0 - \hat\theta \ge -z_{1-\alpha/2}\,\omega \\
+  &\Longleftrightarrow\quad \hat\theta + z_{1-\alpha/2}\,\omega \ge \theta_0 \ge \hat\theta - z_{1-\alpha/2}\,\omega \\
+  &\Longleftrightarrow\quad \hat\theta - z_{1-\alpha/2}\,\omega \le \theta_0 \le \hat\theta + z_{1-\alpha/2}\,\omega \\
+  &\Longleftrightarrow\quad \theta_0 \in CI_{1-\alpha} = \big[\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega\big]
+  \end{aligned}
+  $$
+
+- Equivalent statement of the test:
+  $$
+  \boxed{\ \text{Reject } H_0 : \theta = \theta_0 \ \text{ if } \ \theta_0 \notin CI_{1-\alpha}\ }
+  $$
+
+## $CI_{1-\alpha}$ as a set of null values
+
+- All $\theta_0$ the test does not reject:
+  $$
+  \begin{aligned}
+  CI_{1-\alpha} &= \big\{\theta_0 : T(\theta_0) \le z_{1-\alpha/2}\big\} \\
+  &= \Big\{\theta_0 : \Big|\frac{\hat\theta - \theta_0}{\omega}\Big| \le z_{1-\alpha/2}\Big\} \\
+  &= \big\{\theta_0 : \text{a size } \alpha \text{ test does not reject } H_0 : \theta = \theta_0\big\}
+  \end{aligned}
+  $$
+
+- Suppose in your data:
+  $$
+  CI_{0.95} = [\,0.04,\ 0.06\,]
+  $$
+
+# Power
+
+## Noise and signal
+
+- Type II error:
+  $$
+  \mathrm{P}(\text{Type II error}) = \mathrm{P}(\text{fail to reject } H_0 \mid \theta \neq \theta_0)
+  $$
+
+- Split $(\hat\theta - \theta_0)/\omega$, under the true $\theta$:
+  $$
+  \begin{aligned}
+  \underbrace{\frac{\hat\theta - \theta_0}{\omega}}_{\text{data} \,-\, H_0}
+  &= \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z \sim N(0,1),\ \text{noise}}
+  + \underbrace{\frac{\theta - \theta_0}{\omega}}_{\text{truth} \,-\, H_0,\ \text{signal}} \\
+  &= Z + \frac{\theta - \theta_0}{\omega} \\
+  &\sim N\Big(\frac{\theta - \theta_0}{\omega},\ 1\Big)
+  \end{aligned}
+  $$
+
+## Power function $\pi(\theta)$
+
+- Probability of rejecting $H_0$, as a function of the true $\theta$:
+  $$
+  \begin{aligned}
+  \pi(\theta) &= \mathrm{P}(\text{reject } H_0 \mid \theta) \\
+  &= \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2} \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta}{\omega} + \frac{\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2} \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(\Big|\underbrace{Z}_{N(0,1)} + \frac{\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2}\Big)
+  \end{aligned}
+  $$
+
+- Known: $\theta_0$, $\omega$, $z_{1-\alpha/2}$, the distribution of $Z$.
+
+- Unknown: $\theta \in \mathbb{R}$.
+
+## Type II error probability
+
+- Type II error probability depends on $\theta$: For $\theta \neq \theta_0$,
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type II error} \mid \theta)
+  &= \mathrm{P}(\text{fail to reject } H_0 \mid \theta) \\
+  &= 1-\mathrm{P}(\text{reject } H_0 \mid \theta) \\
+  &= 1 - \pi(\theta).
+  \end{aligned}
+  $$
+
+## Distribution of $(\hat\theta - \theta_0)/\omega$ under $H_0$ and $H_1$
+
+- Density of $(\hat\theta - \theta_0)/\omega$, with $\theta_0 < \theta_1 < \theta_2$:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  if (identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    # Cumulative, opaque frames share one grid cell, so advancing or going
+    # back uses Reveal's normal fragment controls without shifting the figure.
+    # Only this slide gets these styles; ordinary HTML/PDF uses one full plot.
+    cat('```{=html}\n<style>
+    .reveal .power-densities-build {
+      display: grid; width: 576px; max-width: 100%; margin: 1em auto;
+    }
+    .reveal .power-densities-build > img {
+      grid-area: 1 / 1; width: 100%; max-width: 100%; max-height: none;
+      margin: 0; background: white; transition: none;
+    }
+    </style>\n<div class="power-densities-build">\n')
+    descriptions <- c("Null density with the two rejection tails",
+                      "Density shifted to theta_1 with its rejection probability",
+                      "Density shifted to theta_2 with its rejection probability")
+    for (step in 1:3) {
+      frame <- tikz_fig(paste0("densities-step-", step), 6, 3.2, {
+        densities_picture(step = step)
+      }, draw = FALSE)
+      cat(sprintf('<img class="%s" data-densities-step="%d" src="%s" alt="%s">\n',
+                  if (step == 1L) "" else "fragment", step,
+                  knitr::image_uri(frame), descriptions[step]))
+    }
+    cat('</div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const diagram = document.querySelector(".power-densities-build");
+      const parentFragment = diagram.closest(".fragment");
+      function keepDiagramVisible(event) {
+        if (diagram.contains(event.fragment) ||
+            (event.type === "fragmentshown" && event.fragment === parentFragment)) {
+          diagram.scrollIntoView({ block: "center", behavior: "instant" });
+        }
+      }
+      Reveal.on("fragmentshown", keepDiagramVisible);
+      Reveal.on("fragmenthidden", keepDiagramVisible);
+    });
+    </script>\n```\n')
+  } else {
+    tikz_fig("densities", 6, 3.2, {
+      densities_picture()
+    })
+  }
+  ```
+
+- Under $\theta \neq \theta_0$, more mass in the rejection region:
+  $$
+  \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2} \;\Big|\; \theta\Big) > \alpha
+  $$
+
+## Power curve
+
+- $\pi(\theta)$ against $\theta$: minimum $\alpha$ at $\theta_0$, approaches $1$ far from $\theta_0$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.4
+  #| fig-dpi: 300
+  tikz_fig("power-curve", 6, 3.4, {
+    power_picture(step = 1L)
+  })
+  ```
+
+- Largest Type II error probability, as $\theta \to \theta_0$:
+  $$
+  \begin{aligned}
+  \sup_{\theta \neq \theta_0} \mathrm{P}(\text{Type II error} \mid \theta)
+  &= \sup_{\theta \neq \theta_0} \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| \le z_{1-\alpha/2} \;\Big|\; \theta\Big) \\
+  &= \sup_{\theta \neq \theta_0} \mathrm{P}\Big(\Big|Z + \frac{\theta - \theta_0}{\omega}\Big| \le z_{1-\alpha/2}\Big) \\
+  &= 1 - \alpha
+  \end{aligned}
+  $$
+
+## Maximum against supremum
+
+- Closed interval:
+  $$
+  \max_{x \in [0,1]} x = 1
+  $$
+
+- Half-open interval:
+  $$
+  \begin{aligned}
+  \max_{x \in [0,1)} x \ &\ \text{does not exist} \\
+  \sup_{x \in [0,1)} x \ &= 1
+  \end{aligned}
+  $$
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 4
+  #| fig-height: 2.2
+  #| fig-dpi: 300
+  tikz_fig("sup-half-open", 4, 2.2, {
+    op <- par(mar = rep(0.1, 4))
+    plot.new(); plot.window(xlim = c(-0.3, 1.5), ylim = c(-0.25, 1.2))
+    arrows(-0.2, 0, 1.45, 0, length = 0.08)
+    segments(0, 0, 0.97, 0.97, lwd = 2)
+    points(1, 1, pch = 1, cex = 1.3)
+    segments(1, 0, 1, 0.97, lty = 3)
+    segments(-0.2, 1, 1.45, 1, col = red)
+    text(c(0, 1, 1.42), -0.12, c("$0$", "$1$", "$x$"))
+    par(op)
+  })
+  ```
+
+
+- **Definition.** Supremum:
+  $$
+  \sup_{x \in \mathcal{X}} f(x) = \text{smallest upper bound of } \{f(x) : x \in \mathcal{X}\}
+  $$
+
+- $\mathrm{P}(\text{Type II error} \mid \theta)$ over $\theta \neq \theta_0$: no maximum.
+
+## Example: $\hat\theta \sim N(\theta,\ 9)$
+
+- $H_0 : \theta = 0$ vs $H_1 : \theta \neq 0$, $\alpha = 0.05$, $\omega = 3$:
+  $$
+  \text{Reject } H_0 \ \text{ if } \ \Big|\frac{\hat\theta}{3}\Big| > 1.96
+  $$
+
+- Power function:
+  $$
+  \begin{aligned}
+  \pi(\theta) &= \mathrm{P}\Big(\Big|\frac{\hat\theta}{3}\Big| > 1.96 \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta}{3} + \frac{\theta}{3}\Big| > 1.96\Big) \\
+  &= \mathrm{P}\Big(\Big|Z + \frac{\theta}{3}\Big| > 1.96\Big) \\
+  &= \mathrm{P}\Big(Z + \frac{\theta}{3} > 1.96 \ \text{ or } \ Z + \frac{\theta}{3} < -1.96\Big) \\
+  &= \mathrm{P}\Big(Z > 1.96 - \frac{\theta}{3}\Big) + \mathrm{P}\Big(Z < -1.96 - \frac{\theta}{3}\Big)
+  \end{aligned}
+  $$
+
+## Example, power at $\theta = 3$
+
+- Substitute $\theta = 3$:
+  $$
+  \begin{aligned}
+  \pi(3) &= \mathrm{P}\Big(Z > 1.96 - \frac{3}{3}\Big) + \mathrm{P}\Big(Z < -1.96 - \frac{3}{3}\Big) \\
+  &= \mathrm{P}(Z > 0.96) + \mathrm{P}(Z < -2.96) \\
+  &\approx \underbrace{\mathrm{P}(Z \le -0.96)}_{\approx\,0.16853} + 0.00154 \\
+  &\approx 0.17
+  \end{aligned}
+  $$
+
+- $\pi(\theta)$ at four values of $\theta$:
+  $$
+  \pi(\theta) \approx \begin{cases} 0.063 & \theta = -1 \\ 0.05 & \theta = 0 \\ 0.063 & \theta = 1 \\ 0.17 & \theta = 3 \end{cases}
+  $$
+
+## Failing to reject $\beta_1 = 0$
+
+- Regression, $\theta = \beta_1$, $\omega^2 = \sigma^2 / (X_1^\top M_2 X_1)$:
+  $$
+  Y = \beta_1 X_1 + X_2 \beta_2 + U, \qquad H_0 : \beta_1 = 0 \quad \text{vs} \quad H_1 : \beta_1 \neq 0
+  $$
+
+- Suppose $H_0$ is not rejected:
+  $$
+  \Big|\frac{\hat\beta_1}{\omega}\Big| \le z_{1-\alpha/2}
+  \qquad \overset{?}{\Longrightarrow} \qquad \beta_1 = 0
+  $$
+
+- Type II error probability near $1 - \alpha$ for $\theta$ near $\theta_0$.
+
+- $T(\theta_0) > z_{1-\alpha/2}$: strong evidence that $\theta \neq \theta_0$.
+
+- **Claim.** $T(\theta_0) \le z_{1-\alpha/2}$: not strong evidence in favour of $\theta_0$.
+
+## Minimum detectable deviation
+
+- Detectable $\theta$: $\pi(\theta) \ge \beta$, for example $\beta = 0.85$ or $0.5$.
+
+- Smallest detectable $\bar\theta > \theta_0$ solves:
+  $$
+  \mathrm{P}\Big(\Big|Z + \frac{\bar\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2}\Big) = \beta,
+  \qquad \theta_0,\ \omega,\ z_{1-\alpha/2},\ \beta \ \text{ known}
+  $$
+
+- $|\bar\theta - \theta_0|$: the minimum detectable deviation.
+
+## More precise estimator, more power
+
+- Smaller variance:
+  $$
+  \begin{aligned}
+  \hat\theta^* &\sim N(\theta,\ \omega_*^2) \\
+  \omega_*^2 &< \omega^2 \\
+  \Longrightarrow\quad \omega_* &< \omega
+  \end{aligned}
+  $$
+
+- Both tests valid:
+  $$
+  \underbrace{\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2}}_{\text{test with } \hat\theta}
+  \qquad \text{or} \qquad
+  \underbrace{\Big|\frac{\hat\theta^* - \theta_0}{\omega_*}\Big| > z_{1-\alpha/2}}_{\text{test with } \hat\theta^*}
+  $$
+
+- Suppose $\theta > \theta_0$, larger signal with $\hat\theta^*$:
+  $$
+  \begin{aligned}
+  \frac{\hat\theta - \theta_0}{\omega} &= Z + \frac{\theta - \theta_0}{\omega} \sim N\Big(\frac{\theta - \theta_0}{\omega},\ 1\Big) \\
+  \frac{\hat\theta^* - \theta_0}{\omega_*} &\sim N\Big(\frac{\theta - \theta_0}{\omega_*},\ 1\Big) \\
+  \omega_* < \omega \quad &\Longrightarrow\quad \frac{\theta - \theta_0}{\omega} < \frac{\theta - \theta_0}{\omega_*}
+  \end{aligned}
+  $$
+
+- Power functions:
+  $$
+  \begin{aligned}
+  \pi(\theta) &= \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2} \;\Big|\; \theta\Big) \\
+  \pi^*(\theta) &= \mathrm{P}\Big(\Big|\frac{\hat\theta^* - \theta_0}{\omega_*}\Big| > z_{1-\alpha/2} \;\Big|\; \theta\Big)
+  \end{aligned}
+  $$
+
+- Test with $\hat\theta^*$: more powerful, $\pi^*(\theta) \ge \pi(\theta)$.
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.4
+  #| fig-dpi: 300
+  tikz_fig("power-two-estimators", 6, 3.4, {
+    power_picture(step = 2L)
+  })
+  ```
+
+## Test that ignores the data
+
+- $V \sim \text{Uniform}(0,1)$, density and CDF:
+  $$
+  \begin{aligned}
+  f(v) &= \mathbf{1}\{0 < v < 1\} \\
+  &= \begin{cases} 1 & 0 < v < 1 \\ 0 & \text{otherwise} \end{cases} \\
+  F(v) &= \begin{cases} 0 & v \le 0 \\ v & 0 < v < 1 \\ 1 & v \ge 1 \end{cases}
+  \end{aligned}
+  $$
+
+- For $0 < x < 1$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(V < x) &= \mathrm{P}(V \le x) \qquad (\text{continuous}) \\
+  &= F(x) \\
+  &= \int_0^x f(v)\, dv \\
+  &= \int_0^x 1 \, dv \\
+  &= x
+  \end{aligned}
+  $$
+
+- Test:
+  1. Throw $\hat\theta$ away.
+  2. Draw $V \sim \text{Uniform}(0,1)$.
+  3. Reject $H_0 : \theta = \theta_0$ if $V < \alpha$.
+
+- $V$ does not depend on $\theta$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error} \mid \theta = \theta_0) &= \mathrm{P}(V < \alpha) \\
+  &= \alpha \\
+  \tilde\pi(\theta) &= \mathrm{P}(\text{reject } H_0 \mid \theta) \\
+  &= \mathrm{P}(V < \alpha) \\
+  &= \alpha \qquad \text{for every } \theta
+  \end{aligned}
+  $$
+
+- Power $\alpha$: trivial.
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.4
+  #| fig-dpi: 300
+  tikz_fig("power-ignoring-data", 6, 3.4, {
+    power_picture(step = 3L)
+  })
+  ```
+
+# One-sided tests
+
+## One-sided hypotheses
+
+- One-sided null and alternative, for example $\theta_0 = 0$:
+  $$
+  \underbrace{H_0 : \theta \le \theta_0}_{\text{composite}} \qquad \text{vs} \qquad \underbrace{H_1 : \theta > \theta_0}_{\text{composite}}
+  $$
+
+- Test: reject $H_0$ in favour of $H_1$ if:
+  $$
+  \frac{\hat\theta - \theta_0}{\omega} > c
+  $$
+
+- Type I error probability for each $\theta \in \Theta_0$, and its supremum:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error} \mid \theta) &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > c \;\Big|\; \theta\Big), \qquad \theta \le \theta_0 \\
+  \sup_{\theta \le \theta_0} \mathrm{P}(\text{Type I error} \mid \theta) &\le \alpha
+  \end{aligned}
+  $$
+
+- Split $(\hat\theta - \theta_0)/\omega$:
+  $$
+  \frac{\hat\theta - \theta_0}{\omega} = \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} + \underbrace{\frac{\theta - \theta_0}{\omega}}_{\le\, 0 \ \text{ for } \theta \le \theta_0}
+  $$
+
+## Choice of $c$, one-sided
+
+- Supremum over $\Theta_0$, attained at $\theta = \theta_0$:
+  $$
+  \begin{aligned}
+  \alpha &= \sup_{\theta \le \theta_0} \mathrm{P}(\text{Type I error} \mid \theta) \\
+  &= \sup_{\theta \le \theta_0} \mathrm{P}(\text{reject } H_0 \mid \theta) \\
+  &= \sup_{\theta \le \theta_0} \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > c \;\Big|\; \theta\Big) \\
+  &= \sup_{\theta \le \theta_0} \mathrm{P}\Big(\underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z \sim N(0,1)} + \frac{\theta - \theta_0}{\omega} > c \;\Big|\; \theta\Big) \\
+  &= \sup_{\theta \le \theta_0} \mathrm{P}\Big(Z + \underbrace{\frac{\theta - \theta_0}{\omega}}_{\le\,0,\ \text{largest at } \theta = \theta_0} > c\Big) \\
+  &= \mathrm{P}(Z > c) \\
+  \Longrightarrow\quad \mathrm{P}(Z \le c) &= 1 - \alpha \\
+  \Longrightarrow\quad c &= z_{1-\alpha}
+  \end{aligned}
+  $$
+
+## One-sided test and interval
+
+- Size $\alpha$ test of $H_0 : \theta \le \theta_0$ against $H_1 : \theta > \theta_0$:
+  $$
+  \boxed{\ \text{Reject } H_0 \ \text{ if } \ \frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha}\ }
+  $$
+
+- One-sided interval, all $\theta_0$ the test does not reject:
+  $$
+  \begin{aligned}
+  CI^{1}_{1-\alpha} &= \Big\{\theta_0 : \frac{\hat\theta - \theta_0}{\omega} \le z_{1-\alpha}\Big\} \\
+  &= \big\{\theta_0 : \theta_0 \ge \hat\theta - z_{1-\alpha}\,\omega\big\} \\
+  &= \big[\hat\theta - z_{1-\alpha}\,\omega,\ +\infty\big)
+  \end{aligned}
+  $$
+
+## Mirror case: $H_0 : \theta \ge \theta_0$
+
+- Reject $H_0 : \theta \ge \theta_0$ in favour of $H_1 : \theta < \theta_0$ if, for some $c > 0$:
+  $$
+  \frac{\hat\theta - \theta_0}{\omega} < -c
+  $$
+
+- Choose $c$ from the supremum over $\theta \ge \theta_0$:
+  $$
+  \begin{aligned}
+  \alpha &\ge \mathrm{P}(\text{Type I error} \mid \theta) \qquad (\theta \ge \theta_0) \\
+  &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} < -c \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} < -c\Big) \\
+  \alpha &= \sup_{\theta \ge \theta_0} \mathrm{P}\Big(Z + \underbrace{\frac{\theta - \theta_0}{\omega}}_{\ge\,0} < -c\Big) \qquad (\text{size } \alpha) \\
+  &= \mathrm{P}(Z < -c) \qquad (\theta = \theta_0) \\
+  \Longrightarrow\quad -c &= z_{\alpha} \\
+  \Longrightarrow\quad c &= z_{1-\alpha}
+  \end{aligned}
+  $$
+
+- Test:
+  $$
+  \boxed{\ \text{Reject } H_0 : \theta \ge \theta_0 \ \text{ if } \ \frac{\hat\theta - \theta_0}{\omega} < -z_{1-\alpha}\ }
+  $$
+
+## Power through $\Phi$
+
+- $\Phi(x) = \mathrm{P}(Z \le x)$, the CDF of $N(0,1)$.
+
+- Left-tailed test of $H_0 : \theta \ge \theta_0$:
+  $$
+  \begin{aligned}
+  \pi(\theta) &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} < -z_{1-\alpha} \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} < -z_{1-\alpha}\Big) \\
+  &= \mathrm{P}\Big(Z < -z_{1-\alpha} - \frac{\theta - \theta_0}{\omega}\Big) \\
+  &= \Phi\Big(\frac{\theta_0 - \theta}{\omega} - z_{1-\alpha}\Big)
+  \end{aligned}
+  $$
+
+## Two tests for $H_0 : \theta = \theta_0$
+
+- Against $H_1 : \theta \neq \theta_0$, both of size $\alpha$:
+  $$
+  \begin{aligned}
+  \text{Test 1 (one-sided)} &: \quad \text{reject } H_0 \ \text{ if } \ \frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha} \\
+  \text{Test 2 (two-sided)} &: \quad \text{reject } H_0 \ \text{ if } \ \Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2}
+  \end{aligned}
+  $$
+
+- Type I error of Test 1:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error of Test 1}) &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha} \;\Big|\; \theta = \theta_0\Big) \\
+  &\overset{\theta = \theta_0}{=} \mathrm{P}\Big(\frac{\hat\theta - \theta}{\omega} > z_{1-\alpha}\Big) \\
+  &= \mathrm{P}(Z > z_{1-\alpha}) \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+- Critical values:
+  $$
+  \begin{aligned}
+  z_{1-\alpha} &< z_{1-\alpha/2} \\
+  \Longrightarrow\quad -z_{1-\alpha/2} &< -z_{1-\alpha}
+  \end{aligned}
+  $$
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  tikz_fig("critical-values", 6, 3.2, {
+    critical_picture()
+  })
+  ```
+
+## Power of Test 1 and Test 2
+
+- Power of Test 1:
+  $$
+  \begin{aligned}
+  \pi_1(\theta) &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha} \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} > z_{1-\alpha}\Big)
+  \end{aligned}
+  $$
+
+- Power of Test 2:
+  $$
+  \begin{aligned}
+  \pi_2(\theta) &= \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2} \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(\Big|Z + \frac{\theta - \theta_0}{\omega}\Big| > z_{1-\alpha/2}\Big) \\
+  &= \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} < -z_{1-\alpha/2}\Big) + \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} > z_{1-\alpha/2}\Big)
+  \end{aligned}
+  $$
+
+## One-sided against two-sided power
+
+- $\pi_1(\theta)$ increasing, $\pi_2(\theta)$ U-shaped:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.4
+  #| fig-dpi: 300
+  tikz_fig("power-one-two-sided", 6, 3.4, {
+    onesided_picture()
+  })
+  ```
+
+- For $\theta > \theta_0$, Test 1 is more powerful; compare the right tails:
+  $$
+  \begin{aligned}
+  \Big|\frac{\hat\theta - \theta_0}{\omega}\Big| &= \frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha/2} \qquad \Big(\frac{\hat\theta - \theta_0}{\omega} > 0\Big) \\
+  \Longrightarrow\quad \frac{\hat\theta - \theta_0}{\omega} &> z_{1-\alpha}
+  \end{aligned}
+  $$
+
+- For $\theta < \theta_0$, Test 2 is more powerful:
+  $$
+  \begin{aligned}
+  \frac{\hat\theta - \theta_0}{\omega} &= Z + \underbrace{\frac{\theta - \theta_0}{\omega}}_{<\,0} > z_{1-\alpha} \qquad (\text{Test 1 rejects}) \\
+  \pi_1(\theta) &= \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} > z_{1-\alpha}\Big) \\
+  &= \mathrm{P}\Big(Z > z_{1-\alpha} - \frac{\theta - \theta_0}{\omega}\Big) \\
+  &< \mathrm{P}(Z > z_{1-\alpha}) \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+- No uniformly most powerful test against $H_1 : \theta \neq \theta_0$.
+
+- Test 1 biased against $H_1 : \theta \neq \theta_0$.
+
+- Largest Type II error probability of Test 1:
+  $$
+  \begin{aligned}
+  \text{against } H_1 : \theta > \theta_0 &: \quad \sup_{\theta > \theta_0} \big(1 - \pi_1(\theta)\big) = 1 - \alpha \\
+  \text{against } H_1 : \theta \neq \theta_0 &: \quad \sup_{\theta \neq \theta_0} \big(1 - \pi_1(\theta)\big) = 1
+  \end{aligned}
+  $$
+
+## Two-sided test with unequal tails
+
+- Test 3 of $H_0 : \theta = \theta_0$ against $H_1 : \theta \neq \theta_0$, reject $H_0$ when:
+  $$
+  \frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha/3} \qquad \text{or} \qquad \frac{\hat\theta - \theta_0}{\omega} < -z_{1-2\alpha/3}
+  $$
+
+- Type I error probability, with $z_\tau = -z_{1-\tau}$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error})
+  &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha/3} \ \text{ or } \ \frac{\hat\theta - \theta_0}{\omega} < -z_{1-2\alpha/3} \;\Big|\; \theta = \theta_0\Big) \\
+  &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha/3} \;\Big|\; \theta = \theta_0\Big) \\
+  &\qquad + \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} < -z_{1-2\alpha/3} \;\Big|\; \theta = \theta_0\Big) \\
+  &\overset{\theta = \theta_0}{=} \mathrm{P}\Big(\frac{\hat\theta - \theta}{\omega} > z_{1-\alpha/3}\Big) + \mathrm{P}\Big(\frac{\hat\theta - \theta}{\omega} < -z_{1-2\alpha/3}\Big) \\
+  &= \underbrace{\mathrm{P}(Z > z_{1-\alpha/3})}_{=\,\alpha/3} + \underbrace{\mathrm{P}(Z < -z_{1-2\alpha/3})}_{=\,\mathrm{P}(Z < z_{2\alpha/3})\,=\,2\alpha/3} \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+## Power with unequal tails
+
+- Power of Test 3:
+  $$
+  \begin{aligned}
+  \pi_3(\theta) &= \mathrm{P}(\text{reject } H_0 \mid \theta) \\
+  &= \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha/3} \;\Big|\; \theta\Big) + \mathrm{P}\Big(\frac{\hat\theta - \theta_0}{\omega} < -z_{1-2\alpha/3} \;\Big|\; \theta\Big) \\
+  &= \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} > z_{1-\alpha/3}\Big) + \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} < -z_{1-2\alpha/3}\Big) \\
+  &= \mathrm{P}\Big(Z > z_{1-\alpha/3} - \frac{\theta - \theta_0}{\omega}\Big) + \mathrm{P}\Big(Z < -z_{1-2\alpha/3} - \frac{\theta - \theta_0}{\omega}\Big)
+  \end{aligned}
+  $$
+
+- At $\theta = \theta_0$:
+  $$
+  \begin{aligned}
+  \pi_3(\theta_0) &= \mathrm{P}(Z > z_{1-\alpha/3}) + \mathrm{P}(Z < -z_{1-2\alpha/3}) \\
+  &= \frac{\alpha}{3} + \frac{2\alpha}{3} \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+- For $\theta > \theta_0$, $(\theta - \theta_0)/\omega > 0$:
+  $$
+  \pi_3(\theta) = \underbrace{\mathrm{P}\Big(Z > z_{1-\alpha/3} - \frac{\theta - \theta_0}{\omega}\Big)}_{>\,\alpha/3} + \underbrace{\mathrm{P}\Big(Z < -z_{1-2\alpha/3} - \frac{\theta - \theta_0}{\omega}\Big)}_{<\,2\alpha/3}
+  $$
+
+- $\pi_3(\theta)$ against $\pi_2(\theta)$, both $\alpha$ at $\theta_0$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.4
+  #| fig-dpi: 300
+  tikz_fig("power-unequal-tails", 6, 3.4, {
+    unequal_picture()
+  })
+  ```
+
+- $\pi_3(\theta) < \alpha$ just right of $\theta_0$: Test 3 biased against $H_1 : \theta \neq \theta_0$.
+
+## Strict inequality in the null
+
+- $H_0 : \theta < \theta_0$ vs $H_1 : \theta \ge \theta_0$, same one-sided test:
+  $$
+  \begin{aligned}
+  \sup_{\theta < \theta_0} \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} > z_{1-\alpha}\Big)
+  &= \sup_{\theta \in (-\infty,\ \theta_0)} \mathrm{P}\Big(Z + \frac{\theta - \theta_0}{\omega} > z_{1-\alpha}\Big) \\
+  &= \mathrm{P}(Z > z_{1-\alpha}) \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+- $\theta_0 \in \Theta_1$: no power above $\alpha$ at $\theta_0$.
+
+## Null $\theta \neq \theta_0$: not testable
+
+- $H_0 : \theta \neq \theta_0$ vs $H_1 : \theta = \theta_0$; size control:
+  $$
+  \sup_{\theta \neq \theta_0} \mathrm{P}(\text{reject } H_0 \mid \theta) \le \alpha
+  $$
+
+- Reject if $|(\hat\theta - \theta_0)/\omega| < c$:
+  $$
+  \begin{aligned}
+  \alpha &\ge \sup_{\theta \neq \theta_0} \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big| < c \;\Big|\; \theta\Big) \\
+  &= \sup_{\theta \neq \theta_0} \mathrm{P}\Big(\Big|Z + \frac{\theta - \theta_0}{\omega}\Big| < c\Big) \\
+  &= \mathrm{P}\big(|Z| < c\big) \qquad (\theta \to \theta_0) \\
+  &= \mathrm{P}(\text{reject } H_0 \mid \theta = \theta_0)
+  \end{aligned}
+  $$
+
+- Size $\alpha$: no power above $\alpha$ at $\theta_0$, not testable.
+
+# p-values
+
+## Question
+
+- **Question.** What is the p-value?
+  1. $\mathrm{P}(\text{Type I error})$
+  2. Probability of drawing $\hat\theta$ from the distribution centred at $\theta$
+  3. Probability of rejecting
+  4. Probability of drawing another $\hat\theta$ further than the one in your sample
+
+## Two-sided p-value
+
+- Two tails beyond $\pm T(\theta_0)$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  tikz_fig("pvalue-two-sided", 6, 3.2, {
+    pvalue_picture(two_sided = TRUE)
+  })
+  ```
+
+- p-value:
+  $$
+  \begin{aligned}
+  \text{p-value} &= 2\big(1 - \Phi(T(\theta_0))\big) \\
+  &= \boxed{\ 2\Big(1 - \Phi\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big|\Big)\Big)\ } \\
+  &= 2\,\Phi\Bigl(-\Big|\frac{\hat\theta - \theta_0}{\omega}\Big|\Bigr) \qquad \big(1 - \Phi(x) = \Phi(-x)\big)
+  \end{aligned}
+  $$
+
+- p-value: random before the data are plugged in, a statistic.
+
+- Test:
+  $$
+  \text{Reject } H_0 : \theta = \theta_0 \ \text{ if } \ \text{p-value} < \alpha
+  $$
+
+- **Claim.** Size $\alpha$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{Type I error}) &= \mathrm{P}(\text{p-value} < \alpha \mid \theta = \theta_0) \\
+  &= \mathrm{P}\big(2(1 - \Phi(|Z|)) < \alpha\big) \qquad \Big(\tfrac{\hat\theta - \theta_0}{\omega} = Z \text{ under } \theta = \theta_0\Big) \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+## Two-sided p-value under $\theta = \theta_0$
+
+- CDF of the p-value, for $t \in (0,1)$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{p-value} \le t \mid \theta = \theta_0)
+  &= \mathrm{P}\Big(2\Big(1 - \Phi\Big(\Big|\underbrace{\frac{\hat\theta - \theta_0}{\omega}}_{=\,Z \sim N(0,1)}\Big|\Big)\Big) \le t \;\Big|\; \theta = \theta_0\Big) \\
+  &= \mathrm{P}\big(2(1 - \Phi(|Z|)) \le t\big) \\
+  &= \mathrm{P}\Big(1 - \Phi(|Z|) \le \frac{t}{2}\Big) \\
+  &= \mathrm{P}\Big(\Phi(|Z|) \ge 1 - \frac{t}{2}\Big) \\
+  &= \mathrm{P}\Big(|Z| \ge \Phi^{-1}\Big(1 - \frac{t}{2}\Big)\Big) \\
+  &= \mathrm{P}\big(|Z| \ge z_{1-t/2}\big) \\
+  &= \mathrm{P}\big(Z \ge z_{1-t/2}\big) + \mathrm{P}\big(Z \le \underbrace{-z_{1-t/2}}_{=\,z_{t/2}}\big) \\
+  &= \frac{t}{2} + \frac{t}{2} \\
+  &= t
+  \end{aligned}
+  $$
+
+- Under $\theta = \theta_0$, for all $t \in (0,1)$:
+  $$
+  \begin{aligned}
+  & \mathrm{P}(\text{p-value} \le t \mid \theta = \theta_0) = t \\
+  \Longrightarrow\quad & \boxed{\ \text{p-value} \sim \text{Uniform}(0,1)\ }
+  \end{aligned}
+  $$
+
+## One-sided p-value, right tail
+
+- Right tail beyond $(\hat\theta - \theta_0)/\omega$, for $H_0 : \theta \le \theta_0$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  tikz_fig("pvalue-one-sided", 6, 3.2, {
+    pvalue_picture(two_sided = FALSE)
+  })
+  ```
+
+- Right-tailed test:
+  $$
+  \boxed{\ \text{p-value} = 1 - \Phi\Big(\frac{\hat\theta - \theta_0}{\omega}\Big)\ }
+  $$
+
+- The same, as a probability over $Z^* \sim N(0,1)$ independent of the data:
+  $$
+  \begin{aligned}
+  \text{p-value} &= \mathrm{P}^*\Big(Z^* > \frac{\hat\theta - \theta_0}{\omega} \;\Big|\; \hat\theta\Big) \\
+  &= 1 - \Phi\Big(\frac{\hat\theta - \theta_0}{\omega}\Big)
+  \end{aligned}
+  $$
+
+- Reject $H_0$ if p-value $< \alpha$.
+
+- Same decision as the one-sided test:
+  $$
+  \begin{aligned}
+  & 1 - \Phi\Big(\frac{\hat\theta - \theta_0}{\omega}\Big) < \alpha \\
+  \Longleftrightarrow\quad & \frac{\hat\theta - \theta_0}{\omega} > z_{1-\alpha}
+  \end{aligned}
+  $$
+
+## One-sided p-value, left tail
+
+- Left tail below $(\hat\theta - \theta_0)/\omega$, for $H_0 : \theta \ge \theta_0$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  tikz_fig("pvalue-left-tailed", 6, 3.2, {
+    pvalue_picture(two_sided = FALSE, left = TRUE)
+  })
+  ```
+
+- Left-tailed test: reject if $(\hat\theta - \theta_0)/\omega < -z_{1-\alpha}$.
+
+- p-value:
+  $$
+  \boxed{\ \text{p-value} = \Phi\Big(\frac{\hat\theta - \theta_0}{\omega}\Big)\ }
+  $$
+
+- Reject $H_0$ if p-value $< \alpha$.
+
+## Size of the right-tailed p-value test
+
+- We will use: $\Phi^{-1}(1 - \alpha) = z_{1-\alpha}$.
+
+- Supremum over $\Theta_0$, attained at $\theta = \theta_0$:
+  $$
+  \begin{aligned}
+  \sup_{\theta \le \theta_0} \mathrm{P}(\text{p-value} < \alpha \mid \theta)
+  &= \sup_{\theta \le \theta_0} \mathrm{P}\Big(1 - \Phi\Big(\frac{\hat\theta - \theta_0}{\omega}\Big) < \alpha \;\Big|\; \theta\Big) \\
+  &= \sup_{\theta \le \theta_0} \mathrm{P}\Big(\Phi\Big(\frac{\hat\theta - \theta_0}{\omega}\Big) > 1 - \alpha \;\Big|\; \theta\Big) \\
+  &= \sup_{\theta \le \theta_0} \mathrm{P}\Big(\Phi\Big(Z + \underbrace{\frac{\theta - \theta_0}{\omega}}_{\le\,0}\Big) > 1 - \alpha\Big) \\
+  &= \mathrm{P}\big(\Phi(Z) > 1 - \alpha\big) \\
+  &= \mathrm{P}\big(Z > \Phi^{-1}(1 - \alpha)\big) \\
+  &= \mathrm{P}(Z > z_{1-\alpha}) \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+## Distribution of $\Phi(Z)$
+
+- New random variable:
+  $$
+  W = \Phi(Z), \qquad W \in (\,0, 1\,)
+  $$
+
+- CDF of $W$:
+  $$
+  \mathrm{P}(W \le x) = \begin{cases} 0 & x \le 0 \\ ? & 0 < x < 1 \\ 1 & x \ge 1 \end{cases}
+  $$
+
+- We will use: $a \le b \Longleftrightarrow g(a) \le g(b)$ for strictly increasing $g$.
+
+- For $0 < x < 1$, apply $\Phi^{-1}$ inside:
+  $$
+  \begin{aligned}
+  \mathrm{P}(W \le x) &= \mathrm{P}\big(\Phi(Z) \le x\big) \\
+  &= \mathrm{P}\big(\Phi^{-1}(\Phi(Z)) \le \Phi^{-1}(x)\big) \\
+  &= \mathrm{P}\big(Z \le \underbrace{\Phi^{-1}(x)}_{=\,z_x}\big) \\
+  &= \Phi\big(\Phi^{-1}(x)\big) \\
+  &= x
+  \end{aligned}
+  $$
+
+- Hence:
+  $$
+  \mathrm{P}\big(\Phi(Z) \le x\big) = x \quad\Longrightarrow\quad \boxed{\ \Phi(Z) \sim \text{Uniform}(0,1)\ }
+  $$
+
+## Distribution of $1 - \Phi(Z)$
+
+- CDF of $1 - \Phi(Z)$, for $0 < u < 1$:
+  $$
+  \begin{aligned}
+  F_{1-W}(u) &= \mathrm{P}(1 - W \le u) \\
+  &= \mathrm{P}\big(1 - \Phi(Z) \le u\big) \\
+  &= \mathrm{P}\big(\Phi(Z) \ge 1 - u\big) \\
+  &= \mathrm{P}\big(Z \ge \Phi^{-1}(1 - u)\big) \\
+  &= 1 - \Phi\big(\Phi^{-1}(1 - u)\big) \\
+  &= 1 - (1 - u) \\
+  &= u
+  \end{aligned}
+  $$
+
+- Hence:
+  $$
+  \mathrm{P}\big(1 - \Phi(Z) \le u\big) = u \quad\Longrightarrow\quad \boxed{\ 1 - \Phi(Z) \sim \text{Uniform}(0,1)\ }
+  $$
+
+## p-values under $\theta = \theta_0$
+
+- $(\hat\theta - \theta_0)/\omega = Z$:
+  $$
+  \begin{aligned}
+  1 - \Phi(Z) &\sim \text{Uniform}(0,1) \\
+  \Phi(Z) &\sim \text{Uniform}(0,1) \\
+  2\big(1 - \Phi(|Z|)\big) &\sim \text{Uniform}(0,1)
+  \end{aligned}
+  $$
+
+- $(\hat\theta - \theta_0)/\omega \sim N(0,1)$: critical values $z_{1-\alpha}$, $z_{1-\alpha/2}$ from $N(0,1)$.
+
+- p-value $\sim \text{Uniform}(0,1)$: critical value $\alpha$ from $\text{Uniform}(0,1)$.
+
+- For every p-value:
+  $$
+  \begin{aligned}
+  \mathrm{P}(\text{p-value} < \alpha \mid \theta = \theta_0) &= \mathrm{P}(\text{p-value} \le \alpha \mid \theta = \theta_0) \\
+  &= \text{CDF of the p-value at } \alpha, \ \text{ under } \theta = \theta_0 \\
+  &= \mathrm{P}(V \le \alpha), \quad V \sim \text{Uniform}(0,1) \\
+  &= \alpha
+  \end{aligned}
+  $$
+
+- In general: $X \sim F$, $F$ continuous and strictly increasing $\Longrightarrow F(X) \sim \text{Uniform}(0,1)$.
+
+# Summary
+
+## Hypotheses, errors, size
+
+- $\hat\theta \sim N(\theta, \omega^2)$, $\omega^2$ known; $\theta \in \Theta = \Theta_0 \cup \Theta_1$, $\Theta_0 \cap \Theta_1 = \emptyset$; $H_0 : \theta \in \Theta_0$ vs $H_1 : \theta \in \Theta_1$.
+
+- Test statistic $T \in S = S_A \cup S_R$; reject $H_0$ if $T \in S_R$.
+
+- Type I error: reject a true $H_0$; Type II error: fail to reject a false $H_0$.
+
+- $S_R \downarrow \ \Longrightarrow\ \mathrm{P}(\text{Type I error}) \downarrow \ \Longrightarrow\ \mathrm{P}(\text{Type II error}) \uparrow$.
+
+- Valid test: $\sup_{\theta \in \Theta_0} \mathrm{P}(T \in S_R \mid \theta) \le \alpha$; size $\alpha$ test: equality.
+
+## Two-sided test and power
+
+- Reject $H_0 : \theta = \theta_0$ if $|(\hat\theta - \theta_0)/\omega| > z_{1-\alpha/2}$; at $\alpha = 0.05$, $z_{0.975} \approx 1.96$.
+
+- $|\hat\theta / \omega| > z_{1-\alpha/2}$: $\hat\theta$ significant at level $\alpha$.
+
+- Fail to reject $\Longleftrightarrow \theta_0 \in CI_{1-\alpha}$; $CI_{1-\alpha} = \{\theta_0 : T(\theta_0) \le z_{1-\alpha/2}\}$.
+
+- $(\hat\theta - \theta_0)/\omega = Z + (\theta - \theta_0)/\omega \sim N\big((\theta - \theta_0)/\omega,\ 1\big)$.
+
+- $\pi(\theta) = \mathrm{P}(|Z + (\theta - \theta_0)/\omega| > z_{1-\alpha/2})$, $\pi(\theta_0) = \alpha$.
+
+- $\sup_{\theta \neq \theta_0} \mathrm{P}(\text{Type II error} \mid \theta) = \sup_{\theta \neq \theta_0} \big(1 - \pi(\theta)\big) = 1 - \alpha$.
+
+- Smaller $\omega$: more power.
+
+- Test that ignores the data: size $\alpha$, power $\alpha$.
+
+## One-sided tests and p-values
+
+- $H_0 : \theta \le \theta_0$: reject if $(\hat\theta - \theta_0)/\omega > z_{1-\alpha}$; $z_{1-\alpha} < z_{1-\alpha/2}$.
+
+- $\sup_{\theta \le \theta_0} \mathrm{P}(\text{reject } H_0 \mid \theta)$ attained at $\theta = \theta_0$.
+
+- $CI^{1}_{1-\alpha} = [\hat\theta - z_{1-\alpha}\,\omega,\ +\infty)$.
+
+- Against $H_1 : \theta \neq \theta_0$: one-sided test biased; no uniformly most powerful test.
+
+- Unequal tails, $\alpha/3$ right and $2\alpha/3$ left: size $\alpha$, biased against $H_1 : \theta \neq \theta_0$.
+
+- p-values; reject if p-value $< \alpha$:
+  $$
+  \begin{aligned}
+  \text{two-sided:}&\ \ 2\big(1 - \Phi(|(\hat\theta - \theta_0)/\omega|)\big) \\
+  \text{right-tailed:}&\ \ 1 - \Phi\big((\hat\theta - \theta_0)/\omega\big) \\
+  \text{left-tailed:}&\ \ \Phi\big((\hat\theta - \theta_0)/\omega\big)
+  \end{aligned}
+  $$
+
+- Under $\theta = \theta_0$: every p-value $\sim \text{Uniform}(0,1)$; $\mathrm{P}(\text{p-value} < \alpha \mid \theta = \theta_0) = \alpha$.

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.7.32" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+<meta name="author" content="Vadim Marmer, UBC" />
+
+<title>Lecture 4: Confidence intervals</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<!-- htmldependencies:E3FAD763 -->
+<style>html{ scroll-behavior: smooth; }</style>
+
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var head = document.getElementsByTagName("head")[0];
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css";
+      head.appendChild(link);
+      
+      function renderMathElements() {
+        var mathElements = document.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            if (window.katex) {
+              window.katex.render(texText.data, mathElements[i], {
+                displayMode: mathElements[i].classList.contains('display'),
+                throwOnError: false,
+                macros: macros,
+                fleqn: false
+              });
+            } else {
+              console.error("KaTeX has not been loaded correctly, as not found globally.");
+            }
+          }
+        }
+      }
+
+      var script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js";
+      script.onload = renderMathElements;
+      
+      // Check for RequireJS and AMD detection as it conflicts with KaTeX loading.
+      if (typeof require === 'function' && typeof define === 'function' && define.amd) {
+        // Disable require.js AMD detection temporarily, as it conflicts with KaTeX loading using CommonJS
+        var disableAmdScript = document.createElement("script");
+        disableAmdScript.textContent = 'window._amd_backup = window.define.amd; window.define.amd = false;';
+        head.appendChild(disableAmdScript);
+        
+        // overwrite onload to restore Require.js AMD detection
+        script.onload = function() {
+          // Restore Require.js AMD detection
+          window.define.amd = window._amd_backup;
+          delete window._amd_backup;
+          renderMathElements();
+        };
+      }
+
+      head.appendChild(script);
+    });
+  </script>
+  
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <div id="quarto-toc-target"></div>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture 4: Confidence intervals</h1>
+<p class="subtitle lead">Economics 527: Econometric Methods</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vadim Marmer, UBC </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#normal-estimator" id="toc-normal-estimator">Normal estimator</a>
+  <ul>
+  <li><a href="#normal-regression-model" id="toc-normal-regression-model">Normal regression model</a></li>
+  <li><a href="#distribution-of-hatbeta" id="toc-distribution-of-hatbeta">Distribution of <span class="math inline">\hat\beta</span></a></li>
+  <li><a href="#one-coefficient-hatbeta_1" id="toc-one-coefficient-hatbeta_1">One coefficient <span class="math inline">\hat\beta_1</span></a></li>
+  <li><a href="#partitioned-regression" id="toc-partitioned-regression">Partitioned regression</a></li>
+  <li><a href="#distribution-of-hatbeta_1" id="toc-distribution-of-hatbeta_1">Distribution of <span class="math inline">\hat\beta_1</span></a></li>
+  <li><a href="#generic-estimator-hattheta" id="toc-generic-estimator-hattheta">Generic estimator <span class="math inline">\hat\theta</span></a></li>
+  </ul></li>
+  <li><a href="#confidence-interval" id="toc-confidence-interval">Confidence interval</a>
+  <ul>
+  <li><a href="#coverage" id="toc-coverage">Coverage</a></li>
+  <li><a href="#symmetric-interval" id="toc-symmetric-interval">Symmetric interval</a></li>
+  <li><a href="#standard-normal-quantile" id="toc-standard-normal-quantile">Standard normal quantile</a></li>
+  <li><a href="#choice-of-c" id="toc-choice-of-c">Choice of <span class="math inline">c</span></a></li>
+  <li><a href="#value-of-c" id="toc-value-of-c">Value of <span class="math inline">c</span></a></li>
+  <li><a href="#coverage-check" id="toc-coverage-check">Coverage check</a></li>
+  <li><a href="#interval-for-theta" id="toc-interval-for-theta">Interval for <span class="math inline">\theta</span></a></li>
+  <li><a href="#length-of-ci_1-alpha" id="toc-length-of-ci_1-alpha">Length of <span class="math inline">CI_{1-\alpha}</span></a></li>
+  <li><a href="#numerical-example" id="toc-numerical-example">Numerical example</a></li>
+  <li><a href="#random-and-computed-interval" id="toc-random-and-computed-interval">Random and computed interval</a></li>
+  <li><a href="#interval-for-beta_1" id="toc-interval-for-beta_1">Interval for <span class="math inline">\beta_1</span></a></li>
+  </ul></li>
+  <li><a href="#other-intervals" id="toc-other-intervals">Other intervals</a>
+  <ul>
+  <li><a href="#asymmetric-interval" id="toc-asymmetric-interval">Asymmetric interval</a></li>
+  <li><a href="#coverage-of-the-asymmetric-interval-widetildeci" id="toc-coverage-of-the-asymmetric-interval-widetildeci">Coverage of the asymmetric interval <span class="math inline">\widetilde{CI}</span></a></li>
+  <li><a href="#length-of-widetildeci" id="toc-length-of-widetildeci">Length of <span class="math inline">\widetilde{CI}</span></a></li>
+  <li><a href="#upper-quantiles" id="toc-upper-quantiles">Upper quantiles</a></li>
+  <li><a href="#one-sided-interval" id="toc-one-sided-interval">One-sided interval</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary">Summary</a>
+  <ul>
+  <li><a href="#estimator-and-standardization" id="toc-estimator-and-standardization">Estimator and standardization</a></li>
+  <li><a href="#interval-and-coverage" id="toc-interval-and-coverage">Interval and coverage</a></li>
+  <li><a href="#asymmetric-and-one-sided-intervals" id="toc-asymmetric-and-one-sided-intervals">Asymmetric and one-sided intervals</a></li>
+  </ul></li>
+  </ul>
+</nav>
+<section id="normal-estimator" class="level1">
+<h1>Normal estimator</h1>
+<section id="normal-regression-model" class="level2">
+<h2>Normal regression model</h2>
+<div class="hidden">
+
+</div>
+<ul>
+<li><p><strong>Assumption 1.</strong> <span class="math inline">Y = X\beta + U</span> for some <span class="math inline">\beta \in \mathbb{R}^k</span>.</p></li>
+<li><p><strong>Assumption 2.</strong> <span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>.</p></li>
+<li><p><strong>Assumption 3.</strong> For some <span class="math inline">\sigma^2 &gt; 0</span>: <span class="math display">
+\begin{aligned}
+\mathrm{Var}\left(U \mid X\right) &amp;= \mathrm{E}\left[UU^\top \mid X\right] \\
+&amp;= \sigma^2 I_n
+\end{aligned}
+</span></p></li>
+<li><p><strong>Assumption 4.</strong> <span class="math inline">\operatorname{rank}\left(X\right) = k</span>.</p></li>
+<li><p><strong>Assumption 5.</strong> <span class="math display">
+U \mid X \sim N\big(\underbrace{0}_{\mathrm{E}\left[U \mid X\right]},\ \underbrace{\sigma^2 I_n}_{\mathrm{Var}\left(U \mid X\right)}\big)
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-hatbeta" class="level2">
+<h2>Distribution of <span class="math inline">\hat\beta</span></h2>
+<ul>
+<li><p>We will use: <span class="math display">
+\begin{aligned}
+\underset{p\times1}{V} &amp;\sim N\big(\underset{p\times1}{\mu},\ \underset{p\times p}{\Sigma}\big) \\
+\Longrightarrow\quad \underset{m\times p}{A}\,\underset{p\times1}{V} + \underset{m\times1}{b} &amp;\sim N\big(A\mu + b,\ A\Sigma A^\top\big)
+\end{aligned}
+</span></p></li>
+<li><p>Write <span class="math inline">\hat\beta</span> as a linear function of <span class="math inline">U</span> and apply the result: <span class="math display">
+\begin{aligned}
+\hat\beta &amp;= (X^\top X)^{-1} X^\top Y \\
+&amp;= \beta + \underbrace{(X^\top X)^{-1} X^\top}_{A}\, U \\
+\Longrightarrow\quad &amp; \boxed{\ \hat\beta \mid X \sim N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big)\ }
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+<section id="one-coefficient-hatbeta_1" class="level2">
+<h2>One coefficient <span class="math inline">\hat\beta_1</span></h2>
+<ul>
+<li>Apply the same result to the first coefficient: <span class="math display">
+\begin{aligned}
+\hat\beta_1 \mid X &amp;= \underbrace{[\,1\ \ 0\ \cdots\ 0\,]}_{e_1^\top}\, \hat\beta \mid X \\
+&amp;\sim N\Big(e_1^\top \beta,\ \underset{1\times k}{e_1^\top}\ \overbrace{\sigma^2\, \underset{k\times k}{(X^\top X)^{-1}}}^{\mathrm{Var}\left(\hat\beta \mid X\right)}\ \underset{k\times 1}{e_1}\Big) \\
+&amp;= N\big(\beta_1,\ \mathrm{Var}\left(\hat\beta_1 \mid X\right)\big)
+\end{aligned}
+</span></li>
+</ul>
+</section>
+<section id="partitioned-regression" class="level2">
+<h2>Partitioned regression</h2>
+<ul>
+<li><p>Regression on <span class="math inline">X = \big[\ X_1 \quad X_2\ \big]</span>: <span class="math display">
+Y = \underset{1\times1}{\beta_1}\, \underset{n\times1}{X_1} + \underset{n\times k_2}{X_2}\, \underset{k_2\times1}{\beta_2} + U
+</span></p></li>
+<li><p>Third lecture, the OLS coefficient on <span class="math inline">X_1</span>, with <span class="math inline">M_2 = I_n - X_2 (X_2^\top X_2)^{-1} X_2^\top</span>: <span class="math display">
+\hat\beta_1 = \frac{X_1^\top M_2 Y}{\underbrace{X_1^\top M_2 X_1}_{1\times1}}
+</span></p></li>
+</ul>
+</section>
+<section id="distribution-of-hatbeta_1" class="level2">
+<h2>Distribution of <span class="math inline">\hat\beta_1</span></h2>
+<ul>
+<li>Under Assumptions 1 to 5: <span class="math display">
+\hat\beta_1 \mid X \sim N\Big(\beta_1,\ \frac{\sigma^2}{X_1^\top M_2 X_1}\Big)
+</span></li>
+</ul>
+</section>
+<section id="generic-estimator-hattheta" class="level2">
+<h2>Generic estimator <span class="math inline">\hat\theta</span></h2>
+<ul>
+<li><p>The regression example in generic notation, conditional on <span class="math inline">X</span>: <span class="math display">
+\theta = \beta_1, \qquad \hat\theta = \hat\beta_1, \qquad \omega^2 = \frac{\sigma^2}{X_1^\top M_2 X_1}
+</span></p></li>
+<li><p>Generic problem, an exactly normal estimator of <span class="math inline">\theta</span>: <span class="math display">
+\underset{1\times1}{\hat\theta} \sim N\big(\underset{1\times1}{\theta},\ \underset{1\times1}{\omega^2}\big)
+</span></p></li>
+<li><p><span class="math inline">\omega^2</span>: known.</p></li>
+<li><p>In the regression example: <span class="math inline">\sigma^2</span> known <span class="math inline">\Longrightarrow</span> <span class="math inline">\omega^2</span> known.</p></li>
+<li><p>Probability that <span class="math inline">\hat\theta</span> equals <span class="math inline">\theta</span>: <span class="math display">
+\mathrm{P}(\hat\theta = \theta) = 0
+</span></p></li>
+</ul>
+</section>
+</section>
+<section id="confidence-interval" class="level1">
+<h1>Confidence interval</h1>
+<section id="coverage" class="level2">
+<h2>Coverage</h2>
+<ul>
+<li><p><strong>Definition.</strong> <span class="math inline">CI_{1-\alpha}</span>, a confidence interval with coverage <span class="math inline">1-\alpha</span>, is a random interval such that: <span class="math display">
+\mathrm{P}(\theta \in CI_{1-\alpha}) = 1-\alpha
+</span></p></li>
+<li><p>Chosen in advance: <span class="math inline">\alpha \in (0,1)</span>, for example <span class="math inline">0.01</span>, <span class="math inline">0.05</span>, <span class="math inline">0.1</span>.</p></li>
+<li><p>Regression example: <span class="math display">
+\mathrm{P}(\beta_1 \in CI_{1-\alpha} \mid X) = 1-\alpha
+</span></p></li>
+<li><p>At least <span class="math inline">1-\alpha</span> is acceptable, less is not: <span class="math display">
+\begin{aligned}
+\mathrm{P}(\theta \in CI_{1-\alpha}) &amp;\ge 1-\alpha \\
+\mathrm{P}(\theta \in CI_{1-\alpha}) &amp;&lt; 1-\alpha \qquad \times
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+<section id="symmetric-interval" class="level2">
+<h2>Symmetric interval</h2>
+<ul>
+<li><p>Symmetric around <span class="math inline">\hat\theta</span>, with <span class="math inline">c &gt; 0</span>: <span class="math display">
+CI_{1-\alpha} = [\hat\theta - c,\ \hat\theta + c]
+</span></p></li>
+<li><p>Length of the interval: <span class="math display">
+\begin{aligned}
+\text{length} &amp;=\hat\theta + c - (\hat\theta - c) \\
+&amp;= 2c
+\end{aligned}
+</span></p></li>
+<li><p>Problem: choose <span class="math inline">c</span> for coverage <span class="math inline">1-\alpha</span>: <span class="math display">
+\begin{aligned}
+1-\alpha &amp;= \mathrm{P}\big(\theta \in CI_{1-\alpha}\big) \\
+&amp;= \mathrm{P}\Big(\underbrace{\theta}_{\text{fixed}} \in \big[\overbrace{\hat\theta}^{\text{random}} - \underbrace{c}_{\text{fixed}},\ \overbrace{\hat\theta}^{\text{random}} + \underbrace{c}_{\text{fixed}}\big]\Big)
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+<section id="standard-normal-quantile" class="level2">
+<h2>Standard normal quantile</h2>
+<ul>
+<li><p><strong>Definition.</strong> <span class="math inline">z_\tau</span> is the fixed number such that, for <span class="math inline">Z \sim N(0,1)</span>: <span class="math display">
+\mathrm{P}(Z \le z_\tau) = \tau, \qquad \tau \in (0,1)
+</span></p></li>
+<li><p>The <span class="math inline">\tau</span>-th quantile of <span class="math inline">N(0,1)</span>: <span class="math display">
+z_\tau = \Phi^{-1}(\tau), \qquad \Phi(z) = \mathrm{P}(Z \le z)
+</span></p></li>
+<li><p>For example: <span class="math display">
+z_{0.975} \approx 1.96, \qquad z_{0.025} \approx -1.96
+</span></p></li>
+<li><p>Symmetry around zero: <span class="math display">
+z_\tau = -z_{1-\tau}
+</span></p></li>
+</ul>
+</section>
+<section id="choice-of-c" class="level2">
+<h2>Choice of <span class="math inline">c</span></h2>
+<ul>
+<li><p>Subtract <span class="math inline">\theta</span> and divide by <span class="math inline">\omega</span>: <span class="math display">
+\begin{aligned}
+\hat\theta &amp;\sim N(\theta,\ \omega^2) \\
+\Longrightarrow\quad \hat\theta - \theta &amp;\sim N(0,\ \omega^2) \\
+\Longrightarrow\quad \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} &amp;\sim N(0,\ 1)
+\end{aligned}
+</span></p></li>
+<li><p>Rewrite the event <span class="math inline">\theta \in CI_{1-\alpha}</span> in terms of <span class="math inline">Z</span>: <span class="math display">
+\begin{aligned}
+\mathrm{P}(\theta \in CI_{1-\alpha}) &amp;= \mathrm{P}\big(\hat\theta - c \le \theta \le \hat\theta + c\big) \\
+&amp;= \mathrm{P}\bigl(-c \le \theta - \hat\theta \le c\bigr) \\
+&amp;= \mathrm{P}\bigl(-c \le \hat\theta - \theta \le c\bigr) \\
+&amp;= \mathrm{P}\Bigl(-\frac{c}{\omega} \le \frac{\hat\theta - \theta}{\omega} \le \frac{c}{\omega}\Bigr) \\
+&amp;= \mathrm{P}\Bigl(-\frac{c}{\omega} \le Z \le \frac{c}{\omega}\Bigr)
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+<section id="value-of-c" class="level2">
+<h2>Value of <span class="math inline">c</span></h2>
+<ul>
+<li><p>Standard normal density, area <span class="math inline">1-\alpha</span> between <span class="math inline">-c/\omega</span> and <span class="math inline">c/\omega</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="527_04_confidence_intervals_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center" width="1800" /></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>Read <span class="math inline">c</span> off the picture: <span class="math display">
+\begin{aligned}
+-\frac{c}{\omega} &amp;= z_{\alpha/2} \\
+&amp;= -z_{1-\alpha/2} \\
+\frac{c}{\omega} &amp;= z_{1-\alpha/2} \\
+\Longrightarrow\quad c &amp;= z_{1-\alpha/2}\,\omega
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+<section id="coverage-check" class="level2">
+<h2>Coverage check</h2>
+<ul>
+<li>Substitute <span class="math inline">c = z_{1-\alpha/2}\,\omega</span>: <span class="math display">
+\begin{aligned}
+\mathrm{P}\big(\theta \in CI_{1-\alpha}\big) &amp;= \mathrm{P}\bigl(-z_{1-\alpha/2} \le Z \le z_{1-\alpha/2}\bigr) \\
+&amp;= 1 - \frac{\alpha}{2} - \frac{\alpha}{2} \\
+&amp;= 1 - \alpha
+\end{aligned}
+</span> where each of the two tails has probability <span class="math inline">\alpha/2</span>.</li>
+</ul>
+</section>
+<section id="interval-for-theta" class="level2">
+<h2>Interval for <span class="math inline">\theta</span></h2>
+<ul>
+<li><p>Symmetric interval with coverage <span class="math inline">1-\alpha</span>: <span class="math display">
+\boxed{\ CI_{1-\alpha} = \big[\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega\big]\ }
+</span></p></li>
+<li><p>Centre <span class="math inline">\hat\theta</span>, half-length <span class="math inline">\omega z_{1-\alpha/2}</span>.</p></li>
+<li><p>For <span class="math inline">\alpha = 0.05</span>: <span class="math display">
+z_{1-\alpha/2} = z_{0.975} \approx 1.96
+</span></p></li>
+<li><p>Coverage, written with an absolute value: <span class="math display">
+\mathrm{P}(\theta \in CI_{1-\alpha}) = \mathrm{P}\Big(\Big|\frac{\hat\theta - \theta}{\omega}\Big| \le z_{1-\alpha/2}\Big)
+</span></p></li>
+</ul>
+</section>
+<section id="length-of-ci_1-alpha" class="level2">
+<h2>Length of <span class="math inline">CI_{1-\alpha}</span></h2>
+<ul>
+<li><p><span class="math inline">CI_{1-\alpha}</span> around <span class="math inline">\hat\theta</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="527_04_confidence_intervals_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center" width="1800" /></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>Length: <span class="math display">
+2\,\omega\, z_{1-\alpha/2}
+</span></p></li>
+<li><p>Effect of <span class="math inline">\alpha</span>: <span class="math display">
+\alpha \downarrow \quad\Longrightarrow\quad z_{1-\alpha/2} \uparrow
+</span></p></li>
+</ul>
+</section>
+<section id="numerical-example" class="level2">
+<h2>Numerical example</h2>
+<ul>
+<li><p>Given: <span class="math display">
+\begin{aligned}
+\hat\theta &amp;= 0.06 \\
+\alpha = 0.05 &amp;\Longrightarrow z_{1-\alpha/2} \approx 2.0 \\
+\omega &amp;= 0.01
+\end{aligned}
+</span></p></li>
+<li><p>Substitute into the interval: <span class="math display">
+\begin{aligned}
+CI_{1-\alpha} &amp;= \big[\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega\big] \\
+CI_{0.95} &amp;= \big[\,0.06 - 2.0 \cdot 0.01,\ \ 0.06 + 2.0 \cdot 0.01\,\big] \\
+&amp;= [\,0.04,\ 0.08\,]
+\end{aligned}
+</span></p></li>
+<li><p><strong>Question.</strong> What does <span class="math inline">CI_{0.95} = [0.04,\ 0.08]</span> mean?</p>
+<ol type="1">
+<li><span class="math inline">\mathrm{P}(0.04 \le \theta \le 0.08) = 0.95</span></li>
+<li><span class="math inline">\mathrm{P}(0.04 \le \hat\theta \le 0.08) = 0.95</span></li>
+<li><span class="math inline">\mathrm{P}\big(\theta \in [0.04,\ 0.08] \mid \text{data}\big) = 0.95</span></li>
+<li>None of the above</li>
+</ol></li>
+</ul>
+</section>
+<section id="random-and-computed-interval" class="level2">
+<h2>Random and computed interval</h2>
+<ul>
+<li><p>Before <span class="math inline">CI_{1-\alpha}</span> is computed: <span class="math display">
+\mathrm{P}\big(\theta \in \underbrace{CI_{1-\alpha}}_{\text{random}}\big) = 1-\alpha
+</span></p></li>
+<li><p>Once computed: <span class="math display">
+CI_{0.95} = \underbrace{[\,0.04,\ 0.08\,]}_{\text{not random}}
+</span></p></li>
+</ul>
+</section>
+<section id="interval-for-beta_1" class="level2">
+<h2>Interval for <span class="math inline">\beta_1</span></h2>
+<ul>
+<li>With <span class="math inline">\hat\theta = \hat\beta_1</span> and <span class="math inline">\omega^2 = \sigma^2 / (X_1^\top M_2 X_1)</span>: <span class="math display">
+CI_{1-\alpha} = \hat\beta_1 \pm z_{1-\alpha/2} \sqrt{\frac{\sigma^2}{X_1^\top M_2 X_1}}
+</span></li>
+</ul>
+</section>
+</section>
+<section id="other-intervals" class="level1">
+<h1>Other intervals</h1>
+<section id="asymmetric-interval" class="level2">
+<h2>Asymmetric interval</h2>
+<ul>
+<li><p>Asymmetric interval: <span class="math display">
+\widetilde{CI} = \big[\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}\big]
+</span></p></li>
+<li><p>Ordering of the quantiles: <span class="math display">
+z_{1-2\alpha/3} &lt; z_{1-\alpha/2} &lt; z_{1-\alpha/3}
+</span></p></li>
+</ul>
+</section>
+<section id="coverage-of-the-asymmetric-interval-widetildeci" class="level2">
+<h2>Coverage of the asymmetric interval <span class="math inline">\widetilde{CI}</span></h2>
+<ul>
+<li>Coverage of <span class="math inline">\widetilde{CI}</span> is <span class="math inline">1-\alpha</span>: <span class="math display">
+\begin{aligned}
+\mathrm{P}\big(\theta \in \widetilde{CI}\big) &amp;= \mathrm{P}\big(\theta \in [\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}]\big) \\
+&amp;= \mathrm{P}\big(\hat\theta - \omega z_{1-2\alpha/3} \le \theta \le \hat\theta + \omega z_{1-\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(-\omega z_{1-2\alpha/3} \le \theta - \hat\theta \le \omega z_{1-\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(-\omega z_{1-\alpha/3} \le \hat\theta - \theta \le \omega z_{1-2\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(\omega z_{\alpha/3} \le \hat\theta - \theta \le \omega z_{1-2\alpha/3}\big) \\
+&amp;= \mathrm{P}\Big(z_{\alpha/3} \le \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z} \le z_{1-2\alpha/3}\Big) \\
+&amp;= \mathrm{P}\big(z_{\alpha/3} \le Z \le z_{1-2\alpha/3}\big) \\
+&amp;= \mathrm{P}\big(Z \le z_{1-2\alpha/3}\big) - \mathrm{P}\big(Z &lt; z_{\alpha/3}\big) \\
+&amp;= \Big(1 - \frac{2\alpha}{3}\Big) - \mathrm{P}\big(Z &lt; z_{\alpha/3}\big) \\
+&amp;= 1 - \frac{2\alpha}{3} - \frac{\alpha}{3} \\
+&amp;= 1-\alpha.
+\end{aligned}
+</span></li>
+</ul>
+</section>
+<section id="length-of-widetildeci" class="level2">
+<h2>Length of <span class="math inline">\widetilde{CI}</span></h2>
+<ul>
+<li><p>Asymmetric and symmetric intervals: <span class="math display">
+\begin{aligned}
+\text{length of asymmetric } \widetilde{CI} &amp;= \omega\big(z_{1-2\alpha/3} + z_{1-\alpha/3}\big) \\
+\text{length of symmetric } CI_{1-\alpha} &amp;= \omega\big(z_{1-\alpha/2} + z_{1-\alpha/2}\big) \\
+&amp;= 2\omega z_{1-\alpha/2}
+\end{aligned}
+</span></p></li>
+<li><p>The symmetric interval is shorter: <span class="math display">
+2\omega z_{1-\alpha/2} &lt; \omega\big(z_{1-2\alpha/3} + z_{1-\alpha/3}\big)
+</span></p></li>
+</ul>
+</section>
+<section id="upper-quantiles" class="level2">
+<h2>Upper quantiles</h2>
+<ul>
+<li><p>Right tail of <span class="math inline">N(0,1)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="527_04_confidence_intervals_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center" width="1800" /></p>
+</figure>
+</div>
+</div>
+</div></li>
+<li><p>Each band has the same area: <span class="math display">
+\begin{aligned}
+\frac{2\alpha}{3} - \frac{\alpha}{2} &amp;= \frac{\alpha}{6} \\
+\frac{\alpha}{2} - \frac{\alpha}{3} &amp;= \frac{\alpha}{6}
+\end{aligned}
+</span></p></li>
+<li><p>Density of <span class="math inline">N(0,1)</span>: <span class="math display">
+\mathrm{pdf}_{N(0,1)}(z) = \frac{1}{\sqrt{2\pi}}\, e^{-z^2/2}
+</span></p></li>
+<li><p>Gaps between the quantiles: <span class="math display">
+\begin{aligned}
+z_{1-\alpha/2} - z_{1-2\alpha/3} &amp;= \Delta \\
+z_{1-\alpha/3} - z_{1-\alpha/2} &amp;&gt; \Delta
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+<section id="one-sided-interval" class="level2">
+<h2>One-sided interval</h2>
+<ul>
+<li><p>Only the lower boundary matters: <span class="math display">
+[\,t,\ +\infty)
+</span></p></li>
+<li><p>Interval: <span class="math display">
+\big[\hat\theta - z_{1-\alpha}\,\omega,\ +\infty\big)
+</span></p></li>
+<li><p>Coverage: <span class="math display">
+\begin{aligned}
+\mathrm{P}\big(\theta \in [\hat\theta - z_{1-\alpha}\,\omega,\ +\infty)\big) &amp;= \mathrm{P}\big(\theta \ge \hat\theta - z_{1-\alpha}\,\omega\big) \\
+&amp;= \mathrm{P}\Big(z_{1-\alpha} \ge \underbrace{\frac{\hat\theta - \theta}{\omega}}_{=\,Z}\Big) \\
+&amp;= \mathrm{P}\big(Z \le z_{1-\alpha}\big) \\
+&amp;= 1 - \alpha
+\end{aligned}
+</span></p></li>
+</ul>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<section id="estimator-and-standardization" class="level2">
+<h2>Estimator and standardization</h2>
+<ul>
+<li><p><span class="math inline">\hat\beta \mid X \sim N\big(\beta, \sigma^2 (X^\top X)^{-1}\big)</span> under Assumptions 1 to 5.</p></li>
+<li><p><span class="math inline">\hat\beta_1 \mid X \sim N\big(\beta_1, \sigma^2 / (X_1^\top M_2 X_1)\big)</span>, with <span class="math inline">\theta = \beta_1</span>, <span class="math inline">\hat\theta = \hat\beta_1</span>, <span class="math inline">\omega^2 = \sigma^2 / (X_1^\top M_2 X_1)</span>.</p></li>
+<li><p><span class="math inline">\hat\theta \sim N(\theta, \omega^2)</span> with <span class="math inline">\omega^2</span> known, and <span class="math inline">\mathrm{P}(\hat\theta = \theta) = 0</span>.</p></li>
+<li><p><span class="math inline">Z = (\hat\theta - \theta)/\omega \sim N(0,1)</span>; <span class="math inline">\mathrm{P}(Z \le z_\tau) = \tau</span> and <span class="math inline">z_\tau = -z_{1-\tau}</span>.</p></li>
+</ul>
+</section>
+<section id="interval-and-coverage" class="level2">
+<h2>Interval and coverage</h2>
+<ul>
+<li><p><span class="math inline">\mathrm{P}(\theta \in CI_{1-\alpha}) = 1-\alpha</span> with <span class="math inline">\alpha \in (0,1)</span>; <span class="math inline">CI_{1-\alpha}</span> random, its computed value not random.</p></li>
+<li><p><span class="math inline">CI_{1-\alpha} = [\hat\theta - z_{1-\alpha/2}\,\omega,\ \hat\theta + z_{1-\alpha/2}\,\omega]</span>, of length <span class="math inline">2\omega z_{1-\alpha/2}</span>.</p></li>
+<li><p><span class="math inline">\alpha = 0.05</span>: <span class="math inline">z_{0.975} \approx 1.96</span>; <span class="math inline">\alpha \downarrow \quad\Longrightarrow\quad z_{1-\alpha/2} \uparrow</span>.</p></li>
+<li><p>Regression example: <span class="math inline">CI_{1-\alpha} =\hat\beta_1 \pm z_{1-\alpha/2}\sqrt{\sigma^2 / (X_1^\top M_2 X_1)}</span>, with <span class="math inline">\mathrm{P}(\beta_1 \in CI_{1-\alpha} \mid X) = 1-\alpha</span>.</p></li>
+</ul>
+</section>
+<section id="asymmetric-and-one-sided-intervals" class="level2">
+<h2>Asymmetric and one-sided intervals</h2>
+<ul>
+<li><p><span class="math inline">\widetilde{CI} = [\hat\theta - \omega z_{1-2\alpha/3},\ \hat\theta + \omega z_{1-\alpha/3}]</span>: coverage <span class="math inline">1-\alpha</span>.</p></li>
+<li><p>Length of <span class="math inline">\widetilde{CI}</span> against <span class="math inline">CI_{1-\alpha}</span>: <span class="math inline">\omega\big(z_{1-2\alpha/3} + z_{1-\alpha/3}\big) &gt; 2\omega z_{1-\alpha/2}</span>.</p></li>
+<li><p><span class="math inline">[\hat\theta - z_{1-\alpha}\,\omega,\ +\infty)</span>: coverage <span class="math inline">1-\alpha</span>.</p></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id = "quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+</body>
+
+</html>
