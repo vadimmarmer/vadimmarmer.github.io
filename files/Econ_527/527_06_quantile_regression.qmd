@@ -1,0 +1,598 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 6: Effects at quantiles and quantile regression"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_06_quantile_regression.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_06_quantile_regression.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_06_quantile_regression_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Effects at the mean and at quantiles
+
+## Effect at the mean
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+# A picture the class builds up on the board. In the slide show the frames
+# share one grid cell and appear one by one as fragments, so advancing or going
+# back uses Reveal's normal fragment controls without shifting the figure; in
+# ordinary HTML and PDF the complete picture is drawn once. `drawer(step)`
+# draws the frame for `step`; `cls` names the grid cell, so two such pictures
+# in one deck do not collide.
+build_frames <- function(cls, stem, steps, descriptions, width, height, drawer) {
+  if (!identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    tikz_fig(stem, width, height, drawer(max(steps)))
+    return(invisible(NULL))
+  }
+  cat('```{=html}\n<style>\n',
+      '.reveal .', cls, ' { display: grid; width: ', round(96 * width),
+      'px; max-width: 100%; margin: 1em auto; }\n',
+      '.reveal .', cls, ' > img { grid-area: 1 / 1; width: 100%; max-width: 100%; ',
+      'max-height: none; margin: 0; background: white; transition: none; }\n',
+      '</style>\n<div class="', cls, '">\n', sep = "")
+  for (j in seq_along(steps)) {
+    frame <- tikz_fig(paste0(stem, "-step-", steps[j]), width, height,
+                      drawer(steps[j]), draw = FALSE)
+    cat(sprintf('<img class="%s" src="%s" alt="%s">\n',
+                if (j == 1L) "" else "fragment",
+                knitr::image_uri(frame), descriptions[j]))
+  }
+  cat('</div>\n<script>\n',
+      'document.addEventListener("DOMContentLoaded", function () {\n',
+      '  const diagram = document.querySelector(".', cls, '");\n',
+      '  const parentFragment = diagram.closest(".fragment");\n',
+      '  function keepDiagramVisible(event) {\n',
+      '    if (diagram.contains(event.fragment) ||\n',
+      '        (event.type === "fragmentshown" && event.fragment === parentFragment)) {\n',
+      '      diagram.scrollIntoView({ block: "center", behavior: "instant" });\n',
+      '    }\n',
+      '  }\n',
+      '  Reveal.on("fragmentshown", keepDiagramVisible);\n',
+      '  Reveal.on("fragmenthidden", keepDiagramVisible);\n',
+      '});\n</script>\n```\n', sep = "")
+  invisible(NULL)
+}
+
+red <- "#d7301f"; blue <- "#1f78b4"
+
+# The normal density of Y given X = x0, drawn sideways on the vertical through
+# x0: mean m, standard deviation s, and the same horizontal scale h for every
+# density, so that widths and heights compare exactly. A dotted vertical rises
+# from the axis at x0.
+side_density <- function(x0, m, s, h, col = "black", span = 2.6) {
+  y <- seq(m - span * s, m + span * s, length.out = 200)
+  segments(x0, 0, x0, m + span * s, lty = 3, col = "grey40")
+  lines(x0 + h * dnorm(y, m, s), y, col = col, lwd = 1.8)
+}
+
+# Figure (a), homoskedastic: the line beta_0 + beta_1 x, sideways normal
+# densities with the same standard deviation sigma at x_1 and x_2, and the two
+# parallel quartile lines beta_0 + beta_1 x + sigma z_tau for tau = 0.75, 0.25.
+homo_picture <- function() {
+  b0 <- 1; b1 <- 0.5; s <- 0.5; h <- 0.75
+  xs <- c(1, 3)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-0.3, 5.3), ylim = c(-0.35, 4.3))
+  arrows(-0.2, 0, 4.9, 0, length = 0.08)
+  arrows(0, -0.2, 0, 4.2, length = 0.08)
+  text(4.95, -0.18, "$x$"); text(-0.18, 4.15, "$y$")
+  xx <- seq(0, 4.4, length.out = 2)
+  lines(xx, b0 + b1 * xx, lwd = 2)
+  for (tau in c(0.75, 0.25))
+    lines(xx, b0 + b1 * xx + s * qnorm(tau), lwd = 1.8, col = blue)
+  for (x0 in xs) side_density(x0, b0 + b1 * x0, s, h, col = red)
+  text(xs, -0.2, c("$x_1$", "$x_2$"))
+  text(4.5, b0 + b1 * 4.4 + 0.05, "$\\beta_0 + \\beta_1 x$", adj = 0)
+  text(4.5, b0 + b1 * 4.4 + s * qnorm(0.75) + 0.12, "$q^Y_{0.75}(x)$",
+       adj = 0, col = blue)
+  text(4.5, b0 + b1 * 4.4 + s * qnorm(0.25) - 0.12, "$q^Y_{0.25}(x)$",
+       adj = 0, col = blue)
+  par(op)
+}
+
+# Figure (b), heteroskedastic, built up in six frames: beta_0 = 1, beta_1 = 0.5
+# and sigma(x) = exp(gamma_0 + gamma_1 x) with gamma_0 = -1.2, gamma_1 = 0.35.
+# Steps 0:5 draw the line, three sideways normal densities widening with x, then
+# the quantile curves q_0.8(x) (steeper) and q_0.2(x) (flatter), computed from
+# beta_0 + beta_1 x + sigma(x) z_tau, fanning out around the line.
+hetero_picture <- function(step = 5L) {
+  b0 <- 1; b1 <- 0.5; g0 <- -1.2; g1 <- 0.35; h <- 0.6
+  sig <- function(x) exp(g0 + g1 * x)
+  xs <- c(0.7, 2.0, 3.3)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-0.3, 5.6), ylim = c(-0.35, 5.4))
+  arrows(-0.2, 0, 4.9, 0, length = 0.08)
+  arrows(0, -0.2, 0, 5.3, length = 0.08)
+  text(4.95, -0.18, "$x$"); text(-0.18, 5.25, "$y$")
+  xx <- seq(0, 4.4, length.out = 200)
+  lines(xx, b0 + b1 * xx, lwd = 2)
+  text(4.5, b0 + b1 * 4.4, "$\\beta_0 + \\beta_1 x$", adj = 0)
+  for (j in seq_along(xs)) if (step >= j) {
+    side_density(xs[j], b0 + b1 * xs[j], sig(xs[j]), h, col = red)
+    text(xs[j], -0.2, sprintf("$x_%d$", j))
+  }
+  if (step >= 4L) {
+    lines(xx, b0 + b1 * xx + sig(xx) * qnorm(0.8), lwd = 1.8, col = blue)
+    text(4.5, b0 + b1 * 4.4 + sig(4.4) * qnorm(0.8), "$q^Y_{0.8}(x)$",
+         adj = 0, col = blue)
+  }
+  if (step >= 5L) {
+    lines(xx, b0 + b1 * xx + sig(xx) * qnorm(0.2), lwd = 1.8, col = blue)
+    text(4.5, b0 + b1 * 4.4 + sig(4.4) * qnorm(0.2), "$q^Y_{0.2}(x)$",
+         adj = 0, col = blue)
+  }
+  par(op)
+}
+
+# Figure (c), the check function, in four frames: tau = 0.5 alone (the
+# symmetric V, with the slopes tau - 1 and tau named), then tau = 0.25 alone,
+# then tau = 0.75 alone, then all three together. Every branch rises to height
+# 1, so the steep branch of an asymmetric V is short and the flat one long; the
+# window is wide and low, so the vertical scale is stretched only about twice
+# and the slopes still read as tau - 1 and tau.
+check_picture <- function(step = 4L) {
+  rho <- function(u, tau) u * (tau - (u < 0))
+  taus <- c(0.5, 0.25, 0.75); cols <- c("black", red, blue)
+  shown <- if (step <= 3L) step else 1:3
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-5.4, 5.4), ylim = c(-0.25, 1.3))
+  arrows(-4.4, 0, 4.9, 0, length = 0.08)
+  arrows(0, -0.2, 0, 1.25, length = 0.08)
+  text(4.95, -0.12, "$u$"); text(0.15, 1.2, "$\\rho_\\tau(u)$", adj = 0)
+  for (j in shown) {
+    tau <- taus[j]
+    uL <- -1 / (1 - tau); uR <- 1 / tau
+    lines(c(uL, 0), rho(c(uL, 0), tau), col = cols[j], lwd = 2)
+    lines(c(0, uR), rho(c(0, uR), tau), col = cols[j], lwd = 2)
+    lab <- sprintf("$\\tau = %s$", tau)
+    if (tau > 0.5) text(uL - 0.1, 1, lab, adj = 1, col = cols[j])
+    else text(uR + 0.1, 1, lab, adj = 0, col = cols[j])
+  }
+  text(-2.2, 0.1, "slope $\\tau - 1$")
+  text(2.2, 0.1, "slope $\\tau$")
+  par(op)
+}
+```
+
+- One regressor:
+  $$
+  Y_i = \beta_0 + \beta_1 X_i + U_i, \qquad \E{U_i \mid X_i} = 0
+  $$
+
+- Effect for the "average" individual, with $U_i = 0$:
+  $$
+  \beta_1 = \frac{\partial(\beta_0 + \beta_1 X_i)}{\partial X_i}
+  $$
+
+- Under normality:
+  $$
+  \begin{aligned}
+  U_i \mid X_i &\sim N(0,\ \sigma^2) \\
+  \Longrightarrow\quad \E{Y_i \mid X_i} &= \beta_0 + \beta_1 X_i
+  \end{aligned}
+  $$
+
+- Average effect: $\beta_1$.
+
+## Conditional quantile $q^Y_\tau(X_i)$
+
+- $z_\tau$ for $Z \sim N(0,1)$:
+  $$
+  \mathrm{P}(Z \le z_\tau) = \tau, \qquad \tau \in (0,1)
+  $$
+
+- **Definition.** $q^Y_\tau(X_i)$, the $\tau$-th quantile of $Y_i$ given $X_i$:
+  $$
+  \mathrm{P}\big(Y_i \le q^Y_\tau(X_i) \mid X_i\big) = \tau
+  $$
+
+- **Claim.**
+  $$
+  q^Y_\tau(X_i) = \beta_0 + \beta_1 X_i + q^U_\tau(X_i)
+  $$
+
+- **Claim.** Under $U_i \mid X_i \sim N(0,\ \sigma^2)$:
+  $$
+  q^U_\tau(X_i) = \sigma z_\tau
+  $$
+
+## Verification
+
+- Check that $\beta_0 + \beta_1 X_i + \sigma z_\tau$ is the $\tau$-th quantile of $Y_i$ given $X_i$:
+  $$
+  \begin{aligned}
+  & \mathrm{P}\Big(Y_i \le \beta_0 + \beta_1 X_i + \underbrace{\sigma z_\tau}_{q^U_\tau(X_i)} \mid X_i\Big) \\
+  &= \mathrm{P}\big({\color{red} \beta_0 + \beta_1 X_i} + U_i \le {\color{red} \beta_0 + \beta_1 X_i} + \sigma z_\tau \mid X_i\big) \\
+  &= \mathrm{P}\big(U_i \le \sigma z_\tau \mid X_i\big) \\
+  &= \mathrm{P}\Big(\underbrace{\frac{U_i}{\sigma}}_{N(0,1)} \le z_\tau \mid X_i\Big) \\
+  &= \tau
+  \end{aligned}
+  $$
+
+## Same effect at every quantile
+
+- Therefore:
+  $$
+  \begin{aligned}
+  &\boxed{\ q^Y_\tau(X_i) = \beta_0 + \beta_1 X_i + \sigma z_\tau\ } \\
+  &= (\beta_0 + \sigma z_\tau) + \beta_1 X_i
+  \end{aligned}
+  $$
+
+- Effect at the $\tau$-th quantile:
+  $$
+  \begin{aligned}
+  \frac{\partial q^Y_\tau(X_i)}{\partial X_i} &= \frac{\partial\big[\beta_0 + \beta_1 X_i + \overbrace{\sigma z_\tau}^{\text{const.}}\big]}{\partial X_i} \\
+  &= \beta_1
+  \end{aligned}
+  $$
+
+- Same effect $\beta_1$ at every quantile and at the mean.
+
+- For example, $z_{0.05} \approx -1.64$:
+  $$
+  q^Y_{0.05}(X_i) \approx \beta_0 + \beta_1 X_i - 1.64\,\sigma
+  $$
+
+## Equal spread and parallel quantile lines
+
+- Densities of $Y_i$ given $X_i = x$ on $\beta_0 + \beta_1 x$, and $q^Y_{0.75}(x)$, $q^Y_{0.25}(x)$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 4.6
+  #| fig-dpi: 300
+  tikz_fig("qr-homoskedastic", 6, 4.6, {
+    homo_picture()
+  })
+  ```
+
+## Heteroskedastic normal model
+
+- Suppose:
+  $$
+  \begin{aligned}
+  U_i \mid X_i &\sim N\big(0,\ \underbrace{\sigma^2(X_i)}_{\text{not const.}}\big) \\
+  \Longrightarrow\quad & \boxed{\ q^Y_\tau(X_i) = \beta_0 + \beta_1 X_i + \sigma(X_i)\, z_\tau\ }
+  \end{aligned}
+  $$
+
+- Exponential scale:
+  $$
+  \sigma(X_i) = e^{\gamma_0 + \gamma_1 X_i}
+  $$
+
+- Effect at the $\tau$-th quantile:
+  $$
+  \begin{aligned}
+  \frac{\partial q^Y_\tau(X_i)}{\partial X_i} &= \frac{\partial\big[\beta_0 + \beta_1 X_i + \sigma(X_i)\, z_\tau\big]}{\partial X_i} \\
+  &= \beta_1 + z_\tau\, \frac{\partial \sigma(X_i)}{\partial X_i} \\
+  &= \beta_1 + z_\tau\, \frac{\partial e^{\gamma_0 + \gamma_1 X_i}}{\partial X_i} \\
+  &= \beta_1 + z_\tau\, \overbrace{\underbrace{\sigma(X_i)}_{e^{\gamma_0 + \gamma_1 X_i}}\, \gamma_1}^{>\,0 \ \text{ if } \gamma_1 > 0}
+  \end{aligned}
+  $$
+
+## Effects above and below the median
+
+- Sign of $z_\tau$:
+  $$
+  \begin{aligned}
+  z_\tau &> 0 \quad \text{if } \tau > 0.5 \\
+  z_{0.5} &= 0 \\
+  z_\tau &< 0 \quad \text{if } \tau < 0.5 \\
+  z_\tau &\to -\infty \quad \text{as } \tau \to 0
+  \end{aligned}
+  $$
+
+- Suppose $\gamma_1 > 0$:
+  $$
+  \frac{\partial q^Y_\tau(X_i)}{\partial X_i} = \beta_1 + z_\tau\, \sigma(X_i)\, \gamma_1
+  \ \begin{cases}
+  > \beta_1 & \text{if } \tau > 0.5 \\
+  = \beta_1 & \text{if } \tau = 0.5 \\
+  < \beta_1 & \text{if } \tau < 0.5
+  \end{cases}
+  $$
+
+- At the median:
+  $$
+  \begin{aligned}
+  q^Y_{0.5}(X_i) &= \beta_0 + \beta_1 X_i \\
+  &= \E{Y_i \mid X_i}
+  \end{aligned}
+  $$
+
+## Where heterogeneity comes from
+
+- Given $X_i$, a distribution of $U_i$:
+  $$
+  \E{U_i \mid X_i} = 0, \qquad \text{but } U_i \text{ and } X_i \text{ not independent}
+  $$
+
+- Scale times a standard normal:
+  $$
+  \begin{aligned}
+  U_i &= \sigma(X_i)\, \varepsilon_i, \qquad \varepsilon_i \mid X_i \sim N(0,1) \\
+  \Longrightarrow\quad q^Y_\tau(X_i) &= \beta_0 + \beta_1 X_i + \sigma(X_i)\, z_\tau
+  \end{aligned}
+  $$
+
+- Individual at the $\tau$-th quantile of $Y_i$ given $X_i$:
+  $$
+  \begin{aligned}
+  \varepsilon_i &= z_\tau \\
+  \Longleftrightarrow\quad Y_i &= \beta_0 + \beta_1 X_i + \sigma(X_i)\, z_\tau \\
+  &= q^Y_\tau(X_i)
+  \end{aligned}
+  $$
+
+## Widening densities and fanning quantile curves
+
+- Densities on $\beta_0 + \beta_1 x$, then $q^Y_{0.8}(x)$ and $q^Y_{0.2}(x)$:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 4.6
+  #| fig-dpi: 300
+  build_frames("qr-hetero-build", "qr-heteroskedastic", 0:5,
+               c("Axes and the line beta_0 + beta_1 x",
+                 "Narrow conditional density at x_1",
+                 "Wider conditional density at x_2",
+                 "Widest conditional density at x_3",
+                 "Quantile curve for tau = 0.8, steeper than the line",
+                 "Quantile curve for tau = 0.2, flatter than the line"),
+               6, 4.6, function(step) hetero_picture(step))
+  ```
+
+# Quantile regression
+
+## Quantile regression without normality
+
+- Explain $q^Y_\tau(X_i)$ instead of $\E{Y_i \mid X_i}$.
+
+- No model for $\sigma(X_i)$.
+
+- Mean as an optimizer:
+  $$
+  \underbrace{\E{Y_i}}_{\mu} = \underset{c \in \mathbb{R}}{\arg\min}\ \E{(\underset{1\times1}{Y_i} - \underset{1\times1}{c})^2}
+  $$
+
+- **Definition.** Check function, $\tau \in (0,1)$:
+  $$
+  \rho_\tau(u) = u\, \big(\tau - \mathbf{1}(u < 0)\big)
+  $$
+
+- Two branches:
+  $$
+  \begin{aligned}
+  u < 0 \quad &\Longrightarrow\quad \rho_\tau(u) = (\tau - 1)\, u \\
+  u > 0 \quad &\Longrightarrow\quad \rho_\tau(u) = \tau\, u
+  \end{aligned}
+  $$
+
+- **Definition.** $q^Y_\tau$, the $\tau$-th quantile of $Y_i$:
+  $$
+  \mathrm{P}\big(Y_i \le q^Y_\tau\big) = \tau
+  $$
+
+- Quantile as an optimizer:
+  $$
+  q^Y_\tau = \underset{c \in \mathbb{R}}{\arg\min}\ \E{\rho_\tau(Y_i - c)}
+  $$
+
+## Median: $\tau = 0.5$
+
+- Check function:
+  $$
+  \begin{aligned}
+  \rho_{0.5}(u) &= u\, \big(0.5 - \mathbf{1}(u < 0)\big) \\
+  &= \begin{cases} -\tfrac12\, u & \text{if } u < 0 \\ \tfrac12\, u & \text{if } u > 0 \end{cases} \\
+  &= \tfrac12\, |u|
+  \end{aligned}
+  $$
+
+- Median as an optimizer:
+  $$
+  \begin{aligned}
+  q^Y_{0.5} &= \underset{c \in \mathbb{R}}{\arg\min}\ \E{\rho_{0.5}(Y_i - c)} \\
+  &= \underset{c \in \mathbb{R}}{\arg\min}\ \E{|Y_i - c|}
+  \end{aligned}
+  $$
+
+- Median:
+  $$
+  \mathrm{P}\big(Y_i \le q^Y_{0.5}\big) = 0.5
+  $$
+
+## Why "check function"
+
+- Graph of $\rho_\tau$:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 7
+  #| fig-height: 2.3
+  #| fig-dpi: 300
+  build_frames("qr-check-build", "qr-check-function", 1:4,
+               c("The check function for tau = 0.5, a symmetric V",
+                 "The check function for tau = 0.25, steep on the left and flat on the right",
+                 "The check function for tau = 0.75, flat on the left and steep on the right",
+                 "The check functions for tau = 0.5, 0.25 and 0.75 together"),
+               7, 2.3, function(step) check_picture(step))
+  ```
+
+- $\tau < 0.5$: a check mark, $\checkmark$.
+
+## Mean regression as a minimization
+
+- $X_i$ now the $k \times 1$ vector of regressors, $\rank{\E{X_i X_i^\top}} = k$; $\beta, b \in \mathbb{R}^k$.
+
+- Population, then sample:
+  $$
+  \begin{aligned}
+  \mu = \E{Y_i} &= \underset{c \in \mathbb{R}}{\arg\min}\ \E{(Y_i - c)^2} \\
+  \hat\mu &= \underset{c \in \mathbb{R}}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n (Y_i - c)^2
+  \end{aligned}
+  $$
+
+- Conditional mean:
+  $$
+  \E{Y_i \mid X_i} = \underset{c \in \mathbb{R}}{\arg\min}\ \E{(Y_i - c)^2 \mid X_i}
+  $$
+
+- Assume $\E{Y_i \mid X_i} = X_i^\top \beta$:
+  $$
+  \beta = \underset{b \in \mathbb{R}^k}{\arg\min}\ \E{(Y_i - X_i^\top b)^2}
+  $$
+
+- OLS:
+  $$
+  \hat\beta = \underset{b \in \mathbb{R}^k}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top b)^2
+  $$
+
+## Quantile regression by analogy
+
+- Population, then sample:
+  $$
+  \begin{aligned}
+  q^Y_\tau &= \underset{c \in \mathbb{R}}{\arg\min}\ \E{\rho_\tau(Y_i - c)} \\
+  \hat q^Y_\tau &= \underset{c \in \mathbb{R}}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n \rho_\tau(Y_i - c)
+  \end{aligned}
+  $$
+
+- Assume $q^Y_\tau(X_i) = X_i^\top \beta_\tau$:
+  $$
+  \beta_\tau = \underset{b \in \mathbb{R}^k}{\arg\min}\ \E{\rho_\tau(Y_i - X_i^\top b)}
+  $$
+
+- Quantile regression:
+  $$
+  \boxed{\ \hat\beta_\tau = \underset{b \in \mathbb{R}^k}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n \rho_\tau(Y_i - X_i^\top b)\ }
+  $$
+
+- Estimated conditional quantile:
+  $$
+  \hat q^Y_\tau(X_i) = X_i^\top \hat\beta_\tau
+  $$
+
+- Koenker and Bassett (1978), Econometrica.
+
+## Median regression
+
+- Assume $q^Y_{0.5}(X_i) = X_i^\top \beta_{0.5}$:
+  $$
+  \beta_{0.5} = \underset{b \in \mathbb{R}^k}{\arg\min}\ \E{\rho_{0.5}(Y_i - X_i^\top b)}
+  $$
+
+- Estimator, with $\rho_{0.5}(u) = \tfrac12\, |u|$:
+  $$
+  \begin{aligned}
+  \hat\beta_{0.5} &= \underset{b \in \mathbb{R}^k}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n \rho_{0.5}(Y_i - X_i^\top b) \\
+  &= \underset{b \in \mathbb{R}^k}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n |Y_i - X_i^\top b|
+  \end{aligned}
+  $$
+
+- Estimated conditional median:
+  $$
+  \hat q^Y_{0.5}(X_i) = X_i^\top \hat\beta_{0.5}
+  $$
+
+# Summary
+
+## Effects at quantiles
+
+- Normal, homoskedastic: $q^Y_\tau(X_i) = \beta_0 + \beta_1 X_i + \sigma z_\tau$; $\partial q^Y_\tau(X_i)/\partial X_i = \beta_1$ at every $\tau$, the same as at the mean.
+
+- Normal, heteroskedastic: $q^Y_\tau(X_i) = \beta_0 + \beta_1 X_i + \sigma(X_i) z_\tau$; with $\sigma(X_i) = e^{\gamma_0 + \gamma_1 X_i}$, $\partial q^Y_\tau(X_i)/\partial X_i = \beta_1 + z_\tau \sigma(X_i) \gamma_1$.
+
+- $\gamma_1 > 0$: effect above $\beta_1$ for $\tau > 0.5$, equal to $\beta_1$ at $\tau = 0.5$, below $\beta_1$ for $\tau < 0.5$.
+
+- $U_i = \sigma(X_i)\,\varepsilon_i$, $\varepsilon_i \mid X_i \sim N(0,1)$; $\varepsilon_i = z_\tau \Longleftrightarrow Y_i = q^Y_\tau(X_i)$.
+
+## Check function and quantile regression
+
+- $\rho_\tau(u) = u\,(\tau - \mathbf{1}(u < 0))$, slope $\tau - 1$ for $u < 0$ and $\tau$ for $u > 0$; $\rho_{0.5}(u) = \tfrac12 |u|$.
+
+- $\mu = \arg\min_c \E{(Y_i - c)^2}$ and $q^Y_\tau = \arg\min_c \E{\rho_\tau(Y_i - c)}$.
+
+- $q^Y_\tau(X_i) = X_i^\top \beta_\tau$: $\hat\beta_\tau = \arg\min_b \frac{1}{n} \sum_{i=1}^n \rho_\tau(Y_i - X_i^\top b)$ and $\hat q^Y_\tau(X_i) = X_i^\top \hat\beta_\tau$; Koenker and Bassett (1978).
+
+- $\tau = 0.5$: $\hat\beta_{0.5} = \arg\min_b \frac{1}{n} \sum_{i=1}^n |Y_i - X_i^\top b|$.
