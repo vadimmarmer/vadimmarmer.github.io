@@ -270,8 +270,10 @@ pvalue_picture <- function(two_sided = TRUE, left = FALSE) {
   if (two_sided) {
     segments(c(-tt, tt), 0, c(-tt, tt), dnorm(tt), lty = 2, col = red)
     segments(c(-z, z), 0, c(-z, z), 0.3, lty = 3)
-    text(c(-tt, tt), -0.07, c("$-T(\\theta_0)$", "$T(\\theta_0)$"), col = red)
-    text(c(-z, z), -0.16, c("$-z_{1-\\alpha/2}$", "$z_{1-\\alpha/2}$"))
+    # Both pairs of labels sit on one line, pushed apart by d so they do not touch.
+    d <- 0.2
+    text(c(-tt + d, tt - d), -0.07, c("$-T(\\theta_0)$", "$T(\\theta_0)$"), col = red)
+    text(c(-z - d, z + d), -0.07, c("$-z_{1-\\alpha/2}$", "$z_{1-\\alpha/2}$"))
     # The label sits in the empty upper right; one arrow runs to the right
     # tail and one across the curve to the left tail, as the class drew it.
     text(2.6, 0.36, "p-value", col = red)
@@ -1253,15 +1255,17 @@ Truth against decision:
 
 # p-values
 
-## Question
-
-- **Question.** What is the p-value?
-  1. $\mathrm{P}(\text{Type I error})$
-  2. Probability of drawing $\hat\theta$ from the distribution centred at $\theta$
-  3. Probability of rejecting
-  4. Probability of drawing another $\hat\theta$ further than the one in your sample
-
 ## Two-sided p-value
+
+- Under $H_0 : \theta = \theta_0$:
+  $$
+  \frac{\hat\theta - \theta_0}{\omega} \sim N(0,1)
+  $$
+
+- Test statistic:
+  $$
+  T(\theta_0) = \left|\frac{\hat\theta - \theta_0}{\omega}\right|
+  $$
 
 - Two tails beyond $\pm T(\theta_0)$:
 
@@ -1276,32 +1280,34 @@ Truth against decision:
   })
   ```
 
-- p-value:
-  $$
-  \begin{aligned}
-  \text{p-value} &= 2\big(1 - \Phi(T(\theta_0))\big) \\
-  &= \boxed{\ 2\Big(1 - \Phi\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big|\Big)\Big)\ } \\
-  &= 2\,\Phi\Bigl(-\Big|\frac{\hat\theta - \theta_0}{\omega}\Big|\Bigr) \qquad \big(1 - \Phi(x) = \Phi(-x)\big)
-  \end{aligned}
-  $$
-
-- p-value: random before the data are plugged in, a statistic.
-
 - Test:
   $$
   \text{Reject } H_0 : \theta = \theta_0 \ \text{ if } \ \text{p-value} < \alpha
   $$
 
-- **Claim.** Size $\alpha$:
+- p-value:
   $$
   \begin{aligned}
-  \mathrm{P}(\text{Type I error}) &= \mathrm{P}(\text{p-value} < \alpha \mid \theta = \theta_0) \\
-  &= \mathrm{P}\big(2(1 - \Phi(|Z|)) < \alpha\big) \qquad \Big(\tfrac{\hat\theta - \theta_0}{\omega} = Z \text{ under } \theta = \theta_0\Big) \\
-  &= \alpha
+  \text{p-value} &= \Phi(-T(\theta_0)) + 1 - \Phi(T(\theta_0)) \\
+  &= 2\big(1 - \Phi(T(\theta_0))\big) \qquad \big(\Phi(-x) = 1 - \Phi(x)\big) \\
+  &= \boxed{\ 2\Big(1 - \Phi\Big(\Big|\frac{\hat\theta - \theta_0}{\omega}\Big|\Big)\Big)\ } \\
+  &= 2\,\Phi\Bigl(-\Big|\frac{\hat\theta - \theta_0}{\omega}\Big|\Bigr)
   \end{aligned}
   $$
 
+- p-value: random before the data are plugged in, a statistic.
+
+- **Claim.** Size $\alpha$:
+  $$
+  \mathrm{P}(\text{p-value} < \alpha \mid \theta = \theta_0) = \alpha
+  $$
+
 ## Two-sided p-value under $\theta = \theta_0$
+
+- CDF of $U \sim \text{Uniform}(0,1)$, for $t \in (0,1)$:
+  $$
+  \mathrm{P}(U \le t) = t
+  $$
 
 - CDF of the p-value, for $t \in (0,1)$:
   $$
