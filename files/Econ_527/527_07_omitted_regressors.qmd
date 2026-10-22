@@ -1,0 +1,758 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 7: Omitted and irrelevant regressors"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_07_omitted_regressors.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_07_omitted_regressors.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_07_omitted_regressors_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Long and short regressions
+
+## Model and two estimators of $\beta_1$
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+# A picture the class builds up on the board. In the slide show the frames
+# share one grid cell and appear one by one as fragments, so advancing or going
+# back uses Reveal's normal fragment controls without shifting the figure; in
+# ordinary HTML and PDF the complete picture is drawn once. `drawer(step)`
+# draws the frame for `step`; `cls` names the grid cell, so two such pictures
+# in one deck do not collide.
+build_frames <- function(cls, stem, steps, descriptions, width, height, drawer) {
+  if (!identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    tikz_fig(stem, width, height, drawer(max(steps)))
+    return(invisible(NULL))
+  }
+  cat('```{=html}\n<style>\n',
+      '.reveal .', cls, ' { display: grid; width: ', round(96 * width),
+      'px; max-width: 100%; margin: 1em auto; }\n',
+      '.reveal .', cls, ' > img { grid-area: 1 / 1; width: 100%; max-width: 100%; ',
+      'max-height: none; margin: 0; background: white; transition: none; }\n',
+      '</style>\n<div class="', cls, '">\n', sep = "")
+  for (j in seq_along(steps)) {
+    frame <- tikz_fig(paste0(stem, "-step-", steps[j]), width, height,
+                      drawer(steps[j]), draw = FALSE)
+    cat(sprintf('<img class="%s" src="%s" alt="%s">\n',
+                if (j == 1L) "" else "fragment",
+                knitr::image_uri(frame), descriptions[j]))
+  }
+  cat('</div>\n<script>\n',
+      'document.addEventListener("DOMContentLoaded", function () {\n',
+      '  const diagram = document.querySelector(".', cls, '");\n',
+      '  const parentFragment = diagram.closest(".fragment");\n',
+      '  function keepDiagramVisible(event) {\n',
+      '    if (diagram.contains(event.fragment) ||\n',
+      '        (event.type === "fragmentshown" && event.fragment === parentFragment)) {\n',
+      '      diagram.scrollIntoView({ block: "center", behavior: "instant" });\n',
+      '    }\n',
+      '  }\n',
+      '  Reveal.on("fragmentshown", keepDiagramVisible);\n',
+      '  Reveal.on("fragmenthidden", keepDiagramVisible);\n',
+      '});\n</script>\n```\n', sep = "")
+  invisible(NULL)
+}
+
+red <- "#d7301f"; blue <- "#1f78b4"
+
+# The class's picture of bias against variance: two square panels with the
+# same window, each holding 40 simulated draws of a two-dimensional estimate
+# of beta_1 = (0, 0), seed 527. Left, the long regression's estimate, drawn
+# from N(beta_1, I_2): centred on beta_1 and wide. Right, the short
+# regression's estimate, drawn from N(beta_1 + bias, 0.09 I_2) with
+# bias = (1.1, 0.8): tight and centred off beta_1. The cross marks beta_1.
+# Built up in two frames, as on the board: step 1 draws the long regression's
+# panel and leaves the right half blank; step 2 adds the short regression's panel.
+bias_variance_picture <- function(step = 2L) {
+  set.seed(527)
+  m <- 40; b1 <- c(0, 0); bias <- c(1.1, 0.8); sd_long <- 1; sd_short <- 0.3
+  long <- cbind(rnorm(m, b1[1], sd_long), rnorm(m, b1[2], sd_long))
+  short <- cbind(rnorm(m, b1[1] + bias[1], sd_short),
+                 rnorm(m, b1[2] + bias[2], sd_short))
+  op <- par(mfrow = c(1, 2), mar = c(0.3, 0.3, 1.6, 0.3), pty = "s")
+  panel <- function(pts, lab, col, show) {
+    plot.new(); plot.window(xlim = c(-3, 3), ylim = c(-3, 3), asp = 1)
+    if (!show) return(invisible(NULL))
+    box()
+    points(pts[, 1], pts[, 2], pch = 16, cex = 0.7, col = col)
+    points(b1[1], b1[2], pch = 3, cex = 1.6, lwd = 2.5)
+    text(b1[1] - 0.3, b1[2], "$\\beta_1$", adj = c(1, 0.5))
+    mtext(lab, side = 3, line = 0.3, cex = 1.1)
+  }
+  panel(long, "$\\hat\\beta_1$", blue, TRUE)
+  panel(short, "$\\tilde\\beta_1$", red, step >= 2L)
+  par(op)
+}
+```
+
+- Two blocks of regressors, $k_1 + k_2 = k$:
+  $$
+  Y = \underset{n\times k_1}{X_1}\ \underset{k_1\times 1}{\beta_1} + \underset{n\times k_2}{X_2}\ \underset{k_2\times 1}{\beta_2} + U, \qquad X = [\, X_1 \ \ X_2 \,]
+  $$
+
+- Assumptions 2, 3 and 4:
+  $$
+  \E{U \mid X_1, X_2} = 0, \qquad \Var{U \mid X_1, X_2} = \sigma^2 I_n, \qquad \rank{X} = k
+  $$
+
+- "Long" regression $Y \mid X_1, X_2$, controlling for $X_2$ (FWL):
+  $$
+  \hat\beta_1 = (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 Y, \qquad M_2 = I_n - X_2 (X_2^\top X_2)^{-1} X_2^\top
+  $$
+
+- "Short" regression $Y \mid X_1$, not controlling for $X_2$:
+  $$
+  \tilde\beta_1 = (X_1^\top X_1)^{-1} X_1^\top Y
+  $$
+
+## Short against long in the sample
+
+- Long regression's fit (third lecture):
+  $$
+  Y = X_1 \hat\beta_1 + X_2 \hat\beta_2 + \hat U
+  $$
+
+- Substitute into $\tilde\beta_1$:
+  $$
+  \begin{aligned}
+  \tilde\beta_1 &= (X_1^\top X_1)^{-1} X_1^\top Y \\
+  &= (X_1^\top X_1)^{-1} X_1^\top \big( X_1 \hat\beta_1 + X_2 \hat\beta_2 + \hat U \big) \\
+  &= \hat\beta_1 + (X_1^\top X_1)^{-1} X_1^\top X_2 \hat\beta_2 + (X_1^\top X_1)^{-1} \underbrace{X_1^\top \hat U}_{=\,0} \\
+  &= \boxed{\ \hat\beta_1 + (X_1^\top X_1)^{-1} X_1^\top X_2 \hat\beta_2\ } \\
+  &\ne \hat\beta_1 \quad \text{in general} \\
+  \tilde\beta_1 &= \hat\beta_1 \quad \text{if } X_1^\top X_2 = 0
+  \end{aligned}
+  $$
+
+# Omitting a relevant regressor
+
+## Signal, bias and noise
+
+- True model, estimated by the short regression $Y \mid X_1$:
+  $$
+  Y = X_1 \beta_1 + X_2 \beta_2 + U, \qquad \beta_2 \ne 0
+  $$
+
+- Substitute the true model into $\tilde\beta_1$:
+  $$
+  \begin{aligned}
+  \tilde\beta_1 &= (X_1^\top X_1)^{-1} X_1^\top Y \\
+  &= (X_1^\top X_1)^{-1} X_1^\top \big( X_1 \beta_1 + X_2 \beta_2 + U \big) \\
+  &= \underbrace{\beta_1}_{\text{signal}} + \underbrace{(X_1^\top X_1)^{-1} X_1^\top X_2 \beta_2}_{\text{bias}} + \underbrace{(X_1^\top X_1)^{-1} X_1^\top U}_{\text{noise}}
+  \end{aligned}
+  $$
+
+- Conditional mean of $\tilde\beta_1$, by Assumption 2:
+  $$
+  \begin{aligned}
+  \E{\tilde\beta_1 \mid X_1, X_2} &= \beta_1 + (X_1^\top X_1)^{-1} X_1^\top X_2 \beta_2 + (X_1^\top X_1)^{-1} X_1^\top \underbrace{\E{U \mid X_1, X_2}}_{=\,0} \\
+  &= \boxed{\ \beta_1 + \underbrace{(X_1^\top X_1)^{-1} X_1^\top X_2 \beta_2}_{\text{bias}}\ } \\
+  &\ne \beta_1 \quad \text{in general}
+  \end{aligned}
+  $$
+
+- Bias $= 0$ if:
+  $$
+  \begin{aligned}
+  \text{1.}\quad & \beta_2 = 0 \\
+  \text{2.}\quad & X_1^\top X_2 = 0
+  \end{aligned}
+  $$
+
+## Example: return to education, ability omitted
+
+- Wage equation, $k_1 = k_2 = 1$:
+  $$
+  \ln \text{Wage}_i = \underbrace{\text{Education}_i}_{X_{i,1}}\, \beta_1 + \underbrace{\text{Ability}_i}_{X_{i,2}}\, \beta_2 + U_i
+  $$
+
+- $\beta_1$: return to education; $\beta_2 > 0$.
+
+- Suppose $X_1^\top X_2 > 0$:
+  $$
+  X_1^\top X_2 = \sum_{i=1}^n \text{Education}_i \cdot \text{Ability}_i \ > 0
+  $$
+
+- Sign of the bias, three positive factors:
+  $$
+  \begin{aligned}
+  \text{Bias} &= \underbrace{(X_1^\top X_1)^{-1}}_{+}\ \underbrace{X_1^\top X_2}_{+}\ \overset{+}{\beta_2} \ > 0 \\
+  \Longrightarrow\quad & \E{\tilde\beta_1 \mid X_1, X_2} > \beta_1
+  \end{aligned}
+  $$
+
+- Return to education over-estimated.
+
+# Variances of the long and short estimators
+
+## Two conditional variances
+
+- We will use, for $\Gamma$ a function of $X_1, X_2$:
+  $$
+  \Var{\Gamma U \mid X_1, X_2} = \Gamma\, \Var{U \mid X_1, X_2}\, \Gamma^\top
+  $$
+
+- Short regression, by Assumption 3:
+  $$
+  \begin{aligned}
+  \Var{\tilde\beta_1 \mid X_1, X_2} &= \Var{\beta_1 + (X_1^\top X_1)^{-1} X_1^\top X_2 \beta_2 + (X_1^\top X_1)^{-1} X_1^\top U \mid X_1, X_2} \\
+  &= \Var{(X_1^\top X_1)^{-1} X_1^\top U \mid X_1, X_2} \\
+  &= (X_1^\top X_1)^{-1} X_1^\top\, \underbrace{\Var{U \mid X_1, X_2}}_{=\,\sigma^2 I_n}\, X_1 (X_1^\top X_1)^{-1} \\
+  &= \sigma^2 (X_1^\top X_1)^{-1}
+  \end{aligned}
+  $$
+
+- Long regression:
+  $$
+  \begin{aligned}
+  \Var{\hat\beta_1 \mid X_1, X_2} &= \Var{\beta_1 + (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 U \mid X_1, X_2} \\
+  &= \Var{(X_1^\top M_2 X_1)^{-1} X_1^\top M_2 U \mid X_1, X_2} \\
+  &= (X_1^\top M_2 X_1)^{-1} X_1^\top M_2\, \sigma^2 I_n\, M_2 X_1 (X_1^\top M_2 X_1)^{-1} \quad (M_2^\top = M_2) \\
+  &= \sigma^2 (X_1^\top M_2 X_1)^{-1} \underbrace{X_1^\top M_2 M_2 X_1}_{=\,X_1^\top M_2 X_1} (X_1^\top M_2 X_1)^{-1} \\
+  &= \sigma^2 (X_1^\top M_2 X_1)^{-1}
+  \end{aligned}
+  $$
+
+## Larger variance for the long regression
+
+- **Claim.** For $\beta_2 \ne 0$:
+  $$
+  \Var{\hat\beta_1 \mid X_1, X_2} - \Var{\tilde\beta_1 \mid X_1, X_2} \ \ge\ 0 \quad \text{(p.s.d.)}
+  $$
+
+- Difference of the two variances:
+  $$
+  \begin{aligned}
+  \Var{\hat\beta_1 \mid X_1, X_2} - \Var{\tilde\beta_1 \mid X_1, X_2} &= \sigma^2 (X_1^\top M_2 X_1)^{-1} - \sigma^2 (X_1^\top X_1)^{-1} \\
+  &= \sigma^2 \big[ (X_1^\top M_2 X_1)^{-1} - (X_1^\top X_1)^{-1} \big]
+  \end{aligned}
+  $$
+
+- Need to show:
+  $$
+  (X_1^\top M_2 X_1)^{-1} - (X_1^\top X_1)^{-1} \ \ge\ 0
+  $$
+
+## Proof, step 1: inverses to matrices
+
+- Scalars $a, b > 0$:
+  $$
+  b - a \ge 0 \quad \Longleftrightarrow \quad \frac{1}{a} - \frac{1}{b} \ge 0
+  $$
+
+- **Claim** (homework). For $A$, $B$ p.d.:
+  $$
+  B - A \ge 0 \quad \Longleftrightarrow \quad A^{-1} - B^{-1} \ge 0
+  $$
+
+- Apply the homework claim, $A$ and $B$ p.d. by Assumption 4:
+  $$
+  \begin{aligned}
+  & \underbrace{(X_1^\top M_2 X_1)^{-1}}_{A^{-1}} - \underbrace{(X_1^\top X_1)^{-1}}_{B^{-1}} \ \ge\ 0 \\
+  \Longleftrightarrow\quad & \underbrace{X_1^\top X_1}_{B} - \underbrace{X_1^\top M_2 X_1}_{A} \ \ge\ 0
+  \end{aligned}
+  $$
+
+## Proof, step 2: $X_1^\top P_2 X_1$ p.s.d.
+
+- Rewrite the difference, $I_n - M_2 = P_2$:
+  $$
+  \begin{aligned}
+  X_1^\top X_1 - X_1^\top M_2 X_1 &= X_1^\top (I_n - M_2) X_1 \\
+  &= X_1^\top P_2 X_1, \qquad P_2 = X_2 (X_2^\top X_2)^{-1} X_2^\top
+  \end{aligned}
+  $$
+
+- $P_2$ p.s.d. $\Longrightarrow$ quadratic form of $X_1^\top P_2 X_1$ p.s.d., for $c \in \mathbb{R}^{k_1}$:
+  $$
+  c^\top X_1^\top P_2 X_1 c = w^\top P_2 w \ \ge\ 0, \qquad w = X_1 c
+  $$
+
+- Therefore:
+  $$
+  \begin{aligned}
+  & X_1^\top X_1 - X_1^\top M_2 X_1 = X_1^\top P_2 X_1 \ \ge\ 0 \\
+  \Longrightarrow\quad & (X_1^\top M_2 X_1)^{-1} - (X_1^\top X_1)^{-1} \ \ge\ 0 \quad \text{(step 1)} \\
+  \Longrightarrow\quad & \boxed{\ \Var{\hat\beta_1 \mid X_1, X_2} - \Var{\tilde\beta_1 \mid X_1, X_2} \ \ge\ 0\ }
+  \end{aligned}
+  $$
+
+## Why controlling for $X_2$ increases the variance
+
+- $X_1^\top M_2 X_1$ in terms of $\tilde X_1$:
+  $$
+  \begin{aligned}
+  X_1^\top M_2 X_1 &= \underbrace{X_1^\top M_2^\top}_{\tilde X_1^\top}\, \underbrace{M_2 X_1}_{\tilde X_1} \quad \text{(symmetric, idempotent)} \\
+  &= \tilde X_1^\top \tilde X_1
+  \end{aligned}
+  $$
+
+- $\tilde X_1 = M_2 X_1$: residual from regressing $X_1$ on $X_2$.
+
+- Conditional variances of $\hat\beta_1$ and $\tilde\beta_1$:
+  $$
+  \begin{aligned}
+  \Var{\hat\beta_1 \mid X_1, X_2} &= \sigma^2 (X_1^\top M_2 X_1)^{-1} \\
+  &= \sigma^2 (\tilde X_1^\top \tilde X_1)^{-1} \\
+  \Var{\tilde\beta_1 \mid X_1, X_2} &= \sigma^2 (X_1^\top X_1)^{-1}
+  \end{aligned}
+  $$
+
+- $X_1^\top X_1$ against $\tilde X_1^\top \tilde X_1$, from step 2:
+  $$
+  X_1^\top X_1 - \tilde X_1^\top \tilde X_1 \ \ge\ 0
+  $$
+
+- $\tilde X_1^\top \tilde X_1$: variation of $X_1$ not explained by $X_2$.
+
+- Adding $X_2 \ \Longrightarrow\ $ variance $\uparrow$.
+
+## Bias against variance
+
+- If $\beta_2 \ne 0$:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &:\ \text{unbiased, larger variance} \\
+  \tilde\beta_1 &:\ \text{biased in general, smaller variance}
+  \end{aligned}
+  $$
+
+- Estimates from repeated samples, $k_1 = 2$; cross at the true $\beta_1$:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  build_frames("bias-var-build", "omitted-bias-variance", 1:2,
+               c("Long regression: estimates spread widely around beta_1",
+                 "Short regression added: estimates tight and centred away from beta_1"),
+               6, 3.2, function(step) bias_variance_picture(step))
+  ```
+
+## Mean squared error (MSE)
+
+- $\underset{1\times 1}{\hat\theta}$: estimator of $\underset{1\times 1}{\theta_0}$.
+
+- Expected loss, add and subtract $\E{\hat\theta}$:
+  $$
+  \begin{aligned}
+  \E{(\hat\theta - \theta_0)^2} &= \E{\big( \hat\theta - \E{\hat\theta} + \E{\hat\theta} - \theta_0 \big)^2} \\
+  &= \E{(\hat\theta - \E{\hat\theta})^2} + (\E{\hat\theta} - \theta_0)^2 \\
+  &\qquad + 2\, \E{(\hat\theta - \E{\hat\theta})(\E{\hat\theta} - \theta_0)}
+  \end{aligned}
+  $$
+
+- Cross term, $\E{\hat\theta} - \theta_0$ not random:
+  $$
+  \begin{aligned}
+  \E{(\hat\theta - \E{\hat\theta})(\E{\hat\theta} - \theta_0)} &= (\E{\hat\theta} - \theta_0)\, \underbrace{\E{\hat\theta - \E{\hat\theta}}}_{=\,0} \\
+  &= 0
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \underbrace{\E{(\hat\theta - \theta_0)^2}}_{\text{MSE}} = \underbrace{\E{(\hat\theta - \E{\hat\theta})^2}}_{\Var{\hat\theta}} + \underbrace{(\E{\hat\theta} - \theta_0)^2}_{\text{Bias}^2}\ }
+  $$
+
+- A biased estimator can have a smaller MSE.
+
+# Estimated variances
+
+## Two estimated variances
+
+- Long regression, $\hat U = Y - X_1 \hat\beta_1 - X_2 \hat\beta_2$:
+  $$
+  \widehat{\mathrm{Var}}\big(\hat\beta_1 \mid X_1, X_2\big) = s^2 (X_1^\top M_2 X_1)^{-1}, \qquad s^2 = \frac{\hat U^\top \hat U}{n - k}
+  $$
+
+- Short regression, $\tilde U = Y - X_1 \tilde\beta_1$:
+  $$
+  \widehat{\mathrm{Var}}\big(\tilde\beta_1 \mid X_1, X_2\big) = \tilde s^2 (X_1^\top X_1)^{-1}, \qquad \tilde s^2 = \frac{\tilde U^\top \tilde U}{n - k_1}
+  $$
+
+- Standard errors, $j$-th entries:
+  $$
+  \begin{aligned}
+  \text{std. err}\big(\hat\beta_{1,j}\big) &= \sqrt{s^2 \big[(X_1^\top M_2 X_1)^{-1}\big]_{jj}} \\
+  \text{std. err}\big(\tilde\beta_{1,j}\big) &= \sqrt{\tilde s^2 \big[(X_1^\top X_1)^{-1}\big]_{jj}}
+  \end{aligned}
+  $$
+
+- Third lecture: $\E{s^2 \mid X_1, X_2} = \sigma^2$.
+
+- Sums of squared residuals, in every sample:
+  $$
+  \begin{aligned}
+  \hat U^\top \hat U &= \|Y - X_1 \hat\beta_1 - X_2 \hat\beta_2\|^2 \\
+  &\le \|Y - X_1 \tilde\beta_1\|^2 \\
+  &= \tilde U^\top \tilde U
+  \end{aligned}
+  $$
+
+- In terms of $s^2$ and $\tilde s^2$:
+  $$
+  \begin{aligned}
+  s^2 &= \frac{\hat U^\top \hat U}{n - k} \\
+  \tilde s^2 &= \frac{\tilde U^\top \tilde U}{n - k_1}
+  \end{aligned}
+  $$
+
+- Two estimated variances, factor by factor:
+  $$
+  \begin{aligned}
+  \widehat{\mathrm{Var}}\big(\hat\beta_1 \mid X_1, X_2\big) &= \underbrace{s^2}_{\E{s^2 \mid X_1, X_2} \,=\, \sigma^2}\ \underbrace{(X_1^\top M_2 X_1)^{-1}}_{\text{bigger}} \\
+  \widehat{\mathrm{Var}}\big(\tilde\beta_1 \mid X_1, X_2\big) &= \underbrace{\tilde s^2}_{\E{\tilde s^2 \mid X_1, X_2} \,\ge\, \sigma^2}\ \underbrace{(X_1^\top X_1)^{-1}}_{\text{smaller}}
+  \end{aligned}
+  $$
+
+## Proof that $\mathrm{E}[\tilde s^2 \mid X_1, X_2] \ge \sigma^2$
+
+- $M_1$, third lecture:
+  $$
+  M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top
+  $$
+
+- $M_1$: symmetric, idempotent, p.s.d., $M_1 X_1 = 0$, $\operatorname{tr}(M_1) = n - k_1$.
+
+- $\tilde U$ under the true model:
+  $$
+  \begin{aligned}
+  \tilde U &= Y - X_1 \tilde\beta_1 \\
+  &= M_1 Y \\
+  &= M_1 \big( X_1 \beta_1 + X_2 \beta_2 + U \big) \\
+  &= \underbrace{M_1 X_1}_{=\,0}\, \beta_1 + M_1 X_2 \beta_2 + M_1 U \\
+  &= M_1 X_2 \beta_2 + M_1 U
+  \end{aligned}
+  $$
+
+- We will use, for $a, b \in \mathbb{R}^n$:
+  $$
+  \begin{aligned}
+  (a + b)^\top (a + b) &= a^\top a + b^\top b + \underbrace{b^\top a + a^\top b}_{=\,2 a^\top b} \\
+  &= a^\top a + b^\top b + 2\, a^\top b
+  \end{aligned}
+  $$
+
+- Sum of squared residuals:
+  $$
+  \begin{aligned}
+  \tilde U^\top \tilde U &= \big( \underbrace{M_1 X_2 \beta_2}_{a} + \underbrace{M_1 U}_{b} \big)^\top \big( M_1 X_2 \beta_2 + M_1 U \big) \\
+  &= \beta_2^\top X_2^\top M_1 X_2 \beta_2 + U^\top M_1 U + 2\, \beta_2^\top X_2^\top M_1 U \quad (M_1^\top M_1 = M_1)
+  \end{aligned}
+  $$
+
+- Conditional mean of $\tilde U^\top \tilde U$ term by term, trace argument (third lecture):
+  $$
+  \begin{aligned}
+  \E{\tilde U^\top \tilde U \mid X_1, X_2} &= \beta_2^\top X_2^\top M_1 X_2 \beta_2 + \underbrace{\E{U^\top M_1 U \mid X_1, X_2}}_{=\,\sigma^2 \operatorname{tr}(M_1)\,=\,\sigma^2 (n - k_1)} \\
+  &\qquad + 2\, \beta_2^\top X_2^\top M_1\, \underbrace{\E{U \mid X_1, X_2}}_{=\,0} \\
+  &= \beta_2^\top X_2^\top M_1 X_2 \beta_2 + \sigma^2 (n - k_1)
+  \end{aligned}
+  $$
+
+- Divide by $n - k_1$:
+  $$
+  \begin{aligned}
+  \E{\tilde s^2 \mid X_1, X_2} &= \frac{\E{\tilde U^\top \tilde U \mid X_1, X_2}}{n - k_1} \\
+  &= \boxed{\ \sigma^2 + \frac{\beta_2^\top X_2^\top M_1 X_2 \beta_2}{n - k_1}\ } \\
+  &\ge \sigma^2 = \E{s^2 \mid X_1, X_2}
+  \end{aligned}
+  $$
+
+- $\tilde s^2$: biased upward in general.
+
+# Including an irrelevant regressor
+
+## Irrelevant regressor: both estimators unbiased
+
+- True model, estimated by the long regression $Y \mid X_1, X_2$:
+  $$
+  \begin{aligned}
+  & Y = X_1 \beta_1 + X_2 \beta_2 + U, \quad \beta_2 = 0 \\
+  \Longrightarrow\quad & Y = X_1 \beta_1 + U
+  \end{aligned}
+  $$
+
+- Short regression:
+  $$
+  \begin{aligned}
+  \tilde\beta_1 &= (X_1^\top X_1)^{-1} X_1^\top \big( X_1 \beta_1 + U \big) \\
+  &= \beta_1 + (X_1^\top X_1)^{-1} X_1^\top U
+  \end{aligned}
+  $$
+
+- Conditional mean of $\tilde\beta_1$, by Assumption 2:
+  $$
+  \E{\tilde\beta_1 \mid X_1, X_2} = \beta_1
+  $$
+
+- Long regression:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &= (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 \big( X_1 \beta_1 + U \big) \\
+  &= \beta_1 + (X_1^\top M_2 X_1)^{-1} X_1^\top M_2 U
+  \end{aligned}
+  $$
+
+- Conditional mean of $\hat\beta_1$, by Assumption 2:
+  $$
+  \E{\hat\beta_1 \mid X_1, X_2} = \beta_1
+  $$
+
+## Irrelevant regressor: variances
+
+- Same conditional variances as for $\beta_2 \ne 0$, by Assumption 3:
+  $$
+  \begin{aligned}
+  \Var{\hat\beta_1 \mid X_1, X_2} &= \sigma^2 (X_1^\top M_2 X_1)^{-1} \\
+  \Var{\tilde\beta_1 \mid X_1, X_2} &= \sigma^2 (X_1^\top X_1)^{-1}
+  \end{aligned}
+  $$
+
+- By the Claim on the larger variance of the long regression:
+  $$
+  \Var{\hat\beta_1 \mid X_1, X_2} - \Var{\tilde\beta_1 \mid X_1, X_2} \ \ge\ 0
+  $$
+
+- $\tilde s^2$ and $s^2$ both unbiased, trace argument, $\operatorname{tr}(M_1) = n - k_1$, $\operatorname{tr}(M_X) = n - k$:
+  $$
+  \E{\tilde s^2 \mid X_1, X_2} = \E{s^2 \mid X_1, X_2} = \sigma^2
+  $$
+
+## Two cases: $\beta_2 \ne 0$ and $\beta_2 = 0$
+
+- Suppose $X_1^\top X_2 \ne 0$:
+  $$
+  \begin{aligned}
+  \text{a. } \beta_2 \ne 0 \ \Longrightarrow\ & \tilde\beta_1:\ \text{biased in general} \\
+  \text{b. } \beta_2 = 0 \ \Longrightarrow\ & \hat\beta_1:\ \text{larger variance than } \tilde\beta_1
+  \end{aligned}
+  $$
+
+# Orthogonal regressors
+
+## Orthogonal blocks: $M_2 X_1 = X_1$
+
+- Suppose $X_1^\top X_2 = 0$:
+  $$
+  X_1^\top X_2 = 0 \quad \Longleftrightarrow \quad \text{columns of } X_1 \in S^\perp(X_2)
+  $$
+
+- Then:
+  $$
+  \begin{aligned}
+  M_2 X_1 &= X_1 - P_2 X_1 \\
+  &= X_1 - X_2 (X_2^\top X_2)^{-1} \underbrace{X_2^\top X_1}_{=\,0} \\
+  &= X_1
+  \end{aligned}
+  $$
+
+- Exactly orthogonal dummies, high school (HS) and college (C), $k_1 = k_2 = 1$:
+  $$
+  \begin{aligned}
+  X_{i,1} &= \mathbf{1}(\text{Education}_i = \text{HS}) \\
+  X_{i,2} &= \mathbf{1}(\text{Education}_i = \text{C})
+  \end{aligned}
+  $$
+
+- Never both equal to $1$:
+  $$
+  \begin{aligned}
+  & X_{i,1}\, X_{i,2} = 0 \quad \text{for every } i \\
+  \Longrightarrow\quad & X_1^\top X_2 = \sum_{i=1}^n X_{i,1}\, X_{i,2} = 0
+  \end{aligned}
+  $$
+
+## Same estimate, same variance
+
+- Estimators coincide, by $M_2^\top = M_2$:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &= \big( X_1^\top \underbrace{M_2 X_1}_{=\,X_1} \big)^{-1}\, \underbrace{X_1^\top M_2}_{=\,(M_2 X_1)^\top =\, X_1^\top}\, Y \\
+  &= (X_1^\top X_1)^{-1} X_1^\top Y \\
+  &= \tilde\beta_1
+  \end{aligned}
+  $$
+
+- Both unbiased:
+  $$
+  \E{\hat\beta_1 \mid X_1, X_2} = \E{\tilde\beta_1 \mid X_1, X_2} = \beta_1
+  $$
+
+- Equal conditional variances:
+  $$
+  \begin{aligned}
+  \Var{\hat\beta_1 \mid X_1, X_2} &= \sigma^2 (X_1^\top M_2 X_1)^{-1} \\
+  &= \sigma^2 (X_1^\top X_1)^{-1} \\
+  &= \Var{\tilde\beta_1 \mid X_1, X_2}
+  \end{aligned}
+  $$
+
+- $X_1^\top M_2 X_1$ against $X_1^\top X_1$:
+  $$
+  \begin{aligned}
+  X_1^\top X_1 - X_1^\top M_2 X_1 &\ge 0 \\
+  X_1^\top M_2 X_1 &= X_1^\top X_1 \quad \text{if } X_1^\top X_2 = 0
+  \end{aligned}
+  $$
+
+- Adding $X_2$ with $X_1^\top X_2 = 0 \ \Longrightarrow\ $ variance unchanged.
+
+## Which regression to run
+
+- $X_1^\top X_2 = 0$; two options: long $Y \mid X_1, X_2$, short $Y \mid X_1$.
+
+- Short regression's error:
+  $$
+  Y = X_1 \beta_1 + \underbrace{X_2 \beta_2 + U}_{V}
+  $$
+
+- $M_1 X_2 = X_2$, by the same chain as $M_2 X_1 = X_1$.
+
+- Short regression's residuals keep $X_2 \beta_2$:
+  $$
+  \begin{aligned}
+  \tilde U &= M_1 X_2 \beta_2 + M_1 U \\
+  &= X_2 \beta_2 + M_1 U
+  \end{aligned}
+  $$
+
+- $\tilde U$ in terms of the long regression's fit, $\hat\beta_1 = \tilde\beta_1$:
+  $$
+  \begin{aligned}
+  \tilde U &= Y - X_1 \tilde\beta_1 \\
+  &= Y - X_1 \hat\beta_1 \\
+  &= X_2 \hat\beta_2 + \hat U
+  \end{aligned}
+  $$
+
+- $X_2 \hat\beta_2$: not removed from $\tilde U$.
+
+## Controlling for orthogonal $X_2$: smaller estimated variance in general
+
+- $\E{\tilde s^2 \mid X_1, X_2}$ with $M_1 X_2 = X_2$:
+  $$
+  \begin{aligned}
+  \E{\tilde s^2 \mid X_1, X_2} &= \sigma^2 + \frac{\beta_2^\top X_2^\top M_1 X_2 \beta_2}{n - k_1} \\
+  &= \sigma^2 + \frac{\beta_2^\top X_2^\top X_2 \beta_2}{n - k_1} \\
+  &= \sigma^2 + \frac{\|X_2 \beta_2\|^2}{n - k_1} \\
+  &> \sigma^2 = \E{s^2 \mid X_1, X_2} \quad \text{if } X_2 \beta_2 \ne 0
+  \end{aligned}
+  $$
+
+- Estimated variances, same estimate $\hat\beta_1 = \tilde\beta_1$:
+  $$
+  \begin{aligned}
+  \widehat{\mathrm{Var}}\big(\hat\beta_1 \mid X_1, X_2\big) &= s^2 (X_1^\top X_1)^{-1} \\
+  \widehat{\mathrm{Var}}\big(\tilde\beta_1 \mid X_1, X_2\big) &= \tilde s^2 (X_1^\top X_1)^{-1}
+  \end{aligned}
+  $$
+
+- Short regression's estimated variance: biased upward if $X_2 \beta_2 \ne 0$.
+
+- $\Longrightarrow$ Use $\hat\beta_1$, the long regression.
+
+- Fourth and fifth lectures: std. err $\downarrow \Longrightarrow$ confidence interval length $\downarrow$, power $\uparrow$.
+
+# Summary
+
+## Omitted and irrelevant regressors
+
+- In every sample: $\tilde\beta_1 = \hat\beta_1 + (X_1^\top X_1)^{-1} X_1^\top X_2 \hat\beta_2$; equal if $X_1^\top X_2 = 0$.
+
+- $\E{\tilde\beta_1 \mid X_1, X_2} = \beta_1 + (X_1^\top X_1)^{-1} X_1^\top X_2 \beta_2$, bias $= 0$ if $\beta_2 = 0$ or $X_1^\top X_2 = 0$; $\E{\hat\beta_1 \mid X_1, X_2} = \beta_1$.
+
+- $\Var{\hat\beta_1 \mid X_1, X_2} = \sigma^2 (X_1^\top M_2 X_1)^{-1} = \sigma^2 (\tilde X_1^\top \tilde X_1)^{-1}$, $\Var{\tilde\beta_1 \mid X_1, X_2} = \sigma^2 (X_1^\top X_1)^{-1}$.
+
+- $X_1^\top X_1 - X_1^\top M_2 X_1 = X_1^\top P_2 X_1 \ge 0 \Longrightarrow \Var{\hat\beta_1 \mid X_1, X_2} - \Var{\tilde\beta_1 \mid X_1, X_2} \ge 0$.
+
+- $\beta_2 \ne 0 \Longrightarrow$ $\hat\beta_1$ unbiased, larger variance; $\tilde\beta_1$ biased in general, smaller variance.
+
+- $\text{MSE} = \Var{\hat\theta} + \text{Bias}^2$.
+
+- $\beta_2 = 0 \Longrightarrow$ both unbiased, $\hat\beta_1$ larger variance; $\E{s^2 \mid X_1, X_2} = \E{\tilde s^2 \mid X_1, X_2} = \sigma^2$.
+
+## Estimated variances and orthogonal regressors
+
+- $\widehat{\mathrm{Var}}\big(\hat\beta_1 \mid X_1, X_2\big) = s^2 (X_1^\top M_2 X_1)^{-1}$, $s^2 = \hat U^\top \hat U / (n - k)$; $\widehat{\mathrm{Var}}\big(\tilde\beta_1 \mid X_1, X_2\big) = \tilde s^2 (X_1^\top X_1)^{-1}$, $\tilde s^2 = \tilde U^\top \tilde U / (n - k_1)$; $\hat U^\top \hat U \le \tilde U^\top \tilde U$.
+
+- $\tilde U = M_1 X_2 \beta_2 + M_1 U$; $\E{\tilde s^2 \mid X_1, X_2} = \sigma^2 + \beta_2^\top X_2^\top M_1 X_2 \beta_2 / (n - k_1) \ge \sigma^2 = \E{s^2 \mid X_1, X_2}$.
+
+- $X_1^\top X_2 = 0 \Longrightarrow M_2 X_1 = X_1 \Longrightarrow \hat\beta_1 = \tilde\beta_1$ and $\Var{\hat\beta_1 \mid X_1, X_2} = \Var{\tilde\beta_1 \mid X_1, X_2} = \sigma^2 (X_1^\top X_1)^{-1}$.
+
+- $X_1^\top X_2 = 0$, $X_2 \beta_2 \ne 0 \Longrightarrow$ $\tilde U = X_2 \beta_2 + M_1 U$, $\E{\tilde s^2 \mid X_1, X_2} = \sigma^2 + \beta_2^\top X_2^\top X_2 \beta_2 / (n - k_1) > \sigma^2 \Longrightarrow$ use $\hat\beta_1$, the long regression.
