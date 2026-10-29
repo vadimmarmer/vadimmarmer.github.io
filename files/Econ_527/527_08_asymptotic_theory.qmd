@@ -283,20 +283,20 @@ concentration_picture <- function(step = 4L) {
 
 ## Definition of convergence in probability
 
-- Non-random sequence, $\varepsilon > 0$ fixed:
+- Non-random sequence, $\delta > 0$ fixed:
   $$
-  a_n = \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big), \qquad n \ge 1
-  $$
-
-- **Definition.** $\hat\theta_n$ converges in probability to $\theta$, $\hat\theta_n \to_p \theta$, if for all $\varepsilon > 0$:
-  $$
-  \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big) \to 0
+  a_n = \mathrm{P}\big(|\hat\theta_n - \theta| > \delta\big), \qquad n \ge 1
   $$
 
-- Equivalently, for all $\varepsilon > 0$:
+- **Definition.** $\hat\theta_n$ converges in probability to $\theta$, $\hat\theta_n \to_p \theta$, if for all $\delta > 0$:
+  $$
+  \mathrm{P}\big(|\hat\theta_n - \theta| > \delta\big) \to 0
+  $$
+
+- Equivalently, for all $\delta > 0$:
   $$
   \begin{aligned}
-  \mathrm{P}\big(|\hat\theta_n - \theta| \le \varepsilon\big) &= 1 - \underbrace{\mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big)}_{\to\,0} \\
+  \mathrm{P}\big(|\hat\theta_n - \theta| \le \delta\big) &= 1 - \underbrace{\mathrm{P}\big(|\hat\theta_n - \theta| > \delta\big)}_{\to\,0} \\
   &\to 1
   \end{aligned}
   $$
