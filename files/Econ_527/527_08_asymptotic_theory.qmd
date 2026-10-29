@@ -1,0 +1,1055 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 8: Asymptotic theory"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_08_asymptotic_theory.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_08_asymptotic_theory.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_08_asymptotic_theory_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Convergence in probability
+
+## OLS as a function of sample averages
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+# A picture the class builds up on the board. In the slide show the frames
+# share one grid cell and appear one by one as fragments, so advancing or going
+# back uses Reveal's normal fragment controls without shifting the figure; in
+# ordinary HTML and PDF the complete picture is drawn once. `drawer(step)`
+# draws the frame for `step`; `cls` names the grid cell, so two such pictures
+# in one deck do not collide.
+build_frames <- function(cls, stem, steps, descriptions, width, height, drawer) {
+  if (!identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    tikz_fig(stem, width, height, drawer(max(steps)))
+    return(invisible(NULL))
+  }
+  cat('```{=html}\n<style>\n',
+      '.reveal .', cls, ' { display: grid; width: ', round(96 * width),
+      'px; max-width: 100%; margin: 1em auto; }\n',
+      '.reveal .', cls, ' > img { grid-area: 1 / 1; width: 100%; max-width: 100%; ',
+      'max-height: none; margin: 0; background: white; transition: none; }\n',
+      '</style>\n<div class="', cls, '">\n', sep = "")
+  for (j in seq_along(steps)) {
+    frame <- tikz_fig(paste0(stem, "-step-", steps[j]), width, height,
+                      drawer(steps[j]), draw = FALSE)
+    cat(sprintf('<img class="%s" src="%s" alt="%s">\n',
+                if (j == 1L) "" else "fragment",
+                knitr::image_uri(frame), descriptions[j]))
+  }
+  cat('</div>\n<script>\n',
+      'document.addEventListener("DOMContentLoaded", function () {\n',
+      '  const diagram = document.querySelector(".', cls, '");\n',
+      '  const parentFragment = diagram.closest(".fragment");\n',
+      '  function keepDiagramVisible(event) {\n',
+      '    if (diagram.contains(event.fragment) ||\n',
+      '        (event.type === "fragmentshown" && event.fragment === parentFragment)) {\n',
+      '      diagram.scrollIntoView({ block: "center", behavior: "instant" });\n',
+      '    }\n',
+      '  }\n',
+      '  Reveal.on("fragmentshown", keepDiagramVisible);\n',
+      '  Reveal.on("fragmenthidden", keepDiagramVisible);\n',
+      '});\n</script>\n```\n', sep = "")
+  invisible(NULL)
+}
+
+red <- "#d7301f"; blue <- "#1f78b4"; green <- "#1b9e77"
+
+# The class's picture of the limit of a non-random sequence: the points
+# a_n = a + 1.5 * 0.86^(n - 1) * cos(0.8 n), n = 1, ..., 20, with a = 0, and
+# two tolerance bands, a +/- eps with eps = 0.6 (blue) and a +/- eps' with
+# eps' = 0.21 (green). For each band, N is the first n from which every a_n
+# stays inside the band, computed from the sequence: N_eps = 5, N_eps' = 13.
+# Every point is at least 0.056 from each band edge, so both N can be read off
+# the picture, and |a_n - a| < 0.05 for all n > 20.
+# One band per frame, then both: step 1 the wide band, step 2 the narrow band,
+# step 3 both together.
+bands_picture <- function(step = 3L) {
+  a <- 0; n <- 1:20; an <- a + 1.5 * 0.86^(n - 1) * cos(0.8 * n)
+  eps <- c(0.6, 0.21); cols <- c(blue, green)
+  labs <- c("\\varepsilon", "\\varepsilon'")
+  shown <- if (step <= 2L) step else 1:2
+  N <- sapply(eps, function(e) max(which(abs(an - a) >= e)) + 1)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-3.2, 21.5), ylim = c(-1.25, 1.2))
+  arrows(0, -1.2, 21, -1.2, length = 0.08)
+  arrows(0, -1.2, 0, 1.17, length = 0.08)
+  text(21.1, -1.2, "$n$", adj = c(0, 0.5))
+  for (j in shown) {
+    segments(0, a + c(-1, 1) * eps[j], 20.5, a + c(-1, 1) * eps[j],
+             lty = 2, col = cols[j], lwd = 1.8)
+    text(-0.3, a + eps[j], sprintf("$a + %s$", labs[j]), adj = c(1, 0.5), col = cols[j])
+    text(-0.3, a - eps[j], sprintf("$a - %s$", labs[j]), adj = c(1, 0.5), col = cols[j])
+    segments(N[j], -1.2, N[j], a + eps[j], lty = 2, col = cols[j], lwd = 1.8)
+    text(N[j], -1.2, sprintf("$N_{%s}$", labs[j]), adj = c(0.5, 1.4), col = cols[j])
+  }
+  segments(0, a, 20.5, a, col = red, lwd = 1.3)
+  text(-0.3, a, "$a$", adj = c(1, 0.5), col = red)
+  lines(n, an, col = "grey60", lwd = 0.8)
+  points(n, an, pch = 16, cex = 0.7)
+  text(n[1] + 0.5, an[1], "$a_n$", adj = c(0, 0.5))
+  par(op)
+}
+
+# The class's picture of convergence in probability: the densities of
+# theta-hat_n, drawn for theta-hat_n ~ N(theta, 1/n) with n = 1, 4, 16,
+# theta = 0 and eps = 0.6. In each density's colour, the area outside
+# [theta - eps, theta + eps] is shaded: P(|theta-hat_n - theta| > eps) = 0.55,
+# 0.23, 0.016. One density per frame (steps 1 to 3), then all three (step 4).
+concentration_picture <- function(step = 4L) {
+  th <- 0; eps <- 0.6; ns <- c(1, 4, 16); cols <- c("black", blue, red)
+  shown <- if (step <= 3L) step else 1:3
+  x <- seq(-3.2, 3.2, length.out = 600)
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-3.4, 3.4), ylim = c(-0.25, 1.75))
+  for (j in shown) {
+    s <- 1 / sqrt(ns[j])
+    for (tail in list(seq(-3.2, th - eps, length.out = 200),
+                      seq(th + eps, 3.2, length.out = 200))) {
+      polygon(c(tail[1], tail, tail[200]), c(0, dnorm(tail, th, s), 0),
+              col = adjustcolor(cols[j], 0.25), border = NA)
+    }
+  }
+  for (j in shown) {
+    s <- 1 / sqrt(ns[j])
+    lines(x, dnorm(x, th, s), col = cols[j], lwd = 1.8)
+    xl <- th + 1.15 * s + 0.05
+    text(xl + 0.08, dnorm(xl, th, s) + 0.06, sprintf("$n = %d$", ns[j]),
+         adj = c(0, 0), col = cols[j])
+  }
+  arrows(-3.3, 0, 3.35, 0, length = 0.08)
+  segments(th + c(-eps, 0, eps), 0, th + c(-eps, 0, eps), -0.04)
+  segments(th, 0, th, 1.7, lty = 3, col = "grey40")
+  text(th + c(-eps, 0, eps), -0.13,
+       c("$\\theta - \\varepsilon$", "$\\theta$", "$\\theta + \\varepsilon$"))
+  par(op)
+}
+```
+
+- Model and OLS estimator:
+  $$
+  Y_i = X_i^\top \beta + U_i, \qquad \hat\beta = \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i Y_i
+  $$
+
+- Normal errors, exact distribution given the regressors:
+  $$
+  \begin{aligned}
+  & U_i \mid X_i \sim N(0, \sigma^2) \\
+  \Longrightarrow\quad & \hat\beta \mid X_1, \ldots, X_n \sim N\Big(\beta,\ \sigma^2 \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1}\Big)
+  \end{aligned}
+  $$
+
+- Without normality, write OLS in terms of sample averages:
+  $$
+  \hat\beta = \Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} {\color{red}\frac{1}{n}} \sum_{i=1}^n X_i Y_i
+  $$
+
+- Use approximations; all limits below are as $n \to \infty$.
+
+## Limit of a non-random sequence
+
+- Non-random sequence:
+  $$
+  \{\underset{1\times1}{a_n} \in \mathbb{R} : n \ge 1\}
+  $$
+
+- **Definition.** $a_n$ converges to $a$, $a_n \to a$, $a = \lim a_n$, if for all $\varepsilon > 0$ there is $N_\varepsilon \in \mathbb{N}$:
+  $$
+  |a_n - a| < \varepsilon \quad \text{for all } n \ge N_\varepsilon
+  $$
+
+- $a$: good approximation of $a_n$ for all $n \ge N_\varepsilon$.
+
+- Sequence $a_n$ with bands $a \pm \varepsilon$ and $a \pm \varepsilon'$, $\varepsilon' < \varepsilon$:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  build_frames("limit-bands-build", "limit-bands", 1:3,
+               c("Sequence a_n, the band a plus or minus epsilon and its N_epsilon",
+                 "Sequence a_n, the narrower band a plus or minus epsilon prime and its N_epsilon prime",
+                 "Both bands together, N_epsilon prime larger than N_epsilon"),
+               6, 3.2, function(step) bands_picture(step))
+  ```
+
+## Estimator as a random sequence
+
+- $\hat\theta_n$: estimator of $\theta$ from $n$ observations; random sequence:
+  $$
+  \{\underset{1\times1}{\hat\theta_n} : n \ge 1\}, \qquad \hat\theta_n = \hat\theta_n(\omega), \quad \omega \in \Omega
+  $$
+
+- OLS from $n$ observations: $\hat\beta_n = \hat\beta_n(\omega)$, random.
+
+- Non-random sequences from $\hat\theta_n$; apply the definition of a limit to them:
+  $$
+  \begin{aligned}
+  \text{Moments, } r > 0 &: \quad a_n = \E{|\hat\theta_n - \theta|^r} \\
+  \text{Probabilities, } \varepsilon > 0 &: \quad a_n = \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big)
+  \end{aligned}
+  $$
+
+## Convergence in $r$-th mean
+
+- **Definition.** $\hat\theta_n$ converges to $\theta$ in $r$-th mean, $r > 0$, if:
+  $$
+  \E{|\hat\theta_n - \theta|^r} \to 0
+  $$
+
+- $a_n = \E{|\hat\theta_n - \theta|^r} \to 0$: for all $\varepsilon > 0$ there is $N_\varepsilon \in \mathbb{N}$:
+  $$
+  \E{|\hat\theta_n - \theta|^r} < \varepsilon \quad \text{for all } n \ge N_\varepsilon
+  $$
+
+- $r = 2$, mean squared error (MSE):
+  $$
+  \E{(\hat\theta_n - \theta)^2}
+  $$
+
+## Definition of convergence in probability
+
+- Non-random sequence, $\varepsilon > 0$ fixed:
+  $$
+  a_n = \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big), \qquad n \ge 1
+  $$
+
+- **Definition.** $\hat\theta_n$ converges in probability to $\theta$, $\hat\theta_n \to_p \theta$, if for all $\varepsilon > 0$:
+  $$
+  \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big) \to 0
+  $$
+
+- Equivalently, for all $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(|\hat\theta_n - \theta| \le \varepsilon\big) &= 1 - \underbrace{\mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big)}_{\to\,0} \\
+  &\to 1
+  \end{aligned}
+  $$
+
+## Densities of $\hat\theta_n$ as $n$ grows
+
+- Example: densities for $\hat\theta_n \sim N(\theta, 1/n)$.
+
+- Shaded: $\mathrm{P}(|\hat\theta_n - \theta| > \varepsilon)$.
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  build_frames("conc-build", "conc-densities", 1:4,
+               c("Density for n = 1, wide, with much mass in the tails beyond theta plus or minus epsilon",
+                 "Density for n = 4, narrower, with less mass in the tails",
+                 "Density for n = 16, narrowest, with almost no mass in the tails",
+                 "The three densities together"),
+               6, 3.2, function(step) concentration_picture(step))
+  ```
+
+- $\hat\theta_n \to_p \theta$: distribution of $\hat\theta_n$ more concentrated around $\theta$.
+
+## Markov's inequality
+
+- Markov's inequality connects tail probabilities to expectations; the core device for establishing convergence in probability.
+
+- **Theorem.** $X$: random variable, $M > 0$:
+  $$
+  \mathrm{P}\big(|X| \ge M\big) \le \frac{\E{|X|}}{M}
+  $$
+
+- Expectation of an indicator, $X$ with density $f_X$, split at $-M$ and $M$:
+  $$
+  \begin{aligned}
+  \E{\mathbf{1}(|X| \ge M)} &= \int_{-\infty}^{\infty} \mathbf{1}(|x| \ge M)\, f_X(x)\, dx \\
+  &= \int_{-\infty}^{-M} \underbrace{\mathbf{1}(|x| \ge M)}_{=\,1} f_X(x)\, dx \\
+  &\qquad + \overbrace{\int_{-M}^{M} \underbrace{\mathbf{1}(|x| \ge M)}_{=\,0 \text{ for } |x| < M} f_X(x)\, dx}^{=\,0} \\
+  &\qquad + \int_{M}^{\infty} \underbrace{\mathbf{1}(|x| \ge M)}_{=\,1} f_X(x)\, dx \\
+  &= \int_{-\infty}^{-M} f_X(x)\, dx + \int_{M}^{\infty} f_X(x)\, dx \\
+  &= \mathrm{P}(X \le -M) + \mathrm{P}(X \ge M) \\
+  &= \mathrm{P}\big(|X| \ge M\big)
+  \end{aligned}
+  $$
+
+- Split $1$ into two indicators:
+  $$
+  1 = \mathbf{1}(|X| \ge M) + \mathbf{1}(|X| < M)
+  $$
+
+- Expectation of $|X|$:
+  $$
+  \begin{aligned}
+  \E{|X|} &= \E{|X| \cdot 1} \\
+  &= \E{|X|\, \big(\mathbf{1}(|X| \ge M) + \mathbf{1}(|X| < M)\big)} \\
+  &= \E{|X|\, \mathbf{1}(|X| \ge M)} + \underbrace{\E{|X|\, \mathbf{1}(|X| < M)}}_{\ge\,0} \\
+  &\ge \E{|X|\, \mathbf{1}(|X| \ge M)} \\
+  &\ge \E{M\, \mathbf{1}(|X| \ge M)} \quad \substack{|X| \ge M \\ \text{where } \mathbf{1}(|X| \ge M) = 1} \\
+  &= M\, \E{\mathbf{1}(|X| \ge M)} \\
+  &= M\, \mathrm{P}\big(|X| \ge M\big)
+  \end{aligned}
+  $$
+
+- Divide by $M$:
+  $$
+  \boxed{\ \mathrm{P}\big(|X| \ge M\big) \le \frac{\E{|X|}}{M}\ }
+  $$
+
+## Convergence in $r$-th mean and in probability
+
+- **Claim.**
+  $$
+  \E{|\hat\theta_n - \theta|^r} \to 0 \ \text{ for some } r > 0 \quad \Longrightarrow \quad \hat\theta_n \to_p \theta
+  $$
+
+- Markov's inequality, for all $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big) &= \mathrm{P}\big(|\hat\theta_n - \theta|^r > \varepsilon^r\big) \\
+  &\le \mathrm{P}\big(\underbrace{|\hat\theta_n - \theta|^r}_{X} \ge \underbrace{\varepsilon^r}_{M}\big) \\
+  &\le \frac{1}{\varepsilon^r}\, \underbrace{\E{|\hat\theta_n - \theta|^r}}_{\to\,0} \\
+  &\to 0
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \hat\theta_n \to_p \theta\ }
+  $$
+
+## Chebyshev's inequality
+
+- As on the previous slide, $r = 2$, $Y - \E{Y}$ in place of $\hat\theta_n - \theta$, $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(|Y - \E{Y}| > \varepsilon\big) &\le \frac{1}{\varepsilon^2}\, \E{|Y - \E{Y}|^2} \\
+  &= \frac{1}{\varepsilon^2}\, \Var{Y}
+  \end{aligned}
+  $$
+
+## Bias and variance tending to zero
+
+- **Claim.** For an estimator $\hat\theta_n$ of $\theta$:
+  $$
+  \begin{aligned}
+  & \text{1. } \E{\hat\theta_n} \to \theta \\
+  & \text{2. } \Var{\hat\theta_n} \to 0 \\
+  \Longrightarrow\quad & \hat\theta_n \to_p \theta
+  \end{aligned}
+  $$
+
+- Recall:
+  $$
+  \underbrace{\E{(\hat\theta_n - \theta)^2}}_{\text{MSE}} = \Var{\hat\theta_n} + \underbrace{\big(\E{\hat\theta_n} - \theta\big)^2}_{\text{Bias}^2}
+  $$
+
+- Markov with $r = 2$, for all $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(|\hat\theta_n - \theta| > \varepsilon\big) &\le \frac{1}{\varepsilon^2}\, \E{(\hat\theta_n - \theta)^2} \\
+  &= \frac{1}{\varepsilon^2} \Big(\underbrace{\Var{\hat\theta_n}}_{\to\,0 \text{ by 2.}} + \big(\underbrace{\E{\hat\theta_n} - \theta}_{\to\,0 \text{ by 1.}}\big)^2\Big) \\
+  &\to 0
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \hat\theta_n \to_p \theta\ }
+  $$
+
+# Law of large numbers (LLN)
+
+## LLN for uncorrelated observations
+
+- **Theorem.** $X_1, \ldots, X_n$: random variables; for all $i$ and all $j \ne i$:
+  $$
+  \begin{aligned}
+  & \E{X_i} = \mu, \qquad \Var{X_i} = \sigma^2 < \infty, \qquad \Cov{X_i, X_j} = 0 \\
+  \Longrightarrow\quad & \bar X_n = \frac{1}{n} \sum_{i=1}^n X_i \to_p \mu
+  \end{aligned}
+  $$
+
+## Proof of the LLN, step 1: mean and variance
+
+- $\E{\bar X_n} = \mu$, so bias is zero:
+  $$
+  \begin{aligned}
+  \E{\bar X_n} &= \frac{1}{n} \sum_{i=1}^n \E{X_i} \\
+  &= \mu
+  \end{aligned}
+  $$
+
+- Variance of $\bar X_n$:
+  $$
+  \begin{aligned}
+  \Var{\bar X_n} &= \Var{\frac{1}{n} \sum_{i=1}^n X_i} \\
+  &= \frac{1}{n^2}\, \Var{\sum_{i=1}^n X_i} \\
+  &= \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \Cov{X_i, X_j} \\
+  &= \frac{1}{n^2} \Big(\sum_{i=1}^n \Var{X_i} + \underbrace{\sum_{i=1}^n \sum_{j \ne i} \Cov{X_i, X_j}}_{=\,0}\Big) \\
+  &= \frac{1}{n^2} \sum_{i=1}^n \underbrace{\Var{X_i}}_{=\,\sigma^2} \\
+  &= \frac{1}{n^2}\, (\sigma^2 \cdot n) \\
+  &= \frac{\sigma^2}{n} \\
+  &\to 0
+  \end{aligned}
+  $$
+
+## Proof of the LLN, step 2: Chebyshev's inequality
+
+- Chebyshev with $\E{\bar X_n} = \mu$, for all $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(|\bar X_n - \mu| > \varepsilon\big) &\le \frac{1}{\varepsilon^2}\, \Var{\bar X_n - \mu} \\
+  &= \frac{1}{\varepsilon^2}\, \Var{\bar X_n} \\
+  &= \frac{1}{\varepsilon^2}\, \frac{\sigma^2}{n} \\
+  &\to 0
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \bar X_n \to_p \mu = \E{X_i}\ }
+  $$
+
+## Extension to different means
+
+- $\E{X_i} = \mu_i$, not constant; $\Var{X_i} = \sigma^2 < \infty$; $\Cov{X_i, X_j} = 0$ for $i \ne j$.
+
+- Centre each $X_i$ at its mean:
+  $$
+  \begin{aligned}
+  & Y_i = X_i - \E{X_i} \\
+  \Longrightarrow\quad & \E{Y_i} = 0, \qquad \Var{Y_i} = \sigma^2, \qquad \Cov{Y_i, Y_j} = 0 \ \text{ for } i \ne j
+  \end{aligned}
+  $$
+
+- LLN for $Y_1, \ldots, Y_n$:
+  $$
+  \begin{aligned}
+  \frac{1}{n} \sum_{i=1}^n X_i - \frac{1}{n} \sum_{i=1}^n \E{X_i} &= \frac{1}{n} \sum_{i=1}^n \big(X_i - \E{X_i}\big) \\
+  &= \frac{1}{n} \sum_{i=1}^n Y_i \\
+  &\to_p 0
+  \end{aligned}
+  $$
+
+## Extension to different variances
+
+- $Y_1, \ldots, Y_n$: random variables; for all $i$ and all $j \ne i$:
+  $$
+  \begin{aligned}
+  & \E{Y_i} = 0, \qquad \Var{Y_i} = \E{Y_i^2} = \sigma_i^2 \ \text{ not constant} \\
+  & \Cov{Y_i, Y_j} = 0
+  \end{aligned}
+  $$
+
+- Bounded variances, $\bar\sigma^2$ not depending on $n$:
+  $$
+  \sigma_i^2 \le \max_{j = 1, \ldots, n} \sigma_j^2 \le \bar\sigma^2
+  $$
+
+- Variance of the average $\to 0$ $\Longrightarrow$ $\frac{1}{n} \sum_{i=1}^n Y_i \to_p 0$, by Chebyshev:
+  $$
+  \begin{aligned}
+  \Var{\frac{1}{n} \sum_{i=1}^n Y_i} &= \frac{1}{n^2}\, \Var{\sum_{i=1}^n Y_i} \\
+  &= \frac{1}{n^2} \sum_{i=1}^n \Var{Y_i} \\
+  &= \frac{1}{n^2} \sum_{i=1}^n \sigma_i^2 \\
+  &\le \frac{1}{n^2}\, n \bar\sigma^2 \\
+  &= \frac{\bar\sigma^2}{n} \\
+  &\to 0
+  \end{aligned}
+  $$
+
+## Extension to dependent observations
+
+- Variance of the average, non-zero covariances:
+  $$
+  \begin{aligned}
+  \Var{\frac{1}{n} \sum_{i=1}^n Y_i} &= \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \Cov{Y_i, Y_j} \\
+  &= \frac{1}{n^2} \sum_{i=1}^n \Var{Y_i} + \frac{1}{n^2} \sum_{i=1}^n \sum_{j \ne i} \Cov{Y_i, Y_j} \\
+  &= \frac{1}{n^2} \sum_{i=1}^n \Var{Y_i} + 2\, \frac{1}{n^2} \sum_{i=1}^{n-1} \sum_{j=i+1}^n \Cov{Y_i, Y_j}
+  \end{aligned}
+  $$
+
+- Number of distinct covariances, order $n^2$:
+  $$
+  \frac{n^2 - n}{2} = \frac{n(n-1)}{2}
+  $$
+
+- Triangle inequality, $|a + b| \le |a| + |b|$:
+  $$
+  \begin{aligned}
+  \Big|\frac{1}{n^2} \sum_{i=1}^n \sum_{j \ne i} \Cov{Y_i, Y_j}\Big| &\le \frac{1}{n^2} \underbrace{\sum_{i=1}^n \sum_{j \ne i} \big|\Cov{Y_i, Y_j}\big|}_{\text{if of smaller order than } n^2} \\
+  &\to 0
+  \end{aligned}
+  $$
+
+- Double sum smaller order than $n^2$: for example, each observation correlated with only a fixed number of others, with bounded covariances.
+
+## Example: $Y_i = \varepsilon_i + \varepsilon_{i+1}$
+
+- $\varepsilon_1, \varepsilon_2, \ldots$: iid (independent and identically distributed), $0 < \Var{\varepsilon_i} < \infty$.
+
+- Neighbours share one $\varepsilon$:
+  $$
+  \begin{aligned}
+  Y_i &= \varepsilon_i + \varepsilon_{i+1} \\
+  Y_{i+1} &= \varepsilon_{i+1} + \varepsilon_{i+2} \\
+  Y_{i+2} &= \varepsilon_{i+2} + \varepsilon_{i+3}
+  \end{aligned}
+  $$
+
+- Covariances of $Y_i$ and $Y_{i+h}$:
+  $$
+  \Cov{Y_i, Y_{i+1}} \ne 0, \qquad \Cov{Y_i, Y_{i+h}} = 0 \quad \text{for } h \ge 2
+  $$
+
+## Weak LLN for iid observations
+
+- Independence instead of uncorrelatedness: finite variance not required.
+
+- **Theorem.** $X_1, \ldots, X_n$: iid random variables:
+  $$
+  \begin{aligned}
+  & \E{|X_1|} < \infty \\
+  \Longrightarrow\quad & \bar X_n = \frac{1}{n} \sum_{i=1}^n X_i \to_p \E{X_1} \\
+  & \E{X_1} = \int_{-\infty}^{\infty} x\, f_X(x)\, dx \quad \text{with density } f_X
+  \end{aligned}
+  $$
+
+- Stated without proof; this is the LLN we will use.
+
+# Vectors and Slutsky's theorem
+
+## Convergence in probability of a random vector
+
+- Estimator $\hat\theta_n$ and parameter $\theta$, $k \times 1$:
+  $$
+  \hat\theta_n = \begin{pmatrix} \hat\theta_{n,1} \\ \vdots \\ \hat\theta_{n,k} \end{pmatrix}, \qquad \theta = \begin{pmatrix} \theta_1 \\ \vdots \\ \theta_k \end{pmatrix}
+  $$
+
+- **Definition.** $\hat\theta_n$ converges in probability to $\theta$, $\hat\theta_n \to_p \theta$, two versions:
+  $$
+  \begin{aligned}
+  \text{1. Element by element:} \quad & \hat\theta_{n,j} \to_p \theta_j \quad \text{for all } j = 1, \ldots, k \\
+  \text{2. In norm:} \quad & \|\hat\theta_n - \theta\| \to_p 0, \qquad \|x\| = \sqrt{x_1^2 + \cdots + x_k^2}
+  \end{aligned}
+  $$
+
+- **Claim.** 1 $\Longleftrightarrow$ 2.
+  $$
+  \|\hat\theta_n - \theta\|^2 = (\hat\theta_{n,1} - \theta_1)^2 + \cdots + (\hat\theta_{n,k} - \theta_k)^2
+  $$
+
+- 1 $\Longrightarrow$ 2: each element converges to zero, so the finite sum converges to zero.
+
+- 2 $\Longrightarrow$ 1: non-negative summands; the sum converges to zero only if each summand does.
+
+## Sum of two sequences
+
+- **Claim.** For $1 \times 1$ sequences $\hat\theta_{n,1}$ and $\hat\theta_{n,2}$:
+  $$
+  \begin{aligned}
+  & \hat\theta_{n,1} \to_p \theta_1, \quad \hat\theta_{n,2} \to_p \theta_2 \\
+  \Longrightarrow\quad & \hat\theta_{n,1} + \hat\theta_{n,2} \to_p \theta_1 + \theta_2
+  \end{aligned}
+  $$
+
+- Triangle inequality, then a union bound, for all $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  & \mathrm{P}\big(|\hat\theta_{n,1} + \hat\theta_{n,2} - (\theta_1 + \theta_2)| > \varepsilon\big) \\
+  &\le \mathrm{P}\big(|\hat\theta_{n,1} - \theta_1| + |\hat\theta_{n,2} - \theta_2| > \varepsilon\big) \\
+  &\le \mathrm{P}\Big(|\hat\theta_{n,1} - \theta_1| > \frac{\varepsilon}{2} \ \text{ or } \ |\hat\theta_{n,2} - \theta_2| > \frac{\varepsilon}{2}\Big) \\
+  &\le \mathrm{P}\Big(|\hat\theta_{n,1} - \theta_1| > \frac{\varepsilon}{2}\Big) + \mathrm{P}\Big(|\hat\theta_{n,2} - \theta_2| > \frac{\varepsilon}{2}\Big) \\
+  &\to 0
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \hat\theta_{n,1} + \hat\theta_{n,2} \to_p \theta_1 + \theta_2\ }
+  $$
+
+## Slutsky's theorem
+
+- More general than sums: convergence is preserved by continuous functions.
+
+- **Theorem.** $\hat\theta_n$: $k \times 1$; $\theta \in \mathbb{R}^k$ non-random; $h : \mathbb{R}^k \to \mathbb{R}^m$ continuous at $\theta$; $\to_p$ in norm:
+  $$
+  \hat\theta_n \to_p \theta \quad \Longrightarrow \quad h(\hat\theta_n) \to_p h(\theta)
+  $$
+
+- $h$ continuous at $\theta$: for all $\varepsilon > 0$ there is $\delta_\varepsilon > 0$:
+  $$
+  \|\hat\theta_n - \theta\| \le \delta_\varepsilon \quad \Longrightarrow \quad \|h(\hat\theta_n) - h(\theta)\| \le \varepsilon
+  $$
+
+- Inclusion of events, then probabilities, for all $\varepsilon > 0$:
+  $$
+  \begin{aligned}
+  & \big\{\|\hat\theta_n - \theta\| \le \delta_\varepsilon\big\} \subset \big\{\|h(\hat\theta_n) - h(\theta)\| \le \varepsilon\big\} \\
+  \Longrightarrow\quad & \underbrace{\mathrm{P}\big(\|\hat\theta_n - \theta\| \le \delta_\varepsilon\big)}_{\to\,1 \text{ (in norm)}} \le \mathrm{P}\big(\|h(\hat\theta_n) - h(\theta)\| \le \varepsilon\big) \le 1 \\
+  \Longrightarrow\quad & \mathrm{P}\big(\|h(\hat\theta_n) - h(\theta)\| \le \varepsilon\big) \to 1 \\
+  \Longrightarrow\quad & \boxed{\ h(\hat\theta_n) \to_p h(\theta)\ }
+  \end{aligned}
+  $$
+
+## Examples: product, ratio
+
+- $\hat\theta_{n,1} \to_p \theta_1$, $\hat\theta_{n,2} \to_p \theta_2$; element by element $\Longrightarrow$ in norm; Slutsky for product and ratio:
+  $$
+  \begin{aligned}
+  \hat\theta_{n,1}\, \hat\theta_{n,2} &\to_p \theta_1\, \theta_2 \\
+  \frac{\hat\theta_{n,1}}{\hat\theta_{n,2}} &\to_p \frac{\theta_1}{\theta_2} \quad \text{if } \theta_2 \ne 0
+  \end{aligned}
+  $$
+
+- $h(\theta_1, \theta_2) = \theta_1 / \theta_2$: not continuous at $\theta_2 = 0$.
+
+- $X_1, \ldots, X_n$ iid, $\E{|X_1|} < \infty$; weak LLN, then Slutsky for $h(u) = u^2$ and $h(u) = 1/u$:
+  $$
+  \begin{aligned}
+  (\bar X_n)^2 &\to_p \big(\E{X_1}\big)^2 \\
+  \frac{1}{\bar X_n} &\to_p \frac{1}{\E{X_1}} \quad \text{if } \E{X_1} \ne 0
+  \end{aligned}
+  $$
+
+## Example: inverse of a matrix
+
+- $X_i$: $k \times 1$, iid, $\E{X_i X_i^\top}$ finite; weak LLN, element by element:
+  $$
+  \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \E{X_i X_i^\top}
+  $$
+
+- $\E{X_i X_i^\top}$: symmetric, p.s.d.
+
+- Assume $\E{X_i X_i^\top}$ p.d.; $h(\cdot) = (\cdot)^{-1}$: continuous at a p.d. matrix.
+
+- Element by element $\Longrightarrow$ in norm, then Slutsky on the $k^2$ elements:
+  $$
+  \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \to_p \big(\E{X_i X_i^\top}\big)^{-1}
+  $$
+
+# Convergence in distribution
+
+## Normal distributions and $\Phi$
+
+- Standard normal CDF:
+  $$
+  \Phi(t) = \mathrm{P}(Z \le t), \qquad Z \sim N(0, 1)
+  $$
+
+- For $X \sim N(\mu, \sigma^2)$, $\sigma > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(X \le t) &= \mathrm{P}(X - \mu \le t - \mu) \\
+  &= \mathrm{P}\Big(\underbrace{\frac{X - \mu}{\sigma}}_{=\,Z \sim N(0,1)} \le \frac{t - \mu}{\sigma}\Big) \\
+  &= \Phi\Big(\frac{t - \mu}{\sigma}\Big)
+  \end{aligned}
+  $$
+
+- For any $X$, $\mu \in \mathbb{R}$ and $\sigma > 0$:
+  $$
+  \mathrm{P}(X \le t) = \Phi\Big(\frac{t - \mu}{\sigma}\Big) \ \text{ for all } t \in \mathbb{R} \quad \Longleftrightarrow \quad X \sim N(\mu, \sigma^2)
+  $$
+
+## Asymptotic normality
+
+- $\hat\theta_n$, $\theta$: $1 \times 1$.
+
+- **Definition.** $\hat\theta_n$ asymptotically normal: for some $\omega > 0$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(\sqrt{n}(\hat\theta_n - \theta) \le t\big) &= {\color{red}\mathrm{P}\Big(\frac{\sqrt{n}(\hat\theta_n - \theta)}{\omega} \le \frac{t}{\omega}\Big)} \\
+  &\to {\color{red}\Phi\Big(\frac{t}{\omega}\Big)} \quad \text{for all } t \in \mathbb{R} \\
+  \Longleftrightarrow\quad \frac{\sqrt{n}(\hat\theta_n - \theta)}{\omega} &\to_d N(0, 1) \\
+  \Longleftrightarrow\quad \sqrt{n}(\hat\theta_n - \theta) &\to_d N(0, \omega^2)
+  \end{aligned}
+  $$
+
+- Convergence in distribution concerns distribution functions, not convergence of the random variables themselves.
+
+- Approximate using the normal CDF; valid as $n \to \infty$:
+  $$
+  \mathrm{P}\big(\sqrt{n}(\hat\theta_n - \theta) \le t\big) \approx \Phi\Big(\frac{t}{\omega}\Big)
+  $$
+
+## Why $\sqrt{n}$
+
+- $X_1, \ldots, X_n$ iid, mean $\theta$, variance $0 < \sigma^2 < \infty$; $\hat\theta_n = \bar X_n$:
+  $$
+  \hat\theta_n - \theta \to_p 0 \quad \text{(LLN)}
+  $$
+
+- Variance of $\hat\theta_n - \theta$ (proof of the LLN, step 1):
+  $$
+  \begin{aligned}
+  \Var{\hat\theta_n - \theta} &= \Var{\bar X_n} \\
+  &= \frac{\sigma^2}{n} \\
+  &\to 0
+  \end{aligned}
+  $$
+
+- Scaled by $\sqrt{n}$:
+  $$
+  \begin{aligned}
+  \Var{\sqrt{n}(\hat\theta_n - \theta)} &= n\, \Var{\hat\theta_n - \theta} \\
+  &= n \cdot \frac{\sigma^2}{n} \\
+  &= \sigma^2
+  \end{aligned}
+  $$
+
+- Scaled by $n^\alpha$:
+  $$
+  \begin{aligned}
+  \Var{n^\alpha(\hat\theta_n - \theta)} &= \frac{n^{2\alpha}}{n}\, \sigma^2 \\
+  &= n^{2\alpha - 1} \sigma^2 \\
+  &\to \begin{cases} \infty & \text{if } \alpha > \tfrac12 \\ \sigma^2 & \text{if } \alpha = \tfrac12 \\ 0 & \text{if } \alpha < \tfrac12 \end{cases}
+  \end{aligned}
+  $$
+
+# Central limit theorem (CLT)
+
+## Univariate CLT
+
+- **Theorem.** $X_1, \ldots, X_n$: iid random variables:
+  $$
+  \begin{aligned}
+  & \E{X_i} = 0, \qquad \Var{X_i} = \E{X_i^2} = \sigma^2, \quad 0 < \sigma^2 < \infty \\
+  \Longrightarrow\quad & \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \sigma^2)
+  \end{aligned}
+  $$
+
+- CDF form, for all $t \in \mathbb{R}$:
+  $$
+  \mathrm{P}\Big(\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \le t\Big) \to \Phi\Big(\frac{t}{\sigma}\Big)
+  $$
+
+- In terms of $\bar X_n$:
+  $$
+  \sqrt{n}\, \bar X_n = \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \sigma^2)
+  $$
+
+## Non-zero mean
+
+- $X_1, \ldots, X_n$ iid, $\E{X_i} = \mu \ne 0$, $\Var{X_i} = \sigma^2$, $0 < \sigma^2 < \infty$:
+  $$
+  \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \nrightarrow_d N(\mu, \sigma^2)
+  $$
+
+- Add and subtract $\mu$:
+  $$
+  \begin{aligned}
+  \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i &= \frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i - \mu) + \frac{1}{\sqrt{n}}\, n\mu \\
+  &= \underbrace{\frac{1}{\sqrt{n}} \sum_{i=1}^n \underbrace{(X_i - \mu)}_{\E{X_i - \mu} \,=\, 0}}_{\to_d\, N(0, \sigma^2)} + \underbrace{\sqrt{n}\, \mu}_{\to\, \pm\infty}
+  \end{aligned}
+  $$
+
+- CLT for $X_i - \mu$, for all $t \in \mathbb{R}$:
+  $$
+  \begin{aligned}
+  \mathrm{P}\big(\sqrt{n}(\underbrace{\bar X_n - \mu}_{\to_p\,0}) \le t\big) &= \mathrm{P}\Big(\sqrt{n}\, \frac{1}{n} \sum_{i=1}^n (X_i - \mu) \le t\Big) \\
+  &= \mathrm{P}\Big(\frac{1}{\sqrt{n}} \sum_{i=1}^n (X_i - \mu) \le t\Big) \\
+  &\to \Phi\Big(\frac{t}{\sigma}\Big)
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \sqrt{n}(\bar X_n - \mu) \to_d N(0, \sigma^2)\ }
+  $$
+
+## Why $\sigma^2 > 0$
+
+- Zero variance:
+  $$
+  \begin{aligned}
+  & \E{X_i} = 0, \quad \Var{X_i} = 0 \\
+  \Longrightarrow\quad & X_i = 0 \quad \text{with probability } 1 \\
+  \Longrightarrow\quad & \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i = 0 \ \nrightarrow_d\ N(0, \omega^2) \quad \text{for any } \omega > 0
+  \end{aligned}
+  $$
+
+## Proof of the CLT, step 1: moment generating function (MGF)
+
+- MGF of $X$, assumed finite for $t$ near $0$:
+  $$
+  M(t) = \E{e^{tX}} = \int_{-\infty}^{\infty} e^{tx} f_X(x)\, dx
+  $$
+
+- Normal MGF:
+  $$
+  X \sim N(\mu, \sigma^2) \quad \Longleftrightarrow \quad \E{e^{tX}} = e^{\mu t + \sigma^2 t^2 / 2} \ \text{ for all } t \in \mathbb{R}
+  $$
+
+- One can show: MGFs converge for all $t$ $\Longrightarrow$ convergence in distribution.
+
+- Need to show, for all $t \in \mathbb{R}$:
+  $$
+  \E{e^{t \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i}} \to e^{\sigma^2 t^2 / 2}
+  $$
+
+## Proof of the CLT, step 2: product of MGFs
+
+- Factorise, with $M(t) = \E{e^{tX_i}}$:
+  $$
+  \begin{aligned}
+  \E{e^{t \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i}} &= \E{e^{\sum_{i=1}^n \frac{t}{\sqrt{n}} X_i}} \\
+  &= \E{e^{\frac{t}{\sqrt{n}} X_1 + \cdots + \frac{t}{\sqrt{n}} X_n}} \\
+  &= \E{e^{\frac{t}{\sqrt{n}} X_1} \times \cdots \times e^{\frac{t}{\sqrt{n}} X_n}} \\
+  &= \E{e^{\frac{t}{\sqrt{n}} X_1}} \times \cdots \times \E{e^{\frac{t}{\sqrt{n}} X_n}} \quad \text{(independence)} \\
+  &= \Big(\E{e^{\frac{t}{\sqrt{n}} X_i}}\Big)^n \quad \text{(identical distributions)} \\
+  &= \Big(M\Big(\frac{t}{\sqrt{n}}\Big)\Big)^n
+  \end{aligned}
+  $$
+
+## Proof of the CLT, step 3: expansion of $M(t/\sqrt{n})$
+
+- **Definition.** Small $o$:
+  $$
+  a_n \to 0 \ \Longleftrightarrow\ a_n = o(1), \qquad o\Big(\frac{t^2}{n}\Big) = \underbrace{\frac{t^2}{n}}_{\to\,0}\, o(1)
+  $$
+
+- $M$ and its derivatives at $0$:
+  $$
+  \begin{aligned}
+  M(0) &= \E{e^{tX_i}} \Big|_{t=0} = 1 \\
+  M^{(1)}(t) &= \frac{d}{dt} \E{e^{tX_i}} \\
+  &= \E{\frac{d}{dt} e^{tX_i}} \\
+  &= \E{X_i e^{tX_i}} \\
+  M^{(1)}(0) &= \E{X_i} = 0 \\
+  M^{(2)}(t) &= \E{\frac{d^2}{dt^2} e^{tX_i}} \\
+  &= \E{X_i^2 e^{tX_i}} \\
+  M^{(2)}(0) &= \E{X_i^2} = \sigma^2
+  \end{aligned}
+  $$
+
+- Second-order expansion around $0$, then substitute the derivatives:
+  $$
+  \begin{aligned}
+  M\Big(\frac{t}{\sqrt{n}}\Big) &= M(0) + M^{(1)}(0)\, \frac{t}{\sqrt{n}} + \frac{M^{(2)}(0)}{2}\, \frac{t^2}{n} + o\Big(\frac{t^2}{n}\Big) \\
+  &= 1 + 0 + \frac{\sigma^2}{2}\, \frac{t^2}{n} + \frac{t^2}{n}\, o(1) \\
+  &= 1 + \frac{c_n}{n}, \qquad c_n = \frac{\sigma^2 t^2}{2} + t^2\, o(1) \to \frac{\sigma^2 t^2}{2}
+  \end{aligned}
+  $$
+
+## Proof of the CLT, step 4: limit of $\big(M(t/\sqrt{n})\big)^n$
+
+- We will use, for $a_n \to \infty$:
+  $$
+  \lim \Big(1 + \frac{1}{a_n}\Big)^{a_n} = e
+  $$
+
+- MGF of $\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i$, from steps 2 and 3, $t \ne 0$, $a_n = n / c_n \to \infty$:
+  $$
+  \begin{aligned}
+  \E{e^{t \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i}} &= \Big(M\Big(\frac{t}{\sqrt{n}}\Big)\Big)^n \\
+  &= \Big(1 + \frac{c_n}{n}\Big)^n \\
+  &= \Big(1 + \frac{1}{n / c_n}\Big)^n \\
+  &= \Big[\underbrace{\Big(1 + \frac{1}{n / c_n}\Big)^{n / c_n}}_{\to\, e}\Big]^{c_n} \\
+  &\to e^{\sigma^2 t^2 / 2} \quad (c_n \to \sigma^2 t^2 / 2,\ \text{step 3})
+  \end{aligned}
+  $$
+
+- $t = 0$: both sides equal $1$.
+
+- $e^{\sigma^2 t^2 / 2}$: MGF of $N(0, \sigma^2)$ (step 1).
+
+- Therefore:
+  $$
+  \boxed{\ \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \sigma^2)\ }
+  $$
+
+## Limit $(1 + 1/n)^n \to e$
+
+- l'Hôpital's rule in $1/n$:
+  $$
+  \begin{aligned}
+  \lim \frac{\ln(1 + 1/n)}{1/n} &= \lim \frac{1/(1 + 1/n)}{1} \\
+  &= 1
+  \end{aligned}
+  $$
+
+- Take logarithms:
+  $$
+  \begin{aligned}
+  \ln\Big[\Big(1 + \frac{1}{n}\Big)^n\Big] &= n \ln\Big(1 + \frac{1}{n}\Big) \\
+  &= \frac{\ln(1 + 1/n)}{1/n} \\
+  &\to 1 \\
+  \Longrightarrow\quad \Big(1 + \frac{1}{n}\Big)^n &= e^{\ln[(1 + 1/n)^n]} \\
+  &\to e^1 = e
+  \end{aligned}
+  $$
+
+- Same steps, $1/a_n \to 0$ in place of $1/n$: $(1 + 1/a_n)^{a_n} \to e$.
+
+## Multivariate CLT
+
+- **Theorem.** $X_1, \ldots, X_n$: iid random $k \times 1$ vectors:
+  $$
+  \begin{aligned}
+  & \E{X_i} = 0, \qquad \underset{k\times k}{\Sigma} = \E{X_i X_i^\top} \ \text{ finite and p.d.} \\
+  \Longrightarrow\quad & \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \Sigma)
+  \end{aligned}
+  $$
+
+- Recall: linear map of a normal vector; $a \in \mathbb{R}^k$, $a \ne 0$:
+  $$
+  \underset{k\times1}{W} \sim N(0, \Sigma) \quad \Longrightarrow \quad \underset{1\times1}{a^\top W} \sim N(0, \underset{1\times1}{a^\top \Sigma a})
+  $$
+
+- Equivalent statements (one can show):
+  $$
+  \begin{aligned}
+  & \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \Sigma) \\
+  \Longleftrightarrow\quad & a^\top \Big(\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i\Big) \to_d N(0, a^\top \Sigma a) \quad \text{for all } a \ne 0 \\
+  \Longleftrightarrow\quad & \mathrm{P}\Big(a^\top \Big(\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i\Big) \le t\Big) \to \Phi\Big(\frac{t}{\sqrt{a^\top \Sigma a}}\Big) \quad \text{for all } a \ne 0,\ t \in \mathbb{R}
+  \end{aligned}
+  $$
+
+## Proof of the multivariate CLT
+
+- $\Sigma$ p.d.:
+  $$
+  a^\top \Sigma a > 0 \quad \text{for all } a \ne 0
+  $$
+
+- Linear combination with $a$:
+  $$
+  a^\top \Big(\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i\Big) = \frac{1}{\sqrt{n}} \sum_{i=1}^n \underbrace{a^\top X_i}_{1\times1}
+  $$
+
+- $a^\top X_1, \ldots, a^\top X_n$: iid.
+
+- Recall mean and variance with $\Gamma = a^\top$, $\Var{X_i} = \E{X_i X_i^\top} = \Sigma$:
+  $$
+  \begin{aligned}
+  \E{a^\top X_i} &= a^\top \E{X_i} = 0 \\
+  \Var{a^\top X_i} &= a^\top \Var{X_i}\, a = a^\top \Sigma a
+  \end{aligned}
+  $$
+
+- Univariate CLT, $0 < a^\top \Sigma a < \infty$:
+  $$
+  \begin{aligned}
+  & \frac{1}{\sqrt{n}} \sum_{i=1}^n a^\top X_i \to_d N(0, a^\top \Sigma a) \quad \text{for all } a \ne 0 \\
+  \Longrightarrow\quad & \boxed{\ \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \Sigma)\ } \quad \text{(equivalent statements)}
+  \end{aligned}
+  $$
+
+# Summary
+
+## Convergence in probability and the LLN
+
+- $a_n \to a$: for all $\varepsilon > 0$, some $N_\varepsilon$ with $|a_n - a| < \varepsilon$ for all $n \ge N_\varepsilon$.
+
+- $r$-th mean, $r > 0$: $\E{|\hat\theta_n - \theta|^r} \to 0$; $r = 2$: MSE.
+
+- $\hat\theta_n \to_p \theta$: $\mathrm{P}(|\hat\theta_n - \theta| > \varepsilon) \to 0$ for all $\varepsilon > 0$.
+
+- Markov, $M > 0$: $\mathrm{P}(|X| \ge M) \le \E{|X|}/M$; Chebyshev, $\varepsilon > 0$: $\mathrm{P}(|Y - \E{Y}| > \varepsilon) \le \Var{Y}/\varepsilon^2$.
+
+- $r$-th mean $\Longrightarrow$ $\to_p$; $\E{\hat\theta_n} \to \theta$, $\Var{\hat\theta_n} \to 0$ $\Longrightarrow$ $\hat\theta_n \to_p \theta$.
+
+- LLN: uncorrelated, $\E{X_i} = \mu$, $\Var{X_i} = \sigma^2 < \infty$ $\Longrightarrow$ $\Var{\bar X_n} = \sigma^2/n$, $\bar X_n \to_p \mu$.
+
+- $Y_i = X_i - \E{X_i}$, $\Var{Y_i} \le \bar\sigma^2$ not depending on $n$, $\sum_i \sum_{j \ne i} |\Cov{Y_i, Y_j}|$ of smaller order than $n^2$ $\Longrightarrow$ $\frac{1}{n} \sum Y_i \to_p 0$.
+
+- Weak LLN: iid, $\E{|X_1|} < \infty$ $\Longrightarrow$ $\bar X_n \to_p \E{X_1}$.
+
+## Vectors and Slutsky's theorem
+
+- Vectors: $\hat\theta_{n,j} \to_p \theta_j$ for all $j$ $\Longleftrightarrow$ $\|\hat\theta_n - \theta\| \to_p 0$.
+
+- Slutsky: $\hat\theta_n \to_p \theta$, $h$ continuous at $\theta$ $\Longrightarrow$ $h(\hat\theta_n) \to_p h(\theta)$.
+
+- $X_i$ iid, $\E{X_i X_i^\top}$ finite and p.d. $\Longrightarrow$ $\Big(\frac{1}{n} \sum X_i X_i^\top\Big)^{-1} \to_p \big(\E{X_i X_i^\top}\big)^{-1}$.
+
+## Convergence in distribution and the CLT
+
+- $\sqrt{n}(\hat\theta_n - \theta) \to_d N(0, \omega^2)$, $\omega > 0$: $\mathrm{P}(\sqrt{n}(\hat\theta_n - \theta) \le t) \to \Phi(t/\omega)$ for all $t$.
+
+- $X_i$ iid, mean $\theta$, variance $0 < \sigma^2 < \infty$ $\Longrightarrow$ $\Var{n^\alpha(\bar X_n - \theta)} = n^{2\alpha - 1} \sigma^2$; $\alpha = \tfrac12$: variance $\sigma^2$.
+
+- CLT: iid, $\E{X_i} = 0$, $\Var{X_i} = \sigma^2$, $0 < \sigma^2 < \infty$ $\Longrightarrow$ $\frac{1}{\sqrt{n}} \sum X_i \to_d N(0, \sigma^2)$.
+
+- $\E{X_i} = \mu$, other conditions the same $\Longrightarrow$ $\sqrt{n}(\bar X_n - \mu) \to_d N(0, \sigma^2)$.
+
+- Proof of the CLT, $\E{X_i} = 0$, MGF $M(t) = \E{e^{tX_i}}$ finite near $0$: $\big(M(t/\sqrt{n})\big)^n = \big(1 + c_n/n\big)^n \to e^{\sigma^2 t^2/2}$, $c_n \to \sigma^2 t^2/2$.
+
+- Multivariate CLT: iid $k \times 1$, $\E{X_i} = 0$, $\Sigma = \E{X_i X_i^\top}$ finite and p.d. $\Longrightarrow$ $\frac{1}{\sqrt{n}} \sum X_i \to_d N(0, \Sigma)$.
+
+- Equivalent statements: $\frac{1}{\sqrt{n}} \sum X_i \to_d N(0, \Sigma)$ $\Longleftrightarrow$ $\frac{1}{\sqrt{n}} \sum a^\top X_i \to_d N(0, a^\top \Sigma a)$ for all $a \ne 0$.
