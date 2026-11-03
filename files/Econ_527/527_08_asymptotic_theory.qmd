@@ -845,17 +845,17 @@ concentration_picture <- function(step = 4L) {
 
 ## Proof of the CLT, step 1: moment generating function (MGF)
 
-- MGF of $X$, assumed finite for $t$ near $0$:
+- To show, $\E{X_i} = 0$: $\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i \to_d N(0, \sigma^2)$.
+
+- MGF of $X_i$, assumed finite for $t$ near $0$:
   $$
-  M(t) = \E{e^{tX}} = \int_{-\infty}^{\infty} e^{tx} f_X(x)\, dx
+  M(t) = \E{e^{tX_i}} = \int_{-\infty}^{\infty} e^{tx} f_X(x)\, dx
   $$
 
-- Normal MGF:
+- MGF of $N(0, \sigma^2)$:
   $$
-  X \sim N(\mu, \sigma^2) \quad \Longleftrightarrow \quad \E{e^{tX}} = e^{\mu t + \sigma^2 t^2 / 2} \ \text{ for all } t \in \mathbb{R}
+  V \sim N(0, \sigma^2) \quad \Longleftrightarrow \quad \E{e^{tV}} = e^{\sigma^2 t^2 / 2} \ \text{ for all } t \in \mathbb{R}
   $$
-
-- One can show: MGFs converge for all $t$ $\Longrightarrow$ convergence in distribution.
 
 - Need to show, for all $t \in \mathbb{R}$:
   $$
@@ -864,7 +864,7 @@ concentration_picture <- function(step = 4L) {
 
 ## Proof of the CLT, step 2: product of MGFs
 
-- Factorise, with $M(t) = \E{e^{tX_i}}$:
+- Factorise:
   $$
   \begin{aligned}
   \E{e^{t \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i}} &= \E{e^{\sum_{i=1}^n \frac{t}{\sqrt{n}} X_i}} \\
@@ -877,11 +877,6 @@ concentration_picture <- function(step = 4L) {
   $$
 
 ## Proof of the CLT, step 3: expansion of $M(t/\sqrt{n})$
-
-- **Definition.** Small $o$:
-  $$
-  a_n \to 0 \ \Longleftrightarrow\ a_n = o(1), \qquad o\Big(\frac{t^2}{n}\Big) = \underbrace{\frac{t^2}{n}}_{\to\,0}\, o(1)
-  $$
 
 - $M$ and its derivatives at $0$:
   $$
@@ -897,30 +892,42 @@ concentration_picture <- function(step = 4L) {
   \end{aligned}
   $$
 
+- **Definition.** Small $o$:
+  $$
+  a_n \to 0 \ \Longleftrightarrow\ a_n = o(1), \qquad o\Big(\frac{t^2}{n}\Big) = \underbrace{\frac{t^2}{n}}_{\to\,0}\, o(1)
+  $$
+
 - Second-order expansion around $0$, then substitute the derivatives:
   $$
   \begin{aligned}
   M\Big(\frac{t}{\sqrt{n}}\Big) &= M(0) + M^{(1)}(0)\, \frac{t}{\sqrt{n}} + \frac{M^{(2)}(0)}{2}\, \frac{t^2}{n} + o\Big(\frac{t^2}{n}\Big) \\
   &= 1 + 0 + \frac{\sigma^2}{2}\, \frac{t^2}{n} + \frac{t^2}{n}\, o(1) \\
-  &= 1 + \frac{c_n}{n}, \qquad c_n = \frac{\sigma^2 t^2}{2} + t^2\, o(1) \to \frac{\sigma^2 t^2}{2}
+  &= 1 + \frac{\sigma^2 t^2}{2n} + o\Big(\frac{1}{n}\Big) \quad (t \text{ fixed})
   \end{aligned}
   $$
 
 ## Proof of the CLT, step 4: limit of $\big(M(t/\sqrt{n})\big)^n$
 
-- We will use, for $a_n \to \infty$:
+- We will use, taken as given:
   $$
-  \lim \Big(1 + \frac{1}{a_n}\Big)^{a_n} = e
+  \Big(1 + \frac{1}{n} + o\Big(\frac{1}{n}\Big)\Big)^n \to e
   $$
 
-- MGF of $\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i$, from steps 2 and 3, $t \ne 0$, $a_n = n / c_n \to \infty$:
+- With $b/n$ in place of $1/n$, $b > 0$:
+  $$
+  \begin{aligned}
+  \Big(1 + \frac{b}{n} + o\Big(\frac{1}{n}\Big)\Big)^n &= \Big(1 + \frac{1}{n/b} + o\Big(\frac{1}{n/b}\Big)\Big)^n \quad (b \text{ fixed}) \\
+  &= \Big[\underbrace{\Big(1 + \frac{1}{n/b} + o\Big(\frac{1}{n/b}\Big)\Big)^{n/b}}_{\to\, e \ (n/b \,\to\, \infty)}\Big]^b \\
+  &\to e^b
+  \end{aligned}
+  $$
+
+- MGF of $\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i$, from steps 2 and 3, $t \ne 0$:
   $$
   \begin{aligned}
   \E{e^{t \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i}} &= \Big(M\Big(\frac{t}{\sqrt{n}}\Big)\Big)^n \\
-  &= \Big(1 + \frac{c_n}{n}\Big)^n \\
-  &= \Big(1 + \frac{1}{n / c_n}\Big)^n \\
-  &= \Big[\underbrace{\Big(1 + \frac{1}{n / c_n}\Big)^{n / c_n}}_{\to\, e}\Big]^{c_n} \\
-  &\to e^{\sigma^2 t^2 / 2} \quad (c_n \to \sigma^2 t^2 / 2,\ \text{step 3})
+  &= \Big(1 + \frac{\sigma^2 t^2}{2n} + o\Big(\frac{1}{n}\Big)\Big)^n \\
+  &\to e^{\sigma^2 t^2 / 2} \quad (b = \sigma^2 t^2 / 2 > 0)
   \end{aligned}
   $$
 
@@ -935,6 +942,16 @@ concentration_picture <- function(step = 4L) {
 
 ## Limit $(1 + 1/n)^n \to e$
 
+- Take logarithms:
+  $$
+  \begin{aligned}
+  \ln\Big[\Big(1 + \frac{1}{n}\Big)^n\Big] &= n \ln\Big(1 + \frac{1}{n}\Big) \\
+  &= \frac{\ln(1 + 1/n)}{1/n}
+  \end{aligned}
+  $$
+
+- $\ln(1 + 1/n) \to 0$ and $1/n \to 0$: form $0/0$.
+
 - l'Hôpital's rule in $1/n$:
   $$
   \begin{aligned}
@@ -943,18 +960,12 @@ concentration_picture <- function(step = 4L) {
   \end{aligned}
   $$
 
-- Take logarithms:
+- Therefore:
   $$
-  \begin{aligned}
-  \ln\Big[\Big(1 + \frac{1}{n}\Big)^n\Big] &= n \ln\Big(1 + \frac{1}{n}\Big) \\
-  &= \frac{\ln(1 + 1/n)}{1/n} \\
-  &\to 1 \\
-  \Longrightarrow\quad \Big(1 + \frac{1}{n}\Big)^n &= e^{\ln[(1 + 1/n)^n]} \\
-  &\to e^1 = e
-  \end{aligned}
+  \Big(1 + \frac{1}{n}\Big)^n = e^{\ln[(1 + 1/n)^n]} \to e^1 = e
   $$
 
-- Same steps, $1/a_n \to 0$ in place of $1/n$: $(1 + 1/a_n)^{a_n} \to e$.
+- Same steps, $1/n + o(1/n)$ in place of $1/n$: $\big(1 + 1/n + o(1/n)\big)^n \to e$.
 
 ## Multivariate CLT
 
@@ -1048,7 +1059,7 @@ concentration_picture <- function(step = 4L) {
 
 - $\E{X_i} = \mu$, other conditions the same $\Longrightarrow$ $\sqrt{n}(\bar X_n - \mu) \to_d N(0, \sigma^2)$.
 
-- Proof of the CLT, $\E{X_i} = 0$, MGF $M(t) = \E{e^{tX_i}}$ finite near $0$: $\big(M(t/\sqrt{n})\big)^n = \big(1 + c_n/n\big)^n \to e^{\sigma^2 t^2/2}$, $c_n \to \sigma^2 t^2/2$.
+- Proof of the CLT, $\E{X_i} = 0$, MGF $M(t) = \E{e^{tX_i}}$ finite near $0$: $\big(M(t/\sqrt{n})\big)^n = \big(1 + \sigma^2 t^2/(2n) + o(1/n)\big)^n \to e^{\sigma^2 t^2/2}$.
 
 - Multivariate CLT: iid $k \times 1$, $\E{X_i} = 0$, $\Sigma = \E{X_i X_i^\top}$ finite and p.d. $\Longrightarrow$ $\frac{1}{\sqrt{n}} \sum X_i \to_d N(0, \Sigma)$.
 
