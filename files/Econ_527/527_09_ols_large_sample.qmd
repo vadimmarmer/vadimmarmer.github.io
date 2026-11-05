@@ -264,7 +264,7 @@ format:
 
 - The two limits:
   $$
-  {\color{red}\sqrt{n}}(\hat\beta_n - \beta) = \underbrace{\Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}} \underbrace{{\color{red}\frac{1}{\sqrt{n}}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0,\, \Omega)} \to_d Q^{-1} N(0, \Omega)
+  {\color{red}\sqrt{n}}(\hat\beta_n - \beta) = \underbrace{\Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}}\ \underbrace{{\color{red}\frac{1}{\sqrt{n}}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0,\, \Omega)} \to_d Q^{-1} N(0, \Omega)
   $$
 
 - Linear map of a normal vector (Lecture 4):
