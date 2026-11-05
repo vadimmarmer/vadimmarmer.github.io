@@ -1085,6 +1085,9 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 &amp;= \beta + \Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} {\color{red}\frac{1}{n}} \sum_{i=1}^n X_i U_i
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p>Squares and cross-products: <span class="math display">
+\underset{k\times k}{X_i X_i^\top} = \begin{pmatrix} X_{i,1}^2 &amp; X_{i,1} X_{i,2} &amp; \cdots &amp; X_{i,1} X_{i,k} \\ X_{i,2} X_{i,1} &amp; X_{i,2}^2 &amp; \cdots &amp; X_{i,2} X_{i,k} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ X_{i,k} X_{i,1} &amp; X_{i,k} X_{i,2} &amp; \cdots &amp; X_{i,k}^2 \end{pmatrix}
+</span></p></li>
 <li class="fragment"><p>Element <span class="math inline">(r, s)</span>: <span class="math display">
 \Big[\sum_{i=1}^n X_i X_i^\top\Big]_{rs} = \sum_{i=1}^n X_{i,r} X_{i,s}
 </span></p></li>
@@ -1119,7 +1122,10 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 <li class="fragment"><p>Weak LLN, element by element: <span class="math display">
 \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \mathrm{E}\left[X_i X_i^\top\right]
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span>: symmetric, p.s.d. <strong>Assume</strong> p.d.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span>: symmetric, p.s.d.</p></li>
+<li class="fragment"><p><strong>Assume:</strong> <span class="math display">
+\mathrm{E}\left[X_i X_i^\top\right] \ \text{ p.d.}
+</span></p></li>
 <li class="fragment"><p>Slutsky, <span class="math inline">h(\cdot) = (\cdot)^{-1}</span> continuous at a p.d. matrix (Lecture 8): <span class="math display">
 \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \to_p \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1}
 </span></p></li>
@@ -1128,7 +1134,7 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 <section id="assumptions" class="slide level2">
 <h2>Assumptions</h2>
 <ul>
-<li class="fragment"><p>Large-sample assumptions: <span class="math display">
+<li class="fragment"><p>Assumptions for consistency: <span class="math display">
 \begin{aligned}
 &amp; \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
 &amp; Y_i = X_i^\top \beta + U_i \\
@@ -1150,10 +1156,11 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 <section id="consistency" class="slide level2">
 <h2>Consistency</h2>
 <ul>
-<li class="fragment"><p><strong>Definition.</strong> <span class="math inline">\hat\beta_n</span> is a consistent estimator of <span class="math inline">\beta</span> if: <span class="math display">
-\hat\beta_n \to_p \beta \quad \Longleftrightarrow \quad \hat\beta_{n,j} \to_p \beta_j, \quad j = 1, \ldots, k \quad \text{(by definition)}
+<li class="fragment"><p><strong>Definition.</strong> <span class="math inline">\hat\beta_n</span> is a consistent estimator of <span class="math inline">\beta</span> if <span class="math inline">\hat\beta_n \to_p \beta</span>.</p></li>
+<li class="fragment"><p>Element by element, by definition (Lecture 8): <span class="math display">
+\hat\beta_n \to_p \beta \quad \Longleftrightarrow \quad \hat\beta_{n,j} \to_p \beta_j, \quad j = 1, \ldots, k
 </span></p></li>
-<li class="fragment"><p><strong>Theorem.</strong> Under the large-sample assumptions, <span class="math inline">\hat\beta_n \to_p \beta</span>.</p></li>
+<li class="fragment"><p><strong>Theorem.</strong> Under the assumptions for consistency, <span class="math inline">\hat\beta_n \to_p \beta</span>.</p></li>
 <li class="fragment"><p>The two limits, then Slutsky for the product: <span class="math display">
 \begin{aligned}
 \hat\beta_n &amp;= \beta + \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n X_i X_i^\top}_{\to_p\, \mathrm{E}\left[X_i X_i^\top\right]}\Big)^{-1} \underbrace{\frac{1}{n} \sum_{i=1}^n X_i U_i}_{\to_p\, 0} \\

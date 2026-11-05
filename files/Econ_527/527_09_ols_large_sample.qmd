@@ -68,6 +68,11 @@ format:
   \end{aligned}
   $$
 
+- Squares and cross-products:
+  $$
+  \underset{k\times k}{X_i X_i^\top} = \begin{pmatrix} X_{i,1}^2 & X_{i,1} X_{i,2} & \cdots & X_{i,1} X_{i,k} \\ X_{i,2} X_{i,1} & X_{i,2}^2 & \cdots & X_{i,2} X_{i,k} \\ \vdots & \vdots & \ddots & \vdots \\ X_{i,k} X_{i,1} & X_{i,k} X_{i,2} & \cdots & X_{i,k}^2 \end{pmatrix}
+  $$
+
 - Element $(r, s)$:
   $$
   \Big[\sum_{i=1}^n X_i X_i^\top\Big]_{rs} = \sum_{i=1}^n X_{i,r} X_{i,s}
@@ -112,7 +117,12 @@ format:
   \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \E{X_i X_i^\top}
   $$
 
-- $\E{X_i X_i^\top}$: symmetric, p.s.d. **Assume** p.d.
+- $\E{X_i X_i^\top}$: symmetric, p.s.d.
+
+- **Assume:**
+  $$
+  \E{X_i X_i^\top} \ \text{ p.d.}
+  $$
 
 - Slutsky, $h(\cdot) = (\cdot)^{-1}$ continuous at a p.d. matrix (Lecture 8):
   $$
@@ -121,7 +131,7 @@ format:
 
 ## Assumptions
 
-- Large-sample assumptions:
+- Assumptions for consistency:
   $$
   \begin{aligned}
   & \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
@@ -147,12 +157,14 @@ format:
 
 ## Consistency
 
-- **Definition.** $\hat\beta_n$ is a consistent estimator of $\beta$ if:
+- **Definition.** $\hat\beta_n$ is a consistent estimator of $\beta$ if $\hat\beta_n \to_p \beta$.
+
+- Element by element, by definition (Lecture 8):
   $$
-  \hat\beta_n \to_p \beta \quad \Longleftrightarrow \quad \hat\beta_{n,j} \to_p \beta_j, \quad j = 1, \ldots, k \quad \text{(by definition)}
+  \hat\beta_n \to_p \beta \quad \Longleftrightarrow \quad \hat\beta_{n,j} \to_p \beta_j, \quad j = 1, \ldots, k
   $$
 
-- **Theorem.** Under the large-sample assumptions, $\hat\beta_n \to_p \beta$.
+- **Theorem.** Under the assumptions for consistency, $\hat\beta_n \to_p \beta$.
 
 - The two limits, then Slutsky for the product:
   $$
