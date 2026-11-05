@@ -1540,7 +1540,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 <li class="fragment"><p>We will use, without proof (Cramér convergence theorem): <span class="math inline">Z_n \to_d Z</span>, <span class="math inline">c_n \to_p c \ne 0</span>, <span class="math inline">c</span> non-random: <span class="math display">
 \frac{Z_n}{c_n} \to_d \frac{Z}{c}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">[\hat V_n]_{jj} \to_p [V]_{jj} &gt; 0</span> (<span class="math inline">V</span> p.d.); <span class="math inline">\sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, [V]_{jj})</span>: <span class="math display">
+<li class="fragment"><p>Slutsky, <span class="math inline">\sqrt{[\hat V_n]_{jj}} \to_p \sqrt{[V]_{jj}} &gt; 0</span> (<span class="math inline">V</span> p.d.); <span class="math inline">\sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, [V]_{jj})</span>: <span class="math display">
 \begin{aligned}
 \frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)} &amp;= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{[\hat V_n]_{jj} / n}} \\
 &amp;= \frac{\sqrt{n}(\hat\beta_{n,j} - \beta_j)}{\sqrt{[\hat V_n]_{jj}}} \\
@@ -1663,7 +1663,12 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 &amp;\to_p \sigma^2 Q^{-1} = \mathrm{AsyVar}(\hat\beta_n)
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\sigma^2</span> estimated by <span class="math inline">s^2</span>: exact <span class="math inline">t_{n-k}</span> distribution of the <span class="math inline">t</span>-ratio with the usual standard error (typed notes, Lecture 4); <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\sigma^2</span> estimated by <span class="math inline">s^2</span> (typed notes, Lecture 4): <span class="math display">
+\begin{aligned}
+&amp; \frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}\big(\hat\beta_{n,j}\big)} \,\Big|\, X \sim t_{n-k} \quad \text{for every } n \\
+&amp; t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}
+\end{aligned}
+</span></p></li>
 <li class="fragment"><p>Normal errors are homoskedastic, so robust and usual agree in large samples: <span class="math display">
 \begin{aligned}
 \mathrm{E}\left[U_i^2 \mid X\right] &amp;= \big[\sigma^2 I_n\big]_{ii} = \sigma^2 \\
@@ -1708,7 +1713,13 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 </tr>
 </tbody>
 </table></li>
-<li class="fragment"><p>Rows 1 and 2: <span class="math inline">\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1</span> and <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span>: the intervals agree in large samples.</p></li>
+<li class="fragment"><p>Rows 1 and 2, <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span> and <span class="math inline">\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1</span>; the three intervals agree in large samples: <span class="math display">
+\begin{aligned}
+\text{usual, exact (row 1):}\quad &amp; \hat\beta_{n,j} \pm t_{n-k,\,1-\alpha/2}\, \text{std. err}\big(\hat\beta_{n,j}\big) \\
+\text{usual, large } n\text{:}\quad &amp; \hat\beta_{n,j} \pm z_{1-\alpha/2}\, \text{std. err}\big(\hat\beta_{n,j}\big) \\
+\text{robust, large } n\text{:}\quad &amp; \hat\beta_{n,j} \pm z_{1-\alpha/2}\, \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)
+\end{aligned}
+</span></p></li>
 </ul>
 </section></section>
 <section>
@@ -1730,7 +1741,7 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 <ul>
 <li class="fragment"><p><span class="math inline">\hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}</span>, <span class="math inline">\hat Q_n = \frac{1}{n} \sum X_i X_i^\top</span>, <span class="math inline">\hat\Omega_n = \frac{1}{n} \sum \hat U_i^2 X_i X_i^\top</span>.</p></li>
 <li class="fragment"><p><span class="math inline">\hat\Omega_n = \frac{1}{n} \sum U_i^2 X_i X_i^\top + o_p(1)</span> under <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>; <span class="math inline">\hat V_n \to_p V</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\big[(X^\top X)^{-1} \big(\sum \hat U_i^2 X_i X_i^\top\big) (X^\top X)^{-1}\big]_{jj}}</span>; <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0, 1)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\big[(X^\top X)^{-1} \big(\sum \hat U_i^2 X_i X_i^\top\big) (X^\top X)^{-1}\big]_{jj}}</span>; <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0, 1)</span>; <span class="math inline">\hat\beta_{n,j} \pm z_{1-\alpha/2}\, \text{std. err}_{\text{rob}}</span>: coverage <span class="math inline">\to 1 - \alpha</span>.</p></li>
 <li class="fragment"><p><span class="math inline">s^2 \to_p \mathrm{E}\left[U_i^2\right]</span>; homoskedasticity: <span class="math inline">\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1</span>.</p></li>
 <li class="fragment"><p>Heteroskedasticity: <span class="math inline">s^2 \hat Q_n^{-1} \to_p \mathrm{E}\left[U_i^2\right]\, Q^{-1} \ne V</span> in general; only the robust standard error is valid.</p></li>
 <li class="fragment"><p>Normality: <span class="math inline">\mathrm{Var}\left(\sqrt{n}(\hat\beta_n - \beta) \mid X\right) = \sigma^2 \hat Q_n^{-1} \to_p \sigma^2 Q^{-1}</span>; usual <span class="math inline">t</span>-ratio exactly <span class="math inline">t_{n-k}</span>, <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span>; homoskedastic, so <span class="math inline">\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1</span>.</p></li>
