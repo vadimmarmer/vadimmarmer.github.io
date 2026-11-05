@@ -29,6 +29,8 @@ The course page lists the slides first and the typed lecture notes below them.
 
 The settled notation across the decks: transpose is `^\top`, the error is `U_i`, and expectation, variance and covariance use the `\E{}`, `\Var{}` and `\Cov{}` macros, each defined in a hidden block after the first heading of its deck. Match it when writing or extending a deck.
 
+The regression is taken to include an intercept, which absorbs the mean of $U_i$. So $\E{U_i} = 0$ holds without loss of generality, and $\E{X_i U_i} = 0$ is read as "$X$'s and $U$'s uncorrelated", as the author writes it on the board. The author has settled this with the class: do not state $\E{U_i} = 0$ on the slides and do not flag the gloss as needing it.
+
 The author's rules for the slides are `/Users/vmarmer/.claude/rules/lecture-slides.md`, which loads whenever a deck file here is read: minimal text, fragments, every derivation one displayed block with one step per line, no step from his class notes skipped. Deck 3 is the model for style and format; decks 1 and 2 are not. A new deck is written through the `lecture-slides` skill.
 
 | Deck | File | Topic |
