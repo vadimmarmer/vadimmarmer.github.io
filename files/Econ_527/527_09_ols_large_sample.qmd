@@ -399,7 +399,7 @@ format:
 
 ## Can we use the LLN on $\hat\Omega_n$?
 
-- Notation:
+- **Definition.** Small $o_p$:
   $$
   Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
   $$
@@ -413,7 +413,7 @@ format:
   \end{aligned}
   $$
 
-- $n$ terms $o_p^i(1)$: their sum can be large.
+- $\sum_{i=1}^n o_p^i(1)$ can be large.
 
 - Weak LLN? Summands not iid:
   $$
@@ -451,7 +451,7 @@ format:
   &= \frac{1}{n} \sum_{i=1}^n \big(\underbrace{Y_i - X_i^\top \hat\beta_n}_{\hat U_i}\big)^2 X_i X_i^\top \\
   &= \frac{1}{n} \sum_{i=1}^n \big(U_i - \underbrace{X_i^\top (\hat\beta_n - \beta)}_{1\times1}\big)^2 X_i X_i^\top \\
   &= \frac{1}{n} \sum_{i=1}^n \Big(U_i^2 + \big(X_i^\top (\hat\beta_n - \beta)\big)^2 - 2\, U_i X_i^\top (\hat\beta_n - \beta)\Big) X_i X_i^\top \\
-  &= {\color{red}\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top} + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top \\
+  &= \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top \\
   &\qquad - 2\, \frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top
   \end{aligned}
   $$
@@ -500,7 +500,7 @@ format:
 - Cauchy-Schwarz and $\|X_i X_i^\top\| = \|X_i\|^2$:
   $$
   \begin{aligned}
-  \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\| &\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
+  \underbrace{\Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\|}_{1\times1} &\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
   &\le \frac{1}{n} \sum_{i=1}^n \underset{1\times1}{|U_i|}\, \underset{1\times1}{\|X_i\|}\, \underset{1\times1}{\|\hat\beta_n - \beta\|}\, \underset{1\times1}{\|X_i\|^2} \\
   &= \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|^3}_{\to_p\, \E{|U_i|\, \|X_i\|^3}}\Big) \cdot \underbrace{\|\hat\beta_n - \beta\|}_{\to_p\, 0}
   \end{aligned}
@@ -554,12 +554,10 @@ format:
   \end{aligned}
   $$
 
-- Slutsky, $\hat Q_n^{-1} \to_p Q^{-1}$:
+- **Theorem.** Under Assumptions 1 to 3, $\E{U_i^4} < \infty$ and $\E{\|X_i\|^4} < \infty$, with or without homoskedasticity:
   $$
-  \boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ }
+  \boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ } \quad \text{(Slutsky, $\hat Q_n^{-1} \to_p Q^{-1}$)}
   $$
-
-- **Theorem.** Under Assumptions 1 to 3, $\E{U_i^4} < \infty$ and $\E{\|X_i\|^4} < \infty$: $\hat V_n \to_p V$, with or without homoskedasticity.
 
 # Robust and usual standard errors
 

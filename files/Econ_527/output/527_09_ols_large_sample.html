@@ -2601,7 +2601,7 @@ V = \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\l
 <section id="can-we-use-the-lln-on-hatomega_n" class="level2">
 <h2 class="anchored" data-anchor-id="can-we-use-the-lln-on-hatomega_n">Can we use the LLN on <span class="math inline">\hat\Omega_n</span>?</h2>
 <ul>
-<li><p>Notation: <span class="math display">
+<li><p><strong>Definition.</strong> Small <span class="math inline">o_p</span>: <span class="math display">
 Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 </span></p></li>
 <li><p>One <span class="math inline">o_p(1)</span> term for each <span class="math inline">i</span>, <span class="math inline">\hat U_i = U_i + o_p^i(1)</span>: <span class="math display">
@@ -2611,7 +2611,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 &amp;\overset{?}{=} \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + o_p(1)
 \end{aligned}
 </span></p></li>
-<li><p><span class="math inline">n</span> terms <span class="math inline">o_p^i(1)</span>: their sum can be large.</p></li>
+<li><p><span class="math inline">\sum_{i=1}^n o_p^i(1)</span> can be large.</p></li>
 <li><p>Weak LLN? Summands not iid: <span class="math display">
 \hat U_i = U_i - X_i^\top \underbrace{(\hat\beta_n - \beta)}_{\text{random}}
 </span></p></li>
@@ -2644,7 +2644,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 &amp;= \frac{1}{n} \sum_{i=1}^n \big(\underbrace{Y_i - X_i^\top \hat\beta_n}_{\hat U_i}\big)^2 X_i X_i^\top \\
 &amp;= \frac{1}{n} \sum_{i=1}^n \big(U_i - \underbrace{X_i^\top (\hat\beta_n - \beta)}_{1\times1}\big)^2 X_i X_i^\top \\
 &amp;= \frac{1}{n} \sum_{i=1}^n \Big(U_i^2 + \big(X_i^\top (\hat\beta_n - \beta)\big)^2 - 2\, U_i X_i^\top (\hat\beta_n - \beta)\Big) X_i X_i^\top \\
-&amp;= {\color{red}\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top} + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top \\
+&amp;= \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top \\
 &amp;\qquad - 2\, \frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top
 \end{aligned}
 </span></p></li>
@@ -2691,7 +2691,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 <ul>
 <li><p>Cauchy-Schwarz and <span class="math inline">\|X_i X_i^\top\| = \|X_i\|^2</span>: <span class="math display">
 \begin{aligned}
-\Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\| &amp;\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
+\underbrace{\Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\|}_{1\times1} &amp;\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
 &amp;\le \frac{1}{n} \sum_{i=1}^n \underset{1\times1}{|U_i|}\, \underset{1\times1}{\|X_i\|}\, \underset{1\times1}{\|\hat\beta_n - \beta\|}\, \underset{1\times1}{\|X_i\|^2} \\
 &amp;= \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|^3}_{\to_p\, \mathrm{E}\left[|U_i|\, \|X_i\|^3\right]}\Big) \cdot \underbrace{\|\hat\beta_n - \beta\|}_{\to_p\, 0}
 \end{aligned}
@@ -2738,10 +2738,9 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 &amp;\to_p \Omega
 \end{aligned}
 </span></p></li>
-<li><p>Slutsky, <span class="math inline">\hat Q_n^{-1} \to_p Q^{-1}</span>: <span class="math display">
-\boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ }
+<li><p><strong>Theorem.</strong> Under Assumptions 1 to 3, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span> and <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>, with or without homoskedasticity: <span class="math display">
+\boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ } \quad \text{(Slutsky, $\hat Q_n^{-1} \to_p Q^{-1}$)}
 </span></p></li>
-<li><p><strong>Theorem.</strong> Under Assumptions 1 to 3, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span> and <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>: <span class="math inline">\hat V_n \to_p V</span>, with or without homoskedasticity.</p></li>
 </ul>
 </section>
 </section>
