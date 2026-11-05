@@ -20,7 +20,7 @@ The course page lists the slides first and the typed lecture notes below them.
 | Teaching page | `_teaching/2023-09-Econ-527.md` (in parent website repo) |
 | Parent website repo | `/Users/vmarmer/GitHub/vadimmarmer.github.io/` |
 | Econ 326 decks, the model for this setup | `/Users/vmarmer/GitHub/vadimmarmer.github.io/files/Econ_326/` |
-| Handwritten in-class notes and their transcriptions | `/Users/vmarmer/Library/CloudStorage/Dropbox/Notability/527/`, transcriptions in `transcripts/final/`, has own `CLAUDE.md`. A deck is drafted from them, but no file from there is ever copied into this folder, and that folder also holds scanned student exams carrying names and student numbers |
+| Handwritten in-class notes and their transcriptions | `/Users/vmarmer/Library/CloudStorage/Dropbox/Notability/527/`, has own `CLAUDE.md`; the transcriptions are in `/Users/vmarmer/Documents/teaching/Econ_527/transcripts/final/`. A deck is drafted from them, but no file from the Notability folder is ever copied into this folder, and that folder also holds scanned student exams carrying names and student numbers |
 | Teaching-project guidance | `/Users/vmarmer/Documents/teaching/Econ_527/CLAUDE.md` |
 | Project memory for the course | `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ_527/memory/MEMORY.md`, plus an older set under the earlier folder name at `/Users/vmarmer/.claude/projects/-Users-vmarmer-Documents-teaching-Econ-527/memory/MEMORY.md` |
 | Project memory for this repository | `/Users/vmarmer/.claude/projects/-Users-vmarmer-GitHub-vadimmarmer-github-io/memory/MEMORY.md`, which holds the feedback on slide conciseness, derivation style and color that the Econ 326 decks were calibrated on and that applies here too |

@@ -8,7 +8,7 @@ This folder is where Econ 527 slide decks are published. Three decks are live on
 
 A new deck is drafted, reviewed and rendered in `/Users/vmarmer/Documents/teaching/Econ_527/slides/` and moved here when the author says it is ready, leaving that folder; from then on it is edited and rendered here. Deck 3 was moved on 2026-09-22 and deck 4 on 2026-09-29. Their working records (the pages of the class notes each slide follows, and every review finding with its outcome) were not published and are no longer kept.
 
-The decks are drafted from two sources that are read and never edited: the typed LaTeX notes in `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/` and the transcriptions of the handwritten class notes in `/Users/vmarmer/Library/CloudStorage/Dropbox/Notability/527/transcripts/final/`.
+The decks are drafted from two sources that are read and never edited: the typed LaTeX notes in `/Users/vmarmer/Documents/teaching/Econ_527/lecture_notes/` and the transcriptions of the handwritten class notes in `/Users/vmarmer/Documents/teaching/Econ_527/transcripts/final/`.
 
 ## File inventory
 
