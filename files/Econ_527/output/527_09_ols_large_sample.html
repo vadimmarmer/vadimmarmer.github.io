@@ -2573,7 +2573,10 @@ Q^{-1} N(0, \Omega) &amp;\overset{d}{=} N\big(Q^{-1} \cdot 0,\ Q^{-1} \Omega (Q^
 <h2 class="anchored" data-anchor-id="the-estimator-hat-v_n">The estimator <span class="math inline">\hat V_n</span></h2>
 <ul>
 <li><p>Unknown: <span class="math display">
-V = \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\left[X_i X_i^\top\right], \qquad \Omega = \mathrm{E}\left[U_i^2 X_i X_i^\top\right]
+\begin{aligned}
+V &amp;= \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1} \\
+Q &amp;= \mathrm{E}\left[X_i X_i^\top\right], \qquad \Omega = \mathrm{E}\left[U_i^2 X_i X_i^\top\right]
+\end{aligned}
 </span></p></li>
 <li><p>Estimator, sample averages in place of expectations: <span class="math display">
 \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}
@@ -2734,7 +2737,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 \hat\Omega_n &amp;= \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top \\
 &amp;= \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + \underbrace{\frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top}_{{\color{red}\to_p\, 0}} \\
 &amp;\qquad - 2\, \underbrace{\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top}_{{\color{red}\to_p\, 0}} \\
-&amp;= \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \mathrm{E}\left[U_i^2 X_i X_i^\top\right] = \Omega} + o_p(1) \\
+&amp;= \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \mathrm{E}\left[U_i^2 X_i X_i^\top\right] = \Omega} {}+ o_p(1) \\
 &amp;\to_p \Omega
 \end{aligned}
 </span></p></li>

@@ -365,7 +365,10 @@ format:
 
 - Unknown:
   $$
-  V = \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1}, \qquad Q = \E{X_i X_i^\top}, \qquad \Omega = \E{U_i^2 X_i X_i^\top}
+  \begin{aligned}
+  V &= \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1} \\
+  Q &= \E{X_i X_i^\top}, \qquad \Omega = \E{U_i^2 X_i X_i^\top}
+  \end{aligned}
   $$
 
 - Estimator, sample averages in place of expectations:
@@ -549,7 +552,7 @@ format:
   \hat\Omega_n &= \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top \\
   &= \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + \underbrace{\frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top}_{{\color{red}\to_p\, 0}} \\
   &\qquad - 2\, \underbrace{\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top}_{{\color{red}\to_p\, 0}} \\
-  &= \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \E{U_i^2 X_i X_i^\top} = \Omega} + o_p(1) \\
+  &= \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \E{U_i^2 X_i X_i^\top} = \Omega} {}+ o_p(1) \\
   &\to_p \Omega
   \end{aligned}
   $$
