@@ -2323,7 +2323,7 @@ Y_i = X_i^\top \beta + U_i, \qquad X_i \in \mathbb{R}^k
 <h2 class="anchored" data-anchor-id="lln-for-frac1n-sum-x_i-u_i">LLN for <span class="math inline">\frac{1}{n} \sum X_i U_i</span></h2>
 <ul>
 <li><p><strong>Assume:</strong> <span class="math display">
-\mathrm{E}\left[X_i U_i\right] = 0, \qquad \mathrm{E}\left[U_i^2\right] &lt; \infty, \qquad \mathrm{E}\left[X_{i,j}^2\right] &lt; \infty, \quad j = 1, \ldots, k
+\mathrm{E}\left[X_i U_i\right] = 0, \qquad \mathrm{E}\left[|X_{i,j} U_i|\right] &lt; \infty, \quad j = 1, \ldots, k
 </span></p></li>
 <li><p><span class="math inline">X_1 U_1, \ldots, X_n U_n</span>: iid; weak LLN, element by element: <span class="math display">
 \frac{1}{n} \sum_{i=1}^n X_i U_i \to_p \mathrm{E}\left[X_i U_i\right] = 0
@@ -2353,8 +2353,7 @@ Y_i = X_i^\top \beta + U_i, \qquad X_i \in \mathbb{R}^k
 &amp; \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
 &amp; Y_i = X_i^\top \beta + U_i \\
 &amp; \mathrm{E}\left[X_i U_i\right] = 0 \\
-&amp; \mathrm{E}\left[U_i^2\right] &lt; \infty \\
-&amp; \mathrm{E}\left[X_{i,j}^2\right] &lt; \infty, \quad j = 1, \ldots, k \\
+&amp; \mathrm{E}\left[|X_{i,j} U_i|\right] &lt; \infty, \quad j = 1, \ldots, k \\
 &amp; \mathrm{E}\left[X_i X_i^\top\right] \ \text{ p.d. (no perfect multicollinearity)}
 \end{aligned}
 </span></p></li>
@@ -2563,14 +2562,14 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 <section id="cross-term-to_p-0" class="level2">
 <h2 class="anchored" data-anchor-id="cross-term-to_p-0">Cross term <span class="math inline">\to_p 0</span></h2>
 <ul>
-<li><p><strong>Assume:</strong> <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>.</p></li>
-<li><p>Cauchy-Schwarz twice: <span class="math display">
+<li><p><strong>Assume:</strong> <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>.</p></li>
+<li><p>Cauchy-Schwarz and Assumption III: <span class="math display">
 \begin{aligned}
-\mathrm{E}\left[|U_i|\, \|X_i\|^3\right] &amp;\le \sqrt{\mathrm{E}\left[U_i^2 \|X_i\|^2\right]\, \mathrm{E}\left[\|X_i\|^4\right]} \\
-&amp;\le \sqrt{\sqrt{\mathrm{E}\left[U_i^4\right]\, \mathrm{E}\left[\|X_i\|^4\right]} \cdot \mathrm{E}\left[\|X_i\|^4\right]} &lt; \infty
+\frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|^3 &amp;\le \sqrt{\Big(\frac{1}{n} \sum_{i=1}^n U_i^2 \|X_i\|^2\Big)\Big(\frac{1}{n} \sum_{i=1}^n \|X_i\|^4\Big)} \\
+&amp;\to_p \sqrt{\mathrm{E}\left[U_i^2 \|X_i\|^2\right]\, \mathrm{E}\left[\|X_i\|^4\right]} &lt; \infty
 \end{aligned}
 </span></p></li>
-<li><p>Triangle inequality, Cauchy-Schwarz, then weak LLN and consistency: <span class="math display">
+<li><p>Triangle inequality and consistency: <span class="math display">
 \begin{aligned}
 \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\| &amp;\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
 &amp;\le \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|^3}_{\to_p\, \mathrm{E}\left[|U_i|\, \|X_i\|^3\right]}\Big) \underbrace{\|\hat\beta_n - \beta\|}_{\to_p\, 0} \\
@@ -2597,7 +2596,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 <li><p>Combine the three terms: <span class="math display">
 \hat\Omega_n = \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \Omega} + o_p(1) \to_p \Omega
 </span></p></li>
-<li><p><strong>Theorem.</strong> Assumptions I to III, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>: <span class="math display">
+<li><p><strong>Theorem.</strong> Assumptions I to III, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>: <span class="math display">
 \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V \qquad \text{(Slutsky)}
 </span></p></li>
 </ul>
@@ -2790,7 +2789,7 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 <h2 class="anchored" data-anchor-id="variance-estimation-and-standard-errors">Variance estimation and standard errors</h2>
 <ul>
 <li><p><span class="math inline">\hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}</span>, <span class="math inline">\hat Q_n = \frac{1}{n} \sum X_i X_i^\top</span>, <span class="math inline">\hat\Omega_n = \frac{1}{n} \sum \hat U_i^2 X_i X_i^\top</span>.</p></li>
-<li><p>Assumptions I to III, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat V_n \to_p V</span>.</p></li>
+<li><p>Assumptions I to III, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat V_n \to_p V</span>.</p></li>
 <li><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{[\hat V_n]_{jj}/n}</span>; robust <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0,1)</span>; normal confidence interval: coverage <span class="math inline">\to 1-\alpha</span>.</p></li>
 <li><p>Usual: <span class="math inline">s^2 \hat Q_n^{-1} \to_p \mathrm{E}\left[U_i^2\right]\, Q^{-1}</span>; homoskedasticity: robust/usual standard-error ratio <span class="math inline">\to_p 1</span>.</p></li>
 <li><p>Heteroskedasticity: usual standard errors invalid in general; robust valid under stated conditions.</p></li>

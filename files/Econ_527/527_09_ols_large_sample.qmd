@@ -68,7 +68,7 @@ format:
 
 - **Assume:**
   $$
-  \E{X_i U_i} = 0, \qquad \E{U_i^2} < \infty, \qquad \E{X_{i,j}^2} < \infty, \quad j = 1, \ldots, k
+  \E{X_i U_i} = 0, \qquad \E{|X_{i,j} U_i|} < \infty, \quad j = 1, \ldots, k
   $$
 
 - $X_1 U_1, \ldots, X_n U_n$: iid; weak LLN, element by element:
@@ -101,8 +101,7 @@ format:
   & \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
   & Y_i = X_i^\top \beta + U_i \\
   & \E{X_i U_i} = 0 \\
-  & \E{U_i^2} < \infty \\
-  & \E{X_{i,j}^2} < \infty, \quad j = 1, \ldots, k \\
+  & \E{|X_{i,j} U_i|} < \infty, \quad j = 1, \ldots, k \\
   & \E{X_i X_i^\top} \ \text{ p.d. (no perfect multicollinearity)}
   \end{aligned}
   $$
@@ -335,17 +334,17 @@ format:
 
 ## Cross term $\to_p 0$
 
-- **Assume:** $\E{U_i^4} < \infty$, $\E{\|X_i\|^4} < \infty$.
+- **Assume:** $\E{\|X_i\|^4} < \infty$.
 
-- Cauchy-Schwarz twice:
+- Cauchy-Schwarz and Assumption III:
   $$
   \begin{aligned}
-  \E{|U_i|\, \|X_i\|^3} &\le \sqrt{\E{U_i^2 \|X_i\|^2}\, \E{\|X_i\|^4}} \\
-  &\le \sqrt{\sqrt{\E{U_i^4}\, \E{\|X_i\|^4}} \cdot \E{\|X_i\|^4}} < \infty
+  \frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|^3 &\le \sqrt{\Big(\frac{1}{n} \sum_{i=1}^n U_i^2 \|X_i\|^2\Big)\Big(\frac{1}{n} \sum_{i=1}^n \|X_i\|^4\Big)} \\
+  &\to_p \sqrt{\E{U_i^2 \|X_i\|^2}\, \E{\|X_i\|^4}} < \infty
   \end{aligned}
   $$
 
-- Triangle inequality, Cauchy-Schwarz, then weak LLN and consistency:
+- Triangle inequality and consistency:
   $$
   \begin{aligned}
   \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\| &\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
@@ -372,7 +371,7 @@ format:
   \hat\Omega_n = \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \Omega} + o_p(1) \to_p \Omega
   $$
 
-- **Theorem.** Assumptions I to III, $\E{U_i^4} < \infty$, $\E{\|X_i\|^4} < \infty$:
+- **Theorem.** Assumptions I to III, $\E{\|X_i\|^4} < \infty$:
   $$
   \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V \qquad \text{(Slutsky)}
   $$
@@ -562,7 +561,7 @@ format:
 
 - $\hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}$, $\hat Q_n = \frac{1}{n} \sum X_i X_i^\top$, $\hat\Omega_n = \frac{1}{n} \sum \hat U_i^2 X_i X_i^\top$.
 
-- Assumptions I to III, $\E{U_i^4} < \infty$, $\E{\|X_i\|^4} < \infty$ $\Longrightarrow$ $\hat V_n \to_p V$.
+- Assumptions I to III, $\E{\|X_i\|^4} < \infty$ $\Longrightarrow$ $\hat V_n \to_p V$.
 
 - $\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{[\hat V_n]_{jj}/n}$; robust $t$-ratio $\to_d N(0,1)$; normal confidence interval: coverage $\to 1-\alpha$.
 
