@@ -38,6 +38,12 @@ The author's rules for the slides are `/Users/vmarmer/.claude/rules/lecture-slid
 | 1 | `527_01_regression_ols.qmd` | Regression, identification, and the OLS estimator |
 | 2 | `527_02_ols_properties.qmd` | Properties of the OLS estimator: unbiasedness, variance, Gauss-Markov |
 | 3 | `527_03_ols_geometry.qmd` | Geometry of OLS, projection matrices, the error variance, Frisch-Waugh-Lovell, partitioned regression with an intercept |
+| 4 | `527_04_confidence_intervals.qmd` | Confidence intervals: normal estimator, symmetric interval and coverage, asymmetric and one-sided intervals |
+| 5 | `527_05_hypothesis_testing.qmd` | Hypothesis testing: hypotheses and errors, two-sided test, power, one-sided tests |
+| 6 | `527_06_quantile_regression.qmd` | Effects at the mean and at quantiles, quantile regression |
+| 7 | `527_07_omitted_regressors.qmd` | Long and short regressions, omitted and irrelevant regressors, their variances, orthogonal regressors |
+| 8 | `527_08_asymptotic_theory.qmd` | Asymptotic theory: convergence in probability, LLN, Slutsky's theorem, convergence in distribution, CLT |
+| 9 | `527_09_ols_large_sample.qmd` | Large-sample OLS: consistency, asymptotic normality, estimation of the asymptotic variance, robust against usual standard errors |
 
 Each deck renders to three files in `output/`: an HTML page with a table of contents, a PDF, and a RevealJS slide show. All three are committed, because the HTML page and the slide show are what the course page links to.
 
