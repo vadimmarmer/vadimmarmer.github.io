@@ -790,7 +790,7 @@ format:
 
 - $\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\big[(X^\top X)^{-1} \big(\sum \hat U_i^2 X_i X_i^\top\big) (X^\top X)^{-1}\big]_{jj}}$; $t$-ratio $\to_d N(0, 1)$; $\hat\beta_{n,j} \pm z_{1-\alpha/2}\, \text{std. err}_{\text{rob}}$: coverage $\to 1 - \alpha$.
 
-- $s^2 \to_p \E{U_i^2}$; homoskedasticity: $\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1$.
+- $\text{std. err}(\hat\beta_{n,j}) = \sqrt{[s^2 \hat Q_n^{-1}]_{jj} / n}$, $s^2 \to_p \E{U_i^2}$; homoskedasticity: $\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1$.
 
 - Heteroskedasticity: $s^2 \hat Q_n^{-1} \to_p \E{U_i^2}\, Q^{-1} \ne V$ in general; only the robust standard error is valid.
 
