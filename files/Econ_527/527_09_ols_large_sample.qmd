@@ -228,7 +228,7 @@ format:
   \end{aligned}
   $$
 
-## CLT for $\frac{1}{\sqrt{n}} \sum X_i U_i$
+## Assumption III and the CLT
 
 - **Assumption III.**
   $$
