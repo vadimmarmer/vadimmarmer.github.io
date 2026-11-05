@@ -2811,7 +2811,7 @@ s^2 (X^\top X)^{-1} &amp;= \frac{1}{n}\, s^2 \Big(\frac{1}{n} X^\top X\Big)^{-1}
 <section id="s2-to_p-mathrmeleftu_i2right" class="level2">
 <h2 class="anchored" data-anchor-id="s2-to_p-mathrmeleftu_i2right"><span class="math inline">s^2 \to_p \mathrm{E}\left[U_i^2\right]</span></h2>
 <ul>
-<li><p><span class="math inline">\hat U_i = U_i - X_i^\top(\hat\beta_n - \beta)</span>; <span class="math inline">U_i X_i^\top (\hat\beta_n - \beta) = (\hat\beta_n - \beta)^\top X_i U_i</span>: <span class="math display">
+<li><p><span class="math inline">\hat U_i = U_i - X_i^\top(\hat\beta_n - \beta)</span>; <span class="math inline">U_i X_i^\top (\hat\beta_n - \beta) = (\hat\beta_n - \beta)^\top X_i U_i</span>; <span class="math inline">\mathrm{E}\left[U_i^2\right] \le \sqrt{\mathrm{E}\left[U_i^4\right]} &lt; \infty</span>: <span class="math display">
 \begin{aligned}
 \frac{1}{n} \sum_{i=1}^n \hat U_i^2 &amp;= \frac{1}{n} \sum_{i=1}^n \big(U_i - X_i^\top (\hat\beta_n - \beta)\big)^2 \\
 &amp;= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, \frac{1}{n} \sum_{i=1}^n U_i X_i^\top (\hat\beta_n - \beta) + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 \\
@@ -2840,7 +2840,7 @@ s^2 &amp;= \frac{n}{n - k} \cdot \frac{1}{n} \sum_{i=1}^n \hat U_i^2 \\
 s^2 \hat Q_n^{-1} &amp;\to_p \sigma^2 Q^{-1}
 \end{aligned}
 </span></p></li>
-<li><p>Ratio of the two standard errors, Slutsky: <span class="math display">
+<li><p>Ratio of the two standard errors, Slutsky, <span class="math inline">\sigma^2 [Q^{-1}]_{jj} = [V]_{jj} &gt; 0</span>: <span class="math display">
 \begin{aligned}
 \frac{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)}{\text{std. err}\big(\hat\beta_{n,j}\big)} &amp;= \sqrt{\frac{[\hat V_n]_{jj} / n}{[s^2 \hat Q_n^{-1}]_{jj} / n}} \\
 &amp;= \sqrt{\frac{[\hat V_n]_{jj}}{[s^2 \hat Q_n^{-1}]_{jj}}} \\
@@ -2865,7 +2865,7 @@ s^2 \hat Q_n^{-1} &amp;\to_p \sigma^2 Q^{-1}
 <li><p>Without homoskedasticity: <span class="math display">
 s^2 \hat Q_n^{-1} \to_p \mathrm{E}\left[U_i^2\right]\, Q^{-1} \ne Q^{-1} \Omega Q^{-1} = V \quad \text{(in general)}
 </span></p></li>
-<li><p>Example, <span class="math inline">k = 1</span>: <span class="math inline">Q = \mathrm{E}\left[X_i^2\right]</span>, <span class="math inline">\Omega = \mathrm{E}\left[U_i^2 X_i^2\right]</span>: <span class="math display">
+<li><p>Example, <span class="math inline">k = 1</span>, no intercept: <span class="math inline">Q = \mathrm{E}\left[X_i^2\right]</span>, <span class="math inline">\Omega = \mathrm{E}\left[U_i^2 X_i^2\right]</span>: <span class="math display">
 \begin{aligned}
 V &amp;= \frac{\mathrm{E}\left[U_i^2 X_i^2\right]}{\big(\mathrm{E}\left[X_i^2\right]\big)^2}, \qquad \text{usual: } \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} \\
 V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \frac{\mathrm{E}\left[U_i^2 X_i^2\right] - \mathrm{E}\left[U_i^2\right]\, \mathrm{E}\left[X_i^2\right]}{\big(\mathrm{E}\left[X_i^2\right]\big)^2} \\
@@ -2879,13 +2879,13 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 <section id="normality-exact-and-asymptotic" class="level2">
 <h2 class="anchored" data-anchor-id="normality-exact-and-asymptotic">Normality: exact and asymptotic</h2>
 <ul>
-<li><p>Normal errors (Lecture 4): <span class="math display">
+<li><p>Normal errors (Lecture 4, Assumptions 1 to 5): <span class="math display">
 \begin{aligned}
 &amp; U \mid X \sim N(0, \sigma^2 I_n) \\
 \Longrightarrow\quad &amp; \hat\beta_n \mid X \sim N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big) \quad \text{for every } n
 \end{aligned}
 </span></p></li>
-<li><p>Variance of <span class="math inline">\sqrt{n}(\hat\beta_n - \beta)</span> given <span class="math inline">X</span>: <span class="math display">
+<li><p>Variance of <span class="math inline">\sqrt{n}(\hat\beta_n - \beta)</span> given <span class="math inline">X</span>, and its limit under Assumptions I and II: <span class="math display">
 \begin{aligned}
 \mathrm{Var}\left(\sqrt{n}(\hat\beta_n - \beta) \mid X\right) &amp;= n\, \mathrm{Var}\left(\hat\beta_n \mid X\right) \\
 &amp;= n\, \sigma^2 (X^\top X)^{-1} \\
@@ -2900,7 +2900,7 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 &amp; t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}
 \end{aligned}
 </span></p></li>
-<li><p>Normal errors are homoskedastic, so robust and usual agree in large samples: <span class="math display">
+<li><p>Normal errors are homoskedastic, so robust and usual agree in large samples (<span class="math inline">\mathrm{E}\left[U_i^4\right] = 3\sigma^4</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>): <span class="math display">
 \begin{aligned}
 \mathrm{E}\left[U_i^2 \mid X\right] &amp;= \big[\sigma^2 I_n\big]_{ii} = \sigma^2 \\
 \Longrightarrow\quad \mathrm{E}\left[U_i^2 \mid X_i\right] &amp;= \mathrm{E}\left[\mathrm{E}\left[U_i^2 \mid X\right] \mid X_i\right] = \sigma^2 \\
@@ -2912,7 +2912,7 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 <section id="usual-and-robust-standard-errors-compared" class="level2">
 <h2 class="anchored" data-anchor-id="usual-and-robust-standard-errors-compared">Usual and robust standard errors compared</h2>
 <ul>
-<li><p>Validity of the <span class="math inline">t</span>-ratio:</p>
+<li><p>Validity of the <span class="math inline">t</span>-ratio (large <span class="math inline">n</span>: conditions for <span class="math inline">\hat V_n \to_p V</span>):</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -2939,7 +2939,7 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 </tr>
 <tr class="odd">
 <td><span class="math inline">\mathrm{E}\left[U_i^2 \mid X_i\right]</span> depends on <span class="math inline">X_i</span></td>
-<td>invalid</td>
+<td>invalid in general</td>
 <td>large <span class="math inline">n</span>, <span class="math inline">N(0,1)</span></td>
 </tr>
 </tbody>
@@ -2969,10 +2969,10 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 <h2 class="anchored" data-anchor-id="variance-estimation-and-standard-errors">Variance estimation and standard errors</h2>
 <ul>
 <li><p><span class="math inline">\hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}</span>, <span class="math inline">\hat Q_n = \frac{1}{n} \sum X_i X_i^\top</span>, <span class="math inline">\hat\Omega_n = \frac{1}{n} \sum \hat U_i^2 X_i X_i^\top</span>.</p></li>
-<li><p><span class="math inline">\hat\Omega_n = \frac{1}{n} \sum U_i^2 X_i X_i^\top + o_p(1)</span> under <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>; <span class="math inline">\hat V_n \to_p V</span>.</p></li>
+<li><p><span class="math inline">\hat\Omega_n = \frac{1}{n} \sum U_i^2 X_i X_i^\top + o_p(1)</span> under Assumptions I to III, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>; <span class="math inline">\hat V_n \to_p V</span>.</p></li>
 <li><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\big[(X^\top X)^{-1} \big(\sum \hat U_i^2 X_i X_i^\top\big) (X^\top X)^{-1}\big]_{jj}}</span>; <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0, 1)</span>; <span class="math inline">\hat\beta_{n,j} \pm z_{1-\alpha/2}\, \text{std. err}_{\text{rob}}</span>: coverage <span class="math inline">\to 1 - \alpha</span>.</p></li>
 <li><p><span class="math inline">\text{std. err}(\hat\beta_{n,j}) = \sqrt{[s^2 \hat Q_n^{-1}]_{jj} / n}</span>, <span class="math inline">s^2 \to_p \mathrm{E}\left[U_i^2\right]</span>; homoskedasticity: <span class="math inline">\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1</span>.</p></li>
-<li><p>Heteroskedasticity: <span class="math inline">s^2 \hat Q_n^{-1} \to_p \mathrm{E}\left[U_i^2\right]\, Q^{-1} \ne V</span> in general; only the robust standard error is valid.</p></li>
+<li><p>Heteroskedasticity: <span class="math inline">s^2 \hat Q_n^{-1} \to_p \mathrm{E}\left[U_i^2\right]\, Q^{-1} \ne V</span> in general; only the robust standard error is always valid.</p></li>
 <li><p>Normality: <span class="math inline">\mathrm{Var}\left(\sqrt{n}(\hat\beta_n - \beta) \mid X\right) = \sigma^2 \hat Q_n^{-1} \to_p \sigma^2 Q^{-1}</span>; usual <span class="math inline">t</span>-ratio exactly <span class="math inline">t_{n-k}</span>, <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span>; homoskedastic, so <span class="math inline">\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1</span>.</p></li>
 </ul>
 </section>
