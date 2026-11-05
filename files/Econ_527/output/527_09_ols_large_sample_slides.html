@@ -1309,7 +1309,7 @@ Q^{-1} N(0, \Omega) &amp;\overset{d}{=} N\big(Q^{-1} \cdot 0,\ Q^{-1} \Omega (Q^
 <section id="finite-sample-against-large-sample" class="slide level2">
 <h2>Finite sample against large sample</h2>
 <ul>
-<li class="fragment"><p>Normal errors (Lecture 4), exact for every <span class="math inline">n</span> (requires stronger assumptions), <span class="math inline">a \ne 0</span>: <span class="math display">
+<li class="fragment"><p>Normal errors (Lecture 4, Assumptions 1 to 5), exact for every <span class="math inline">n</span> (requires stronger assumptions), <span class="math inline">a \ne 0</span>: <span class="math display">
 \begin{aligned}
 &amp; Y = X\beta + U, \qquad U \mid X \sim N(0, \sigma^2 I_n) \\
 \Longrightarrow\quad &amp; \hat\beta_n \mid X \sim N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big) \\
@@ -1318,7 +1318,7 @@ Q^{-1} N(0, \Omega) &amp;\overset{d}{=} N\big(Q^{-1} \cdot 0,\ Q^{-1} \Omega (Q^
 </span></p></li>
 <li class="fragment"><p>Homoskedastic errors, large sample, <span class="math inline">a \ne 0</span>: <span class="math display">
 \begin{aligned}
-&amp; \text{Assumptions I and II}, \quad \mathrm{E}\left[X_i U_i\right] = 0, \quad \mathrm{E}\left[U_i^2 \mid X_i\right] = \sigma^2 \\
+&amp; \text{Assumptions I and II}, \quad \mathrm{E}\left[X_i U_i\right] = 0, \quad \mathrm{E}\left[U_i^2 \mid X_i\right] = \sigma^2 &gt; 0 \\
 \Longrightarrow\quad &amp; \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{\sigma^2 a^\top \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1} a}}\Big)
 \end{aligned}
 </span></p></li>

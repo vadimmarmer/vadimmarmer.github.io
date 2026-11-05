@@ -334,7 +334,7 @@ format:
 
 ## Finite sample against large sample
 
-- Normal errors (Lecture 4), exact for every $n$ (requires stronger assumptions), $a \ne 0$:
+- Normal errors (Lecture 4, Assumptions 1 to 5), exact for every $n$ (requires stronger assumptions), $a \ne 0$:
   $$
   \begin{aligned}
   & Y = X\beta + U, \qquad U \mid X \sim N(0, \sigma^2 I_n) \\
@@ -346,7 +346,7 @@ format:
 - Homoskedastic errors, large sample, $a \ne 0$:
   $$
   \begin{aligned}
-  & \text{Assumptions I and II}, \quad \E{X_i U_i} = 0, \quad \E{U_i^2 \mid X_i} = \sigma^2 \\
+  & \text{Assumptions I and II}, \quad \E{X_i U_i} = 0, \quad \E{U_i^2 \mid X_i} = \sigma^2 > 0 \\
   \Longrightarrow\quad & \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{\sigma^2 a^\top \big(\E{X_i X_i^\top}\big)^{-1} a}}\Big)
   \end{aligned}
   $$
