@@ -182,11 +182,11 @@ format:
 
 # Asymptotic normality of OLS
 
-## Assumptions 1 and 2
+## Assumptions I and II
 
 - $\hat\beta_n - \beta \to_p 0$. Approximate the distribution of $\hat\beta_n - \beta$: scale by $\sqrt{n}$ (Lecture 8).
 
-- **Assumption 1.**
+- **Assumption I.**
   $$
   \begin{aligned}
   & \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
@@ -203,7 +203,7 @@ format:
   \end{aligned}
   $$
 
-- **Assumption 2.**
+- **Assumption II.**
   $$
   \underset{k\times k}{Q} = \E{X_i X_i^\top} \quad \text{p.d. and finite}
   $$
@@ -228,7 +228,9 @@ format:
   \end{aligned}
   $$
 
-- **Assumption 3.**
+## CLT for $\frac{1}{\sqrt{n}} \sum X_i U_i$
+
+- **Assumption III.**
   $$
   \begin{aligned}
   & \E{X_i U_i} = 0 \quad \text{($X$'s and $U$'s uncorrelated)} \\
@@ -246,9 +248,7 @@ format:
   \end{aligned}
   $$
 
-## CLT for $\frac{1}{\sqrt{n}} \sum X_i U_i$
-
-- $X_1 U_1, \ldots, X_n U_n$: iid $k \times 1$ (Assumption 1), mean $0$, variance $\Omega$ finite and p.d. (Assumption 3).
+- $X_1 U_1, \ldots, X_n U_n$: iid $k \times 1$ (Assumption I), mean $0$, variance $\Omega$ finite and p.d. (Assumption III).
 
 - Multivariate CLT (Lecture 8):
   $$
@@ -267,7 +267,7 @@ format:
   {\color{red}\sqrt{n}}(\hat\beta_n - \beta) = \underbrace{\Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}} \underbrace{{\color{red}\frac{1}{\sqrt{n}}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0,\, \Omega)} \to_d Q^{-1} N(0, \Omega)
   $$
 
-- Recall, linear map of a normal vector:
+- Linear map of a normal vector (Lecture 4):
   $$
   W \sim N(\mu, \Sigma) \quad \Longrightarrow \quad \Gamma W \sim N(\Gamma \mu,\ \Gamma \Sigma \Gamma^\top)
   $$
@@ -282,7 +282,7 @@ format:
 
 ## Asymptotic variance
 
-- **Theorem.** Under Assumptions 1 to 3:
+- **Theorem.** Under Assumptions I to III:
   $$
   \begin{aligned}
   & \boxed{\ \sqrt{n}(\hat\beta_n - \beta) \to_d N\Big(0,\ \underbrace{\big(\E{X_i X_i^\top}\big)^{-1} \E{U_i^2 X_i X_i^\top} \big(\E{X_i X_i^\top}\big)^{-1}}_{\mathrm{AsyVar}(\hat\beta_n)}\Big)\ } \\
@@ -346,7 +346,7 @@ format:
 - Homoskedastic errors, large sample, $a \ne 0$:
   $$
   \begin{aligned}
-  & \text{Assumptions 1 and 2}, \quad \E{X_i U_i} = 0, \quad \E{U_i^2 \mid X_i} = \sigma^2 \\
+  & \text{Assumptions I and II}, \quad \E{X_i U_i} = 0, \quad \E{U_i^2 \mid X_i} = \sigma^2 \\
   \Longrightarrow\quad & \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{\sigma^2 a^\top \big(\E{X_i X_i^\top}\big)^{-1} a}}\Big)
   \end{aligned}
   $$
@@ -354,7 +354,7 @@ format:
 - General, large sample, $a \ne 0$:
   $$
   \begin{aligned}
-  & \text{Assumptions 1 to 3}; \quad Q = \E{X_i X_i^\top}, \quad \Omega = \E{U_i^2 X_i X_i^\top} \\
+  & \text{Assumptions I to III}; \quad Q = \E{X_i X_i^\top}, \quad \Omega = \E{U_i^2 X_i X_i^\top} \\
   \Longrightarrow\quad & \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{a^\top Q^{-1} \Omega Q^{-1} a}}\Big)
   \end{aligned}
   $$
@@ -373,7 +373,7 @@ format:
   \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}
   $$
 
-- $\hat Q_n$: weak LLN, then Slutsky (Assumption 2):
+- $\hat Q_n$: weak LLN, then Slutsky (Assumption II):
   $$
   \begin{aligned}
   \hat Q_n &= \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \E{X_i X_i^\top} = Q \\
@@ -456,7 +456,7 @@ format:
   \end{aligned}
   $$
 
-- First term, weak LLN, $\Omega$ finite (Assumption 3):
+- First term, weak LLN, $\Omega$ finite (Assumption III):
   $$
   \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top \to_p \E{U_i^2 X_i X_i^\top} = \Omega
   $$
@@ -554,7 +554,7 @@ format:
   \end{aligned}
   $$
 
-- **Theorem.** Under Assumptions 1 to 3, $\E{U_i^4} < \infty$ and $\E{\|X_i\|^4} < \infty$, with or without homoskedasticity:
+- **Theorem.** Under Assumptions I to III, $\E{U_i^4} < \infty$ and $\E{\|X_i\|^4} < \infty$, with or without homoskedasticity:
   $$
   \boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ } \quad \text{(Slutsky, $\hat Q_n^{-1} \to_p Q^{-1}$)}
   $$
@@ -778,7 +778,7 @@ format:
 
 - $\sqrt{n}(\hat\beta_n - \beta) = \big(\frac{1}{n} \sum X_i X_i^\top\big)^{-1} \frac{1}{\sqrt{n}} \sum X_i U_i$.
 
-- Assumptions 1 to 3 $\Longrightarrow$ $\sqrt{n}(\hat\beta_n - \beta) \to_d N(0, Q^{-1} \Omega Q^{-1})$, $Q = \E{X_i X_i^\top}$, $\Omega = \E{U_i^2 X_i X_i^\top}$.
+- Assumptions I to III $\Longrightarrow$ $\sqrt{n}(\hat\beta_n - \beta) \to_d N(0, Q^{-1} \Omega Q^{-1})$, $Q = \E{X_i X_i^\top}$, $\Omega = \E{U_i^2 X_i X_i^\top}$.
 
 - $\E{U_i^2 \mid X_i} = \sigma^2$ $\Longrightarrow$ $\Omega = \sigma^2 Q$, $\mathrm{AsyVar}(\hat\beta_n) = \sigma^2 Q^{-1}$.
 

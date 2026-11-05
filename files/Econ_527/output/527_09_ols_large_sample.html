@@ -2235,7 +2235,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#asymptotic-normality-of-ols" id="toc-asymptotic-normality-of-ols" class="nav-link" data-scroll-target="#asymptotic-normality-of-ols">Asymptotic normality of OLS</a>
   <ul class="collapse">
-  <li><a href="#assumptions-1-and-2" id="toc-assumptions-1-and-2" class="nav-link" data-scroll-target="#assumptions-1-and-2">Assumptions 1 and 2</a></li>
+  <li><a href="#assumptions-i-and-ii" id="toc-assumptions-i-and-ii" class="nav-link" data-scroll-target="#assumptions-i-and-ii">Assumptions I and II</a></li>
   <li><a href="#scaling-by-sqrtn" id="toc-scaling-by-sqrtn" class="nav-link" data-scroll-target="#scaling-by-sqrtn">Scaling by <span class="math inline">\sqrt{n}</span></a></li>
   <li><a href="#clt-for-frac1sqrtn-sum-x_i-u_i" id="toc-clt-for-frac1sqrtn-sum-x_i-u_i" class="nav-link" data-scroll-target="#clt-for-frac1sqrtn-sum-x_i-u_i">CLT for <span class="math inline">\frac{1}{\sqrt{n}} \sum X_i U_i</span></a></li>
   <li><a href="#limit-of-sqrtnhatbeta_n---beta" id="toc-limit-of-sqrtnhatbeta_n---beta" class="nav-link" data-scroll-target="#limit-of-sqrtnhatbeta_n---beta">Limit of <span class="math inline">\sqrt{n}(\hat\beta_n - \beta)</span></a></li>
@@ -2414,11 +2414,11 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 </section>
 <section id="asymptotic-normality-of-ols" class="level1">
 <h1>Asymptotic normality of OLS</h1>
-<section id="assumptions-1-and-2" class="level2">
-<h2 class="anchored" data-anchor-id="assumptions-1-and-2">Assumptions 1 and 2</h2>
+<section id="assumptions-i-and-ii" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions-i-and-ii">Assumptions I and II</h2>
 <ul>
 <li><p><span class="math inline">\hat\beta_n - \beta \to_p 0</span>. Approximate the distribution of <span class="math inline">\hat\beta_n - \beta</span>: scale by <span class="math inline">\sqrt{n}</span> (Lecture 8).</p></li>
-<li><p><strong>Assumption 1.</strong> <span class="math display">
+<li><p><strong>Assumption I.</strong> <span class="math display">
 \begin{aligned}
 &amp; \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
 &amp; Y_i = X_i^\top \beta + U_i, \qquad \beta \in \mathbb{R}^k
@@ -2431,7 +2431,7 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 \Longrightarrow\quad \hat\beta_n - \beta &amp;= \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i
 \end{aligned}
 </span></p></li>
-<li><p><strong>Assumption 2.</strong> <span class="math display">
+<li><p><strong>Assumption II.</strong> <span class="math display">
 \underset{k\times k}{Q} = \mathrm{E}\left[X_i X_i^\top\right] \quad \text{p.d. and finite}
 </span></p></li>
 <li><p>Weak LLN, then Slutsky: <span class="math display">
@@ -2445,15 +2445,20 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 <section id="scaling-by-sqrtn" class="level2">
 <h2 class="anchored" data-anchor-id="scaling-by-sqrtn">Scaling by <span class="math inline">\sqrt{n}</span></h2>
 <ul>
-<li><p>Multiply by <span class="math inline">\sqrt{n}</span>: <span class="math display">
+<li>Multiply by <span class="math inline">\sqrt{n}</span>: <span class="math display">
 \begin{aligned}
 {\color{red}\sqrt{n}}(\hat\beta_n - \beta) &amp;= \sqrt{n} \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
 &amp;= \sqrt{n} \Big(n \cdot \frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
 &amp;= \frac{\sqrt{n}}{n} \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
 &amp;= \Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} {\color{red}\frac{1}{\sqrt{n}}} \sum_{i=1}^n X_i U_i
 \end{aligned}
-</span></p></li>
-<li><p><strong>Assumption 3.</strong> <span class="math display">
+</span></li>
+</ul>
+</section>
+<section id="clt-for-frac1sqrtn-sum-x_i-u_i" class="level2">
+<h2 class="anchored" data-anchor-id="clt-for-frac1sqrtn-sum-x_i-u_i">CLT for <span class="math inline">\frac{1}{\sqrt{n}} \sum X_i U_i</span></h2>
+<ul>
+<li><p><strong>Assumption III.</strong> <span class="math display">
 \begin{aligned}
 &amp; \mathrm{E}\left[X_i U_i\right] = 0 \quad \text{($X$&#39;s and $U$&#39;s uncorrelated)} \\
 &amp; \underset{k\times k}{\Omega} = \mathrm{Var}\left(X_i U_i\right) \quad \text{finite and p.d.}
@@ -2467,12 +2472,7 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 &amp;= \mathrm{E}\left[U_i^2 X_i X_i^\top\right]
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="clt-for-frac1sqrtn-sum-x_i-u_i" class="level2">
-<h2 class="anchored" data-anchor-id="clt-for-frac1sqrtn-sum-x_i-u_i">CLT for <span class="math inline">\frac{1}{\sqrt{n}} \sum X_i U_i</span></h2>
-<ul>
-<li><p><span class="math inline">X_1 U_1, \ldots, X_n U_n</span>: iid <span class="math inline">k \times 1</span> (Assumption 1), mean <span class="math inline">0</span>, variance <span class="math inline">\Omega</span> finite and p.d. (Assumption 3).</p></li>
+<li><p><span class="math inline">X_1 U_1, \ldots, X_n U_n</span>: iid <span class="math inline">k \times 1</span> (Assumption I), mean <span class="math inline">0</span>, variance <span class="math inline">\Omega</span> finite and p.d. (Assumption III).</p></li>
 <li><p>Multivariate CLT (Lecture 8): <span class="math display">
 \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i \to_d N\big(0,\ \underbrace{\mathrm{E}\left[U_i^2 X_i X_i^\top\right]}_{\Omega}\big)
 </span></p></li>
@@ -2487,7 +2487,7 @@ A_n Z_n \to_d A Z
 <li><p>The two limits: <span class="math display">
 {\color{red}\sqrt{n}}(\hat\beta_n - \beta) = \underbrace{\Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}} \underbrace{{\color{red}\frac{1}{\sqrt{n}}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0,\, \Omega)} \to_d Q^{-1} N(0, \Omega)
 </span></p></li>
-<li><p>Recall, linear map of a normal vector: <span class="math display">
+<li><p>Linear map of a normal vector (Lecture 4): <span class="math display">
 W \sim N(\mu, \Sigma) \quad \Longrightarrow \quad \Gamma W \sim N(\Gamma \mu,\ \Gamma \Sigma \Gamma^\top)
 </span></p></li>
 <li><p><span class="math inline">\Gamma = Q^{-1}</span>; <span class="math inline">Q = \mathrm{E}\left[X_i X_i^\top\right] = Q^\top</span>, so <span class="math inline">(Q^{-1})^\top = Q^{-1}</span>: <span class="math display">
@@ -2501,7 +2501,7 @@ Q^{-1} N(0, \Omega) &amp;\overset{d}{=} N\big(Q^{-1} \cdot 0,\ Q^{-1} \Omega (Q^
 <section id="asymptotic-variance" class="level2">
 <h2 class="anchored" data-anchor-id="asymptotic-variance">Asymptotic variance</h2>
 <ul>
-<li><p><strong>Theorem.</strong> Under Assumptions 1 to 3: <span class="math display">
+<li><p><strong>Theorem.</strong> Under Assumptions I to III: <span class="math display">
 \begin{aligned}
 &amp; \boxed{\ \sqrt{n}(\hat\beta_n - \beta) \to_d N\Big(0,\ \underbrace{\big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[U_i^2 X_i X_i^\top\right] \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1}}_{\mathrm{AsyVar}(\hat\beta_n)}\Big)\ } \\
 &amp; \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1} \quad \text{(sandwich)}
@@ -2554,13 +2554,13 @@ Q^{-1} N(0, \Omega) &amp;\overset{d}{=} N\big(Q^{-1} \cdot 0,\ Q^{-1} \Omega (Q^
 </span></p></li>
 <li><p>Homoskedastic errors, large sample, <span class="math inline">a \ne 0</span>: <span class="math display">
 \begin{aligned}
-&amp; \text{Assumptions 1 and 2}, \quad \mathrm{E}\left[X_i U_i\right] = 0, \quad \mathrm{E}\left[U_i^2 \mid X_i\right] = \sigma^2 \\
+&amp; \text{Assumptions I and II}, \quad \mathrm{E}\left[X_i U_i\right] = 0, \quad \mathrm{E}\left[U_i^2 \mid X_i\right] = \sigma^2 \\
 \Longrightarrow\quad &amp; \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{\sigma^2 a^\top \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1} a}}\Big)
 \end{aligned}
 </span></p></li>
 <li><p>General, large sample, <span class="math inline">a \ne 0</span>: <span class="math display">
 \begin{aligned}
-&amp; \text{Assumptions 1 to 3}; \quad Q = \mathrm{E}\left[X_i X_i^\top\right], \quad \Omega = \mathrm{E}\left[U_i^2 X_i X_i^\top\right] \\
+&amp; \text{Assumptions I to III}; \quad Q = \mathrm{E}\left[X_i X_i^\top\right], \quad \Omega = \mathrm{E}\left[U_i^2 X_i X_i^\top\right] \\
 \Longrightarrow\quad &amp; \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{a^\top Q^{-1} \Omega Q^{-1} a}}\Big)
 \end{aligned}
 </span></p></li>
@@ -2578,7 +2578,7 @@ V = \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\l
 <li><p>Estimator, sample averages in place of expectations: <span class="math display">
 \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}
 </span></p></li>
-<li><p><span class="math inline">\hat Q_n</span>: weak LLN, then Slutsky (Assumption 2): <span class="math display">
+<li><p><span class="math inline">\hat Q_n</span>: weak LLN, then Slutsky (Assumption II): <span class="math display">
 \begin{aligned}
 \hat Q_n &amp;= \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \mathrm{E}\left[X_i X_i^\top\right] = Q \\
 \hat Q_n^{-1} &amp;\to_p Q^{-1}
@@ -2648,7 +2648,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 &amp;\qquad - 2\, \frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top
 \end{aligned}
 </span></p></li>
-<li><p>First term, weak LLN, <span class="math inline">\Omega</span> finite (Assumption 3): <span class="math display">
+<li><p>First term, weak LLN, <span class="math inline">\Omega</span> finite (Assumption III): <span class="math display">
 \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top \to_p \mathrm{E}\left[U_i^2 X_i X_i^\top\right] = \Omega
 </span></p></li>
 <li><p>To show: the other two terms <span class="math inline">\to_p 0</span>.</p></li>
@@ -2738,7 +2738,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 &amp;\to_p \Omega
 \end{aligned}
 </span></p></li>
-<li><p><strong>Theorem.</strong> Under Assumptions 1 to 3, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span> and <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>, with or without homoskedasticity: <span class="math display">
+<li><p><strong>Theorem.</strong> Under Assumptions I to III, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span> and <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span>, with or without homoskedasticity: <span class="math display">
 \boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ } \quad \text{(Slutsky, $\hat Q_n^{-1} \to_p Q^{-1}$)}
 </span></p></li>
 </ul>
@@ -2961,7 +2961,7 @@ V - \frac{\mathrm{E}\left[U_i^2\right]}{\mathrm{E}\left[X_i^2\right]} &amp;= \fr
 <ul>
 <li><p><span class="math inline">\hat\beta_n = \beta + \big(\frac{1}{n} \sum X_i X_i^\top\big)^{-1} \frac{1}{n} \sum X_i U_i</span>; iid, <span class="math inline">\mathrm{E}\left[X_i U_i\right] = 0</span>, <span class="math inline">\mathrm{E}\left[U_i^2\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[X_{i,j}^2\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span> p.d. <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\beta_n \to_p \beta</span>.</p></li>
 <li><p><span class="math inline">\sqrt{n}(\hat\beta_n - \beta) = \big(\frac{1}{n} \sum X_i X_i^\top\big)^{-1} \frac{1}{\sqrt{n}} \sum X_i U_i</span>.</p></li>
-<li><p>Assumptions 1 to 3 <span class="math inline">\Longrightarrow</span> <span class="math inline">\sqrt{n}(\hat\beta_n - \beta) \to_d N(0, Q^{-1} \Omega Q^{-1})</span>, <span class="math inline">Q = \mathrm{E}\left[X_i X_i^\top\right]</span>, <span class="math inline">\Omega = \mathrm{E}\left[U_i^2 X_i X_i^\top\right]</span>.</p></li>
+<li><p>Assumptions I to III <span class="math inline">\Longrightarrow</span> <span class="math inline">\sqrt{n}(\hat\beta_n - \beta) \to_d N(0, Q^{-1} \Omega Q^{-1})</span>, <span class="math inline">Q = \mathrm{E}\left[X_i X_i^\top\right]</span>, <span class="math inline">\Omega = \mathrm{E}\left[U_i^2 X_i X_i^\top\right]</span>.</p></li>
 <li><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid X_i\right] = \sigma^2</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\Omega = \sigma^2 Q</span>, <span class="math inline">\mathrm{AsyVar}(\hat\beta_n) = \sigma^2 Q^{-1}</span>.</p></li>
 </ul>
 </section>
