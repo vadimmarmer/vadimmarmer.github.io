@@ -68,7 +68,7 @@ format:
 
 - **Assume:**
   $$
-  \E{X_i U_i} = 0, \qquad \E{|X_{i,j} U_i|} < \infty, \quad j = 1, \ldots, k
+  \E{X_i U_i} = 0
   $$
 
 - $X_1 U_1, \ldots, X_n U_n$: iid; weak LLN, element by element:
@@ -101,7 +101,6 @@ format:
   & \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
   & Y_i = X_i^\top \beta + U_i \\
   & \E{X_i U_i} = 0 \\
-  & \E{|X_{i,j} U_i|} < \infty, \quad j = 1, \ldots, k \\
   & \E{X_i X_i^\top} \ \text{ p.d. (no perfect multicollinearity)}
   \end{aligned}
   $$
