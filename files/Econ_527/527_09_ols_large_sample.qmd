@@ -1,0 +1,743 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 9: Large-sample properties of OLS and robust standard errors"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_09_ols_large_sample.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_09_ols_large_sample.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_09_ols_large_sample_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Consistency of OLS
+
+## OLS in terms of sample averages
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+- Regression, $\{(Y_i, X_i) : i = 1, \ldots, n\}$ iid:
+  $$
+  Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_{i,1} \\ \vdots \\ X_{i,k} \end{pmatrix}
+  $$
+
+- OLS from $n$ observations; substitute $Y_i = X_i^\top \beta + U_i$:
+  $$
+  \begin{aligned}
+  \hat\beta_n &= (X^\top X)^{-1} X^\top Y \\
+  &= \Big(\underbrace{\sum_{i=1}^n X_i X_i^\top}_{k\times k}\Big)^{-1} \sum_{i=1}^n X_i Y_i \\
+  &= \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i \big(X_i^\top \beta + U_i\big) \\
+  &= \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \Big(\sum_{i=1}^n X_i X_i^\top\Big) \beta + \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
+  &= \beta + \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
+  &= \beta + \Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} {\color{red}\frac{1}{n}} \sum_{i=1}^n X_i U_i
+  \end{aligned}
+  $$
+
+- Element $(r, s)$:
+  $$
+  \Big[\sum_{i=1}^n X_i X_i^\top\Big]_{rs} = \sum_{i=1}^n X_{i,r} X_{i,s}
+  $$
+
+## LLN for $\frac{1}{n} \sum X_i U_i$
+
+- $X_1 U_1, \ldots, X_n U_n$: iid; weak LLN, element by element:
+  $$
+  \frac{1}{n} \sum_{i=1}^n X_i U_i \to_p \E{X_i U_i}
+  $$
+
+- **Assume:**
+  $$
+  \E{X_i U_i} = 0
+  $$
+
+- Weak LLN for element $j$ requires:
+  $$
+  \E{|X_{i,j} U_i|} < \infty, \qquad j = 1, \ldots, k
+  $$
+
+- Cauchy-Schwarz inequality:
+  $$
+  \E{|X_{i,j} U_i|} \le \sqrt{\E{X_{i,j}^2}\, \E{U_i^2}}
+  $$
+
+- **Assume:**
+  $$
+  \E{U_i^2} < \infty, \qquad \E{X_{i,j}^2} < \infty, \quad j = 1, \ldots, k
+  $$
+
+## LLN for $\frac{1}{n} \sum X_i X_i^\top$
+
+- Element $(r, s)$ of $\E{X_i X_i^\top}$ well defined, Cauchy-Schwarz:
+  $$
+  \E{|X_{i,r} X_{i,s}|} \le \sqrt{\E{X_{i,r}^2}\, \E{X_{i,s}^2}} < \infty
+  $$
+
+- Weak LLN, element by element:
+  $$
+  \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \E{X_i X_i^\top}
+  $$
+
+- $\E{X_i X_i^\top}$: symmetric, p.s.d. **Assume** p.d.
+
+- Slutsky, $h(\cdot) = (\cdot)^{-1}$ continuous at a p.d. matrix (Lecture 8):
+  $$
+  \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \to_p \big(\E{X_i X_i^\top}\big)^{-1}
+  $$
+
+## Assumptions
+
+- Large-sample assumptions:
+  $$
+  \begin{aligned}
+  & \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
+  & Y_i = X_i^\top \beta + U_i \\
+  & \E{X_i U_i} = 0 \\
+  & \E{U_i^2} < \infty \\
+  & \E{X_{i,j}^2} < \infty, \quad j = 1, \ldots, k \\
+  & \E{X_i X_i^\top} \ \text{ p.d. (no multicollinearity)}
+  \end{aligned}
+  $$
+
+- $U_i = Y_i - X_i^\top \beta$:
+  $$
+  \{(Y_i, X_i)\} \ \text{ iid} \quad \Longrightarrow \quad \{(U_i, X_i)\} \ \text{ iid}
+  $$
+
+- $(Y_1, X_1)$ independent of $(Y_2, X_2)$; $Y_1$ and $X_1$ not independent.
+
+- Weaker than $\E{U_i \mid X_i} = 0$:
+  $$
+  \E{X_i U_i} = 0 \quad \nRightarrow \quad \E{Y_i \mid X_i} = X_i^\top \beta \quad \text{(in general)}
+  $$
+
+## Consistency
+
+- **Definition.** $\hat\beta_n$ is a consistent estimator of $\beta$ if:
+  $$
+  \hat\beta_n \to_p \beta \quad \Longleftrightarrow \quad \hat\beta_{n,j} \to_p \beta_j, \quad j = 1, \ldots, k \quad \text{(by definition)}
+  $$
+
+- **Theorem.** Under the large-sample assumptions, $\hat\beta_n \to_p \beta$.
+
+- The two limits, then Slutsky for the product:
+  $$
+  \begin{aligned}
+  \hat\beta_n &= \beta + \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n X_i X_i^\top}_{\to_p\, \E{X_i X_i^\top}}\Big)^{-1} \underbrace{\frac{1}{n} \sum_{i=1}^n X_i U_i}_{\to_p\, 0} \\
+  &\to_p \beta + \big(\E{X_i X_i^\top}\big)^{-1} \cdot 0 \\
+  &= \beta
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \hat\beta_n \to_p \beta\ }
+  $$
+
+# Asymptotic normality of OLS
+
+## Assumptions 1 and 2
+
+- $\hat\beta_n - \beta \to_p 0$. Approximate the distribution of $\hat\beta_n - \beta$: scale by $\sqrt{n}$ (Lecture 8).
+
+- **Assumption 1.**
+  $$
+  \begin{aligned}
+  & \{(Y_i, X_i) : i = 1, \ldots, n\} \ \text{ iid} \\
+  & Y_i = X_i^\top \beta + U_i, \qquad \beta \in \mathbb{R}^k
+  \end{aligned}
+  $$
+
+- OLS:
+  $$
+  \begin{aligned}
+  \hat\beta_n &= \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i Y_i \\
+  &= \beta + \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
+  \Longrightarrow\quad \hat\beta_n - \beta &= \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i
+  \end{aligned}
+  $$
+
+- **Assumption 2.**
+  $$
+  \underset{k\times k}{Q} = \E{X_i X_i^\top} \quad \text{p.d. and finite}
+  $$
+
+- Weak LLN, then Slutsky:
+  $$
+  \begin{aligned}
+  \frac{1}{n} \sum_{i=1}^n X_i X_i^\top &\to_p \E{X_i X_i^\top} = Q \\
+  \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} &\to_p Q^{-1} = \big(\E{X_i X_i^\top}\big)^{-1}
+  \end{aligned}
+  $$
+
+## Scaling by $\sqrt{n}$
+
+- Multiply by $\sqrt{n}$:
+  $$
+  \begin{aligned}
+  {\color{red}\sqrt{n}}(\hat\beta_n - \beta) &= \sqrt{n} \Big(\sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
+  &= \sqrt{n} \Big(n \cdot \frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
+  &= \frac{\sqrt{n}}{n} \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \sum_{i=1}^n X_i U_i \\
+  &= \Big({\color{red}\frac{1}{n}} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} {\color{red}\frac{1}{\sqrt{n}}} \sum_{i=1}^n X_i U_i
+  \end{aligned}
+  $$
+
+- **Assumption 3.** $X$'s and $U$'s uncorrelated, $\Omega$ finite and p.d.:
+  $$
+  \begin{aligned}
+  & \E{X_i U_i} = 0 \\
+  & \underset{k\times k}{\Omega} = \Var{X_i U_i} \quad \text{finite and p.d.}
+  \end{aligned}
+  $$
+
+- Variance of $X_i U_i$, with $\E{X_i U_i} = 0$:
+  $$
+  \begin{aligned}
+  \Omega &= \Var{X_i U_i} \\
+  &= \E{X_i U_i (X_i U_i)^\top} \\
+  &= \E{X_i \underset{1\times1}{U_i}\, \underset{1\times1}{U_i} X_i^\top} \\
+  &= \E{U_i^2 X_i X_i^\top}
+  \end{aligned}
+  $$
+
+## CLT for $\frac{1}{\sqrt{n}} \sum X_i U_i$
+
+- $X_1 U_1, \ldots, X_n U_n$: iid $k \times 1$ (Assumption 1), mean $0$, variance $\Omega$ finite and p.d. (Assumption 3).
+
+- Multivariate CLT (Lecture 8):
+  $$
+  \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i \to_d N\big(0,\ \underbrace{\E{U_i^2 X_i X_i^\top}}_{\Omega}\big)
+  $$
+
+## Limit of $\sqrt{n}(\hat\beta_n - \beta)$
+
+- We will use, without proof: $A_n \to_p A$, $A$ non-random, and $Z_n \to_d Z$:
+  $$
+  A_n Z_n \to_d A Z
+  $$
+
+- The two limits:
+  $$
+  \sqrt{n}(\hat\beta_n - \beta) = \underbrace{\Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}} \underbrace{\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0,\, \Omega)} \to_d Q^{-1} N(0, \Omega)
+  $$
+
+- Recall, linear map of a normal vector:
+  $$
+  W \sim N(\mu, \Sigma) \quad \Longrightarrow \quad \Gamma W \sim N(\Gamma \mu,\ \Gamma \Sigma \Gamma^\top)
+  $$
+
+- $\Gamma = Q^{-1}$; $Q = \E{X_i X_i^\top} = Q^\top$, so $(Q^{-1})^\top = Q^{-1}$:
+  $$
+  \begin{aligned}
+  Q^{-1} N(0, \Omega) &\overset{d}{=} N\big(Q^{-1} \cdot 0,\ Q^{-1} \Omega (Q^{-1})^\top\big) \\
+  &= N\big(0,\ Q^{-1} \Omega Q^{-1}\big)
+  \end{aligned}
+  $$
+
+## Asymptotic variance
+
+- **Theorem.** Under Assumptions 1 to 3:
+  $$
+  \begin{aligned}
+  \sqrt{n}(\hat\beta_n - \beta) &\to_d N\Big(0,\ \underbrace{\big(\E{X_i X_i^\top}\big)^{-1} \E{U_i^2 X_i X_i^\top} \big(\E{X_i X_i^\top}\big)^{-1}}_{\mathrm{AsyVar}(\hat\beta_n)}\Big) \\
+  \mathrm{AsyVar}(\hat\beta_n) &= Q^{-1} \Omega Q^{-1} \quad \text{(sandwich)}
+  \end{aligned}
+  $$
+
+- CDF form, for all $a \ne 0$ and $t \in \mathbb{R}$:
+  $$
+  \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{a^\top Q^{-1} \Omega Q^{-1} a}}\Big)
+  $$
+
+- $a = e_j$, element $j$:
+  $$
+  \sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N\big(0,\ [Q^{-1} \Omega Q^{-1}]_{jj}\big)
+  $$
+
+## Homoskedasticity
+
+- Suppose:
+  $$
+  \E{U_i^2 \mid X_i} = \sigma^2 \quad \text{(homoskedasticity)}
+  $$
+
+- Law of iterated expectations:
+  $$
+  \begin{aligned}
+  \Omega &= \E{U_i^2 X_i X_i^\top} \\
+  &= \E{\E{U_i^2 X_i X_i^\top \mid X_i}} \\
+  &= \E{\underbrace{\E{U_i^2 \mid X_i}}_{=\,\sigma^2} X_i X_i^\top} \\
+  &= \sigma^2 \E{X_i X_i^\top} \\
+  &= \sigma^2 Q
+  \end{aligned}
+  $$
+
+- The sandwich collapses:
+  $$
+  \begin{aligned}
+  \mathrm{AsyVar}(\hat\beta_n) &= Q^{-1} \Omega Q^{-1} \\
+  &= Q^{-1} (\sigma^2 Q) Q^{-1} \\
+  &= \sigma^2 Q^{-1}
+  \end{aligned}
+  $$
+
+- Therefore:
+  $$
+  \boxed{\ \sqrt{n}(\hat\beta_n - \beta) \to_d N\Big(0,\ \sigma^2 \big(\E{X_i X_i^\top}\big)^{-1}\Big)\ }
+  $$
+
+## Finite sample against large sample
+
+- Normal errors, exact for every $n$ (requires stronger assumptions), $a \ne 0$:
+  $$
+  \begin{aligned}
+  & Y = X\beta + U, \qquad U \mid X \sim N(0, \sigma^2 I_n) \\
+  \Longrightarrow\quad & \hat\beta \mid X \sim N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big) \\
+  \Longrightarrow\quad & \mathrm{P}\big(a^\top (\hat\beta - \beta) \le t \mid X\big) = \Phi\Big(\frac{t}{\sqrt{\sigma^2 a^\top (X^\top X)^{-1} a}}\Big)
+  \end{aligned}
+  $$
+
+- Homoskedastic errors, large sample, $a \ne 0$:
+  $$
+  \begin{aligned}
+  & \text{Assumption 1}, \quad \E{X_i U_i} = 0, \quad \E{X_i X_i^\top} \ \text{p.d. and finite}, \quad \E{U_i^2 \mid X_i} = \sigma^2 \\
+  \Longrightarrow\quad & \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{\sigma^2 a^\top \big(\E{X_i X_i^\top}\big)^{-1} a}}\Big)
+  \end{aligned}
+  $$
+
+- General, large sample, $a \ne 0$:
+  $$
+  \begin{aligned}
+  & \text{Assumptions 1 to 3}: \quad Q = \E{X_i X_i^\top}, \ \ \Omega = \E{U_i^2 X_i X_i^\top} \ \text{finite and p.d.} \\
+  \Longrightarrow\quad & \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{a^\top Q^{-1} \Omega Q^{-1} a}}\Big)
+  \end{aligned}
+  $$
+
+# Estimation of the asymptotic variance
+
+## The estimator $\hat V_n$
+
+- Unknown:
+  $$
+  V = Q^{-1} \Omega Q^{-1}, \qquad Q = \E{X_i X_i^\top}, \qquad \Omega = \E{U_i^2 X_i X_i^\top}
+  $$
+
+- Estimator, sample averages in place of expectations:
+  $$
+  \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}
+  $$
+
+- $\hat Q_n$: weak LLN, then Slutsky:
+  $$
+  \begin{aligned}
+  \hat Q_n &= \frac{1}{n} \sum_{i=1}^n X_i X_i^\top \to_p \E{X_i X_i^\top} = Q \\
+  \hat Q_n^{-1} &\to_p Q^{-1}
+  \end{aligned}
+  $$
+
+- $\hat\Omega_n$, residuals $\hat U_i$ in place of $U_i$:
+  $$
+  \hat\Omega_n = \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top
+  $$
+
+- Residual and error:
+  $$
+  \begin{aligned}
+  \hat U_i &= Y_i - X_i^\top \hat\beta_n \\
+  &= X_i^\top \beta + U_i - X_i^\top \hat\beta_n \\
+  &= U_i + X_i^\top \underbrace{(\beta - \hat\beta_n)}_{\to_p\, 0} \\
+  \Longrightarrow\quad \hat U_i &\to_p U_i \\
+  \Longrightarrow\quad \hat U_1^2 + \hat U_2^2 &\to_p U_1^2 + U_2^2
+  \end{aligned}
+  $$
+
+## Can we use the LLN on $\hat\Omega_n$?
+
+- Notation:
+  $$
+  X_n = o_p(1) \quad \Longleftrightarrow \quad X_n \to_p 0
+  $$
+
+- One $o_p(1)$ term for each $i$, $\hat U_i = U_i + o_p^i(1)$:
+  $$
+  \begin{aligned}
+  \hat\Omega_n &= \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top \\
+  &= \frac{1}{n} \sum_{i=1}^n \big(U_i + o_p^i(1)\big)^2 X_i X_i^\top \\
+  &\overset{?}{=} \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + o_p(1)
+  \end{aligned}
+  $$
+
+- $n$ terms $o_p^i(1)$: their sum can be large.
+
+- Weak LLN on $\frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top$? Not iid:
+  $$
+  \hat U_i = U_i - X_i^\top \underbrace{(\hat\beta_n - \beta)}_{\text{random}}
+  $$
+
+- $\hat U_1$ and $\hat U_2$: correlated via $\hat\beta_n$.
+
+## Matrix norm
+
+- To show:
+  $$
+  \hat\Omega_n = \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top \to_p \E{U_i^2 X_i X_i^\top} = \Omega, \qquad \underset{k\times k}{\Omega}, \ \ \underset{k\times k}{X_i X_i^\top}
+  $$
+
+- Frobenius norm, $\underset{k\times k}{A}$ (Euclidean norm of the $k^2$ elements):
+  $$
+  \begin{aligned}
+  \|A\| &= \sqrt{\sum_{r=1}^k \sum_{s=1}^k A_{rs}^2} \\
+  &= \sqrt{\operatorname{tr}(A^\top A)}
+  \end{aligned}
+  $$
+
+- Element by element $\Longleftrightarrow$ in norm (Lecture 8); to show:
+  $$
+  \|\underbrace{\hat\Omega_n - \Omega}_{k\times k}\| \to_p 0
+  $$
+
+## Expansion of $\hat\Omega_n$
+
+- Substitute $\hat U_i = U_i - X_i^\top(\hat\beta_n - \beta)$; square, $(a - b)^2 = a^2 + b^2 - 2ab$:
+  $$
+  \begin{aligned}
+  \hat\Omega_n &= \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top \\
+  &= \frac{1}{n} \sum_{i=1}^n \big(Y_i - X_i^\top \hat\beta_n\big)^2 X_i X_i^\top \\
+  &= \frac{1}{n} \sum_{i=1}^n \big(U_i - \underbrace{X_i^\top (\hat\beta_n - \beta)}_{1\times1}\big)^2 X_i X_i^\top \\
+  &= \frac{1}{n} \sum_{i=1}^n \Big(U_i^2 + \big(X_i^\top (\hat\beta_n - \beta)\big)^2 - 2\, U_i X_i^\top (\hat\beta_n - \beta)\Big) X_i X_i^\top \\
+  &= {\color{red}\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top} + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top \\
+  &\qquad - 2\, \frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top
+  \end{aligned}
+  $$
+
+- First term, weak LLN, $\Omega$ finite (Assumption 3):
+  $$
+  \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top \to_p \E{U_i^2 X_i X_i^\top} = \Omega
+  $$
+
+- To show: the other two terms $\to_p 0$.
+
+## Cross term: triangle inequality
+
+- Triangle inequality, $\|a + b\| \le \|a\| + \|b\|$; then $\|cA\| = |c|\, \|A\|$ for $1 \times 1$ $c$; then $|a b| = |a|\, |b|$:
+  $$
+  \begin{aligned}
+  \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) \underset{k\times k}{X_i X_i^\top}\Big\| &\le \frac{1}{n} \sum_{i=1}^n \Big\|\underbrace{\big(U_i X_i^\top (\hat\beta_n - \beta)\big)}_{1\times1} X_i X_i^\top\Big\| \\
+  &= \frac{1}{n} \sum_{i=1}^n \big|U_i X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
+  &= \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\|
+  \end{aligned}
+  $$
+
+## Two bounds
+
+- Cauchy-Schwarz:
+  $$
+  \big|X_i^\top (\hat\beta_n - \beta)\big| \le \|X_i\|\, \|\hat\beta_n - \beta\|
+  $$
+
+- $\underset{k\times k}{A} = X_i X_i^\top = A^\top$; $X_i^\top X_i = \|X_i\|^2$, $1 \times 1$; $\operatorname{tr}(AB) = \operatorname{tr}(BA)$:
+  $$
+  \begin{aligned}
+  \|X_i X_i^\top\| &= \sqrt{\operatorname{tr}\big(\underbrace{X_i X_i^\top}_{A^\top} \underbrace{X_i X_i^\top}_{A}\big)} \\
+  &= \sqrt{\operatorname{tr}\big(X_i \underbrace{X_i^\top X_i}_{=\,\|X_i\|^2} X_i^\top\big)} \\
+  &= \sqrt{\|X_i\|^2 \operatorname{tr}\big(X_i X_i^\top\big)} \\
+  &= \|X_i\| \sqrt{\operatorname{tr}\big(X_i X_i^\top\big)} \\
+  &= \|X_i\| \sqrt{\operatorname{tr}\big(X_i^\top X_i\big)} \\
+  &= \|X_i\| \sqrt{\|X_i\|^2} \\
+  &= \|X_i\|^2
+  \end{aligned}
+  $$
+
+## Cross term $\to_p 0$
+
+- The two bounds:
+  $$
+  \begin{aligned}
+  \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\| &\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \big|X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
+  &\le \frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|\, \|\hat\beta_n - \beta\|\, \|X_i\|^2 \\
+  &= \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n |U_i|\, \|X_i\|^3}_{\to_p\, \E{|U_i|\, \|X_i\|^3}}\Big) \cdot \underbrace{\|\hat\beta_n - \beta\|}_{\to_p\, 0}
+  \end{aligned}
+  $$
+
+- Weak LLN, provided $\E{|U_i|\, \|X_i\|^3} < \infty$. Cauchy-Schwarz twice:
+  $$
+  \begin{aligned}
+  \E{|U_i|\, \|X_i\|^3} &= \E{|U_i|\, \|X_i\| \cdot \|X_i\|^2} \\
+  &\le \sqrt{\E{U_i^2 \|X_i\|^2}\, \E{\|X_i\|^4}} \\
+  &\le \sqrt{\sqrt{\E{U_i^4}\, \E{\|X_i\|^4}} \cdot \E{\|X_i\|^4}}
+  \end{aligned}
+  $$
+
+- **Assume:**
+  $$
+  \E{U_i^4} < \infty, \qquad \E{\|X_i\|^4} < \infty
+  $$
+
+- Slutsky: the bound $\to_p \E{|U_i|\, \|X_i\|^3} \cdot 0 = 0$. The norm is non-negative, so:
+  $$
+  \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top\Big\| \to_p 0
+  $$
+
+## Squared term $\to_p 0$
+
+- Triangle inequality and $\|cA\| = |c|\, \|A\|$, then Cauchy-Schwarz and $\|X_i X_i^\top\| = \|X_i\|^2$:
+  $$
+  \begin{aligned}
+  \Big\|\frac{1}{n} \sum_{i=1}^n \big(\underbrace{X_i^\top (\hat\beta_n - \beta)}_{1\times1}\big)^2 X_i X_i^\top\Big\| &\le \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2\, \|X_i X_i^\top\| \\
+  &\le \frac{1}{n} \sum_{i=1}^n \|X_i\|^2\, \|\hat\beta_n - \beta\|^2\, \|X_i\|^2 \\
+  &= \Big(\underbrace{\frac{1}{n} \sum_{i=1}^n \|X_i\|^4}_{\to_p\, \E{\|X_i\|^4} < \infty}\Big) \cdot \underbrace{\|\hat\beta_n - \beta\|^2}_{\to_p\, 0}
+  \end{aligned}
+  $$
+
+- Slutsky, non-negative norm:
+  $$
+  \Big\|\frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top\Big\| \to_p 0
+  $$
+
+## $\hat\Omega_n \to_p \Omega$ and $\hat V_n \to_p V$
+
+- Three terms:
+  $$
+  \begin{aligned}
+  \hat\Omega_n &= \underbrace{\frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top}_{\to_p\, \Omega} + \underbrace{\frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 X_i X_i^\top}_{\to_p\, 0} \\
+  &\qquad - 2\, \underbrace{\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) X_i X_i^\top}_{\to_p\, 0} \\
+  &= \frac{1}{n} \sum_{i=1}^n U_i^2 X_i X_i^\top + o_p(1) \\
+  &\to_p \E{U_i^2 X_i X_i^\top} = \Omega
+  \end{aligned}
+  $$
+
+- Slutsky, $\hat Q_n^{-1} \to_p Q^{-1}$:
+  $$
+  \boxed{\ \hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1} \to_p Q^{-1} \Omega Q^{-1} = V\ }
+  $$
+
+- Used: Assumptions 1 to 3, $\E{U_i^4} < \infty$, $\E{\|X_i\|^4} < \infty$. Homoskedasticity not used.
+
+# Robust and usual standard errors
+
+## Robust standard errors
+
+- Approximation for large $n$:
+  $$
+  \sqrt{n}(\hat\beta_n - \beta) \overset{a}{\sim} N(0, V) \quad \Longrightarrow \quad \hat\beta_{n,j} \overset{a}{\sim} N\Big(\beta_j,\ \frac{[V]_{jj}}{n}\Big)
+  $$
+
+- **Definition.** Robust (heteroskedasticity-consistent, White) standard error; $\hat Q_n = \frac{1}{n} X^\top X$:
+  $$
+  \begin{aligned}
+  \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &= \sqrt{[\hat V_n]_{jj} / n} \\
+  &= \sqrt{\Big[\frac{1}{n} \Big(\frac{1}{n} X^\top X\Big)^{-1} \Big(\frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) \Big(\frac{1}{n} X^\top X\Big)^{-1}\Big]_{jj}} \\
+  &= \sqrt{\Big[\frac{1}{n} \cdot n (X^\top X)^{-1} \cdot \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top \cdot n (X^\top X)^{-1}\Big]_{jj}} \\
+  &= \sqrt{\Big[(X^\top X)^{-1} \Big(\sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) (X^\top X)^{-1}\Big]_{jj}}
+  \end{aligned}
+  $$
+
+- Lecture 2, heteroskedastic errors, $\Var{U_i \mid X} = \sigma_i^2$; $\hat U_i^2$ in place of $\sigma_i^2$:
+  $$
+  \Var{\hat\beta \mid X} = (X^\top X)^{-1} \Big(\sum_{i=1}^n \sigma_i^2 X_i X_i^\top\Big) (X^\top X)^{-1}
+  $$
+
+## $t$-ratio with robust standard errors
+
+- We will use, without proof: $Z_n \to_d Z$, $c_n \to_p c \ne 0$, $c$ non-random:
+  $$
+  \frac{Z_n}{c_n} \to_d \frac{Z}{c}
+  $$
+
+- $[\hat V_n]_{jj} \to_p [V]_{jj} > 0$ ($V$ p.d.); $\sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, [V]_{jj})$:
+  $$
+  \begin{aligned}
+  \frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)} &= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{[\hat V_n]_{jj} / n}} \\
+  &= \frac{\sqrt{n}(\hat\beta_{n,j} - \beta_j)}{\sqrt{[\hat V_n]_{jj}}} \\
+  &\to_d \frac{N\big(0, [V]_{jj}\big)}{\sqrt{[V]_{jj}}} \\
+  &\overset{d}{=} N(0, 1)
+  \end{aligned}
+  $$
+
+- Asymptotic confidence interval, $\mathrm{P}\big(\beta_j \in CI_{1-\alpha}\big) \to 1 - \alpha$:
+  $$
+  CI_{1-\alpha} = \Big[\hat\beta_{n,j} - z_{1-\alpha/2}\, \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big),\ \hat\beta_{n,j} + z_{1-\alpha/2}\, \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)\Big]
+  $$
+
+## Usual standard errors
+
+- Lecture 3:
+  $$
+  \text{std. err}\big(\hat\beta_{n,j}\big) = \sqrt{s^2 \big[(X^\top X)^{-1}\big]_{jj}}, \qquad s^2 = \frac{1}{n - k} \sum_{i=1}^n \hat U_i^2
+  $$
+
+- In terms of $\hat Q_n = \frac{1}{n} X^\top X$:
+  $$
+  \begin{aligned}
+  s^2 (X^\top X)^{-1} &= \frac{1}{n}\, s^2 \Big(\frac{1}{n} X^\top X\Big)^{-1} \\
+  &= \frac{1}{n}\, s^2 \hat Q_n^{-1}
+  \end{aligned}
+  $$
+
+- Usual: $s^2 \hat Q_n^{-1}$ estimates $\mathrm{AsyVar}(\hat\beta_n)$; robust: $\hat V_n$.
+  $$
+  \text{std. err}\big(\hat\beta_{n,j}\big) = \sqrt{[s^2 \hat Q_n^{-1}]_{jj} / n}, \qquad \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) = \sqrt{[\hat V_n]_{jj} / n}
+  $$
+
+## $s^2 \to_p \E{U_i^2}$
+
+- $\hat U_i = U_i - X_i^\top(\hat\beta_n - \beta)$; $U_i X_i^\top (\hat\beta_n - \beta) = (\hat\beta_n - \beta)^\top X_i U_i$:
+  $$
+  \begin{aligned}
+  \frac{1}{n} \sum_{i=1}^n \hat U_i^2 &= \frac{1}{n} \sum_{i=1}^n \big(U_i - X_i^\top (\hat\beta_n - \beta)\big)^2 \\
+  &= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, \frac{1}{n} \sum_{i=1}^n U_i X_i^\top (\hat\beta_n - \beta) + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 \\
+  &= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, (\hat\beta_n - \beta)^\top \frac{1}{n} \sum_{i=1}^n X_i U_i + (\hat\beta_n - \beta)^\top \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big) (\hat\beta_n - \beta) \\
+  &\to_p \E{U_i^2} - 2 \cdot 0^\top 0 + 0^\top Q\, 0 \\
+  &= \E{U_i^2}
+  \end{aligned}
+  $$
+
+- $\frac{n}{n - k} \to 1$:
+  $$
+  \begin{aligned}
+  s^2 &= \frac{n}{n - k} \cdot \frac{1}{n} \sum_{i=1}^n \hat U_i^2 \\
+  &\to_p 1 \cdot \E{U_i^2} = \E{U_i^2}
+  \end{aligned}
+  $$
+
+- Homoskedasticity, law of iterated expectations:
+  $$
+  \E{U_i^2} = \E{\E{U_i^2 \mid X_i}} = \sigma^2
+  $$
+
+## Homoskedasticity: robust and usual agree
+
+- Both estimators of $\mathrm{AsyVar}(\hat\beta_n) = \sigma^2 Q^{-1}$ consistent:
+  $$
+  \begin{aligned}
+  \hat V_n &\to_p Q^{-1} \Omega Q^{-1} = \sigma^2 Q^{-1} \\
+  s^2 \hat Q_n^{-1} &\to_p \sigma^2 Q^{-1}
+  \end{aligned}
+  $$
+
+- Ratio of the two standard errors, Slutsky:
+  $$
+  \begin{aligned}
+  \frac{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)}{\text{std. err}\big(\hat\beta_{n,j}\big)} &= \sqrt{\frac{[\hat V_n]_{jj} / n}{[s^2 \hat Q_n^{-1}]_{jj} / n}} \\
+  &= \sqrt{\frac{[\hat V_n]_{jj}}{[s^2 \hat Q_n^{-1}]_{jj}}} \\
+  &\to_p \sqrt{\frac{\sigma^2 [Q^{-1}]_{jj}}{\sigma^2 [Q^{-1}]_{jj}}} \\
+  &= 1
+  \end{aligned}
+  $$
+
+- Different in a given sample; the same in large samples. Either one in the $t$-ratio $\to_d N(0, 1)$.
+
+## Heteroskedasticity: usual standard errors fail
+
+- Without homoskedasticity:
+  $$
+  s^2 \hat Q_n^{-1} \to_p \E{U_i^2}\, Q^{-1} \ne Q^{-1} \Omega Q^{-1} = V \quad \text{(in general)}
+  $$
+
+- Example, $k = 1$: $Q = \E{X_i^2}$, $\Omega = \E{U_i^2 X_i^2}$:
+  $$
+  \begin{aligned}
+  V &= \frac{\E{U_i^2 X_i^2}}{\big(\E{X_i^2}\big)^2}, \qquad \text{usual: } \frac{\E{U_i^2}}{\E{X_i^2}} \\
+  V - \frac{\E{U_i^2}}{\E{X_i^2}} &= \frac{\E{U_i^2 X_i^2} - \E{U_i^2}\, \E{X_i^2}}{\big(\E{X_i^2}\big)^2} \\
+  &= \frac{\Cov{U_i^2, X_i^2}}{\big(\E{X_i^2}\big)^2}
+  \end{aligned}
+  $$
+
+- $\Cov{U_i^2, X_i^2} > 0$, errors more variable where $|X_i|$ is large: usual standard error too small.
+
+- Robust: $\hat V_n \to_p V$ with or without homoskedasticity.
+
+## Normality: exact and asymptotic
+
+- Normal errors (Lecture 4), homoskedastic:
+  $$
+  \begin{aligned}
+  & U \mid X \sim N(0, \sigma^2 I_n) \\
+  \Longrightarrow\quad & \hat\beta_n \mid X \sim N\big(\beta,\ \sigma^2 (X^\top X)^{-1}\big) \quad \text{for every } n
+  \end{aligned}
+  $$
+
+- Variance of $\sqrt{n}(\hat\beta_n - \beta)$ given $X$:
+  $$
+  \begin{aligned}
+  \Var{\sqrt{n}(\hat\beta_n - \beta) \mid X} &= n\, \Var{\hat\beta_n \mid X} \\
+  &= n\, \sigma^2 (X^\top X)^{-1} \\
+  &= \sigma^2 \Big(\frac{1}{n} X^\top X\Big)^{-1} \\
+  &= \sigma^2 \hat Q_n^{-1} \\
+  &\to_p \sigma^2 Q^{-1} = \mathrm{AsyVar}(\hat\beta_n)
+  \end{aligned}
+  $$
+
+- $\sigma^2$ estimated by $s^2$: exact $t_{n-k}$ distribution of the $t$-ratio with the usual standard error (typed notes, Lecture 4); $t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}$.
+
+## Usual and robust standard errors compared
+
+- Validity of the $t$-ratio:
+
+  | Errors | Usual std. err | Robust std. err |
+  |---|---|---|
+  | $U \mid X \sim N(0, \sigma^2 I_n)$ | exact, $t_{n-k}$ | large $n$, $N(0,1)$ |
+  | $\E{U_i^2 \mid X_i} = \sigma^2$ | large $n$, $N(0,1)$ | large $n$, $N(0,1)$ |
+  | $\E{U_i^2 \mid X_i}$ depends on $X_i$ | invalid | large $n$, $N(0,1)$ |
+
+- Normality and homoskedasticity: all three agree in large samples.
+
+# Summary
+
+## Consistency and asymptotic normality
+
+- $\hat\beta_n = \beta + \big(\frac{1}{n} \sum X_i X_i^\top\big)^{-1} \frac{1}{n} \sum X_i U_i$; iid, $\E{X_i U_i} = 0$, $\E{U_i^2} < \infty$, $\E{X_{i,j}^2} < \infty$, $\E{X_i X_i^\top}$ p.d. $\Longrightarrow$ $\hat\beta_n \to_p \beta$.
+
+- $\sqrt{n}(\hat\beta_n - \beta) = \big(\frac{1}{n} \sum X_i X_i^\top\big)^{-1} \frac{1}{\sqrt{n}} \sum X_i U_i$.
+
+- Assumptions 1 to 3 $\Longrightarrow$ $\sqrt{n}(\hat\beta_n - \beta) \to_d N(0, Q^{-1} \Omega Q^{-1})$, $Q = \E{X_i X_i^\top}$, $\Omega = \E{U_i^2 X_i X_i^\top}$.
+
+- $\E{U_i^2 \mid X_i} = \sigma^2$ $\Longrightarrow$ $\Omega = \sigma^2 Q$, $\mathrm{AsyVar}(\hat\beta_n) = \sigma^2 Q^{-1}$.
+
+## Variance estimation and standard errors
+
+- $\hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}$, $\hat Q_n = \frac{1}{n} \sum X_i X_i^\top$, $\hat\Omega_n = \frac{1}{n} \sum \hat U_i^2 X_i X_i^\top$.
+
+- $\hat\Omega_n = \frac{1}{n} \sum U_i^2 X_i X_i^\top + o_p(1)$ under $\E{U_i^4} < \infty$, $\E{\|X_i\|^4} < \infty$; $\hat V_n \to_p V$.
+
+- $\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\big[(X^\top X)^{-1} \big(\sum \hat U_i^2 X_i X_i^\top\big) (X^\top X)^{-1}\big]_{jj}}$; $t$-ratio $\to_d N(0, 1)$.
+
+- $s^2 \to_p \E{U_i^2}$; homoskedasticity: $\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1$.
+
+- Heteroskedasticity: $s^2 \hat Q_n^{-1} \to_p \E{U_i^2}\, Q^{-1} \ne V$ in general; only the robust standard error is valid.
+
+- Normality: $\Var{\sqrt{n}(\hat\beta_n - \beta) \mid X} = \sigma^2 \hat Q_n^{-1} \to_p \sigma^2 Q^{-1}$; exact and asymptotic results agree in large samples.
