@@ -2313,7 +2313,7 @@ window.Quarto = {
 <li><p>Regression, <span class="math inline">\{(Y_i, X_i) : i = 1, \ldots, n\}</span> iid: <span class="math display">
 Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_{i,1} \\ \vdots \\ X_{i,k} \end{pmatrix}
 </span></p></li>
-<li><p>OLS from <span class="math inline">n</span> observations; substitute <span class="math inline">Y_i = X_i^\top \beta + U_i</span>: <span class="math display">
+<li><p>OLS from <span class="math inline">n</span> observations, <span class="math inline">\operatorname{rank}\left(X\right) = k</span> (Lecture 1); substitute <span class="math inline">Y_i = X_i^\top \beta + U_i</span>: <span class="math display">
 \begin{aligned}
 \hat\beta_n &amp;= (X^\top X)^{-1} X^\top Y \\
 &amp;= \Big(\underbrace{\sum_{i=1}^n X_i X_i^\top}_{k\times k}\Big)^{-1} \sum_{i=1}^n X_i Y_i \\
@@ -2379,13 +2379,13 @@ Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_
 &amp; \mathrm{E}\left[X_i U_i\right] = 0 \\
 &amp; \mathrm{E}\left[U_i^2\right] &lt; \infty \\
 &amp; \mathrm{E}\left[X_{i,j}^2\right] &lt; \infty, \quad j = 1, \ldots, k \\
-&amp; \mathrm{E}\left[X_i X_i^\top\right] \ \text{ p.d. (no multicollinearity)}
+&amp; \mathrm{E}\left[X_i X_i^\top\right] \ \text{ p.d. (no perfect multicollinearity)}
 \end{aligned}
 </span></p></li>
 <li><p><span class="math inline">U_i = Y_i - X_i^\top \beta</span>: <span class="math display">
 \{(Y_i, X_i)\} \ \text{ iid} \quad \Longrightarrow \quad \{(U_i, X_i)\} \ \text{ iid}
 </span></p></li>
-<li><p><span class="math inline">(Y_1, X_1)</span> independent of <span class="math inline">(Y_2, X_2)</span>; <span class="math inline">Y_1</span> and <span class="math inline">X_1</span> not independent.</p></li>
+<li><p><span class="math inline">(Y_1, X_1)</span> independent of <span class="math inline">(Y_2, X_2)</span>; <span class="math inline">Y_1</span> and <span class="math inline">X_1</span> need not be independent.</p></li>
 <li><p>Weaker than <span class="math inline">\mathrm{E}\left[U_i \mid X_i\right] = 0</span>: <span class="math display">
 \mathrm{E}\left[X_i U_i\right] = 0 \quad \nRightarrow \quad \mathrm{E}\left[Y_i \mid X_i\right] = X_i^\top \beta \quad \text{(in general)}
 </span></p></li>
@@ -2587,7 +2587,7 @@ V = \mathrm{AsyVar}(\hat\beta_n) = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\l
 <li><p><span class="math inline">\hat\Omega_n</span>, residuals <span class="math inline">\hat U_i</span> in place of <span class="math inline">U_i</span>: <span class="math display">
 \hat\Omega_n = \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top
 </span></p></li>
-<li><p>Residual and error: <span class="math display">
+<li><p>Residual and error, <span class="math inline">i</span> fixed (continuous mapping theorem, without proof): <span class="math display">
 \begin{aligned}
 \hat U_i &amp;= Y_i - X_i^\top \hat\beta_n \\
 &amp;= X_i^\top \beta + U_i - X_i^\top \hat\beta_n \\

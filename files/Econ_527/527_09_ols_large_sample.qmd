@@ -56,7 +56,7 @@ format:
   Y_i = X_i^\top \beta + U_i, \qquad \underset{k\times1}{X_i} = \begin{pmatrix} X_{i,1} \\ \vdots \\ X_{i,k} \end{pmatrix}
   $$
 
-- OLS from $n$ observations; substitute $Y_i = X_i^\top \beta + U_i$:
+- OLS from $n$ observations, $\rank{X} = k$ (Lecture 1); substitute $Y_i = X_i^\top \beta + U_i$:
   $$
   \begin{aligned}
   \hat\beta_n &= (X^\top X)^{-1} X^\top Y \\
@@ -139,7 +139,7 @@ format:
   & \E{X_i U_i} = 0 \\
   & \E{U_i^2} < \infty \\
   & \E{X_{i,j}^2} < \infty, \quad j = 1, \ldots, k \\
-  & \E{X_i X_i^\top} \ \text{ p.d. (no multicollinearity)}
+  & \E{X_i X_i^\top} \ \text{ p.d. (no perfect multicollinearity)}
   \end{aligned}
   $$
 
@@ -148,7 +148,7 @@ format:
   \{(Y_i, X_i)\} \ \text{ iid} \quad \Longrightarrow \quad \{(U_i, X_i)\} \ \text{ iid}
   $$
 
-- $(Y_1, X_1)$ independent of $(Y_2, X_2)$; $Y_1$ and $X_1$ not independent.
+- $(Y_1, X_1)$ independent of $(Y_2, X_2)$; $Y_1$ and $X_1$ need not be independent.
 
 - Weaker than $\E{U_i \mid X_i} = 0$:
   $$
@@ -386,7 +386,7 @@ format:
   \hat\Omega_n = \frac{1}{n} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top
   $$
 
-- Residual and error:
+- Residual and error, $i$ fixed (continuous mapping theorem, without proof):
   $$
   \begin{aligned}
   \hat U_i &= Y_i - X_i^\top \hat\beta_n \\
