@@ -465,7 +465,7 @@ format:
 
 ## Cross term: triangle inequality
 
-- Triangle inequality, $\|a + b\| \le \|a\| + \|b\|$; then $\|cA\| = |c|\, \|A\|$ for $1 \times 1$ $c$; then $|a b| = |a|\, |b|$:
+- Triangle inequality, $\|a + b\| \le \|a\| + \|b\|$; then $\|cA\| = |c|\, \|A\|$ for $1 \times 1$ $c$; then $|a b| = |a|\, |b|$ for $1 \times 1$ $a$, $b$:
   $$
   \begin{aligned}
   \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) \underset{k\times k}{X_i X_i^\top}\Big\| &\le \frac{1}{n} \sum_{i=1}^n \Big\|\underbrace{\big(U_i X_i^\top (\hat\beta_n - \beta)\big)}_{1\times1} X_i X_i^\top\Big\| \\
@@ -481,7 +481,7 @@ format:
   \big|X_i^\top (\hat\beta_n - \beta)\big| \le \|X_i\|\, \|\hat\beta_n - \beta\|
   $$
 
-- $\underset{k\times k}{A} = X_i X_i^\top = A^\top$; $\operatorname{tr}(AB) = \operatorname{tr}(BA)$:
+- $\underset{k\times k}{A} = X_i X_i^\top = A^\top$; $\operatorname{tr}(BC) = \operatorname{tr}(CB)$:
   $$
   \begin{aligned}
   \|X_i X_i^\top\| &= \sqrt{\operatorname{tr}\big(\underbrace{X_i X_i^\top}_{A^\top} \underbrace{X_i X_i^\top}_{A}\big)} \\

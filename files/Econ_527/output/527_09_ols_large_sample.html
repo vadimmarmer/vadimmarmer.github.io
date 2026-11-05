@@ -2657,7 +2657,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 <section id="cross-term-triangle-inequality" class="level2">
 <h2 class="anchored" data-anchor-id="cross-term-triangle-inequality">Cross term: triangle inequality</h2>
 <ul>
-<li>Triangle inequality, <span class="math inline">\|a + b\| \le \|a\| + \|b\|</span>; then <span class="math inline">\|cA\| = |c|\, \|A\|</span> for <span class="math inline">1 \times 1</span> <span class="math inline">c</span>; then <span class="math inline">|a b| = |a|\, |b|</span>: <span class="math display">
+<li>Triangle inequality, <span class="math inline">\|a + b\| \le \|a\| + \|b\|</span>; then <span class="math inline">\|cA\| = |c|\, \|A\|</span> for <span class="math inline">1 \times 1</span> <span class="math inline">c</span>; then <span class="math inline">|a b| = |a|\, |b|</span> for <span class="math inline">1 \times 1</span> <span class="math inline">a</span>, <span class="math inline">b</span>: <span class="math display">
 \begin{aligned}
 \Big\|\frac{1}{n} \sum_{i=1}^n \big(U_i X_i^\top (\hat\beta_n - \beta)\big) \underset{k\times k}{X_i X_i^\top}\Big\| &amp;\le \frac{1}{n} \sum_{i=1}^n \Big\|\underbrace{\big(U_i X_i^\top (\hat\beta_n - \beta)\big)}_{1\times1} X_i X_i^\top\Big\| \\
 &amp;= \frac{1}{n} \sum_{i=1}^n \big|U_i X_i^\top (\hat\beta_n - \beta)\big|\, \|X_i X_i^\top\| \\
@@ -2672,7 +2672,7 @@ Z_n = o_p(1) \quad \Longleftrightarrow \quad Z_n \to_p 0
 <li><p>Cauchy-Schwarz: <span class="math display">
 \big|X_i^\top (\hat\beta_n - \beta)\big| \le \|X_i\|\, \|\hat\beta_n - \beta\|
 </span></p></li>
-<li><p><span class="math inline">\underset{k\times k}{A} = X_i X_i^\top = A^\top</span>; <span class="math inline">\operatorname{tr}(AB) = \operatorname{tr}(BA)</span>: <span class="math display">
+<li><p><span class="math inline">\underset{k\times k}{A} = X_i X_i^\top = A^\top</span>; <span class="math inline">\operatorname{tr}(BC) = \operatorname{tr}(CB)</span>: <span class="math display">
 \begin{aligned}
 \|X_i X_i^\top\| &amp;= \sqrt{\operatorname{tr}\big(\underbrace{X_i X_i^\top}_{A^\top} \underbrace{X_i X_i^\top}_{A}\big)} \\
 &amp;= \sqrt{\operatorname{tr}\big(X_i \underbrace{X_i^\top X_i}_{=\,\|X_i\|^2} X_i^\top\big)} \\
