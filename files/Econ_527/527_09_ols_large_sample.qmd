@@ -71,11 +71,6 @@ format:
   \E{X_i U_i} = 0, \qquad \E{U_i^2} < \infty, \qquad \E{X_{i,j}^2} < \infty, \quad j = 1, \ldots, k
   $$
 
-- Cauchy-Schwarz: integrability for the weak LLN:
-  $$
-  \E{|X_{i,j} U_i|} \le \sqrt{\E{X_{i,j}^2}\, \E{U_i^2}} < \infty
-  $$
-
 - $X_1 U_1, \ldots, X_n U_n$: iid; weak LLN, element by element:
   $$
   \frac{1}{n} \sum_{i=1}^n X_i U_i \to_p \E{X_i U_i} = 0
