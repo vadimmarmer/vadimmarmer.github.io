@@ -922,7 +922,7 @@ $$
 In particular $n \ge k$: at least as many observations as coefficients.
 
 - What it means observation by observation: $c_1 X_{i1} + \cdots + c_k X_{ik} = 0$ for all $i = 1, \ldots, n$ only if $c = 0$. 
-- The population condition $\operatorname{rank}(\E{X_i X_i^\top}) = k$ is necessary: if it fails, some $c \ne 0$ has $X_i^\top c = 0$ with probability one for every $i$, so $Xc = 0$ and $\rank{X} < k$, whatever $n$.
+- The population condition $\operatorname{rank}(\E{X_i X_i^\top}) = k$ is necessary: if it fails, some ${c \ne 0}$ has $X_i^\top c = 0$ with probability one for every $i$, so $Xc = 0$ and $\rank{X} < k$, whatever $n$.
 - It is not sufficient for a given $n$: with $X_i = (1, D_i)^\top$, $D_i$ iid, equal to $0$ or $1$ with probability $\tfrac12$ each, $\operatorname{rank}(\E{X_i X_i^\top}) = 2$, yet $\mathrm{P}(\rank{X} < 2) = \mathrm{P}(D_1 = \cdots = D_n) = 2^{1-n} > 0$.
 
 ## Least squares
