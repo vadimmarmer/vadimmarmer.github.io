@@ -487,7 +487,7 @@ format:
 - $\underset{k\times k}{A} = X_i X_i^\top = A^\top$; $\operatorname{tr}(BC) = \operatorname{tr}(CB)$:
   $$
   \begin{aligned}
-  \|X_i X_i^\top\| &= \sqrt{\operatorname{tr}\big(\underbrace{X_i X_i^\top}_{A^\top} \underbrace{X_i X_i^\top}_{A}\big)} \\
+  \|X_i X_i^\top\| &= \sqrt{\operatorname{tr}\big(\underbrace{X_i X_i^\top}_{A^\top}\ \underbrace{X_i X_i^\top}_{A}\big)} \\
   &= \sqrt{\operatorname{tr}\big(X_i \underbrace{X_i^\top X_i}_{=\,\|X_i\|^2} X_i^\top\big)} \\
   &= \sqrt{\operatorname{tr}\big(X_i \underbrace{\|X_i\|^2}_{1\times1} X_i^\top\big)} \\
   &= \sqrt{\|X_i\|^2 \operatorname{tr}\big(X_i X_i^\top\big)} \\
@@ -571,7 +571,7 @@ format:
   \sqrt{n}(\hat\beta_n - \beta) \overset{a}{\sim} N(0, V) \quad \Longrightarrow \quad \hat\beta_{n,j} \overset{a}{\sim} N\Big(\beta_j,\ \frac{[V]_{jj}}{n}\Big)
   $$
 
-- **Definition.** Robust (heteroskedasticity-consistent, White) standard error; $\hat Q_n = \frac{1}{n} X^\top X$:
+- **Definition.** Robust (heteroskedasticity-consistent, White) standard error; ${\hat Q_n = \frac{1}{n} X^\top X}$:
   $$
   \begin{aligned}
   \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &= \sqrt{[\hat V_n]_{jj} / n} \\
@@ -588,7 +588,7 @@ format:
 
 ## $t$-ratio with robust standard errors
 
-- We will use, without proof (Cramér convergence theorem): $Z_n \to_d Z$, $c_n \to_p c \ne 0$, $c$ non-random:
+- We will use, without proof (Cramér convergence theorem): $Z_n \to_d Z$, ${c_n \to_p c \ne 0}$, $c$ non-random:
   $$
   \frac{Z_n}{c_n} \to_d \frac{Z}{c}
   $$
@@ -639,13 +639,15 @@ format:
 
 ## $s^2 \to_p \E{U_i^2}$
 
-- $\hat U_i = U_i - X_i^\top(\hat\beta_n - \beta)$; $U_i X_i^\top (\hat\beta_n - \beta) = (\hat\beta_n - \beta)^\top X_i U_i$; $\E{U_i^2} \le \sqrt{\E{U_i^4}} < \infty$:
+- $\hat U_i = U_i - X_i^\top(\hat\beta_n - \beta)$; $U_i X_i^\top (\hat\beta_n - \beta) = (\hat\beta_n - \beta)^\top X_i U_i$; ${\E{U_i^2} \le \sqrt{\E{U_i^4}} < \infty}$; weak LLN, consistency, Slutsky:
   $$
   \begin{aligned}
   \frac{1}{n} \sum_{i=1}^n \hat U_i^2 &= \frac{1}{n} \sum_{i=1}^n \big(U_i - X_i^\top (\hat\beta_n - \beta)\big)^2 \\
-  &= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, \frac{1}{n} \sum_{i=1}^n U_i X_i^\top (\hat\beta_n - \beta) + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 \\
-  &= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, (\hat\beta_n - \beta)^\top \frac{1}{n} \sum_{i=1}^n X_i U_i + (\hat\beta_n - \beta)^\top \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big) (\hat\beta_n - \beta) \\
-  &\to_p \E{U_i^2} - 2 \cdot 0^\top 0 + 0^\top Q\, 0 \quad \text{(weak LLN, consistency, Slutsky)} \\
+  &= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, \frac{1}{n} \sum_{i=1}^n U_i X_i^\top (\hat\beta_n - \beta) \\
+  &\qquad + \frac{1}{n} \sum_{i=1}^n \big(X_i^\top (\hat\beta_n - \beta)\big)^2 \\
+  &= \frac{1}{n} \sum_{i=1}^n U_i^2 - 2\, (\hat\beta_n - \beta)^\top \frac{1}{n} \sum_{i=1}^n X_i U_i \\
+  &\qquad + (\hat\beta_n - \beta)^\top \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big) (\hat\beta_n - \beta) \\
+  &\to_p \E{U_i^2} - 2 \cdot 0^\top 0 + 0^\top Q\, 0 \\
   &= \E{U_i^2}
   \end{aligned}
   $$
@@ -745,7 +747,7 @@ format:
   \end{aligned}
   $$
 
-- Normal errors are homoskedastic, so robust and usual agree in large samples ($\E{U_i^4} = 3\sigma^4$, $\E{\|X_i\|^4} < \infty$):
+- Normal errors are homoskedastic, so robust and usual agree in large samples $(\E{U_i^4} = 3\sigma^4$, $\E{\|X_i\|^4} < \infty)$:
   $$
   \begin{aligned}
   \E{U_i^2 \mid X} &= \big[\sigma^2 I_n\big]_{ii} = \sigma^2 \\
@@ -759,7 +761,7 @@ format:
 - Validity of the $t$-ratio (large $n$: conditions for $\hat V_n \to_p V$):
 
   | Errors | Usual std. err | Robust std. err |
-  |---|---|---|
+  |-----|----|----|
   | $U \mid X \sim N(0, \sigma^2 I_n)$ | exact, $t_{n-k}$ | large $n$, $N(0,1)$ |
   | $\E{U_i^2 \mid X_i} = \sigma^2$ | large $n$, $N(0,1)$ | large $n$, $N(0,1)$ |
   | $\E{U_i^2 \mid X_i}$ depends on $X_i$ | invalid in general | large $n$, $N(0,1)$ |
@@ -797,4 +799,4 @@ format:
 
 - Heteroskedasticity: $s^2 \hat Q_n^{-1} \to_p \E{U_i^2}\, Q^{-1} \ne V$ in general; only the robust standard error is always valid.
 
-- Normality: $\Var{\sqrt{n}(\hat\beta_n - \beta) \mid X} = \sigma^2 \hat Q_n^{-1} \to_p \sigma^2 Q^{-1}$; usual $t$-ratio exactly $t_{n-k}$, $t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}$; homoskedastic, so $\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1$.
+- Normality: $\Var{\sqrt{n}(\hat\beta_n - \beta) \mid X} = \sigma^2 \hat Q_n^{-1} \to_p \sigma^2 Q^{-1}$; usual $t$-ratio exactly $t_{n-k}$, $t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}$; homoskedastic, so ${\text{std. err}_{\text{rob}} / \text{std. err} \to_p 1}$.
