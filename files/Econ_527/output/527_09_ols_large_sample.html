@@ -2263,6 +2263,10 @@ window.Quarto = {
   <li><a href="#consistency-and-asymptotic-normality" id="toc-consistency-and-asymptotic-normality" class="nav-link" data-scroll-target="#consistency-and-asymptotic-normality">Consistency and asymptotic normality</a></li>
   <li><a href="#variance-estimation-and-standard-errors" id="toc-variance-estimation-and-standard-errors" class="nav-link" data-scroll-target="#variance-estimation-and-standard-errors">Variance estimation and standard errors</a></li>
   </ul></li>
+  <li><a href="#clustered-standard-errors" id="toc-clustered-standard-errors" class="nav-link" data-scroll-target="#clustered-standard-errors">Clustered standard errors</a>
+  <ul class="collapse">
+  <li><a href="#robust-and-clustered-variance-estimators" id="toc-robust-and-clustered-variance-estimators" class="nav-link" data-scroll-target="#robust-and-clustered-variance-estimators">Robust and clustered variance estimators</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="527_09_ols_large_sample.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="527_09_ols_large_sample_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -2608,8 +2612,8 @@ V = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\left[X_i X_i^\top\right], \qquad
 \begin{aligned}
 \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &amp;= \sqrt{[\hat V_n]_{jj} / {\color{blue} n}} \\
 &amp;= \sqrt{{\color{blue} \frac{1}{n}} \big[\hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}\big]_{jj}} \\
-&amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big(\frac{1}{n} X^\top X\Big)^{-1} \hat\Omega_n \Big(\frac{1}{n} X^\top X\Big)^{-1}\Big]_{jj}} \\
-&amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big(\frac{1}{n} X^\top X\Big)^{-1} \Big({\color{blue} \frac{1}{n}} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) \Big(\frac{1}{n} X^\top X\Big)^{-1}\Big]_{jj}} \\
+&amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1} \hat\Omega_n \Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1}\Big]_{jj}} \\
+&amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1} \Big({\color{blue} \frac{1}{n}} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) \Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1}\Big]_{jj}} \\
 &amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[{\color{red} n}\, (X^\top X)^{-1}\, {\color{blue} \frac{1}{n}} \Big(\sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big)\, {\color{red} n}\, (X^\top X)^{-1}\Big]_{jj}} \\
 &amp;= \sqrt{\Big[(X^\top X)^{-1} \Big(\sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) (X^\top X)^{-1}\Big]_{jj}}
 \end{aligned}
@@ -2711,6 +2715,30 @@ CI_{1-\alpha} = \Big[ &amp; \hat\beta_{n,j} - z_{1-\alpha/2}\, \text{std. err}_{
 <li><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{[\hat V_n]_{jj}/n}</span>; robust <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0,1)</span>; normal confidence interval: coverage <span class="math inline">\to 1-\alpha</span>.</p></li>
 <li><p>Heteroskedasticity: usual standard errors invalid in general; robust valid under stated conditions.</p></li>
 <li><p><span class="math inline">U \mid X \sim N(0,\sigma^2 I_n)</span>: usual <span class="math inline">t</span>-ratio exactly <span class="math inline">t_{n-k}</span>; <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="clustered-standard-errors" class="level1">
+<h1>Clustered standard errors</h1>
+<section id="robust-and-clustered-variance-estimators" class="level2">
+<h2 class="anchored" data-anchor-id="robust-and-clustered-variance-estimators">Robust and clustered variance estimators</h2>
+<ul>
+<li><p><span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>; robust form when <span class="math inline">\mathrm{E}\left[U_i U_j \mid X\right] = 0</span> for <span class="math inline">i \ne j</span>: <span class="math display">
+\begin{aligned}
+\mathrm{Var}\left(\hat\beta_n \mid X\right) &amp;= (X^\top X)^{-1} X^\top \mathrm{E}\left[U U^\top \mid X\right] X (X^\top X)^{-1} \\
+&amp;= (X^\top X)^{-1} \Big(\sum_{i=1}^n \sum_{j=1}^n \mathrm{E}\left[U_i U_j \mid X\right] X_i X_j^\top\Big) (X^\top X)^{-1} \\
+&amp;= (X^\top X)^{-1} \Big(\sum_{i=1}^n \mathrm{E}\left[U_i^2 \mid X\right] X_i X_i^\top\Big) (X^\top X)^{-1}
+\end{aligned}
+</span></p></li>
+<li><p>Robust estimator, <span class="math inline">\hat U_i^2</span> in place of <span class="math inline">\mathrm{E}\left[U_i^2 \mid X\right]</span>: <span class="math display">
+(X^\top X)^{-1} \Big(\sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) (X^\top X)^{-1}
+</span></p></li>
+<li><p>Clusters <span class="math inline">g = 1, \ldots, G</span>; <span class="math inline">U_i</span>, <span class="math inline">U_j</span> correlated within a cluster, uncorrelated across clusters: <span class="math display">
+\mathrm{Var}\left(\hat\beta_n \mid X\right) = (X^\top X)^{-1} \Big(\sum_{g=1}^G \sum_{i \in g} \sum_{j \in g} \mathrm{E}\left[U_i U_j \mid X\right] X_i X_j^\top\Big) (X^\top X)^{-1}
+</span></p></li>
+<li><p>Clustered estimator, <span class="math inline">\hat U_i \hat U_j</span> in place of <span class="math inline">\mathrm{E}\left[U_i U_j \mid X\right]</span>: <span class="math display">
+(X^\top X)^{-1} \Big(\sum_{g=1}^G \sum_{i \in g} \sum_{j \in g} \hat U_i \hat U_j X_i X_j^\top\Big) (X^\top X)^{-1}
+</span></p></li>
 </ul>
 </section>
 </section>
