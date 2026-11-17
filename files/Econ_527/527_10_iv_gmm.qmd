@@ -1,0 +1,1226 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 10: Instrumental variables and linear GMM"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_10_iv_gmm.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_10_iv_gmm.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_10_iv_gmm_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Endogeneity
+
+## Endogenous and exogenous regressors
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+- Regression, $k = k_1 + k_2$:
+  $$
+  Y_i = \underset{1 \times k_1}{X_{i,1}^\top}\ \underset{k_1 \times 1}{\beta_1} + \underset{1 \times k_2}{X_{i,2}^\top}\ \underset{k_2 \times 1}{\beta_2} + U_i
+  $$
+
+- $X_{i,1}$ endogenous:
+  $$
+  \E{X_{i,1} U_i} \ne 0
+  $$
+
+- $X_{i,2}$ exogenous:
+  $$
+  \E{X_{i,2} U_i} = 0
+  $$
+
+## Omitted variables
+
+- Log wage on education; $X_{i,2}$: exogenous, for example gender:
+  $$
+  \log \text{Wage}_i = \beta_1\, \text{Education}_i + X_{i,2}^\top \beta_2 + U_i
+  $$
+
+- Ability: unobserved, in the error; $\varepsilon_i$: luck:
+  $$
+  U_i = \text{ability}_i + \varepsilon_i
+  $$
+
+- Education chosen optimally by $i$ given ability:
+  $$
+  \E{\text{Education}_i \times \text{ability}_i} \ne 0 \quad \Longrightarrow \quad \text{Education}_i \ \text{ endogenous}
+  $$
+
+## Simultaneity: demand and supply
+
+- Market $i$, demand and supply:
+  $$
+  \begin{aligned}
+  \underset{1 \times 1}{Y_i^d} &= \beta_1 P_i + \beta_2 I_i + U_i^d, \qquad \beta_1 < 0 \\
+  Y_i^s &= \gamma_1 P_i + \gamma_2 G_i + U_i^s, \qquad \gamma_1 > 0
+  \end{aligned}
+  $$
+
+- $I_i$: observed demand shifter (e.g. income).
+
+- $G_i$: observed supply shifter (e.g. input prices, weather).
+
+- $U_i^d$, $U_i^s$: unobserved demand and supply shifters.
+
+- $Y_i^d$, $Y_i^s$: not observed; observed in equilibrium:
+  $$
+  Y_i = Y_i^d = Y_i^s, \qquad P_i : \ \text{equilibrium price}
+  $$
+
+## Equilibrium price
+
+- Supply equals demand; solve for $P_i$:
+  $$
+  \begin{aligned}
+  \underbrace{\gamma_1 P_i + \gamma_2 G_i + U_i^s}_{Y_i^s} &= \underbrace{\beta_1 P_i + \beta_2 I_i + U_i^d}_{Y_i^d} \\
+  (\gamma_1 - \beta_1) P_i &= -\gamma_2 G_i + \beta_2 I_i + U_i^d - U_i^s \\
+  P_i &= \underbrace{\frac{-\gamma_2}{\gamma_1 - \beta_1}}_{\pi_1} G_i + \underbrace{\frac{\beta_2}{\gamma_1 - \beta_1}}_{\pi_2} I_i + \frac{U_i^d - U_i^s}{\gamma_1 - \beta_1}
+  \end{aligned}
+  $$
+
+- Common denominator in $P_i$:
+  $$
+  \gamma_1 - \beta_1 > 0
+  $$
+
+## Price and the demand error
+
+- Demand regression:
+  $$
+  Y_i = \beta_1 P_i + \beta_2 I_i + U_i^d
+  $$
+
+- **Assume:** $U_i^d$, $U_i^s$ uncorrelated with $G_i$, $I_i$ and with each other:
+  $$
+  \E{G_i U_i^d} = 0, \qquad \E{I_i U_i^d} = 0, \qquad \E{U_i^s U_i^d} = 0
+  $$
+
+- Substitute the equilibrium price:
+  $$
+  \begin{aligned}
+  \E{P_i U_i^d} &= \E{\Big(\pi_1 G_i + \pi_2 I_i + \frac{U_i^d - U_i^s}{\gamma_1 - \beta_1}\Big) U_i^d} \\
+  &= \E{\pi_1 G_i U_i^d + \pi_2 I_i U_i^d + \frac{(U_i^d)^2 - U_i^s U_i^d}{\gamma_1 - \beta_1}} \\
+  &= \pi_1 \underbrace{\E{G_i U_i^d}}_{=\,0} + \pi_2 \underbrace{\E{I_i U_i^d}}_{=\,0} + \frac{\E{(U_i^d)^2} - \overbrace{\E{U_i^s U_i^d}}^{=\,0}}{\gamma_1 - \beta_1} \\
+  &= \frac{\E{(U_i^d)^2}}{\gamma_1 - \beta_1} > 0
+  \end{aligned}
+  $$
+
+- $P_i$: endogenous in the demand equation.
+
+# OLS under endogeneity
+
+## OLS estimator of $\beta_1$
+
+- One endogenous regressor, $k_1 = 1$:
+  $$
+  Y_i = \underset{1 \times 1}{\beta_1}\, \underset{1 \times 1}{X_{i,1}} + X_{i,2}^\top \beta_2 + U_i, \qquad \E{X_{i,1} U_i} \ne 0, \qquad \E{X_{i,2} U_i} = 0
+  $$
+
+- Recall, partitioned regression, $M_2 = I_n - X_2 (X_2^\top X_2)^{-1} X_2^\top$:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &= (X_1^\top M_2 \underset{n \times 1}{X_1})^{-1} X_1^\top M_2 Y \\
+  &= \frac{X_1^\top M_2 Y}{X_1^\top M_2 X_1} \\
+  &= \beta_1 + \frac{\frac{1}{n} X_1^\top M_2 U}{\frac{1}{n} X_1^\top M_2 X_1} \qquad (M_2 X_2 = 0)
+  \end{aligned}
+  $$
+
+## Denominator of $\hat\beta_1 - \beta_1$
+
+- **Assume:** $(Y_i, X_i)$ iid; $\E{\|X_i\|^2} < \infty$; $\E{U_i^2} < \infty$.
+
+- Recall: weak LLN for sample averages, Slutsky for products and inverses.
+
+- Expand $M_2$, take limits:
+  $$
+  \begin{aligned}
+  \underbrace{\frac{1}{n} X_1^\top M_2 X_1}_{1 \times 1} &= \frac{X_1^\top X_1}{n} - \frac{X_1^\top X_2}{n} \Big(\frac{X_2^\top X_2}{n}\Big)^{-1} \frac{X_2^\top X_1}{n} \\
+  &\to_p \underbrace{\E{X_{i,1}^2}}_{Q_{11}} - \underbrace{\E{X_{i,1} X_{i,2}^\top}}_{Q_{12}}\ \underbrace{\big(\E{X_{i,2} X_{i,2}^\top}\big)^{-1}}_{Q_{22}^{-1}}\ \underbrace{\E{X_{i,2} X_{i,1}}}_{Q_{21}} \\
+  &= Q_{1 \cdot 2} > 0 \qquad (\E{X_i X_i^\top} \ \text{p.d.})
+  \end{aligned}
+  $$
+
+## Numerator of $\hat\beta_1 - \beta_1$
+
+- Weak LLN; expand $M_2$, take limits:
+  $$
+  \begin{aligned}
+  \frac{X_1^\top U}{n} &= \frac{1}{n} \sum_{i=1}^n X_{i,1} U_i \\
+  &\to_p \E{X_{i,1} U_i} \\
+  \frac{1}{n} X_1^\top M_2 U &= \frac{X_1^\top U}{n} - \frac{X_1^\top X_2}{n} \Big(\frac{X_2^\top X_2}{n}\Big)^{-1} \frac{X_2^\top U}{n} \\
+  &\to_p \E{X_{i,1} U_i} - Q_{12}\, Q_{22}^{-1} \underbrace{\E{X_{i,2} U_i}}_{=\,0} \\
+  &= \E{X_{i,1} U_i} \ne 0
+  \end{aligned}
+  $$
+
+## Asymptotic bias of $\hat\beta_1$
+
+- Slutsky:
+  $$
+  \begin{aligned}
+  \hat\beta_1 &= \beta_1 + \frac{\frac{1}{n} X_1^\top M_2 U}{\frac{1}{n} X_1^\top M_2 X_1} \\
+  &\to_p \beta_1 + \frac{\overbrace{\E{X_{i,1} U_i}}^{\ne\, 0}}{Q_{1 \cdot 2}} \ne \beta_1
+  \end{aligned}
+  $$
+
+- Asymptotic bias of OLS:
+  $$
+  \boxed{\ \mathrm{AsyBias}(\hat\beta_1) = \frac{\E{X_{i,1} U_i}}{Q_{1 \cdot 2}}\ }
+  $$
+
+- Wage example, $X_{i,1}$: education, $U_i$: ability:
+  $$
+  \E{X_{i,1} U_i} > 0 \quad \Longrightarrow \quad \mathrm{AsyBias}(\hat\beta_1) > 0
+  $$
+
+- $\hat\beta_1$ over-estimates $\beta_1$.
+
+## OLS estimator of $\beta_2$
+
+- Coefficients on the exogenous regressors, $M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top$:
+  $$
+  \begin{aligned}
+  \hat\beta_2 &= (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y \\
+  &= \beta_2 + \Big(\frac{X_2^\top M_1 X_2}{n}\Big)^{-1} \frac{X_2^\top M_1 U}{n}
+  \end{aligned}
+  $$
+
+- First factor, inside the inverse:
+  $$
+  \frac{X_2^\top M_1 X_2}{n} \to_p Q_{2 \cdot 1} = Q_{22} - Q_{21}\, Q_{11}^{-1} Q_{12} \qquad \text{p.d.}
+  $$
+
+- Second factor:
+  $$
+  \begin{aligned}
+  \frac{X_2^\top M_1 U}{n} &= \underbrace{\frac{X_2^\top U}{n}}_{\to_p\, \E{X_{i,2} U_i} \,=\, 0} - \underbrace{\frac{X_2^\top X_1}{n}}_{\to_p\, Q_{21}}\ \underbrace{\Big(\frac{X_1^\top X_1}{n}\Big)^{-1}}_{\to_p\, Q_{11}^{-1}}\ \underbrace{\frac{X_1^\top U}{n}}_{\to_p\, \E{X_{i,1} U_i} \,\ne\, 0} \\
+  &\to_p -Q_{21}\, Q_{11}^{-1}\, \E{X_{i,1} U_i}
+  \end{aligned}
+  $$
+
+## Asymptotic bias of $\hat\beta_2$
+
+- Slutsky; scalar $Q_{11} = \E{X_{i,1}^2}$:
+  $$
+  \begin{aligned}
+  \hat\beta_2 &\to_p \beta_2 - \underbrace{Q_{2 \cdot 1}^{-1}}_{\text{p.d.}} Q_{21}\, Q_{11}^{-1}\, \E{X_{i,1} U_i} \\
+  &= \beta_2 - \frac{Q_{2 \cdot 1}^{-1}}{Q_{11}}\, Q_{21}\, \E{X_{i,1} U_i}
+  \end{aligned}
+  $$
+
+- $\hat\beta_2$: asymptotically biased unless
+  $$
+  Q_{21} = \E{X_{i,2} X_{i,1}} = 0
+  $$
+
+## Example: education and gender
+
+- Wage equation, $U_i$: ability:
+  $$
+  \log \text{Wage}_i = \beta_1\, \underbrace{\text{Education}_i}_{X_{i,1}} + \beta_2\, \underbrace{\text{Female}_i}_{X_{i,2},\ \text{dummy}} + U_i
+  $$
+
+- Suppose:
+  $$
+  \E{X_{i,1} U_i} > 0, \qquad Q_{21} = \E{\text{Female}_i\, \text{Education}_i} > 0
+  $$
+
+- Asymptotic bias of $\hat\beta_2$:
+  $$
+  \hat\beta_2 - \beta_2 \to_p -\underbrace{Q_{2 \cdot 1}^{-1}}_{+}\ \underbrace{Q_{21}}_{+}\ \underbrace{Q_{11}^{-1}}_{+}\ \underbrace{\E{X_{i,1} U_i}}_{+} < 0
+  $$
+
+# Identification and instruments
+
+## Identification without endogeneity
+
+- No endogeneity:
+  $$
+  Y_i = X_i^\top \beta + U_i, \qquad \beta \in \mathbb{R}^k, \qquad \E{X_i U_i} = 0
+  $$
+
+- Moment condition; $k$ equations in $k$ unknowns; $\E{X_i X_i^\top}$ invertible:
+  $$
+  \begin{aligned}
+  & \E{X_i \overbrace{(Y_i - X_i^\top \beta)}^{U_i}} = 0 \\
+  \Longleftrightarrow\quad & \underbrace{\E{X_i Y_i}}_{k \times 1} = \underbrace{\E{X_i X_i^\top}}_{k \times k}\ \underset{k \times 1}{\beta} \\
+  \Longrightarrow\quad & \beta = \big(\E{X_i X_i^\top}\big)^{-1} \E{X_i Y_i} \qquad \text{(identification)}
+  \end{aligned}
+  $$
+
+- Both moments estimated by sample averages:
+  $$
+  \begin{aligned}
+  \frac{1}{n} \sum_{i=1}^n X_i X_i^\top &\to_p \E{X_i X_i^\top} \\
+  \frac{1}{n} \sum_{i=1}^n X_i Y_i &\to_p \E{X_i Y_i}
+  \end{aligned}
+  $$
+
+## Identification with endogeneity
+
+- $X_{i,1}$ endogenous: $k_1$ equations lost:
+  $$
+  \E{X_{i,1} U_i} \ne 0, \qquad \E{X_{i,2} U_i} = 0
+  $$
+
+- Remaining moment condition:
+  $$
+  \E{\underset{k_2 \times 1}{X_{i,2}} \big(Y_i - X_{i,1}^\top \underset{k_1 \times 1}{\beta_1} - X_{i,2}^\top \underset{k_2 \times 1}{\beta_2}\big)} = 0
+  $$
+
+- $k_2$ equations, $k_1 + k_2$ unknowns $\Longrightarrow$ no unique solution for $\beta_1$, $\beta_2$: not identified.
+
+## Instrumental variables (IVs)
+
+- Suppose we also observe $Z_{i,1}$, an $\ell_1 \times 1$ vector of variables such that:
+  $$
+  \E{Z_{i,1} U_i} = 0 \quad \Longrightarrow \quad \ell_1 \ \text{ additional equations}
+  $$
+
+- Two sets of moment conditions:
+  $$
+  \begin{aligned}
+  \E{X_{i,2} (Y_i - X_{i,1}^\top \beta_1 - X_{i,2}^\top \beta_2)} &= 0 \qquad (k_2 \ \text{equations}) \\
+  \E{Z_{i,1} (Y_i - X_{i,1}^\top \beta_1 - X_{i,2}^\top \beta_2)} &= 0 \qquad (\ell_1 \ \text{equations})
+  \end{aligned}
+  $$
+
+## Stacked moment condition
+
+- Regressors $X_i$ and exogenous variables (IVs) $Z_i$:
+  $$
+  \begin{aligned}
+  X_i &= \begin{pmatrix} X_{i,1} \\ X_{i,2} \end{pmatrix} : \ \underbrace{(k_1 + k_2)}_{=\,k} \times 1 \\
+  Z_i &= \begin{pmatrix} Z_{i,1} \\ X_{i,2} \end{pmatrix} : \ \underbrace{(\ell_1 + k_2)}_{=\,\ell} \times 1 \\
+  \beta &= \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix}
+  \end{aligned}
+  $$
+
+- Moment condition:
+  $$
+  \begin{aligned}
+  & \E{Z_i (Y_i - X_i^\top \beta)} = 0 \\
+  \Longleftrightarrow\quad & \underbrace{\E{Z_i X_i^\top}}_{\ell \times k}\ \underset{k \times 1}{\beta} = \underbrace{\E{Z_i Y_i}}_{\ell \times 1}
+  \end{aligned}
+  $$
+
+- $\ell = \ell_1 + k_2$ equations, $k = k_1 + k_2$ unknowns.
+
+## One regressor, one instrument
+
+- Simplified version, $Y_i$, $X_i$, $U_i$, $Z_i$ all $1 \times 1$:
+  $$
+  Y_i = \beta X_i + U_i
+  $$
+
+- Covariance with the instrument:
+  $$
+  \begin{aligned}
+  \Cov{Z_i, Y_i} &= \beta\, \Cov{Z_i, X_i} + \overbrace{\Cov{Z_i, U_i}}^{=\,0} \\
+  \Longrightarrow\quad \beta &= \frac{\Cov{Z_i, Y_i}}{\Cov{Z_i, X_i}} \qquad \text{if } \ \Cov{Z_i, X_i} \ne 0
+  \end{aligned}
+  $$
+
+## Exactly identified case
+
+- $\ell = k$ ($\ell_1 = k_1$): $k$ equations in $k$ unknowns; $\E{Z_i X_i^\top}$: $k \times k$, rank $k$:
+  $$
+  \begin{aligned}
+  0 &= \E{Z_i (Y_i - X_i^\top \beta)} \\
+  &= \underbrace{\E{Z_i Y_i}}_{\text{in place of } \Cov{Z_i, Y_i}} - \underbrace{\E{Z_i X_i^\top}}_{\text{in place of } \Cov{Z_i, X_i}} \beta \\
+  \Longrightarrow\quad \beta &= \boxed{\ \big(\E{Z_i X_i^\top}\big)^{-1} \E{Z_i Y_i}\ }
+  \end{aligned}
+  $$
+
+## IV estimator
+
+- $Z$: $n \times \ell$, with rows $Z_i^\top$, as $X$ with rows $X_i^\top$:
+  $$
+  \begin{aligned}
+  Z &= \begin{pmatrix} Z_1^\top \\ \vdots \\ Z_n^\top \end{pmatrix} \\
+  \sum_{i=1}^n Z_i X_i^\top &= Z^\top X \\
+  \sum_{i=1}^n Z_i Y_i &= Z^\top Y
+  \end{aligned}
+  $$
+
+- Sample averages in place of expectations:
+  $$
+  \begin{aligned}
+  \hat\beta^{IV} &= \Big(\frac{1}{n} \sum_{i=1}^n Z_i X_i^\top\Big)^{-1} \frac{1}{n} \sum_{i=1}^n Z_i Y_i \\
+  &= \Big(\sum_{i=1}^n Z_i X_i^\top\Big)^{-1} \sum_{i=1}^n Z_i Y_i \\
+  &= (Z^\top X)^{-1} Z^\top Y
+  \end{aligned}
+  $$
+
+## Over-identified case
+
+- $\ell > k$ ($\ell_1 > k_1$), more equations than unknowns; $\E{Z_i X_i^\top}$: $\ell \times k$.
+
+- Premultiply by $\E{X_i Z_i^\top}$, which is $k \times \ell$:
+  $$
+  \begin{aligned}
+  \E{Z_i X_i^\top} \beta &= \E{Z_i Y_i} \\
+  \Longrightarrow\quad \underbrace{\big(\E{X_i Z_i^\top}\big) \big(\E{Z_i X_i^\top}\big)}_{k \times k} \beta &= \big(\E{X_i Z_i^\top}\big) \E{Z_i Y_i} \\
+  \Longrightarrow\quad \beta &= \Big[\big(\E{X_i Z_i^\top}\big) \big(\E{Z_i X_i^\top}\big)\Big]^{-1} \big(\E{X_i Z_i^\top}\big) \E{Z_i Y_i}
+  \end{aligned}
+  $$
+
+- Condition for identification: $k \times k$ inverse exists.
+
+## Rank condition
+
+- The $\ell \times k$ matrix $Q$:
+  $$
+  Q = \E{Z_i X_i^\top}, \qquad Q^\top = \E{X_i Z_i^\top}
+  $$
+
+- **Rank condition.**
+  $$
+  \rank{Q} = \rank{\E{Z_i X_i^\top}} = k
+  $$
+
+- $\rank{Q} = k$ $\Longrightarrow$ $Q^\top Q$ p.d.; for $c \in \mathbb{R}^k$ and $v = Qc$:
+  $$
+  \begin{aligned}
+  c^\top Q^\top Q c &= v^\top v \\
+  &= \|v\|^2 \\
+  &> 0 \quad \text{unless } c = 0 \qquad (v = Qc \ne 0 \ \text{ unless } c = 0)
+  \end{aligned}
+  $$
+
+- Rank condition: necessary and sufficient for identification of $\beta$.
+
+## Order condition
+
+- Necessary for the rank condition:
+  $$
+  \begin{aligned}
+  \rank{\underset{\ell \times k}{Q}} = k \quad &\Longrightarrow \quad \ell \ge k \\
+  &\Longleftrightarrow \quad \ell_1 + k_2 \ge k_1 + k_2 \\
+  &\Longleftrightarrow \quad \underbrace{\ell_1}_{\text{number of excluded IVs}} \ge \underbrace{k_1}_{\text{number of endogenous regressors}}
+  \end{aligned}
+  $$
+
+- Three cases:
+  $$
+  \begin{aligned}
+  \rank{Q} = k, \ \ell = k &: \ \text{exactly identified} \\
+  \rank{Q} = k, \ \ell > k &: \ \text{over-identified} \\
+  \rank{Q} < k &: \ \text{under-identified} \quad (\ell < k, \ \text{or linear dependence})
+  \end{aligned}
+  $$
+
+## Included regressor as instrument
+
+- Two scalar regressors:
+  $$
+  Y_i = \beta_1 X_{i,1} + \beta_2 X_{i,2} + U_i, \qquad \E{X_{i,2} U_i} = 0
+  $$
+
+- Try $Z_{i,1} = X_{i,2}$:
+  $$
+  \begin{aligned}
+  \underset{2 \times 2}{\E{Z_i X_i^\top}} &= \E{\begin{pmatrix} Z_{i,1} \\ X_{i,2} \end{pmatrix} \begin{pmatrix} X_{i,1} & X_{i,2} \end{pmatrix}} \\
+  &= \begin{pmatrix} \E{Z_{i,1} X_{i,1}} & \E{Z_{i,1} X_{i,2}} \\ \E{X_{i,2} X_{i,1}} & \E{X_{i,2} X_{i,2}} \end{pmatrix} \\
+  &= \begin{pmatrix} \E{X_{i,2} X_{i,1}} & \E{X_{i,2} X_{i,2}} \\ \E{X_{i,2} X_{i,1}} & \E{X_{i,2} X_{i,2}} \end{pmatrix} \qquad (Z_{i,1} = X_{i,2})
+  \end{aligned}
+  $$
+
+- Two equal rows $\Longrightarrow$ rank $1 < k = 2$.
+
+- **Exclusion restriction:** $Z_{i,1}$ excluded from the equation for $Y_i$; no direct effect on $Y_i$.
+
+## Noise as instrument
+
+- Suppose $Z_{i,1}$ is "noise", with $\E{Z_{i,1} U_i} = 0$:
+  $$
+  \E{Z_i X_i^\top} = \begin{pmatrix} \overbrace{\E{Z_{i,1} X_{i,1}}}^{=\,0} & \overbrace{\E{Z_{i,1} X_{i,2}}}^{=\,0} \\ \E{X_{i,2} X_{i,1}} & \E{X_{i,2} X_{i,2}} \end{pmatrix}
+  $$
+
+- Row of zeros $\Longrightarrow$ rank $1 < k = 2$.
+
+# First stage and the rank condition
+
+## First stage
+
+- First stage, for the endogenous regressors:
+  $$
+  \underset{k_1 \times 1}{X_{i,1}} = \underset{k_1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \underset{k_1 \times k_2}{\Pi_2^\top}\ \underset{k_2 \times 1}{X_{i,2}} + \underset{k_1 \times 1}{V_i}
+  $$
+
+- $V_i$ uncorrelated with $Z_{i,1}$ and $X_{i,2}$:
+  $$
+  \E{Z_{i,1} V_i^\top} = 0, \qquad \E{X_{i,2} V_i^\top} = 0
+  $$
+
+- First stage in terms of $Z_i$, with $\Pi$: $\ell \times k_1$:
+  $$
+  X_{i,1} = \Pi^\top Z_i + V_i, \qquad \Pi = \begin{pmatrix} \Pi_1 \\ \Pi_2 \end{pmatrix}, \qquad \E{Z_i V_i^\top} = 0
+  $$
+
+## Definition of $\Pi$
+
+- **Claim.** With $\E{Z_i Z_i^\top}$ p.d., $\Pi$ can always be defined so that $\E{Z_i V_i^\top} = 0$.
+
+- Transpose the first stage, premultiply by $Z_i$, take expectations:
+  $$
+  \begin{aligned}
+  X_{i,1}^\top &= Z_i^\top \Pi + V_i^\top \\
+  Z_i X_{i,1}^\top &= Z_i Z_i^\top \Pi + Z_i V_i^\top \\
+  \E{Z_i X_{i,1}^\top} &= \E{Z_i Z_i^\top} \Pi + \underbrace{\E{Z_i V_i^\top}}_{=\,0} \\
+  \Longrightarrow\quad \Pi &= \big(\E{Z_i Z_i^\top}\big)^{-1} \E{Z_i X_{i,1}^\top}
+  \end{aligned}
+  $$
+
+- Given $X_{i,1}$ and $Z_i$, define:
+  $$
+  \begin{aligned}
+  \Pi &\equiv \big(\E{Z_i Z_i^\top}\big)^{-1} \E{Z_i X_{i,1}^\top} \\
+  V_i &\equiv X_{i,1} - \Pi^\top Z_i
+  \end{aligned}
+  $$
+
+## Proof that $Z_i$ and $V_i$ are uncorrelated
+
+- With $\Pi$ and $V_i$ as defined:
+  $$
+  \begin{aligned}
+  \E{Z_i V_i^\top} &= \E{Z_i (X_{i,1}^\top - Z_i^\top \Pi)} \\
+  &= \E{Z_i X_{i,1}^\top} - \E{Z_i Z_i^\top} \Pi \\
+  &= \E{Z_i X_{i,1}^\top} - {\color{red} \E{Z_i Z_i^\top} \big(\E{Z_i Z_i^\top}\big)^{-1}} \E{Z_i X_{i,1}^\top} \\
+  &= 0
+  \end{aligned}
+  $$
+
+- Hence the first stage can always be defined:
+  $$
+  X_{i,1} = \Pi^\top Z_i + V_i, \qquad \E{Z_i V_i^\top} = 0
+  $$
+
+## Rank condition in terms of $\Pi_1$
+
+- **Claim.** $\E{Z_i Z_i^\top}$ p.d.; $\Pi_1$: $\ell_1 \times k_1$ first-stage coefficients on $Z_{i,1}$:
+  $$
+  \rank{\E{Z_i X_i^\top}} = k \quad \Longleftrightarrow \quad \rank{\Pi_1} = k_1
+  $$
+
+## Proof, step 1: $\E{Z_i X_i^\top}$ in blocks
+
+- We will use the transposed first stage, with $\E{Z_{i,1} V_i^\top} = 0$, $\E{X_{i,2} V_i^\top} = 0$:
+  $$
+  X_{i,1}^\top = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i^\top
+  $$
+
+- Write in blocks; substitute the first stage:
+  $$
+  \begin{aligned}
+  \E{Z_i X_i^\top} &= \E{\begin{pmatrix} Z_{i,1} \\ X_{i,2} \end{pmatrix} \begin{pmatrix} X_{i,1}^\top & X_{i,2}^\top \end{pmatrix}} \\
+  &= \begin{pmatrix} \E{Z_{i,1} X_{i,1}^\top} & \E{Z_{i,1} X_{i,2}^\top} \\ \E{X_{i,2} X_{i,1}^\top} & \E{X_{i,2} X_{i,2}^\top} \end{pmatrix} \\
+  &= \begin{pmatrix} \E{Z_{i,1} Z_{i,1}^\top} \Pi_1 + \E{Z_{i,1} X_{i,2}^\top} \Pi_2 & \E{Z_{i,1} X_{i,2}^\top} \\ \E{X_{i,2} Z_{i,1}^\top} \Pi_1 + \E{X_{i,2} X_{i,2}^\top} \Pi_2 & \E{X_{i,2} X_{i,2}^\top} \end{pmatrix}
+  \end{aligned}
+  $$
+
+## Proof, step 2: $\E{Z_i X_i^\top} \theta$
+
+- Multiply by $\theta = \begin{pmatrix} \theta_1 \\ \theta_2 \end{pmatrix}$, with $\theta_1$: $k_1 \times 1$ and $\theta_2$: $k_2 \times 1$:
+  $$
+  \begin{aligned}
+  \E{Z_i X_i^\top} \theta &= \begin{pmatrix} \big(\E{Z_{i,1} Z_{i,1}^\top} \Pi_1 + \E{Z_{i,1} X_{i,2}^\top} \Pi_2\big) \theta_1 + \E{Z_{i,1} X_{i,2}^\top} \theta_2 \\ \big(\E{X_{i,2} Z_{i,1}^\top} \Pi_1 + \E{X_{i,2} X_{i,2}^\top} \Pi_2\big) \theta_1 + \E{X_{i,2} X_{i,2}^\top} \theta_2 \end{pmatrix} \\
+  &= \begin{pmatrix} \E{Z_{i,1} Z_{i,1}^\top} \Pi_1 \theta_1 + \E{Z_{i,1} X_{i,2}^\top} (\Pi_2 \theta_1 + \theta_2) \\ \E{X_{i,2} Z_{i,1}^\top} \Pi_1 \theta_1 + \E{X_{i,2} X_{i,2}^\top} (\Pi_2 \theta_1 + \theta_2) \end{pmatrix} \\
+  &= \underbrace{\begin{pmatrix} \E{Z_{i,1} Z_{i,1}^\top} & \E{Z_{i,1} X_{i,2}^\top} \\ \E{X_{i,2} Z_{i,1}^\top} & \E{X_{i,2} X_{i,2}^\top} \end{pmatrix}}_{=\, \E{Z_i Z_i^\top}, \ \ell \times \ell, \ \text{p.d.}} \begin{pmatrix} \Pi_1 \theta_1 \\ \Pi_2 \theta_1 + \theta_2 \end{pmatrix}
+  \end{aligned}
+  $$
+
+## Proof, step 3: sufficiency of $\rank{\Pi_1} = k_1$
+
+- $\E{Z_i Z_i^\top}$ p.d.; suppose $\rank{\Pi_1} = k_1$:
+  $$
+  \begin{aligned}
+  \E{Z_i X_i^\top} \theta = 0 \quad &\Longleftrightarrow \quad \Pi_1 \theta_1 = 0 \ \text{ and } \ \Pi_2 \theta_1 + \theta_2 = 0 \\
+  &\Longleftrightarrow \quad \theta_1 = 0 \ \text{ and } \ \Pi_2 \theta_1 + \theta_2 = 0 \qquad (\rank{\Pi_1} = k_1) \\
+  &\Longleftrightarrow \quad \theta_1 = 0 \ \text{ and } \ \theta_2 = 0 \\
+  &\Longleftrightarrow \quad \theta = 0
+  \end{aligned}
+  $$
+
+- $k$ columns of $\E{Z_i X_i^\top}$ linearly independent:
+  $$
+  \rank{\Pi_1} = k_1 \quad \Longrightarrow \quad \rank{\E{Z_i X_i^\top}} = k
+  $$
+
+## Proof, step 4: necessity of $\rank{\Pi_1} = k_1$
+
+- Suppose $\rank{\Pi_1} < k_1$:
+  $$
+  \begin{aligned}
+  & \text{there is } \ \theta_1 \ne 0 \ \text{ such that } \ \Pi_1 \theta_1 = 0 \\
+  & \text{define } \ \theta_2 = -\Pi_2 \theta_1 \\
+  \Longrightarrow\quad & \Pi_2 \theta_1 + \theta_2 = 0 \\
+  \Longrightarrow\quad & \E{Z_i Z_i^\top} \begin{pmatrix} \Pi_1 \theta_1 \\ \Pi_2 \theta_1 + \theta_2 \end{pmatrix} = 0 \\
+  \Longrightarrow\quad & \E{Z_i X_i^\top} \theta = 0 \quad \text{with } \ \theta \ne 0 \\
+  \Longrightarrow\quad & \rank{\E{Z_i X_i^\top}} < k
+  \end{aligned}
+  $$
+
+- Hence:
+  $$
+  \rank{\E{Z_i X_i^\top}} = k \quad \Longrightarrow \quad \rank{\Pi_1} = k_1
+  $$
+
+## One endogenous regressor
+
+- Suppose $k_1 = 1$, for example $Y_i = \log \text{Wage}_i$ and $X_{i,1} = \text{Education}_i$:
+  $$
+  \underset{1 \times 1}{\text{Education}_i} = \underset{1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \Pi_2^\top X_{i,2} + V_i, \qquad \Pi_1 = \begin{pmatrix} \Pi_{1,1} \\ \vdots \\ \Pi_{1,\ell_1} \end{pmatrix}
+  $$
+
+- First stage written instrument by instrument:
+  $$
+  X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
+  $$
+
+- Rank condition:
+  $$
+  \begin{aligned}
+  \rank{\Pi_1} = 1 \quad &\Longleftrightarrow \quad \Pi_1 \ne 0 \\
+  &\Longleftrightarrow \quad \Pi_{1,j} \ne 0 \ \text{ for at least one } j = 1, \ldots, \ell_1
+  \end{aligned}
+  $$
+
+## Requirements for instruments
+
+- We need $Z_{i,1}$: $\ell_1 \times 1$, with $\ell_1 \ge k_1$, such that:
+  1. $Z_{i,1}$ excluded from the equation for $Y_i$.
+  2. $Z_{i,1}$ exogenous: $\E{Z_{i,1} U_i} = 0$.
+  3. $Z_{i,1}$ informative about $X_{i,1}$: $\rank{\Pi_1} = k_1$ in the first stage.
+
+- Wage example, $U_i$: ability; IV must be:
+  1. Independent of ability.
+  2. Not affecting the wage directly.
+  3. Shifting education.
+
+## Examples of instruments
+
+- Angrist and Krueger (1991), IVs: quarter-of-birth dummies:
+  $$
+  \log \text{Wage}_i = \beta_1\, \text{Education}_i + X_{i,2}^\top \beta_2 + U_i
+  $$
+
+- Angrist and Evans (1998), married women with at least 2 children:
+  $$
+  \begin{aligned}
+  \text{Hours worked}_i &= \beta_1\, (\text{number of children})_i + X_{i,2}^\top \beta_2 + U_i \\
+  (\text{number of children})_i &= \gamma_1\, \text{Hours worked}_i + \ldots
+  \end{aligned}
+  $$
+
+- IV: same-sex dummy.
+
+# Generalized method of moments (GMM)
+
+## Weight matrix $W$
+
+- **Definition.** Weight matrix $W$: $\ell \times \ell$, symmetric, p.d.
+
+- Premultiply by $Q^\top W$:
+  $$
+  \begin{aligned}
+  Q\, \beta &= \E{Z_i Y_i} \\
+  \Longrightarrow\quad \underbrace{\underset{k \times \ell}{Q^\top}\ \underset{\ell \times \ell}{W}\ \underset{\ell \times k}{Q}}_{k \times k}\ \beta &= Q^\top W\, \E{Z_i Y_i} \\
+  \Longrightarrow\quad \beta &= (Q^\top W Q)^{-1} Q^\top W\, \E{Z_i Y_i}
+  \end{aligned}
+  $$
+
+- $W = I_\ell$ $\Longrightarrow$ $\beta = (Q^\top Q)^{-1} Q^\top \E{Z_i Y_i}$.
+
+## Exactly identified case: $W$ cancels
+
+- $\ell = k$; $Q$, $W$: $k \times k$, invertible:
+  $$
+  \begin{aligned}
+  \beta &= (\underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\ \underset{k \times k}{Q})^{-1}\, \underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\, \E{Z_i Y_i} \\
+  &= Q^{-1}\, {\color{red} W^{-1} (Q^\top)^{-1} Q^\top W}\, \E{Z_i Y_i} \\
+  &= Q^{-1}\, \E{Z_i Y_i}
+  \end{aligned}
+  $$
+
+- Sample averages in place of expectations:
+  $$
+  \begin{aligned}
+  (X^\top Z\, W\, Z^\top X)^{-1} X^\top Z\, W\, Z^\top Y &= (Z^\top X)^{-1} Z^\top Y \\
+  &= \hat\beta^{IV}
+  \end{aligned}
+  $$
+
+## GMM estimator $\hat\beta(W_n)$
+
+- **Definition.** GMM estimator with weight matrix $W_n$:
+  $$
+  \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+  $$
+
+- **Assumption I.** $\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}$ iid; $Y_i = X_i^\top \beta + U_i$, $\beta \in \mathbb{R}^k$.
+
+- **Assumption II.** $\E{Z_i U_i} = 0$.
+
+- **Assumption III.** $\rank{Q} = k$, $Q = \E{Z_i X_i^\top}$.
+
+- **Assumption IV.** $W_n \to_p W$; $W$: $\ell \times \ell$, symmetric, p.d.
+
+## Consistency of $\hat\beta(W_n)$
+
+- Weak LLN, Assumptions I and II:
+  $$
+  \begin{aligned}
+  \frac{Z^\top X}{n} &= \frac{1}{n} \sum_{i=1}^n Z_i X_i^\top \to_p \E{Z_i X_i^\top} = Q \\
+  \frac{Z^\top U}{n} &= \frac{1}{n} \sum_{i=1}^n Z_i U_i \to_p \E{Z_i U_i} = 0
+  \end{aligned}
+  $$
+
+- Slutsky, Assumptions III and IV:
+  $$
+  \Big(\frac{X^\top Z}{n}\, W_n\, \frac{Z^\top X}{n}\Big)^{-1} \to_p (Q^\top W Q)^{-1}
+  $$
+
+- **Theorem.** Under Assumptions I to IV:
+  $$
+  \begin{aligned}
+  \hat\beta(W_n) &= \beta + (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top U \qquad (Y = X\beta + U) \\
+  &= \beta + \underbrace{\Big(\frac{X^\top Z}{n}\, W_n\, \frac{Z^\top X}{n}\Big)^{-1}}_{\to_p\, (Q^\top W Q)^{-1}}\ \underbrace{\frac{X^\top Z}{n}\, W_n}_{\to_p\, Q^\top W}\ \underbrace{\frac{Z^\top U}{n}}_{\to_p\, 0} \\
+  &\to_p \beta
+  \end{aligned}
+  $$
+
+## CLT for $Z^\top U / \sqrt{n}$
+
+- **Assumption V.** $\Omega = \E{U_i^2 Z_i Z_i^\top}$ finite and p.d.
+
+- Variance of $Z_i U_i$, with $\E{Z_i U_i} = 0$:
+  $$
+  \begin{aligned}
+  \Omega &= \Var{Z_i U_i} \\
+  &= \E{Z_i U_i (Z_i U_i)^\top} \\
+  &= \E{U_i^2 Z_i Z_i^\top}
+  \end{aligned}
+  $$
+
+- $Z_1 U_1, \ldots, Z_n U_n$: iid; multivariate CLT:
+  $$
+  \frac{Z^\top U}{\sqrt{n}} = \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i U_i \to_d N(0, \Omega)
+  $$
+
+## Asymptotic variance of $\hat\beta(W_n)$
+
+- Recall, Cramér convergence theorem: $A_n \to_p A$, $A$ non-random, $B_n \to_d B$ $\Longrightarrow$ $A_n B_n \to_d A B$.
+
+- Multiply the representation of $\hat\beta(W_n) - \beta$ by $\sqrt{n}$:
+  $$
+  \begin{aligned}
+  \sqrt{n}\big(\hat\beta(W_n) - \beta\big) &= \underbrace{\Big(\frac{X^\top Z}{n}\, W_n\, \frac{Z^\top X}{n}\Big)^{-1}}_{\to_p\, (Q^\top W Q)^{-1}}\ \underbrace{\frac{X^\top Z}{n}\, W_n}_{\to_p\, Q^\top W}\ \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} \\
+  &\to_d (Q^\top W Q)^{-1} Q^\top W\, N(0, \Omega) \\
+  &\overset{d}{=} N\big(0,\ \underbrace{(Q^\top W Q)^{-1} Q^\top W \Omega W Q (Q^\top W Q)^{-1}}_{V(W)}\big) \qquad (W,\ Q^\top W Q \ \text{symmetric})
+  \end{aligned}
+  $$
+
+- **Theorem.** Under Assumptions I to V:
+  $$
+  \sqrt{n}\big(\hat\beta(W_n) - \beta\big) \to_d N\big(0, V(W)\big), \qquad V(W) = \mathrm{AsyVar}\big(\hat\beta(W_n)\big)
+  $$
+
+## Efficient weight matrix $W^* = \Omega^{-1}$
+
+- **Definition.** Efficient weight matrix $W^*$: minimizes $V(W)$ in the p.s.d. sense:
+  $$
+  V(W) - V(W^*) \ge 0 \quad \text{(p.s.d.) for every } W
+  $$
+
+- **Claim.** $W^* = \Omega^{-1}$.
+
+- $V(W)$ at $W = \Omega^{-1}$:
+  $$
+  \begin{aligned}
+  V(\Omega^{-1}) &= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1} \Omega\, \Omega^{-1} Q}_{=\, Q^\top \Omega^{-1} Q}\ (Q^\top \Omega^{-1} Q)^{-1} \\
+  &= (Q^\top \Omega^{-1} Q)^{-1}
+  \end{aligned}
+  $$
+
+- $W^* = \Omega^{-1}$ matters only if $\ell > k$; $\ell = k$ $\Longrightarrow$ $W$ cancels.
+
+## Comparing asymptotic variances
+
+- Scalars, $a, b > 0$:
+  $$
+  a - b \ge 0 \quad \Longleftrightarrow \quad \frac{1}{b} - \frac{1}{a} \ge 0
+  $$
+
+- Matrices, p.s.d. differences:
+  $$
+  \begin{aligned}
+  & V(W) - V(\Omega^{-1}) \ge 0 \\
+  \Longleftrightarrow\quad & \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} \ge 0
+  \end{aligned}
+  $$
+
+## Proof that $W^* = \Omega^{-1}$ is efficient
+
+- $\Omega$ p.d. $\Longrightarrow$ $\Omega^{1/2}$: symmetric, $\Omega^{1/2}\, \Omega^{1/2} = \Omega$; $\Omega^{-1/2} = (\Omega^{1/2})^{-1}$.
+
+- Recall: $M_H = I - H (H^\top H)^{-1} H^\top$: symmetric, idempotent, p.s.d.
+
+- Difference of the inverses:
+  $$
+  \begin{aligned}
+  \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} &= Q^\top \Omega^{-1} Q - (Q^\top W Q)(Q^\top W \Omega W Q)^{-1}(Q^\top W Q) \\
+  &= Q^\top \Omega^{-1/2} \Big(I - \underbrace{\Omega^{1/2} W Q}_{H}\, \big(\underbrace{Q^\top W \Omega W Q}_{H^\top H}\big)^{-1} \underbrace{Q^\top W \Omega^{1/2}}_{H^\top}\Big) \Omega^{-1/2} Q \\
+  &= Q^\top \Omega^{-1/2}\, \underbrace{M_H}_{\text{p.s.d.}}\, \Omega^{-1/2} Q \\
+  &\ge 0
+  \end{aligned}
+  $$
+
+## Two-step efficient GMM
+
+- Efficient weight matrix, unknown:
+  $$
+  W^* = \Omega^{-1} = \big(\E{U_i^2 Z_i Z_i^\top}\big)^{-1}
+  $$
+
+- Step 1: $W_n = I_\ell$; $\hat\beta(I_\ell)$ consistent; estimator of $\Omega$ from its residuals:
+  $$
+  \hat\Omega_n = \frac{1}{n} \sum_{i=1}^n \big(Y_i - X_i^\top \hat\beta(I_\ell)\big)^2 Z_i Z_i^\top
+  $$
+
+- Step 2: $W_n = \hat\Omega_n^{-1}$, efficient GMM:
+  $$
+  \hat\beta(\hat\Omega_n^{-1}) = (X^\top Z\, \hat\Omega_n^{-1} Z^\top X)^{-1} X^\top Z\, \hat\Omega_n^{-1} Z^\top Y
+  $$
+
+- One can show: $\hat\Omega_n \to_p \Omega$.
+
+## Asymptotic variance of $\hat\beta^{IV}$
+
+- $\ell = k$: $Q$: $k \times k$, invertible; IV estimator:
+  $$
+  \begin{aligned}
+  \hat\beta^{IV} &= (\underbrace{Z^\top X}_{k \times k})^{-1} Z^\top Y \\
+  &= \beta + (Z^\top X)^{-1} Z^\top U \qquad (Y = X\beta + U)
+  \end{aligned}
+  $$
+
+- Cramér convergence theorem:
+  $$
+  \begin{aligned}
+  \sqrt{n}\big(\hat\beta^{IV} - \beta\big) &= \underbrace{\Big(\frac{Z^\top X}{n}\Big)^{-1}}_{\to_p\, Q^{-1}}\ \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} \\
+  &\to_d Q^{-1}\, N(0, \Omega)
+  \end{aligned}
+  $$
+
+- Variance of $Q^{-1} N(0, \Omega)$; $(Q^{-1})^\top = (Q^\top)^{-1}$:
+  $$
+  \begin{aligned}
+  \mathrm{AsyVar}\big(\hat\beta^{IV}\big) &= Q^{-1}\, \Omega\, (Q^{-1})^\top \\
+  &= \boxed{\ \big(\E{Z_i X_i^\top}\big)^{-1}\, \E{U_i^2 Z_i Z_i^\top}\, \big(\E{X_i Z_i^\top}\big)^{-1}\ }
+  \end{aligned}
+  $$
+
+# Two-stage least squares (2SLS)
+
+## Homoskedasticity: efficient GMM is 2SLS
+
+- Suppose:
+  $$
+  \E{U_i^2 \mid Z_i} = \sigma^2 \quad \text{(homoskedasticity)}
+  $$
+
+- Law of iterated expectations (LIE):
+  $$
+  \begin{aligned}
+  \Omega &= \E{U_i^2 Z_i Z_i^\top} \\
+  &\overset{\text{LIE}}{=} \sigma^2\, \E{Z_i Z_i^\top}
+  \end{aligned}
+  $$
+
+- Estimator of $\Omega$:
+  $$
+  \hat\Omega_n = \hat\sigma_n^2\, \frac{Z^\top Z}{n}
+  $$
+
+- Efficient GMM; the scalar $n / \hat\sigma_n^2$ cancels:
+  $$
+  \begin{aligned}
+  \hat\beta(\hat\Omega_n^{-1}) &= \Big(X^\top Z \Big(\hat\sigma_n^2\, \frac{Z^\top Z}{n}\Big)^{-1} Z^\top X\Big)^{-1} X^\top Z \Big(\hat\sigma_n^2\, \frac{Z^\top Z}{n}\Big)^{-1} Z^\top Y \\
+  &= \big(X^\top \underbrace{Z (Z^\top Z)^{-1} Z^\top}_{P_Z} X\big)^{-1} X^\top \underbrace{Z (Z^\top Z)^{-1} Z^\top}_{P_Z} Y \\
+  &= \boxed{\ (X^\top P_Z X)^{-1} X^\top P_Z Y \equiv \hat\beta^{2SLS}\ }
+  \end{aligned}
+  $$
+
+## 2SLS: first and second stage
+
+- First stage, OLS of $X_{i,1}$ on $Z_i$:
+  $$
+  \begin{aligned}
+  \hat\Pi &= (Z^\top Z)^{-1} Z^\top X_1 \\
+  \hat X_{i,1} &= \hat\Pi^\top Z_i \\
+  &= \hat\Pi_1^\top Z_{i,1} + \hat\Pi_2^\top X_{i,2}
+  \end{aligned}
+  $$
+
+- Fitted values; $X_2$: columns of $Z$ $\Longrightarrow$ $P_Z X_2 = X_2$:
+  $$
+  \begin{aligned}
+  \hat X &= P_Z X \\
+  \hat X_i &= \begin{pmatrix} \hat X_{i,1} \\ X_{i,2} \end{pmatrix}
+  \end{aligned}
+  $$
+
+- Second stage, OLS of $Y$ on $\hat X$; $P_Z = P_Z^\top P_Z$:
+  $$
+  \begin{aligned}
+  \hat\beta^{2SLS} &= (X^\top P_Z X)^{-1} X^\top P_Z Y \\
+  &= (\hat X^\top \hat X)^{-1} \hat X^\top Y
+  \end{aligned}
+  $$
+
+# Control function and the Hausman test
+
+## Every regressor endogenous
+
+- $k_2 = 0$: $X_i = X_{i,1}$, $Z_i = Z_{i,1}$.
+
+- Model and first stage, $\Pi$: $\ell \times k$:
+  $$
+  \begin{aligned}
+  Y_i &= X_i^\top \beta + U_i \\
+  \underset{k \times 1}{X_i} &= \underset{k \times \ell}{\Pi^\top}\, \underset{\ell \times 1}{Z_i} + \underset{k \times 1}{V_i}
+  \end{aligned}
+  $$
+
+- Exogenous instruments; $\Pi$ defined so that $Z_i$, $V_i$ uncorrelated:
+  $$
+  \E{Z_i U_i} = 0, \qquad \E{Z_i V_i^\top} = 0
+  $$
+
+- $V_i$: the source of endogeneity:
+  $$
+  \E{X_i U_i} \ne 0, \quad \E{Z_i U_i} = 0 \quad \Longrightarrow \quad \E{V_i U_i} \ne 0
+  $$
+
+## Decomposition of $U_i$
+
+- **Define:**
+  $$
+  \begin{aligned}
+  \lambda &= \big(\E{V_i V_i^\top}\big)^{-1} \E{V_i U_i} \\
+  \varepsilon_i &= U_i - V_i^\top \lambda \\
+  \Longrightarrow\quad U_i &= V_i^\top \lambda + \varepsilon_i
+  \end{aligned}
+  $$
+
+- $V_i$ and $\varepsilon_i$ uncorrelated:
+  $$
+  \begin{aligned}
+  \E{V_i \varepsilon_i} &= \E{V_i U_i} - \E{V_i V_i^\top} \lambda \\
+  &= \E{V_i U_i} - {\color{red} \E{V_i V_i^\top} \big(\E{V_i V_i^\top}\big)^{-1}} \E{V_i U_i} \\
+  &= 0
+  \end{aligned}
+  $$
+
+## Augmented regression and control function
+
+- $Z_i$ and $\varepsilon_i$ uncorrelated:
+  $$
+  \begin{aligned}
+  \E{Z_i \varepsilon_i} &= \E{Z_i (U_i - V_i^\top \lambda)} \\
+  &= \underbrace{\E{Z_i U_i}}_{=\,0} - \underbrace{\E{Z_i V_i^\top}}_{=\,0} \lambda \\
+  &= 0
+  \end{aligned}
+  $$
+
+- $X_i$ and $\varepsilon_i$ uncorrelated:
+  $$
+  \begin{aligned}
+  \E{X_i \varepsilon_i} &= \E{(\Pi^\top Z_i + V_i)\, \varepsilon_i} \\
+  &= \Pi^\top \underbrace{\E{Z_i \varepsilon_i}}_{=\,0} + \underbrace{\E{V_i \varepsilon_i}}_{=\,0} \\
+  &= 0
+  \end{aligned}
+  $$
+
+- Substitute $U_i = V_i^\top \lambda + \varepsilon_i$:
+  $$
+  \begin{aligned}
+  Y_i &= X_i^\top \beta + V_i^\top \lambda + \varepsilon_i \\
+  \E{X_i \varepsilon_i} &= 0 \\
+  \E{V_i \varepsilon_i} &= 0
+  \end{aligned}
+  $$
+
+- No endogeneity; $V_i$: **control function**.
+
+## Control function (CF) estimator
+
+- First-stage residuals:
+  $$
+  \hat V_i = X_i - \hat\Pi^\top Z_i, \qquad \hat\Pi = (Z^\top Z)^{-1} Z^\top X
+  $$
+
+- CF estimator, OLS of $Y_i$ on $X_i$ and $\hat V_i$:
+  $$
+  Y_i = X_i^\top \hat\beta^{CF} + \hat V_i^\top \hat\lambda + \hat\varepsilon_i
+  $$
+
+- **Claim.** $\hat\beta^{CF} = \hat\beta^{2SLS}$.
+
+## Proof that $\hat\beta^{CF} = \hat\beta^{2SLS}$
+
+- Matrix form; $Z \hat\Pi = P_Z X$:
+  $$
+  \underset{n \times 1}{Y} = \underset{n \times k}{X} \hat\beta^{CF} + \hat V \hat\lambda + \hat\varepsilon, \qquad \hat V = X - Z \hat\Pi = M_Z X
+  $$
+
+- Recall, partitioned regression, $M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top$:
+  $$
+  \hat\beta^{CF} = (X^\top M_{\hat V} X)^{-1} X^\top M_{\hat V} Y
+  $$
+
+- $M_Z$ symmetric, idempotent $\Longrightarrow$ $\hat V^\top \hat V = X^\top M_Z X$:
+  $$
+  \begin{aligned}
+  X^\top M_{\hat V} X &= X^\top X - X^\top \hat V (\hat V^\top \hat V)^{-1} \hat V^\top X \\
+  &= X^\top X - X^\top M_Z X\, {\color{red} (X^\top M_Z X)^{-1} X^\top M_Z X} \\
+  &= X^\top (I_n - M_Z) X \\
+  &= X^\top P_Z X
+  \end{aligned}
+  $$
+
+- Same steps, with $Y$ in place of the last $X$:
+  $$
+  X^\top M_{\hat V} Y = X^\top P_Z Y
+  $$
+
+- Hence:
+  $$
+  \boxed{\ \hat\beta^{CF} = (X^\top P_Z X)^{-1} X^\top P_Z Y = \hat\beta^{2SLS}\ }
+  $$
+
+## Hausman test of exogeneity
+
+- $\hat\lambda$: estimator of $\lambda = \big(\E{V_i V_i^\top}\big)^{-1} \E{V_i U_i}$.
+
+- Exogeneity of the regressors in terms of $\lambda$:
+  $$
+  \begin{aligned}
+  \lambda = 0 \quad &\Longleftrightarrow \quad \E{V_i U_i} = 0 \\
+  &\Longleftrightarrow \quad \E{X_i U_i} = 0 \qquad (\E{X_i U_i} = \Pi^\top \E{Z_i U_i} + \E{V_i U_i})
+  \end{aligned}
+  $$
+
+- Hypotheses:
+  $$
+  H_0: \lambda = 0 \ \ (X_i \ \text{exogenous}) \qquad \text{vs} \qquad H_1: \lambda \ne 0 \ \ (X_i \ \text{endogenous})
+  $$
+
+- Under $H_0$, one can show:
+  $$
+  H_n = n\, \hat\lambda^\top \big[\widehat{\mathrm{AsyVar}}(\hat\lambda)\big]^{-1} \hat\lambda \to_d \chi^2_{k_1}, \qquad k_1: \ \text{number of endogenous regressors}
+  $$
+
+- Reject $H_0$: $H_n > \chi^2_{k_1,\, 1-\alpha}$.
+
+# Over-identifying restrictions test
+
+## Exactly identified case: $Z^\top \hat U = 0$
+
+- Linear IV model, $\beta \in \mathbb{R}^k$, $Z_i \in \mathbb{R}^\ell$:
+  $$
+  Y_i = X_i^\top \beta + U_i, \qquad \E{Z_i U_i} = 0, \qquad \rank{\E{Z_i X_i^\top}} = k
+  $$
+
+- $\ell = k$, $\hat U = Y - X \hat\beta^{IV}$:
+  $$
+  \begin{aligned}
+  Z^\top \hat U &= Z^\top Y - Z^\top X \hat\beta^{IV} \\
+  &= Z^\top Y - {\color{red} Z^\top X (Z^\top X)^{-1}} Z^\top Y \\
+  &= 0
+  \end{aligned}
+  $$
+
+## Hypotheses and efficient GMM
+
+- $\ell > k$:
+  $$
+  \begin{aligned}
+  H_0 &: \ \E{Z_i (Y_i - X_i^\top \beta)} = 0 \quad \text{for some } \beta \in \mathbb{R}^k \\
+  H_1 &: \ \E{Z_i (Y_i - X_i^\top b)} \ne 0 \quad \text{for all } b \in \mathbb{R}^k
+  \end{aligned}
+  $$
+
+- $\hat\beta = \hat\beta(\hat\Omega_n^{-1})$: efficient GMM, with $\hat\Omega_n \to_p \Omega$:
+  $$
+  \Omega = \E{U_i^2 Z_i Z_i^\top} = \E{(Y_i - X_i^\top \beta)^2 Z_i Z_i^\top}
+  $$
+
+## Statistic $J$
+
+- $\hat\Omega_n^{-1}$-weighted distance of $\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i$ from zero, $\hat U_i = Y_i - X_i^\top \hat\beta$:
+  $$
+  \begin{aligned}
+  J &= \frac{1}{n} (Y - X\hat\beta)^\top Z\ \hat\Omega_n^{-1}\ \frac{1}{n} Z^\top (Y - X\hat\beta) \\
+  &= \Big(\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i\Big)^\top \hat\Omega_n^{-1} \Big(\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i\Big)
+  \end{aligned}
+  $$
+
+- $\ell = k$: $\hat\beta = \hat\beta^{IV}$, $Z^\top \hat U = 0$ $\Longrightarrow$ $J = 0$, whether $H_0$ is true or false.
+
+- $\ell > k$, $H_0$ true:
+  $$
+  \frac{1}{n} \sum_{i=1}^n Z_i \hat U_i \to_p 0 \quad \Longrightarrow \quad J > 0, \ \text{but} \ J \to_p 0
+  $$
+
+## Quadratic form at the true $\beta$
+
+- Under $H_0$, CLT:
+  $$
+  \frac{1}{\sqrt{n}} Z^\top (Y - X\beta) = \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i U_i \to_d N(0, \Omega)
+  $$
+
+- We will use, for $x \in \mathbb{R}^\ell$:
+  $$
+  \begin{aligned}
+  x^\top \Omega^{-1} x &= x^\top \Omega^{-1/2}\, \Omega^{-1/2} x \\
+  &= (\Omega^{-1/2} x)^\top\, \Omega^{-1/2} x \\
+  &= \|\Omega^{-1/2} x\|^2
+  \end{aligned}
+  $$
+
+- $\mathcal{Z} = \Omega^{-1/2} N(0, \Omega) \sim N(0, I_\ell)$:
+  $$
+  \begin{aligned}
+  \|\mathcal{Z}\|^2 &= \mathcal{Z}^\top \mathcal{Z} \\
+  &= \sum_{j=1}^\ell \mathcal{Z}_j^2 \sim \chi^2_\ell
+  \end{aligned}
+  $$
+
+- $\hat\Omega_n^{-1} = \Omega^{-1} + o_p(1)$:
+  $$
+  \begin{aligned}
+  \frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} &= \frac{U^\top Z}{\sqrt{n}}\, \Omega^{-1}\, \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} + o_p(1) \\
+  &= \Big\|\underbrace{\Omega^{-1/2}\, \frac{Z^\top U}{\sqrt{n}}}_{\to_d\, \mathcal{Z}}\Big\|^2 + o_p(1) \\
+  &\to_d \|\mathcal{Z}\|^2 \sim \chi^2_\ell
+  \end{aligned}
+  $$
+
+## $J$ test and Sargan's test
+
+- Under $H_0$, one can show, with $\hat\beta$ efficient GMM:
+  $$
+  nJ = \frac{(Y - X\hat\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\hat\beta)}{\sqrt{n}} \to_d \chi^2_{\ell - k}
+  $$
+
+- $k$ IVs used to estimate $\beta$, $\ell - k$ IVs used to test.
+
+- Test: reject $H_0$ when $nJ > \chi^2_{\ell - k,\, 1-\alpha}$.
+
+- $\E{U_i^2 \mid Z_i} = \sigma^2$ $\Longrightarrow$ $\hat\Omega_n = \hat\sigma_n^2\, \frac{Z^\top Z}{n}$, $\hat\beta = \hat\beta^{2SLS}$; $J$ test: Sargan's test.
+
+# Constructing more instruments
+
+## Functions of exogenous variables as instruments
+
+- Suppose:
+  $$
+  \E{U_i \mid X_{i,2}, Z_{i,1}} = 0
+  $$
+
+- Law of iterated expectations, any function $h$:
+  $$
+  \begin{aligned}
+  \E{h(X_{i,2}, Z_{i,1})\, U_i} &= \E{\E{h(X_{i,2}, Z_{i,1})\, U_i \mid X_{i,2}, Z_{i,1}}} \\
+  &= \E{h(X_{i,2}, Z_{i,1})\, \underbrace{\E{U_i \mid X_{i,2}, Z_{i,1}}}_{=\,0}} \\
+  &= 0
+  \end{aligned}
+  $$
+
+- $Z_{i,1}$: IVs $\Longrightarrow$ products of entries of $Z_{i,1}$ and $X_{i,2}$: IVs too.
+
+## Angrist and Krueger instruments
+
+- $X_{i,2}$: gender, race, year-of-birth and geographic dummies.
+
+- Quarter-of-birth dummies:
+  $$
+  Z_{i,1} = \begin{pmatrix} \mathbf{1}(\text{quarter of birth}_i = 1) \\ \mathbf{1}(\text{quarter of birth}_i = 2) \\ \mathbf{1}(\text{quarter of birth}_i = 3) \end{pmatrix}
+  $$
+
+- More IVs: each quarter-of-birth dummy times each year-of-birth dummy.
+
+# Summary
+
+## Endogeneity and identification
+
+- $\E{X_{i,1} U_i} \ne 0$ $\Longrightarrow$ OLS inconsistent; $k_1 = 1$: $\mathrm{AsyBias}(\hat\beta_1) = \E{X_{i,1} U_i} / Q_{1 \cdot 2}$.
+
+- $k_1 = 1$: $\hat\beta_2$ also asymptotically biased unless $\E{X_{i,2} X_{i,1}} = 0$.
+
+- $Z_i = (Z_{i,1}^\top, X_{i,2}^\top)^\top$, $\E{Z_i (Y_i - X_i^\top \beta)} = 0$: $\ell$ equations, $k$ unknowns.
+
+- Rank condition $\rank{\E{Z_i X_i^\top}} = k$ $\Longleftrightarrow$ $\rank{\Pi_1} = k_1$; order condition $\ell_1 \ge k_1$.
+
+- $Z_{i,1}$: excluded, exogenous, informative; $\ell = k$: $\hat\beta^{IV} = (Z^\top X)^{-1} Z^\top Y$.
+
+## GMM and 2SLS
+
+- $\hat\beta(W_n) = (X^\top Z W_n Z^\top X)^{-1} X^\top Z W_n Z^\top Y$; Assumptions I to IV $\Longrightarrow$ $\hat\beta(W_n) \to_p \beta$.
+
+- Assumptions I to V $\Longrightarrow$ $\sqrt{n}(\hat\beta(W_n) - \beta) \to_d N(0, V(W))$, $V(W) = (Q^\top W Q)^{-1} Q^\top W \Omega W Q (Q^\top W Q)^{-1}$.
+
+- Efficient weight matrix: $W^* = \Omega^{-1}$, $V(\Omega^{-1}) = (Q^\top \Omega^{-1} Q)^{-1}$; two steps, $\hat\Omega_n$ from $\hat\beta(I_\ell)$.
+
+- $\ell = k$ $\Longrightarrow$ $\hat\beta(W_n) = \hat\beta^{IV}$; $\mathrm{AsyVar}(\hat\beta^{IV}) = Q^{-1} \Omega (Q^{-1})^\top$.
+
+- $\E{U_i^2 \mid Z_i} = \sigma^2$ $\Longrightarrow$ efficient GMM $= \hat\beta^{2SLS} = (X^\top P_Z X)^{-1} X^\top P_Z Y = (\hat X^\top \hat X)^{-1} \hat X^\top Y$, $\hat X = P_Z X$.
+
+## Control function and specification tests
+
+- $U_i = V_i^\top \lambda + \varepsilon_i$: $Y_i = X_i^\top \beta + V_i^\top \lambda + \varepsilon_i$, $\E{X_i \varepsilon_i} = 0$, $\E{V_i \varepsilon_i} = 0$; $\hat\beta^{CF} = \hat\beta^{2SLS}$.
+
+- Hausman: $H_0: \lambda = 0$; $H_n \to_d \chi^2_{k_1}$ under $H_0$; reject when $H_n > \chi^2_{k_1,\, 1-\alpha}$.
+
+- Over-identifying restrictions, $\ell > k$: $nJ \to_d \chi^2_{\ell - k}$ under $H_0$; reject when $nJ > \chi^2_{\ell - k,\, 1-\alpha}$; homoskedasticity $\Longrightarrow$ Sargan's test.
+
+- $\E{U_i \mid X_{i,2}, Z_{i,1}} = 0$ $\Longrightarrow$ $\E{h(X_{i,2}, Z_{i,1})\, U_i} = 0$: functions of $X_{i,2}$, $Z_{i,1}$ as IVs.
