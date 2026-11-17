@@ -2737,10 +2737,10 @@ CI_{1-\alpha} = \Big[ &amp; \hat\beta_{n,j} - z_{1-\alpha/2}\, \text{std. err}_{
 <li><p>Robust estimator, <span class="math inline">\hat U_i^2</span> in place of <span class="math inline">\mathrm{E}\left[U_i^2 \mid X\right]</span>: <span class="math display">
 (X^\top X)^{-1} \Big(\sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) (X^\top X)^{-1}
 </span></p></li>
+<li><p>Example: test scores of students <span class="math inline">i</span> in school <span class="math inline">g</span>; unobserved teacher quality in <span class="math inline">U_i</span> for all <span class="math inline">i \in g</span>.</p></li>
 <li><p>Clusters <span class="math inline">g = 1, \ldots, G</span>; <span class="math inline">U_i</span>, <span class="math inline">U_j</span> correlated within a cluster, uncorrelated across clusters: <span class="math display">
 \mathrm{Var}\left(\hat\beta_n \mid X\right) = (X^\top X)^{-1} \Big(\sum_{g=1}^G \sum_{i \in g} \sum_{j \in g} \mathrm{E}\left[U_i U_j \mid X\right] X_i X_j^\top\Big) (X^\top X)^{-1}
 </span></p></li>
-<li><p>Example: test scores of students <span class="math inline">i</span> in school <span class="math inline">g</span>; unobserved teacher quality in <span class="math inline">U_i</span> for all <span class="math inline">i \in g</span>.</p></li>
 <li><p>Clustered estimator, <span class="math inline">\hat U_i \hat U_j</span> in place of <span class="math inline">\mathrm{E}\left[U_i U_j \mid X\right]</span>: <span class="math display">
 (X^\top X)^{-1} \Big(\sum_{g=1}^G \sum_{i \in g} \sum_{j \in g} \hat U_i \hat U_j X_i X_j^\top\Big) (X^\top X)^{-1}
 </span></p></li>
