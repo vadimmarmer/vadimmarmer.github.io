@@ -192,7 +192,7 @@ format:
 
 - $a = e_j$, element $j$:
   $$
-  \sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, [V]_{jj})
+  \sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, V_{jj})
   $$
 
 ## Homoskedasticity
@@ -383,13 +383,16 @@ format:
 
 - $\overset{a}{\sim}$: approximate distribution for large $n$:
   $$
-  \hat\beta_{n,j} \overset{a}{\sim} N\Big(\beta_j,\ \frac{[V]_{jj}}{n}\Big)
+  \begin{aligned}
+  & \sqrt{n}(\hat\beta_{n,j} - \beta_j) \overset{a}{\sim} N(0,\ V_{jj}) \\
+  \Longrightarrow\quad & \hat\beta_{n,j} \overset{a}{\sim} N\Big(\beta_j,\ \frac{V_{jj}}{n}\Big)
+  \end{aligned}
   $$
 
 - **Definition.** Robust (heteroskedasticity-consistent, White) standard error:
   $$
   \begin{aligned}
-  \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &= \sqrt{[\hat V_n]_{jj} / {\color{blue} n}} \\
+  \text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &= \sqrt{\hat V_{n,jj} / {\color{blue} n}} \\
   &= \sqrt{{\color{blue} \frac{1}{n}} \big[\hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}\big]_{jj}} \\
   &= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1} \hat\Omega_n \Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1}\Big]_{jj}} \\
   &= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1} \Big({\color{blue} \frac{1}{n}} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) \Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1}\Big]_{jj}} \\
@@ -400,13 +403,13 @@ format:
 
 ## $t$-ratio with robust standard errors
 
-- $\sqrt{[\hat V_n]_{jj}} \to_p \sqrt{[V]_{jj}} > 0$; apply to the component CLT:
+- $\sqrt{\hat V_{n,jj}} \to_p \sqrt{V_{jj}} > 0$; apply to the component CLT:
   $$
   \begin{aligned}
-  \frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)} &= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{[\hat V_n]_{jj} / n}} \\
-  &= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{[\hat V_n]_{jj}} / \sqrt{n}} \\
-  &= \frac{\sqrt{n}(\hat\beta_{n,j} - \beta_j)}{\sqrt{[\hat V_n]_{jj}}} \\
-  &\to_d \frac{N(0, [V]_{jj})}{\sqrt{[V]_{jj}}} \\
+  \frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)} &= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{\hat V_{n,jj} / n}} \\
+  &= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{\hat V_{n,jj}} / \sqrt{n}} \\
+  &= \frac{\sqrt{n}(\hat\beta_{n,j} - \beta_j)}{\sqrt{\hat V_{n,jj}}} \\
+  &\to_d \frac{N(0, V_{jj})}{\sqrt{V_{jj}}} \\
   &= N(0, 1)
   \end{aligned}
   $$
@@ -471,7 +474,7 @@ format:
 
 - Assumptions I to III, $\E{U_i^4} < \infty$, $\E{\|X_i\|^4} < \infty$ $\Longrightarrow$ $\hat V_n \to_p V$.
 
-- $\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{[\hat V_n]_{jj}/n}$; robust $t$-ratio $\to_d N(0,1)$; normal confidence interval: coverage $\to 1-\alpha$.
+- $\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\hat V_{n,jj}/n}$; robust $t$-ratio $\to_d N(0,1)$; normal confidence interval: coverage $\to 1-\alpha$.
 
 - Heteroskedasticity: usual standard errors invalid in general; robust valid under stated conditions.
 

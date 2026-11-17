@@ -1198,7 +1198,7 @@ A_n Z_n \to_d A Z
 \mathrm{P}\big(a^\top \sqrt{n}(\hat\beta_n - \beta) \le t\big) \to \Phi\Big(\frac{t}{\sqrt{a^\top V a}}\Big)
 </span></p></li>
 <li class="fragment"><p><span class="math inline">a = e_j</span>, element <span class="math inline">j</span>: <span class="math display">
-\sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, [V]_{jj})
+\sqrt{n}(\hat\beta_{n,j} - \beta_j) \to_d N(0, V_{jj})
 </span></p></li>
 </ul>
 </section>
@@ -1378,11 +1378,14 @@ V = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\left[X_i X_i^\top\right], \qquad
 <h2>Robust standard errors</h2>
 <ul>
 <li class="fragment"><p><span class="math inline">\overset{a}{\sim}</span>: approximate distribution for large <span class="math inline">n</span>: <span class="math display">
-\hat\beta_{n,j} \overset{a}{\sim} N\Big(\beta_j,\ \frac{[V]_{jj}}{n}\Big)
+\begin{aligned}
+&amp; \sqrt{n}(\hat\beta_{n,j} - \beta_j) \overset{a}{\sim} N(0,\ V_{jj}) \\
+\Longrightarrow\quad &amp; \hat\beta_{n,j} \overset{a}{\sim} N\Big(\beta_j,\ \frac{V_{jj}}{n}\Big)
+\end{aligned}
 </span></p></li>
 <li class="fragment"><p><strong>Definition.</strong> Robust (heteroskedasticity-consistent, White) standard error: <span class="math display">
 \begin{aligned}
-\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &amp;= \sqrt{[\hat V_n]_{jj} / {\color{blue} n}} \\
+\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big) &amp;= \sqrt{\hat V_{n,jj} / {\color{blue} n}} \\
 &amp;= \sqrt{{\color{blue} \frac{1}{n}} \big[\hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}\big]_{jj}} \\
 &amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1} \hat\Omega_n \Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1}\Big]_{jj}} \\
 &amp;= \sqrt{{\color{blue} \frac{1}{n}} \Big[\Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1} \Big({\color{blue} \frac{1}{n}} \sum_{i=1}^n \hat U_i^2 X_i X_i^\top\Big) \Big({\color{red} \frac{1}{n}} X^\top X\Big)^{-1}\Big]_{jj}} \\
@@ -1395,12 +1398,12 @@ V = Q^{-1} \Omega Q^{-1}, \qquad Q = \mathrm{E}\left[X_i X_i^\top\right], \qquad
 <section id="t-ratio-with-robust-standard-errors" class="slide level2">
 <h2><span class="math inline">t</span>-ratio with robust standard errors</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\sqrt{[\hat V_n]_{jj}} \to_p \sqrt{[V]_{jj}} &gt; 0</span>; apply to the component CLT: <span class="math display">
+<li class="fragment"><p><span class="math inline">\sqrt{\hat V_{n,jj}} \to_p \sqrt{V_{jj}} &gt; 0</span>; apply to the component CLT: <span class="math display">
 \begin{aligned}
-\frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)} &amp;= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{[\hat V_n]_{jj} / n}} \\
-&amp;= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{[\hat V_n]_{jj}} / \sqrt{n}} \\
-&amp;= \frac{\sqrt{n}(\hat\beta_{n,j} - \beta_j)}{\sqrt{[\hat V_n]_{jj}}} \\
-&amp;\to_d \frac{N(0, [V]_{jj})}{\sqrt{[V]_{jj}}} \\
+\frac{\hat\beta_{n,j} - \beta_j}{\text{std. err}_{\text{rob}}\big(\hat\beta_{n,j}\big)} &amp;= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{\hat V_{n,jj} / n}} \\
+&amp;= \frac{\hat\beta_{n,j} - \beta_j}{\sqrt{\hat V_{n,jj}} / \sqrt{n}} \\
+&amp;= \frac{\sqrt{n}(\hat\beta_{n,j} - \beta_j)}{\sqrt{\hat V_{n,jj}}} \\
+&amp;\to_d \frac{N(0, V_{jj})}{\sqrt{V_{jj}}} \\
 &amp;= N(0, 1)
 \end{aligned}
 </span></p></li>
@@ -1486,7 +1489,7 @@ CI_{1-\alpha} = \Big[ &amp; \hat\beta_{n,j} - z_{1-\alpha/2}\, \text{std. err}_{
 <ul>
 <li class="fragment"><p><span class="math inline">\hat V_n = \hat Q_n^{-1} \hat\Omega_n \hat Q_n^{-1}</span>, <span class="math inline">\hat Q_n = \frac{1}{n} \sum X_i X_i^\top</span>, <span class="math inline">\hat\Omega_n = \frac{1}{n} \sum \hat U_i^2 X_i X_i^\top</span>.</p></li>
 <li class="fragment"><p>Assumptions I to III, <span class="math inline">\mathrm{E}\left[U_i^4\right] &lt; \infty</span>, <span class="math inline">\mathrm{E}\left[\|X_i\|^4\right] &lt; \infty</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat V_n \to_p V</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{[\hat V_n]_{jj}/n}</span>; robust <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0,1)</span>; normal confidence interval: coverage <span class="math inline">\to 1-\alpha</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\text{std. err}_{\text{rob}}(\hat\beta_{n,j}) = \sqrt{\hat V_{n,jj}/n}</span>; robust <span class="math inline">t</span>-ratio <span class="math inline">\to_d N(0,1)</span>; normal confidence interval: coverage <span class="math inline">\to 1-\alpha</span>.</p></li>
 <li class="fragment"><p>Heteroskedasticity: usual standard errors invalid in general; robust valid under stated conditions.</p></li>
 <li class="fragment"><p><span class="math inline">U \mid X \sim N(0,\sigma^2 I_n)</span>: usual <span class="math inline">t</span>-ratio exactly <span class="math inline">t_{n-k}</span>; <span class="math inline">t_{n-k,\,1-\alpha/2} \to z_{1-\alpha/2}</span>.</p></li>
 </ul>
