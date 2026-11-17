@@ -504,6 +504,8 @@ format:
   \Var{\hat\beta_n \mid X} = (X^\top X)^{-1} \Big(\sum_{g=1}^G \sum_{i \in g} \sum_{j \in g} \E{U_i U_j \mid X} X_i X_j^\top\Big) (X^\top X)^{-1}
   $$
 
+- Example: test scores of students $i$ in school $g$; unobserved teacher quality in $U_i$ for all $i \in g$.
+
 - Clustered estimator, $\hat U_i \hat U_j$ in place of $\E{U_i U_j \mid X}$:
   $$
   (X^\top X)^{-1} \Big(\sum_{g=1}^G \sum_{i \in g} \sum_{j \in g} \hat U_i \hat U_j X_i X_j^\top\Big) (X^\top X)^{-1}
