@@ -1504,7 +1504,8 @@ CI_{1-\alpha} = \Big[ &amp; \hat\beta_{n,j} - z_{1-\alpha/2}\, \text{std. err}_{
 <ul>
 <li class="fragment"><p><span class="math inline">\mathrm{E}\left[U \mid X\right] = 0</span>; robust form when <span class="math inline">\mathrm{E}\left[U_i U_j \mid X\right] = 0</span> for <span class="math inline">i \ne j</span>: <span class="math display">
 \begin{aligned}
-\mathrm{Var}\left(\hat\beta_n \mid X\right) &amp;= (X^\top X)^{-1} X^\top \mathrm{E}\left[U U^\top \mid X\right] X (X^\top X)^{-1} \\
+\mathrm{Var}\left(\hat\beta_n \mid X\right) &amp;= (X^\top X)^{-1} X^\top \mathrm{Var}\left(U \mid X\right) X (X^\top X)^{-1} \\
+&amp;= (X^\top X)^{-1} X^\top \mathrm{E}\left[U U^\top \mid X\right] X (X^\top X)^{-1} \\
 &amp;= (X^\top X)^{-1} \Big(\sum_{i=1}^n \sum_{j=1}^n \mathrm{E}\left[U_i U_j \mid X\right] X_i X_j^\top\Big) (X^\top X)^{-1} \\
 &amp;= (X^\top X)^{-1} \Big(\sum_{i=1}^n \mathrm{E}\left[U_i^2 \mid X\right] X_i X_i^\top\Big) (X^\top X)^{-1}
 \end{aligned}
