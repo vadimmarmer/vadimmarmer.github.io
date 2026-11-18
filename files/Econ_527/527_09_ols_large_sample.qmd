@@ -505,7 +505,7 @@ format:
 
 - Errors uncorrelated across clusters, correlated within a cluster:
   $$
-  \E{U_i U_j \mid X_i, X_j}
+  \E{U_i U_j \mid X}
   \begin{cases}
   = 0, & i, j \text{ in different clusters} \\
   \ne 0, & i, j \text{ in the same cluster}
