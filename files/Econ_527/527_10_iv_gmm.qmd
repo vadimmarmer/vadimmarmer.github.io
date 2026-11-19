@@ -863,8 +863,6 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
-- $W = I_\ell$ $\Longrightarrow$ $\beta = \big(\E{X_i Z_i^\top} \E{Z_i X_i^\top}\big)^{-1} \E{X_i Z_i^\top} \E{Z_i Y_i}$.
-
 ## Exactly identified case: $W$ cancels
 
 - $\ell = k$.
