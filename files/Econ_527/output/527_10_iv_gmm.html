@@ -2279,7 +2279,6 @@ window.Quarto = {
   <li><a href="#clt-for-ztop-u-sqrtn" id="toc-clt-for-ztop-u-sqrtn" class="nav-link" data-scroll-target="#clt-for-ztop-u-sqrtn">CLT for <span class="math inline">Z^\top U / \sqrt{n}</span></a></li>
   <li><a href="#asymptotic-variance-of-hatbetaw_n" id="toc-asymptotic-variance-of-hatbetaw_n" class="nav-link" data-scroll-target="#asymptotic-variance-of-hatbetaw_n">Asymptotic variance of <span class="math inline">\hat\beta(W_n)</span></a></li>
   <li><a href="#efficient-weight-matrix-w-omega-1" id="toc-efficient-weight-matrix-w-omega-1" class="nav-link" data-scroll-target="#efficient-weight-matrix-w-omega-1">Efficient weight matrix <span class="math inline">W^* = \Omega^{-1}</span></a></li>
-  <li><a href="#comparing-asymptotic-variances" id="toc-comparing-asymptotic-variances" class="nav-link" data-scroll-target="#comparing-asymptotic-variances">Comparing asymptotic variances</a></li>
   <li><a href="#proof-that-w-omega-1-is-efficient" id="toc-proof-that-w-omega-1-is-efficient" class="nav-link" data-scroll-target="#proof-that-w-omega-1-is-efficient">Proof that <span class="math inline">W^* = \Omega^{-1}</span> is efficient</a></li>
   <li><a href="#two-step-efficient-gmm" id="toc-two-step-efficient-gmm" class="nav-link" data-scroll-target="#two-step-efficient-gmm">Two-step efficient GMM</a></li>
   <li><a href="#asymptotic-variance-of-hatbetaiv" id="toc-asymptotic-variance-of-hatbetaiv" class="nav-link" data-scroll-target="#asymptotic-variance-of-hatbetaiv">Asymptotic variance of <span class="math inline">\hat\beta^{IV}</span></a></li>
@@ -3088,23 +3087,15 @@ V(\Omega^{-1}) &amp;= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1
 <li><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W</span> cancels.</p></li>
 </ul>
 </section>
-<section id="comparing-asymptotic-variances" class="level2">
-<h2 class="anchored" data-anchor-id="comparing-asymptotic-variances">Comparing asymptotic variances</h2>
+<section id="proof-that-w-omega-1-is-efficient" class="level2">
+<h2 class="anchored" data-anchor-id="proof-that-w-omega-1-is-efficient">Proof that <span class="math inline">W^* = \Omega^{-1}</span> is efficient</h2>
 <ul>
-<li><p>Scalars, <span class="math inline">a, b &gt; 0</span>: <span class="math display">
-a - b \ge 0 \quad \Longleftrightarrow \quad \frac{1}{b} - \frac{1}{a} \ge 0
-</span></p></li>
 <li><p>Matrices, p.s.d. differences: <span class="math display">
 \begin{aligned}
 &amp; V(W) - V(\Omega^{-1}) \ge 0 \\
 \Longleftrightarrow\quad &amp; \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} \ge 0
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="proof-that-w-omega-1-is-efficient" class="level2">
-<h2 class="anchored" data-anchor-id="proof-that-w-omega-1-is-efficient">Proof that <span class="math inline">W^* = \Omega^{-1}</span> is efficient</h2>
-<ul>
 <li><p><span class="math inline">\Omega</span> p.d. <span class="math inline">\Longrightarrow</span> <span class="math inline">\Omega^{1/2}</span>: symmetric, <span class="math inline">\Omega^{1/2}\, \Omega^{1/2} = \Omega</span>.</p></li>
 <li><p><span class="math inline">\Omega^{-1/2} = (\Omega^{1/2})^{-1}</span>.</p></li>
 <li><p>Recall: <span class="math inline">M_H = I - H (H^\top H)^{-1} H^\top</span>: symmetric, idempotent, p.s.d.</p></li>

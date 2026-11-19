@@ -1001,12 +1001,7 @@ ds_picture <- function(step) {
 
 - $\ell = k$ $\Longrightarrow$ $W$ cancels.
 
-## Comparing asymptotic variances
-
-- Scalars, $a, b > 0$:
-  $$
-  a - b \ge 0 \quad \Longleftrightarrow \quad \frac{1}{b} - \frac{1}{a} \ge 0
-  $$
+## Proof that $W^* = \Omega^{-1}$ is efficient
 
 - Matrices, p.s.d. differences:
   $$
@@ -1015,8 +1010,6 @@ ds_picture <- function(step) {
   \Longleftrightarrow\quad & \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} \ge 0
   \end{aligned}
   $$
-
-## Proof that $W^* = \Omega^{-1}$ is efficient
 
 - $\Omega$ p.d. $\Longrightarrow$ $\Omega^{1/2}$: symmetric, $\Omega^{1/2}\, \Omega^{1/2} = \Omega$.
 
