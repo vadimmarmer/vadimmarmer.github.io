@@ -835,14 +835,14 @@ ds_picture <- function(step) {
 
 - $\text{Same sex}_i = 1$ if the first two children are both boys or both girls.
 
+- First two children of the same sex $\Longrightarrow$ third child more likely.
+
 - IV for $\text{Number of children}_i$: $\text{Same sex}_i$.
 
 - First stage:
   $$
   \text{Number of children}_i = \Pi_1\, \text{Same sex}_i + X_{i,2}^\top \Pi_2 + V_i
   $$
-
-- First two children of the same sex $\Longrightarrow$ third child more likely.
 
 - Hence $\Pi_1 > 0$.
 
