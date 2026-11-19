@@ -881,7 +881,7 @@ ds_picture <- function(step) {
 - $\ell = k$ $\Longrightarrow$ $W_n$ cancels:
   $$
   \begin{aligned}
-  \hat\beta(W_n) &= (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y \\
+  \hat\beta(W_n) &= ({\color{red} X^\top Z}\, {\color{blue} W_n}\, Z^\top X)^{-1} {\color{red} X^\top Z}\, {\color{blue} W_n}\, Z^\top Y \\
   &= (Z^\top X)^{-1} Z^\top Y \\
   &= \hat\beta^{IV}
   \end{aligned}
@@ -892,13 +892,18 @@ ds_picture <- function(step) {
 - Population version:
   $$
   \begin{aligned}
-  \beta &= \big(\underset{k \times k}{\E{X_i Z_i^\top}}\ \underset{k \times k}{W}\ \underset{k \times k}{\E{Z_i X_i^\top}}\big)^{-1}\, \underset{k \times k}{\E{X_i Z_i^\top}}\ \underset{k \times k}{W}\, \E{Z_i Y_i} \\
-  &= \big(\E{Z_i X_i^\top}\big)^{-1}\, {\color{red} W^{-1} \big(\E{X_i Z_i^\top}\big)^{-1} \E{X_i Z_i^\top}\, W}\, \E{Z_i Y_i} \\
+  \beta &= \big(\underset{k \times k}{{\color{red} \E{X_i Z_i^\top}}}\ \underset{k \times k}{{\color{blue} W}}\ \underset{k \times k}{\E{Z_i X_i^\top}}\big)^{-1}\, \underset{k \times k}{{\color{red} \E{X_i Z_i^\top}}}\ \underset{k \times k}{{\color{blue} W}}\, \E{Z_i Y_i} \\
+  &= \big(\E{Z_i X_i^\top}\big)^{-1}\, {\color{blue} W^{-1}}\, {\color{red} \big(\E{X_i Z_i^\top}\big)^{-1} \E{X_i Z_i^\top}}\, {\color{blue} W}\, \E{Z_i Y_i} \\
   &= \big(\E{Z_i X_i^\top}\big)^{-1} \E{Z_i Y_i}
   \end{aligned}
   $$
 
 ## Linear GMM model
+
+- Linear GMM estimator:
+  $$
+  \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+  $$
 
 - **Assumption I.**
   - $\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}$ iid.
@@ -906,7 +911,7 @@ ds_picture <- function(step) {
 
 - **Assumption II.** $\E{Z_i U_i} = 0$.
 
-- **Assumption III.** $\rank{Q} = k$, $Q = \E{Z_i X_i^\top}$.
+- **Assumption III.** $\rank{\E{Z_i X_i^\top}} = k$.
 
 - **Assumption IV.**
   - $W_n \to_p W$.

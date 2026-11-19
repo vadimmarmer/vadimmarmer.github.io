@@ -1724,7 +1724,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li class="fragment"><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W_n</span> cancels: <span class="math display">
 \begin{aligned}
-\hat\beta(W_n) &amp;= (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y \\
+\hat\beta(W_n) &amp;= ({\color{red} X^\top Z}\, {\color{blue} W_n}\, Z^\top X)^{-1} {\color{red} X^\top Z}\, {\color{blue} W_n}\, Z^\top Y \\
 &amp;= (Z^\top X)^{-1} Z^\top Y \\
 &amp;= \hat\beta^{IV}
 \end{aligned}
@@ -1732,8 +1732,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <li class="fragment"><p><span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible.</p></li>
 <li class="fragment"><p>Population version: <span class="math display">
 \begin{aligned}
-\beta &amp;= \big(\underset{k \times k}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{k \times k}{W}\ \underset{k \times k}{\mathrm{E}\left[Z_i X_i^\top\right]}\big)^{-1}\, \underset{k \times k}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{k \times k}{W}\, \mathrm{E}\left[Z_i Y_i\right] \\
-&amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1}\, {\color{red} W^{-1} \big(\mathrm{E}\left[X_i Z_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right]\, W}\, \mathrm{E}\left[Z_i Y_i\right] \\
+\beta &amp;= \big(\underset{k \times k}{{\color{red} \mathrm{E}\left[X_i Z_i^\top\right]}}\ \underset{k \times k}{{\color{blue} W}}\ \underset{k \times k}{\mathrm{E}\left[Z_i X_i^\top\right]}\big)^{-1}\, \underset{k \times k}{{\color{red} \mathrm{E}\left[X_i Z_i^\top\right]}}\ \underset{k \times k}{{\color{blue} W}}\, \mathrm{E}\left[Z_i Y_i\right] \\
+&amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1}\, {\color{blue} W^{-1}}\, {\color{red} \big(\mathrm{E}\left[X_i Z_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right]}\, {\color{blue} W}\, \mathrm{E}\left[Z_i Y_i\right] \\
 &amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i Y_i\right]
 \end{aligned}
 </span></p></li>
@@ -1742,13 +1742,16 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="linear-gmm-model" class="slide level2">
 <h2>Linear GMM model</h2>
 <ul>
+<li class="fragment"><p>Linear GMM estimator: <span class="math display">
+\hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+</span></p></li>
 <li class="fragment"><p><strong>Assumption I.</strong></p>
 <ul>
 <li class="fragment"><span class="math inline">\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}</span> iid.</li>
 <li class="fragment"><span class="math inline">Y_i = X_i^\top \beta + U_i</span>, <span class="math inline">\beta \in \mathbb{R}^k</span>.</li>
 </ul></li>
 <li class="fragment"><p><strong>Assumption II.</strong> <span class="math inline">\mathrm{E}\left[Z_i U_i\right] = 0</span>.</p></li>
-<li class="fragment"><p><strong>Assumption III.</strong> <span class="math inline">\operatorname{rank}\left(Q\right) = k</span>, <span class="math inline">Q = \mathrm{E}\left[Z_i X_i^\top\right]</span>.</p></li>
+<li class="fragment"><p><strong>Assumption III.</strong> <span class="math inline">\operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k</span>.</p></li>
 <li class="fragment"><p><strong>Assumption IV.</strong></p>
 <ul>
 <li class="fragment"><span class="math inline">W_n \to_p W</span>.</li>
