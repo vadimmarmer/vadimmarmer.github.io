@@ -1619,11 +1619,13 @@ X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
 \log \text{Wage}_i = \beta_1\, \text{Education}_i + X_{i,2}^\top \beta_2 + U_i
 </span></p></li>
 <li class="fragment"><p><span class="math inline">X_{i,2}</span>: year-of-birth and region dummies, race, marital status, urban residence, age, age<span class="math inline">^2</span>.</p></li>
-<li class="fragment"><p>IVs: quarter-of-birth dummies, <span class="math inline">Z_{i,1}</span>.</p></li>
+<li class="fragment"><p>Born early in the year <span class="math inline">\Longrightarrow</span> older at school start <span class="math inline">\Longrightarrow</span> less schooling at the compulsory leaving age.</p></li>
+<li class="fragment"><p>IVs: quarter-of-birth dummies: <span class="math display">
+Z_{i,1} = \begin{pmatrix} \mathbf{1}(\text{quarter of birth}_i = 1) \\ \mathbf{1}(\text{quarter of birth}_i = 2) \\ \mathbf{1}(\text{quarter of birth}_i = 3) \end{pmatrix}
+</span></p></li>
 <li class="fragment"><p>First stage: <span class="math display">
 \text{Education}_i = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i
 </span></p></li>
-<li class="fragment"><p>Born early in the year <span class="math inline">\Longrightarrow</span> older at school start <span class="math inline">\Longrightarrow</span> less schooling at the compulsory leaving age.</p></li>
 <li class="fragment"><p>Hence <span class="math inline">\Pi_1 \ne 0</span>.</p></li>
 </ul>
 </section>
@@ -1700,31 +1702,25 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2>Weight matrix <span class="math inline">W</span></h2>
 <ul>
 <li class="fragment"><p><strong>Definition.</strong> Weight matrix <span class="math inline">W</span>: <span class="math inline">\ell \times \ell</span>, symmetric, p.d.</p></li>
-<li class="fragment"><p>Premultiply by <span class="math inline">Q^\top W</span>: <span class="math display">
+<li class="fragment"><p>Premultiply by <span class="math inline">\mathrm{E}\left[X_i Z_i^\top\right] W</span>: <span class="math display">
 \begin{aligned}
-Q\, \beta &amp;= \mathrm{E}\left[Z_i Y_i\right] \\
-\Longrightarrow\quad \underbrace{\underset{k \times \ell}{Q^\top}\ \underset{\ell \times \ell}{W}\ \underset{\ell \times k}{Q}}_{k \times k}\ \beta &amp;= Q^\top W\, \mathrm{E}\left[Z_i Y_i\right] \\
-\Longrightarrow\quad \beta &amp;= (Q^\top W Q)^{-1} Q^\top W\, \mathrm{E}\left[Z_i Y_i\right]
+&amp; \mathrm{E}\left[Z_i X_i^\top\right] \beta = \mathrm{E}\left[Z_i Y_i\right] \\
+\Longrightarrow\quad &amp; \underbrace{\underset{k \times \ell}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{\ell \times \ell}{W}\ \underset{\ell \times k}{\mathrm{E}\left[Z_i X_i^\top\right]}}_{k \times k}\ \beta = \mathrm{E}\left[X_i Z_i^\top\right] W\, \mathrm{E}\left[Z_i Y_i\right] \\
+\Longrightarrow\quad &amp; \beta = \big(\mathrm{E}\left[X_i Z_i^\top\right] W\, \mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right] W\, \mathrm{E}\left[Z_i Y_i\right]
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">W = I_\ell</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\beta = (Q^\top Q)^{-1} Q^\top \mathrm{E}\left[Z_i Y_i\right]</span>.</p></li>
+<li class="fragment"><p><span class="math inline">W = I_\ell</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\beta = \big(\mathrm{E}\left[X_i Z_i^\top\right] \mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right] \mathrm{E}\left[Z_i Y_i\right]</span>.</p></li>
 </ul>
 </section>
 <section id="exactly-identified-case-w-cancels" class="slide level2">
 <h2>Exactly identified case: <span class="math inline">W</span> cancels</h2>
 <ul>
 <li class="fragment"><p><span class="math inline">\ell = k</span>.</p></li>
-<li class="fragment"><p><span class="math inline">Q</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible: <span class="math display">
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible: <span class="math display">
 \begin{aligned}
-\beta &amp;= (\underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\ \underset{k \times k}{Q})^{-1}\, \underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\, \mathrm{E}\left[Z_i Y_i\right] \\
-&amp;= Q^{-1}\, {\color{red} W^{-1} (Q^\top)^{-1} Q^\top W}\, \mathrm{E}\left[Z_i Y_i\right] \\
-&amp;= Q^{-1}\, \mathrm{E}\left[Z_i Y_i\right]
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p>Sample averages in place of expectations: <span class="math display">
-\begin{aligned}
-(X^\top Z\, W\, Z^\top X)^{-1} X^\top Z\, W\, Z^\top Y &amp;= (Z^\top X)^{-1} Z^\top Y \\
-&amp;= \hat\beta^{IV}
+\beta &amp;= \big(\underset{k \times k}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{k \times k}{W}\ \underset{k \times k}{\mathrm{E}\left[Z_i X_i^\top\right]}\big)^{-1}\, \underset{k \times k}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{k \times k}{W}\, \mathrm{E}\left[Z_i Y_i\right] \\
+&amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1}\, {\color{red} W^{-1} \big(\mathrm{E}\left[X_i Z_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right]\, W}\, \mathrm{E}\left[Z_i Y_i\right] \\
+&amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i Y_i\right]
 \end{aligned}
 </span></p></li>
 </ul>
@@ -1734,6 +1730,12 @@ Q\, \beta &amp;= \mathrm{E}\left[Z_i Y_i\right] \\
 <ul>
 <li class="fragment"><p><strong>Definition.</strong> GMM estimator with weight matrix <span class="math inline">W_n</span>: <span class="math display">
 \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+</span></p></li>
+<li class="fragment"><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W_n</span> cancels: <span class="math display">
+\begin{aligned}
+(X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y &amp;= (Z^\top X)^{-1} Z^\top Y \\
+&amp;= \hat\beta^{IV}
+\end{aligned}
 </span></p></li>
 <li class="fragment"><p><strong>Assumption I.</strong></p>
 <ul>

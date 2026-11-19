@@ -767,14 +767,17 @@ ds_picture <- function(step) {
 
 - $X_{i,2}$: year-of-birth and region dummies, race, marital status, urban residence, age, age$^2$.
 
-- IVs: quarter-of-birth dummies, $Z_{i,1}$.
+- Born early in the year $\Longrightarrow$ older at school start $\Longrightarrow$ less schooling at the compulsory leaving age.
+
+- IVs: quarter-of-birth dummies:
+  $$
+  Z_{i,1} = \begin{pmatrix} \mathbf{1}(\text{quarter of birth}_i = 1) \\ \mathbf{1}(\text{quarter of birth}_i = 2) \\ \mathbf{1}(\text{quarter of birth}_i = 3) \end{pmatrix}
+  $$
 
 - First stage:
   $$
   \text{Education}_i = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i
   $$
-
-- Born early in the year $\Longrightarrow$ older at school start $\Longrightarrow$ less schooling at the compulsory leaving age.
 
 - Hence $\Pi_1 \ne 0$.
 
@@ -849,35 +852,27 @@ ds_picture <- function(step) {
 
 - **Definition.** Weight matrix $W$: $\ell \times \ell$, symmetric, p.d.
 
-- Premultiply by $Q^\top W$:
+- Premultiply by $\E{X_i Z_i^\top} W$:
   $$
   \begin{aligned}
-  Q\, \beta &= \E{Z_i Y_i} \\
-  \Longrightarrow\quad \underbrace{\underset{k \times \ell}{Q^\top}\ \underset{\ell \times \ell}{W}\ \underset{\ell \times k}{Q}}_{k \times k}\ \beta &= Q^\top W\, \E{Z_i Y_i} \\
-  \Longrightarrow\quad \beta &= (Q^\top W Q)^{-1} Q^\top W\, \E{Z_i Y_i}
+  & \E{Z_i X_i^\top} \beta = \E{Z_i Y_i} \\
+  \Longrightarrow\quad & \underbrace{\underset{k \times \ell}{\E{X_i Z_i^\top}}\ \underset{\ell \times \ell}{W}\ \underset{\ell \times k}{\E{Z_i X_i^\top}}}_{k \times k}\ \beta = \E{X_i Z_i^\top} W\, \E{Z_i Y_i} \\
+  \Longrightarrow\quad & \beta = \big(\E{X_i Z_i^\top} W\, \E{Z_i X_i^\top}\big)^{-1} \E{X_i Z_i^\top} W\, \E{Z_i Y_i}
   \end{aligned}
   $$
 
-- $W = I_\ell$ $\Longrightarrow$ $\beta = (Q^\top Q)^{-1} Q^\top \E{Z_i Y_i}$.
+- $W = I_\ell$ $\Longrightarrow$ $\beta = \big(\E{X_i Z_i^\top} \E{Z_i X_i^\top}\big)^{-1} \E{X_i Z_i^\top} \E{Z_i Y_i}$.
 
 ## Exactly identified case: $W$ cancels
 
 - $\ell = k$.
 
-- $Q$, $W$: $k \times k$, invertible:
+- $\E{Z_i X_i^\top}$, $W$: $k \times k$, invertible:
   $$
   \begin{aligned}
-  \beta &= (\underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\ \underset{k \times k}{Q})^{-1}\, \underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\, \E{Z_i Y_i} \\
-  &= Q^{-1}\, {\color{red} W^{-1} (Q^\top)^{-1} Q^\top W}\, \E{Z_i Y_i} \\
-  &= Q^{-1}\, \E{Z_i Y_i}
-  \end{aligned}
-  $$
-
-- Sample averages in place of expectations:
-  $$
-  \begin{aligned}
-  (X^\top Z\, W\, Z^\top X)^{-1} X^\top Z\, W\, Z^\top Y &= (Z^\top X)^{-1} Z^\top Y \\
-  &= \hat\beta^{IV}
+  \beta &= \big(\underset{k \times k}{\E{X_i Z_i^\top}}\ \underset{k \times k}{W}\ \underset{k \times k}{\E{Z_i X_i^\top}}\big)^{-1}\, \underset{k \times k}{\E{X_i Z_i^\top}}\ \underset{k \times k}{W}\, \E{Z_i Y_i} \\
+  &= \big(\E{Z_i X_i^\top}\big)^{-1}\, {\color{red} W^{-1} \big(\E{X_i Z_i^\top}\big)^{-1} \E{X_i Z_i^\top}\, W}\, \E{Z_i Y_i} \\
+  &= \big(\E{Z_i X_i^\top}\big)^{-1} \E{Z_i Y_i}
   \end{aligned}
   $$
 
@@ -886,6 +881,14 @@ ds_picture <- function(step) {
 - **Definition.** GMM estimator with weight matrix $W_n$:
   $$
   \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+  $$
+
+- $\ell = k$ $\Longrightarrow$ $W_n$ cancels:
+  $$
+  \begin{aligned}
+  (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y &= (Z^\top X)^{-1} Z^\top Y \\
+  &= \hat\beta^{IV}
+  \end{aligned}
   $$
 
 - **Assumption I.**
