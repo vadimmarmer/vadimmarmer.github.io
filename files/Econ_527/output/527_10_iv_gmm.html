@@ -2915,7 +2915,7 @@ Z_{i,1} = \begin{pmatrix} \mathbf{1}(\text{quarter of birth}_i = 1) \\ \mathbf{1
 <li><p>Demand and supply: <span class="math display">
 \begin{aligned}
 Y_i^d &amp;= \beta_1 P_i + \beta_2 I_i + U_i^d, \qquad \beta_1 &lt; 0 \\
-Y_i^s &amp;= \gamma_1 P_i + \gamma_2 G_i + U_i^s, \qquad \gamma_1 &gt; 0
+Y_i^s &amp;= \gamma_1 P_i + \gamma_2 {\color{red} G_i} + U_i^s, \qquad \gamma_1 &gt; 0
 \end{aligned}
 </span></p></li>
 <li><p><span class="math inline">G_i</span> excluded from demand, but <span class="math inline">G_i</span> affects the price: <span class="math display">
@@ -2941,7 +2941,7 @@ P_i = \underbrace{\frac{-\gamma_2}{\gamma_1 - \beta_1}}_{\pi_1 \,\ne\, 0 \ \text
 <li><p>Married women with at least 2 children: <span class="math display">
 \begin{aligned}
 \text{Hours worked}_i &amp;= \beta_1\, \text{Number of children}_i + X_{i,2}^\top \beta_2 + U_i \\
-\text{Number of children}_i &amp;= \gamma_1\, \text{Hours worked}_i + \gamma_2\, \text{Same sex}_i + X_{i,2}^\top \gamma_3 + U_i^c
+\text{Number of children}_i &amp;= \gamma_1\, \text{Hours worked}_i + \gamma_2\, {\color{red} \text{Same sex}_i} + X_{i,2}^\top \gamma_3 + U_i^c
 \end{aligned}
 </span></p></li>
 <li><p><span class="math inline">X_{i,2}</span>: mother’s age, age at first birth, race, sex of first and second child.</p></li>
