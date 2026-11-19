@@ -51,6 +51,107 @@ format:
 \gdef\rank#1{\operatorname{rank}\left(#1\right)}
 :::
 
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+# A picture the class builds up on the board. In the slide show the frames
+# share one grid cell and appear one by one as fragments, so advancing or going
+# back uses Reveal's normal fragment controls without shifting the figure; in
+# ordinary HTML and PDF the complete picture is drawn once. `drawer(step)`
+# draws the frame for `step`; `cls` names the grid cell, so two such pictures
+# in one deck do not collide.
+build_frames <- function(cls, stem, steps, descriptions, width, height, drawer) {
+  if (!identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    tikz_fig(stem, width, height, drawer(max(steps)))
+    return(invisible(NULL))
+  }
+  cat('```{=html}\n<style>\n',
+      '.reveal .', cls, ' { display: grid; width: ', round(96 * width),
+      'px; max-width: 100%; margin: 1em auto; }\n',
+      '.reveal .', cls, ' > img { grid-area: 1 / 1; width: 100%; max-width: 100%; ',
+      'max-height: none; margin: 0; background: white; transition: none; }\n',
+      '</style>\n<div class="', cls, '">\n', sep = "")
+  for (j in seq_along(steps)) {
+    frame <- tikz_fig(paste0(stem, "-step-", steps[j]), width, height,
+                      drawer(steps[j]), draw = FALSE)
+    cat(sprintf('<img class="%s" src="%s" alt="%s">\n',
+                if (j == 1L) "" else "fragment",
+                knitr::image_uri(frame), descriptions[j]))
+  }
+  cat('</div>\n<script>\n',
+      'document.addEventListener("DOMContentLoaded", function () {\n',
+      '  const diagram = document.querySelector(".', cls, '");\n',
+      '  const parentFragment = diagram.closest(".fragment");\n',
+      '  function keepDiagramVisible(event) {\n',
+      '    if (diagram.contains(event.fragment) ||\n',
+      '        (event.type === "fragmentshown" && event.fragment === parentFragment)) {\n',
+      '      diagram.scrollIntoView({ block: "center", behavior: "instant" });\n',
+      '    }\n',
+      '  }\n',
+      '  Reveal.on("fragmentshown", keepDiagramVisible);\n',
+      '  Reveal.on("fragmenthidden", keepDiagramVisible);\n',
+      '});\n</script>\n```\n', sep = "")
+  invisible(NULL)
+}
+
+red <- "#d7301f"; blue <- "#1f78b4"
+
+# Demand P = 10 - Y and supply P = a + Y, quantity Y across, price P up. The
+# supply intercept a falls as G_i rises from g_1 to g_3, so supply shifts right
+# along a fixed demand curve. Steps 1 to 3 show one supply curve each with its
+# equilibrium; step 4 shows all three, the equilibria lying on the demand curve.
+ds_picture <- function(step) {
+  op <- par(mar = c(2.6, 2.6, 0.5, 0.5))
+  plot.new(); plot.window(c(0, 12), c(0, 10.5), xaxs = "i", yaxs = "i")
+  arrows(0, 0, 11.8, 0, length = 0.12, lwd = 1.5)
+  arrows(0, 0, 0, 10.3, length = 0.12, lwd = 1.5)
+  mtext("$Y_i$", side = 1, line = 1, at = 11.8, cex = 1.5)
+  mtext("$P_i$", side = 2, line = 1, at = 10.3, las = 1, cex = 1.5)
+  segments(0.5, 9.5, 9.5, 0.5, lwd = 3)
+  text(9.5, 0.5, "demand", pos = 4, cex = 1.5)
+  a <- c(1, -1, -3)
+  show <- if (step <= 3) step else 1:3
+  for (j in show) {
+    ylo <- max(0.3, 0.5 - a[j]); yhi <- min(8.9, 9.5 - a[j])
+    segments(ylo, a[j] + ylo, yhi, a[j] + yhi, col = blue, lwd = 3)
+    text(yhi, a[j] + yhi, sprintf("$G_i = g_%d$", j), pos = 4, col = blue, cex = 1.5)
+    ys <- (10 - a[j]) / 2
+    points(ys, 10 - ys, pch = 19, col = red, cex = 2)
+  }
+  par(op)
+}
+```
+
 - Regression, $k = k_1 + k_2$:
   $$
   Y_i = \underset{1 \times k_1}{X_{i,1}^\top}\ \underset{k_1 \times 1}{\beta_1} + \underset{1 \times k_2}{X_{i,2}^\top}\ \underset{k_2 \times 1}{\beta_2} + U_i
@@ -552,51 +653,6 @@ format:
 
 - Interpretation of the rank condition: excluded variables $Z_{i,1}$ informative about the endogenous regressors.
 
-## One endogenous regressor
-
-- Suppose $k_1 = 1$.
-
-- For example, $Y_i = \log \text{Wage}_i$ and $X_{i,1} = \text{Education}_i$:
-  $$
-  \underset{1 \times 1}{\text{Education}_i} = \underset{1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \Pi_2^\top X_{i,2} + V_i, \qquad \Pi_1 = \begin{pmatrix} \Pi_{1,1} \\ \vdots \\ \Pi_{1,\ell_1} \end{pmatrix}
-  $$
-
-- First stage written instrument by instrument:
-  $$
-  X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
-  $$
-
-- Rank condition:
-  $$
-  \begin{aligned}
-  \rank{\Pi_1} = 1 \quad &\Longleftrightarrow \quad \Pi_1 \ne 0 \\
-  &\Longleftrightarrow \quad \Pi_{1,j} \ne 0 \ \text{ for at least one } j = 1, \ldots, \ell_1
-  \end{aligned}
-  $$
-
-## Demand and supply: instruments
-
-- Demand regression:
-  $$
-  Y_i = \beta_1 \underbrace{P_i}_{X_{i,1}} + \beta_2 \underbrace{I_i}_{X_{i,2}} + U_i^d
-  $$
-
-- IV for $P_i$: supply shifter, $Z_{i,1} = G_i$.
-
-- Excluded: $G_i$ not in the demand equation.
-
-- Exogenous: $\E{G_i U_i^d} = 0$.
-
-- First stage, the equilibrium price:
-  $$
-  P_i = \underbrace{\pi_1}_{\Pi_1} G_i + \underbrace{\pi_2}_{\Pi_2} I_i + \underbrace{\frac{U_i^d - U_i^s}{\gamma_1 - \beta_1}}_{V_i}
-  $$
-
-- Informative:
-  $$
-  \pi_1 = \frac{-\gamma_2}{\gamma_1 - \beta_1} \ne 0 \quad \Longleftrightarrow \quad \gamma_2 \ne 0
-  $$
-
 ## Proof, step 1: $\E{Z_i X_i^\top}$ in blocks
 
 - We will use the transposed first stage:
@@ -678,6 +734,28 @@ format:
   2. Not affecting the wage directly.
   3. Shifting education.
 
+## One endogenous regressor
+
+- Suppose $k_1 = 1$.
+
+- For example, $Y_i = \log \text{Wage}_i$ and $X_{i,1} = \text{Education}_i$:
+  $$
+  \underset{1 \times 1}{\text{Education}_i} = \underset{1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \Pi_2^\top X_{i,2} + V_i, \qquad \Pi_1 = \begin{pmatrix} \Pi_{1,1} \\ \vdots \\ \Pi_{1,\ell_1} \end{pmatrix}
+  $$
+
+- First stage written instrument by instrument:
+  $$
+  X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
+  $$
+
+- Rank condition:
+  $$
+  \begin{aligned}
+  \rank{\Pi_1} = 1 \quad &\Longleftrightarrow \quad \Pi_1 \ne 0 \\
+  &\Longleftrightarrow \quad \Pi_{1,j} \ne 0 \ \text{ for at least one } j = 1, \ldots, \ell_1
+  \end{aligned}
+  $$
+
 ## Example: Angrist and Krueger (1991)
 
 - Angrist, J. D. and A. B. Krueger (1991). "Does Compulsory School Attendance Affect Schooling and Earnings?" *Quarterly Journal of Economics* 106(4), 979–1014.
@@ -686,6 +764,8 @@ format:
   $$
   \log \text{Wage}_i = \beta_1\, \text{Education}_i + X_{i,2}^\top \beta_2 + U_i
   $$
+
+- $X_{i,2}$: year-of-birth and region dummies, race, marital status, urban residence, age, age$^2$.
 
 - IVs: quarter-of-birth dummies, $Z_{i,1}$.
 
@@ -698,6 +778,44 @@ format:
 
 - Hence $\Pi_1 \ne 0$.
 
+## Demand and supply: instruments
+
+- Demand and supply:
+  $$
+  \begin{aligned}
+  Y_i^d &= \beta_1 P_i + \beta_2 I_i + U_i^d, \qquad \beta_1 < 0 \\
+  Y_i^s &= \gamma_1 P_i + \gamma_2 G_i + U_i^s, \qquad \gamma_1 > 0
+  \end{aligned}
+  $$
+
+- $G_i$ excluded from demand, but $G_i$ affects the price:
+  $$
+  P_i = \underbrace{\frac{-\gamma_2}{\gamma_1 - \beta_1}}_{\pi_1 \,\ne\, 0 \ \text{if} \ \gamma_2 \,\ne\, 0} G_i + \frac{\beta_2}{\gamma_1 - \beta_1} I_i + \frac{U_i^d - U_i^s}{\gamma_1 - \beta_1}
+  $$
+
+- Exogenous: $\E{G_i U_i^d} = 0$.
+
+- Hence $G_i$: IV for $P_i$ in the demand equation.
+
+- Changing $G_i$ shifts the supply curve:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 4.2
+  #| fig-dpi: 300
+  build_frames("ds-shift-build", "ds-supply-shift", 1:4,
+               c("Demand curve and the supply curve for G_i = g_1, with the equilibrium",
+                 "Supply curve for G_i = g_2, with the equilibrium",
+                 "Supply curve for G_i = g_3, with the equilibrium",
+                 "All three supply curves; the equilibria lie on the demand curve"),
+               6, 4.2, function(step) ds_picture(step))
+  ```
+
+- Equilibria lie on one demand curve $\Longrightarrow$ demand curve identified.
+
 ## Example: Angrist and Evans (1998)
 
 - Angrist, J. D. and W. N. Evans (1998). "Children and Their Parents' Labor Supply: Evidence from Exogenous Variation in Family Size." *American Economic Review* 88(3), 450–477.
@@ -709,6 +827,8 @@ format:
   \text{Number of children}_i &= \gamma_1\, \text{Hours worked}_i + \gamma_2\, \text{Same sex}_i + X_{i,2}^\top \gamma_3 + U_i^c
   \end{aligned}
   $$
+
+- $X_{i,2}$: mother's age, age at first birth, race, sex of first and second child.
 
 - $\text{Same sex}_i = 1$ if the first two children are both boys or both girls.
 
