@@ -882,6 +882,7 @@ ds_picture <- function(step) {
   $$
   \begin{aligned}
   \hat\beta(W_n) &= ({\color{red} X^\top Z}\, {\color{blue} W_n}\, Z^\top X)^{-1} {\color{red} X^\top Z}\, {\color{blue} W_n}\, Z^\top Y \\
+  &= (Z^\top X)^{-1}\, {\color{blue} W_n^{-1}}\, {\color{red} (X^\top Z)^{-1} X^\top Z}\, {\color{blue} W_n}\, Z^\top Y \\
   &= (Z^\top X)^{-1} Z^\top Y \\
   &= \hat\beta^{IV}
   \end{aligned}
