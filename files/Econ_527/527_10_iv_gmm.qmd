@@ -863,6 +863,19 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
+- Same $\beta$ for every p.d. $W$.
+
+- Over-identified case: we used $W = I_\ell$.
+
+- $W$: does not matter for identification, but matters for estimation.
+
+## GMM estimator $\hat\beta(W_n)$
+
+- **Definition.** GMM estimator with weight matrix $W_n$:
+  $$
+  \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+  $$
+
 ## Exactly identified case: $W$ cancels
 
 - $\ell = k$.
@@ -876,13 +889,6 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
-## GMM estimator $\hat\beta(W_n)$
-
-- **Definition.** GMM estimator with weight matrix $W_n$:
-  $$
-  \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
-  $$
-
 - $\ell = k$ $\Longrightarrow$ $W_n$ cancels:
   $$
   \begin{aligned}
@@ -890,6 +896,8 @@ ds_picture <- function(step) {
   &= \hat\beta^{IV}
   \end{aligned}
   $$
+
+## Linear GMM model
 
 - **Assumption I.**
   - $\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}$ iid.

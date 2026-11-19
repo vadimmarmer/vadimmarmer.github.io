@@ -2273,8 +2273,9 @@ window.Quarto = {
   <li><a href="#generalized-method-of-moments-gmm" id="toc-generalized-method-of-moments-gmm" class="nav-link" data-scroll-target="#generalized-method-of-moments-gmm">Generalized method of moments (GMM)</a>
   <ul class="collapse">
   <li><a href="#weight-matrix-w" id="toc-weight-matrix-w" class="nav-link" data-scroll-target="#weight-matrix-w">Weight matrix <span class="math inline">W</span></a></li>
-  <li><a href="#exactly-identified-case-w-cancels" id="toc-exactly-identified-case-w-cancels" class="nav-link" data-scroll-target="#exactly-identified-case-w-cancels">Exactly identified case: <span class="math inline">W</span> cancels</a></li>
   <li><a href="#gmm-estimator-hatbetaw_n" id="toc-gmm-estimator-hatbetaw_n" class="nav-link" data-scroll-target="#gmm-estimator-hatbetaw_n">GMM estimator <span class="math inline">\hat\beta(W_n)</span></a></li>
+  <li><a href="#exactly-identified-case-w-cancels" id="toc-exactly-identified-case-w-cancels" class="nav-link" data-scroll-target="#exactly-identified-case-w-cancels">Exactly identified case: <span class="math inline">W</span> cancels</a></li>
+  <li><a href="#linear-gmm-model" id="toc-linear-gmm-model" class="nav-link" data-scroll-target="#linear-gmm-model">Linear GMM model</a></li>
   <li><a href="#consistency-of-hatbetaw_n" id="toc-consistency-of-hatbetaw_n" class="nav-link" data-scroll-target="#consistency-of-hatbetaw_n">Consistency of <span class="math inline">\hat\beta(W_n)</span></a></li>
   <li><a href="#clt-for-ztop-u-sqrtn" id="toc-clt-for-ztop-u-sqrtn" class="nav-link" data-scroll-target="#clt-for-ztop-u-sqrtn">CLT for <span class="math inline">Z^\top U / \sqrt{n}</span></a></li>
   <li><a href="#asymptotic-variance-of-hatbetaw_n" id="toc-asymptotic-variance-of-hatbetaw_n" class="nav-link" data-scroll-target="#asymptotic-variance-of-hatbetaw_n">Asymptotic variance of <span class="math inline">\hat\beta(W_n)</span></a></li>
@@ -2967,6 +2968,17 @@ P_i = \underbrace{\frac{-\gamma_2}{\gamma_1 - \beta_1}}_{\pi_1 \,\ne\, 0 \ \text
 \Longrightarrow\quad &amp; \beta = \big(\mathrm{E}\left[X_i Z_i^\top\right] W\, \mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right] W\, \mathrm{E}\left[Z_i Y_i\right]
 \end{aligned}
 </span></p></li>
+<li><p>Same <span class="math inline">\beta</span> for every p.d. <span class="math inline">W</span>.</p></li>
+<li><p>Over-identified case: we used <span class="math inline">W = I_\ell</span>.</p></li>
+<li><p><span class="math inline">W</span>: does not matter for identification, but matters for estimation.</p></li>
+</ul>
+</section>
+<section id="gmm-estimator-hatbetaw_n" class="level2">
+<h2 class="anchored" data-anchor-id="gmm-estimator-hatbetaw_n">GMM estimator <span class="math inline">\hat\beta(W_n)</span></h2>
+<ul>
+<li><strong>Definition.</strong> GMM estimator with weight matrix <span class="math inline">W_n</span>: <span class="math display">
+\hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+</span></li>
 </ul>
 </section>
 <section id="exactly-identified-case-w-cancels" class="level2">
@@ -2980,20 +2992,17 @@ P_i = \underbrace{\frac{-\gamma_2}{\gamma_1 - \beta_1}}_{\pi_1 \,\ne\, 0 \ \text
 &amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i Y_i\right]
 \end{aligned}
 </span></p></li>
-</ul>
-</section>
-<section id="gmm-estimator-hatbetaw_n" class="level2">
-<h2 class="anchored" data-anchor-id="gmm-estimator-hatbetaw_n">GMM estimator <span class="math inline">\hat\beta(W_n)</span></h2>
-<ul>
-<li><p><strong>Definition.</strong> GMM estimator with weight matrix <span class="math inline">W_n</span>: <span class="math display">
-\hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
-</span></p></li>
 <li><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W_n</span> cancels: <span class="math display">
 \begin{aligned}
 (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y &amp;= (Z^\top X)^{-1} Z^\top Y \\
 &amp;= \hat\beta^{IV}
 \end{aligned}
 </span></p></li>
+</ul>
+</section>
+<section id="linear-gmm-model" class="level2">
+<h2 class="anchored" data-anchor-id="linear-gmm-model">Linear GMM model</h2>
+<ul>
 <li><p><strong>Assumption I.</strong></p>
 <ul>
 <li><span class="math inline">\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}</span> iid.</li>
