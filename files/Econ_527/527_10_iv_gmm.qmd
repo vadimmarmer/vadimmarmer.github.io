@@ -871,8 +871,6 @@ ds_picture <- function(step) {
 
 - Different $W$ correspond to different variances of the estimator.
 
-## GMM estimator $\hat\beta(W_n)$
-
 - **Definition.** GMM estimator with weight matrix $W_n$:
   $$
   \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
@@ -880,22 +878,23 @@ ds_picture <- function(step) {
 
 ## Exactly identified case: $W$ cancels
 
-- $\ell = k$.
+- $\ell = k$ $\Longrightarrow$ $W_n$ cancels:
+  $$
+  \begin{aligned}
+  \hat\beta(W_n) &= (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y \\
+  &= (Z^\top X)^{-1} Z^\top Y \\
+  &= \hat\beta^{IV}
+  \end{aligned}
+  $$
 
-- $\E{Z_i X_i^\top}$, $W$: $k \times k$, invertible:
+- $\E{Z_i X_i^\top}$, $W$: $k \times k$, invertible.
+
+- Population version:
   $$
   \begin{aligned}
   \beta &= \big(\underset{k \times k}{\E{X_i Z_i^\top}}\ \underset{k \times k}{W}\ \underset{k \times k}{\E{Z_i X_i^\top}}\big)^{-1}\, \underset{k \times k}{\E{X_i Z_i^\top}}\ \underset{k \times k}{W}\, \E{Z_i Y_i} \\
   &= \big(\E{Z_i X_i^\top}\big)^{-1}\, {\color{red} W^{-1} \big(\E{X_i Z_i^\top}\big)^{-1} \E{X_i Z_i^\top}\, W}\, \E{Z_i Y_i} \\
   &= \big(\E{Z_i X_i^\top}\big)^{-1} \E{Z_i Y_i}
-  \end{aligned}
-  $$
-
-- $\ell = k$ $\Longrightarrow$ $W_n$ cancels:
-  $$
-  \begin{aligned}
-  (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y &= (Z^\top X)^{-1} Z^\top Y \\
-  &= \hat\beta^{IV}
   \end{aligned}
   $$
 

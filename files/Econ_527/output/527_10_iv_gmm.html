@@ -2273,7 +2273,6 @@ window.Quarto = {
   <li><a href="#generalized-method-of-moments-gmm" id="toc-generalized-method-of-moments-gmm" class="nav-link" data-scroll-target="#generalized-method-of-moments-gmm">Generalized method of moments (GMM)</a>
   <ul class="collapse">
   <li><a href="#weight-matrix-w" id="toc-weight-matrix-w" class="nav-link" data-scroll-target="#weight-matrix-w">Weight matrix <span class="math inline">W</span></a></li>
-  <li><a href="#gmm-estimator-hatbetaw_n" id="toc-gmm-estimator-hatbetaw_n" class="nav-link" data-scroll-target="#gmm-estimator-hatbetaw_n">GMM estimator <span class="math inline">\hat\beta(W_n)</span></a></li>
   <li><a href="#exactly-identified-case-w-cancels" id="toc-exactly-identified-case-w-cancels" class="nav-link" data-scroll-target="#exactly-identified-case-w-cancels">Exactly identified case: <span class="math inline">W</span> cancels</a></li>
   <li><a href="#linear-gmm-model" id="toc-linear-gmm-model" class="nav-link" data-scroll-target="#linear-gmm-model">Linear GMM model</a></li>
   <li><a href="#consistency-of-hatbetaw_n" id="toc-consistency-of-hatbetaw_n" class="nav-link" data-scroll-target="#consistency-of-hatbetaw_n">Consistency of <span class="math inline">\hat\beta(W_n)</span></a></li>
@@ -2972,31 +2971,27 @@ P_i = \underbrace{\frac{-\gamma_2}{\gamma_1 - \beta_1}}_{\pi_1 \,\ne\, 0 \ \text
 <li><p>Over-identified case: we used <span class="math inline">W = I_\ell</span>.</p></li>
 <li><p><span class="math inline">W</span>: does not matter for identification, but matters for estimation.</p></li>
 <li><p>Different <span class="math inline">W</span> correspond to different variances of the estimator.</p></li>
-</ul>
-</section>
-<section id="gmm-estimator-hatbetaw_n" class="level2">
-<h2 class="anchored" data-anchor-id="gmm-estimator-hatbetaw_n">GMM estimator <span class="math inline">\hat\beta(W_n)</span></h2>
-<ul>
-<li><strong>Definition.</strong> GMM estimator with weight matrix <span class="math inline">W_n</span>: <span class="math display">
+<li><p><strong>Definition.</strong> GMM estimator with weight matrix <span class="math inline">W_n</span>: <span class="math display">
 \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
-</span></li>
+</span></p></li>
 </ul>
 </section>
 <section id="exactly-identified-case-w-cancels" class="level2">
 <h2 class="anchored" data-anchor-id="exactly-identified-case-w-cancels">Exactly identified case: <span class="math inline">W</span> cancels</h2>
 <ul>
-<li><p><span class="math inline">\ell = k</span>.</p></li>
-<li><p><span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible: <span class="math display">
+<li><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W_n</span> cancels: <span class="math display">
+\begin{aligned}
+\hat\beta(W_n) &amp;= (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y \\
+&amp;= (Z^\top X)^{-1} Z^\top Y \\
+&amp;= \hat\beta^{IV}
+\end{aligned}
+</span></p></li>
+<li><p><span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible.</p></li>
+<li><p>Population version: <span class="math display">
 \begin{aligned}
 \beta &amp;= \big(\underset{k \times k}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{k \times k}{W}\ \underset{k \times k}{\mathrm{E}\left[Z_i X_i^\top\right]}\big)^{-1}\, \underset{k \times k}{\mathrm{E}\left[X_i Z_i^\top\right]}\ \underset{k \times k}{W}\, \mathrm{E}\left[Z_i Y_i\right] \\
 &amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1}\, {\color{red} W^{-1} \big(\mathrm{E}\left[X_i Z_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Z_i^\top\right]\, W}\, \mathrm{E}\left[Z_i Y_i\right] \\
 &amp;= \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i Y_i\right]
-\end{aligned}
-</span></p></li>
-<li><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W_n</span> cancels: <span class="math display">
-\begin{aligned}
-(X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y &amp;= (Z^\top X)^{-1} Z^\top Y \\
-&amp;= \hat\beta^{IV}
 \end{aligned}
 </span></p></li>
 </ul>
