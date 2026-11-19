@@ -1001,6 +1001,17 @@ ds_picture <- function(step) {
 
 - $\ell = k$ $\Longrightarrow$ $W$ cancels.
 
+## Interpretation of $W^* = \Omega^{-1}$
+
+- Variance of the moment conditions that identify $\beta$:
+  $$
+  \Omega = \Var{Z_i U_i} = \Var{Z_i (Y_i - X_i^\top \beta)}
+  $$
+
+- $W^* = \Omega^{-1}$: more weight to less noisy moment conditions.
+
+- Same principle as GLS.
+
 ## Proof that $W^* = \Omega^{-1}$ is efficient
 
 - Matrices, p.s.d. differences:

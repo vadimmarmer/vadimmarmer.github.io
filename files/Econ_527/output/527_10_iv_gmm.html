@@ -2279,6 +2279,7 @@ window.Quarto = {
   <li><a href="#clt-for-ztop-u-sqrtn" id="toc-clt-for-ztop-u-sqrtn" class="nav-link" data-scroll-target="#clt-for-ztop-u-sqrtn">CLT for <span class="math inline">Z^\top U / \sqrt{n}</span></a></li>
   <li><a href="#asymptotic-variance-of-hatbetaw_n" id="toc-asymptotic-variance-of-hatbetaw_n" class="nav-link" data-scroll-target="#asymptotic-variance-of-hatbetaw_n">Asymptotic variance of <span class="math inline">\hat\beta(W_n)</span></a></li>
   <li><a href="#efficient-weight-matrix-w-omega-1" id="toc-efficient-weight-matrix-w-omega-1" class="nav-link" data-scroll-target="#efficient-weight-matrix-w-omega-1">Efficient weight matrix <span class="math inline">W^* = \Omega^{-1}</span></a></li>
+  <li><a href="#interpretation-of-w-omega-1" id="toc-interpretation-of-w-omega-1" class="nav-link" data-scroll-target="#interpretation-of-w-omega-1">Interpretation of <span class="math inline">W^* = \Omega^{-1}</span></a></li>
   <li><a href="#proof-that-w-omega-1-is-efficient" id="toc-proof-that-w-omega-1-is-efficient" class="nav-link" data-scroll-target="#proof-that-w-omega-1-is-efficient">Proof that <span class="math inline">W^* = \Omega^{-1}</span> is efficient</a></li>
   <li><a href="#two-step-efficient-gmm" id="toc-two-step-efficient-gmm" class="nav-link" data-scroll-target="#two-step-efficient-gmm">Two-step efficient GMM</a></li>
   <li><a href="#asymptotic-variance-of-hatbetaiv" id="toc-asymptotic-variance-of-hatbetaiv" class="nav-link" data-scroll-target="#asymptotic-variance-of-hatbetaiv">Asymptotic variance of <span class="math inline">\hat\beta^{IV}</span></a></li>
@@ -3085,6 +3086,16 @@ V(\Omega^{-1}) &amp;= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1
 </span></p></li>
 <li><p><span class="math inline">W^* = \Omega^{-1}</span> matters only if <span class="math inline">\ell &gt; k</span>.</p></li>
 <li><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W</span> cancels.</p></li>
+</ul>
+</section>
+<section id="interpretation-of-w-omega-1" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation-of-w-omega-1">Interpretation of <span class="math inline">W^* = \Omega^{-1}</span></h2>
+<ul>
+<li><p>Variance of the moment conditions that identify <span class="math inline">\beta</span>: <span class="math display">
+\Omega = \mathrm{Var}\left(Z_i U_i\right) = \mathrm{Var}\left(Z_i (Y_i - X_i^\top \beta)\right)
+</span></p></li>
+<li><p><span class="math inline">W^* = \Omega^{-1}</span>: more weight to less noisy moment conditions.</p></li>
+<li><p>Same principle as GLS.</p></li>
 </ul>
 </section>
 <section id="proof-that-w-omega-1-is-efficient" class="level2">
