@@ -1086,12 +1086,14 @@ Y_i = \underset{1 \times k_1}{X_{i,1}^\top}\ \underset{k_1 \times 1}{\beta_1} + 
 <section id="omitted-variables" class="slide level2">
 <h2>Omitted variables</h2>
 <ul>
-<li class="fragment"><p>Log wage on education; <span class="math inline">X_{i,2}</span>: exogenous, for example gender: <span class="math display">
+<li class="fragment"><p>Log wage on education: <span class="math display">
 \log \text{Wage}_i = \beta_1\, \text{Education}_i + X_{i,2}^\top \beta_2 + U_i
 </span></p></li>
-<li class="fragment"><p>Ability: unobserved, in the error; <span class="math inline">\varepsilon_i</span>: luck: <span class="math display">
+<li class="fragment"><p><span class="math inline">X_{i,2}</span>: exogenous, for example gender.</p></li>
+<li class="fragment"><p>Ability: unobserved, in the error: <span class="math display">
 U_i = \text{ability}_i + \varepsilon_i
 </span></p></li>
+<li class="fragment"><p><span class="math inline">\varepsilon_i</span>: luck.</p></li>
 <li class="fragment"><p>Education chosen optimally by <span class="math inline">i</span> given ability: <span class="math display">
 \mathrm{E}\left[\text{Education}_i \times \text{ability}_i\right] \ne 0 \quad \Longrightarrow \quad \text{Education}_i \ \text{ endogenous}
 </span></p></li>
@@ -1109,7 +1111,8 @@ Y_i^s &amp;= \gamma_1 P_i + \gamma_2 G_i + U_i^s, \qquad \gamma_1 &gt; 0
 <li class="fragment"><p><span class="math inline">I_i</span>: observed demand shifter (e.g. income).</p></li>
 <li class="fragment"><p><span class="math inline">G_i</span>: observed supply shifter (e.g. input prices, weather).</p></li>
 <li class="fragment"><p><span class="math inline">U_i^d</span>, <span class="math inline">U_i^s</span>: unobserved demand and supply shifters.</p></li>
-<li class="fragment"><p><span class="math inline">Y_i^d</span>, <span class="math inline">Y_i^s</span>: not observed; observed in equilibrium: <span class="math display">
+<li class="fragment"><p><span class="math inline">Y_i^d</span>, <span class="math inline">Y_i^s</span>: not observed.</p></li>
+<li class="fragment"><p>Observed in equilibrium: <span class="math display">
 Y_i = Y_i^d = Y_i^s, \qquad P_i : \ \text{equilibrium price}
 </span></p></li>
 </ul>
@@ -1160,7 +1163,8 @@ Y_i = \beta_1 P_i + \beta_2 I_i + U_i^d
 <li class="fragment"><p>One endogenous regressor, <span class="math inline">k_1 = 1</span>: <span class="math display">
 Y_i = \underset{1 \times 1}{\beta_1}\, \underset{1 \times 1}{X_{i,1}} + X_{i,2}^\top \beta_2 + U_i, \qquad \mathrm{E}\left[X_{i,1} U_i\right] \ne 0, \qquad \mathrm{E}\left[X_{i,2} U_i\right] = 0
 </span></p></li>
-<li class="fragment"><p>Recall, partitioned regression, <span class="math inline">M_2 = I_n - X_2 (X_2^\top X_2)^{-1} X_2^\top</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">M_2 = I_n - X_2 (X_2^\top X_2)^{-1} X_2^\top</span>.</p></li>
+<li class="fragment"><p>Recall, partitioned regression: <span class="math display">
 \begin{aligned}
 \hat\beta_1 &amp;= (X_1^\top M_2 \underset{n \times 1}{X_1})^{-1} X_1^\top M_2 Y \\
 &amp;= \frac{X_1^\top M_2 Y}{X_1^\top M_2 X_1} \\
@@ -1172,15 +1176,24 @@ Y_i = \underset{1 \times 1}{\beta_1}\, \underset{1 \times 1}{X_{i,1}} + X_{i,2}^
 <section id="denominator-of-hatbeta_1---beta_1" class="slide level2">
 <h2>Denominator of <span class="math inline">\hat\beta_1 - \beta_1</span></h2>
 <ul>
-<li class="fragment"><p><strong>Assume:</strong> <span class="math inline">(Y_i, X_i)</span> iid; <span class="math inline">\mathrm{E}\left[\|X_i\|^2\right] &lt; \infty</span>; <span class="math inline">\mathrm{E}\left[U_i^2\right] &lt; \infty</span>.</p></li>
-<li class="fragment"><p>Recall: weak LLN for sample averages, Slutsky for products and inverses.</p></li>
-<li class="fragment"><p>Expand <span class="math inline">M_2</span>, take limits: <span class="math display">
+<li class="fragment"><strong>Assume:</strong>
+<ul>
+<li class="fragment"><span class="math inline">(Y_i, X_i)</span> iid.</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[\|X_i\|^2\right] &lt; \infty</span>.</li>
+<li class="fragment"><span class="math inline">\mathrm{E}\left[U_i^2\right] &lt; \infty</span>.</li>
+</ul></li>
+<li class="fragment">Recall:
+<ul>
+<li class="fragment">Weak LLN for sample averages.</li>
+<li class="fragment">Slutsky for products and inverses.</li>
+</ul></li>
+<li class="fragment">Expand <span class="math inline">M_2</span>, take limits: <span class="math display">
 \begin{aligned}
 \underbrace{\frac{1}{n} X_1^\top M_2 X_1}_{1 \times 1} &amp;= \frac{X_1^\top X_1}{n} - \frac{X_1^\top X_2}{n} \Big(\frac{X_2^\top X_2}{n}\Big)^{-1} \frac{X_2^\top X_1}{n} \\
 &amp;\to_p \underbrace{\mathrm{E}\left[X_{i,1}^2\right]}_{Q_{11}} - \underbrace{\mathrm{E}\left[X_{i,1} X_{i,2}^\top\right]}_{Q_{12}}\ \underbrace{\big(\mathrm{E}\left[X_{i,2} X_{i,2}^\top\right]\big)^{-1}}_{Q_{22}^{-1}}\ \underbrace{\mathrm{E}\left[X_{i,2} X_{i,1}\right]}_{Q_{21}} \\
 &amp;= Q_{1 \cdot 2} &gt; 0 \qquad (\mathrm{E}\left[X_i X_i^\top\right] \ \text{p.d.})
 \end{aligned}
-</span></p></li>
+</span></li>
 </ul>
 </section>
 <section id="numerator-of-hatbeta_1---beta_1" class="slide level2">
@@ -1218,7 +1231,8 @@ Y_i = \underset{1 \times 1}{\beta_1}\, \underset{1 \times 1}{X_{i,1}} + X_{i,2}^
 <section id="ols-estimator-of-beta_2" class="slide level2">
 <h2>OLS estimator of <span class="math inline">\beta_2</span></h2>
 <ul>
-<li class="fragment"><p>Coefficients on the exogenous regressors, <span class="math inline">M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">M_1 = I_n - X_1 (X_1^\top X_1)^{-1} X_1^\top</span>.</p></li>
+<li class="fragment"><p>Coefficients on the exogenous regressors: <span class="math display">
 \begin{aligned}
 \hat\beta_2 &amp;= (X_2^\top M_1 X_2)^{-1} X_2^\top M_1 Y \\
 &amp;= \beta_2 + \Big(\frac{X_2^\top M_1 X_2}{n}\Big)^{-1} \frac{X_2^\top M_1 U}{n}
@@ -1238,7 +1252,8 @@ Y_i = \underset{1 \times 1}{\beta_1}\, \underset{1 \times 1}{X_{i,1}} + X_{i,2}^
 <section id="asymptotic-bias-of-hatbeta_2" class="slide level2">
 <h2>Asymptotic bias of <span class="math inline">\hat\beta_2</span></h2>
 <ul>
-<li class="fragment"><p>Slutsky; scalar <span class="math inline">Q_{11} = \mathrm{E}\left[X_{i,1}^2\right]</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">Q_{11} = \mathrm{E}\left[X_{i,1}^2\right]</span>: scalar.</p></li>
+<li class="fragment"><p>Slutsky: <span class="math display">
 \begin{aligned}
 \hat\beta_2 &amp;\to_p \beta_2 - \underbrace{Q_{2 \cdot 1}^{-1}}_{\text{p.d.}} Q_{21}\, Q_{11}^{-1}\, \mathrm{E}\left[X_{i,1} U_i\right] \\
 &amp;= \beta_2 - \frac{Q_{2 \cdot 1}^{-1}}{Q_{11}}\, Q_{21}\, \mathrm{E}\left[X_{i,1} U_i\right]
@@ -1258,6 +1273,9 @@ Q_{21} = \mathrm{E}\left[X_{i,2} X_{i,1}\right] = 0
 <li class="fragment"><p>Suppose: <span class="math display">
 \mathrm{E}\left[X_{i,1} U_i\right] &gt; 0, \qquad Q_{21} = \mathrm{E}\left[\text{Female}_i\, \text{Education}_i\right] &gt; 0
 </span></p></li>
+<li class="fragment"><p>Asymptotic bias of <span class="math inline">\hat\beta_1</span>: <span class="math display">
+\hat\beta_1 - \beta_1 \to_p \underbrace{Q_{1 \cdot 2}^{-1}}_{+}\ \underbrace{\mathrm{E}\left[X_{i,1} U_i\right]}_{+} &gt; 0
+</span></p></li>
 <li class="fragment"><p>Asymptotic bias of <span class="math inline">\hat\beta_2</span>: <span class="math display">
 \hat\beta_2 - \beta_2 \to_p -\underbrace{Q_{2 \cdot 1}^{-1}}_{+}\ \underbrace{Q_{21}}_{+}\ \underbrace{Q_{11}^{-1}}_{+}\ \underbrace{\mathrm{E}\left[X_{i,1} U_i\right]}_{+} &lt; 0
 </span></p></li>
@@ -1274,7 +1292,8 @@ Q_{21} = \mathrm{E}\left[X_{i,2} X_{i,1}\right] = 0
 <li class="fragment"><p>No endogeneity: <span class="math display">
 Y_i = X_i^\top \beta + U_i, \qquad \beta \in \mathbb{R}^k, \qquad \mathrm{E}\left[X_i U_i\right] = 0
 </span></p></li>
-<li class="fragment"><p>Moment condition; <span class="math inline">k</span> equations in <span class="math inline">k</span> unknowns; <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span> invertible: <span class="math display">
+<li class="fragment"><p>Moment condition: <span class="math inline">k</span> equations in <span class="math inline">k</span> unknowns.</p></li>
+<li class="fragment"><p>Assume <span class="math inline">\mathrm{E}\left[X_i X_i^\top\right]</span> invertible: <span class="math display">
 \begin{aligned}
 &amp; \mathrm{E}\left[X_i \overbrace{(Y_i - X_i^\top \beta)}^{U_i}\right] = 0 \\
 \Longleftrightarrow\quad &amp; \underbrace{\mathrm{E}\left[X_i Y_i\right]}_{k \times 1} = \underbrace{\mathrm{E}\left[X_i X_i^\top\right]}_{k \times k}\ \underset{k \times 1}{\beta} \\
@@ -1285,6 +1304,12 @@ Y_i = X_i^\top \beta + U_i, \qquad \beta \in \mathbb{R}^k, \qquad \mathrm{E}\lef
 \begin{aligned}
 \frac{1}{n} \sum_{i=1}^n X_i X_i^\top &amp;\to_p \mathrm{E}\left[X_i X_i^\top\right] \\
 \frac{1}{n} \sum_{i=1}^n X_i Y_i &amp;\to_p \mathrm{E}\left[X_i Y_i\right]
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>Slutsky: <span class="math display">
+\begin{aligned}
+\hat\beta &amp;= \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \frac{1}{n} \sum_{i=1}^n X_i Y_i \\
+&amp;\to_p \big(\mathrm{E}\left[X_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[X_i Y_i\right] = \beta \qquad \text{(consistency)}
 \end{aligned}
 </span></p></li>
 </ul>
@@ -1325,6 +1350,12 @@ Z_i &amp;= \begin{pmatrix} Z_{i,1} \\ X_{i,2} \end{pmatrix} : \ \underbrace{(\el
 \beta &amp;= \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix}
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p>Two sets of moment conditions: <span class="math display">
+\begin{aligned}
+\mathrm{E}\left[X_{i,2} (Y_i - X_{i,1}^\top \beta_1 - X_{i,2}^\top \beta_2)\right] &amp;= 0 \qquad (k_2 \ \text{equations}) \\
+\mathrm{E}\left[Z_{i,1} (Y_i - X_{i,1}^\top \beta_1 - X_{i,2}^\top \beta_2)\right] &amp;= 0 \qquad (\ell_1 \ \text{equations})
+\end{aligned}
+</span></p></li>
 <li class="fragment"><p>Moment condition: <span class="math display">
 \begin{aligned}
 &amp; \mathrm{E}\left[Z_i (Y_i - X_i^\top \beta)\right] = 0 \\
@@ -1348,26 +1379,14 @@ Y_i = \beta X_i + U_i
 </span></p></li>
 </ul>
 </section>
-<section id="exactly-identified-case" class="slide level2">
-<h2>Exactly identified case</h2>
+<section id="exactly-identified-case-iv-estimator" class="slide level2">
+<h2>Exactly identified case: IV estimator</h2>
 <ul>
-<li class="fragment"><span class="math inline">\ell = k</span> (<span class="math inline">\ell_1 = k_1</span>): <span class="math inline">k</span> equations in <span class="math inline">k</span> unknowns; <span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span>: <span class="math inline">k \times k</span>, rank <span class="math inline">k</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">\ell = k</span> (<span class="math inline">\ell_1 = k_1</span>): <span class="math inline">k</span> equations in <span class="math inline">k</span> unknowns.</p></li>
+<li class="fragment"><p>Assume <span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span> has rank <span class="math inline">k</span>: <span class="math display">
 \begin{aligned}
-0 &amp;= \mathrm{E}\left[Z_i (Y_i - X_i^\top \beta)\right] \\
-&amp;= \underbrace{\mathrm{E}\left[Z_i Y_i\right]}_{\text{in place of } \mathrm{Cov}\left(Z_i, Y_i\right)} - \underbrace{\mathrm{E}\left[Z_i X_i^\top\right]}_{\text{in place of } \mathrm{Cov}\left(Z_i, X_i\right)} \beta \\
-\Longrightarrow\quad \beta &amp;= \boxed{\ \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i Y_i\right]\ }
-\end{aligned}
-</span></li>
-</ul>
-</section>
-<section id="iv-estimator" class="slide level2">
-<h2>IV estimator</h2>
-<ul>
-<li class="fragment"><p><span class="math inline">Z</span>: <span class="math inline">n \times \ell</span>, with rows <span class="math inline">Z_i^\top</span>, as <span class="math inline">X</span> with rows <span class="math inline">X_i^\top</span>: <span class="math display">
-\begin{aligned}
-Z &amp;= \begin{pmatrix} Z_1^\top \\ \vdots \\ Z_n^\top \end{pmatrix} \\
-\sum_{i=1}^n Z_i X_i^\top &amp;= Z^\top X \\
-\sum_{i=1}^n Z_i Y_i &amp;= Z^\top Y
+\underbrace{\mathrm{E}\left[Z_i X_i^\top\right]}_{k \times k}\ \underset{k \times 1}{\beta} &amp;= \underbrace{\mathrm{E}\left[Z_i Y_i\right]}_{k \times 1} \\
+\Longrightarrow\quad \beta &amp;=\boxed{\ \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i Y_i\right]\ }
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Sample averages in place of expectations: <span class="math display">
@@ -1377,17 +1396,24 @@ Z &amp;= \begin{pmatrix} Z_1^\top \\ \vdots \\ Z_n^\top \end{pmatrix} \\
 &amp;= (Z^\top X)^{-1} Z^\top Y
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p><span class="math inline">Z</span>: <span class="math inline">n \times \ell</span>, with rows <span class="math inline">Z_i^\top</span>, as <span class="math inline">X</span> with rows <span class="math inline">X_i^\top</span>: <span class="math display">
+\begin{aligned}
+Z &amp;= \begin{pmatrix} Z_1^\top \\ \vdots \\ Z_n^\top \end{pmatrix} \\
+\sum_{i=1}^n Z_i X_i^\top &amp;= Z^\top X \\
+\sum_{i=1}^n Z_i Y_i &amp;= Z^\top Y
+\end{aligned}
+</span></p></li>
 </ul>
 </section>
 <section id="over-identified-case" class="slide level2">
 <h2>Over-identified case</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\ell &gt; k</span> (<span class="math inline">\ell_1 &gt; k_1</span>), more equations than unknowns; <span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span>: <span class="math inline">\ell \times k</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\ell &gt; k</span> (<span class="math inline">\ell_1 &gt; k_1</span>): more equations than unknowns.</p></li>
 <li class="fragment"><p>Premultiply by <span class="math inline">\mathrm{E}\left[X_i Z_i^\top\right]</span>, which is <span class="math inline">k \times \ell</span>: <span class="math display">
 \begin{aligned}
-\mathrm{E}\left[Z_i X_i^\top\right] \beta &amp;= \mathrm{E}\left[Z_i Y_i\right] \\
-\Longrightarrow\quad \underbrace{\big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)}_{k \times k} \beta &amp;= \big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \mathrm{E}\left[Z_i Y_i\right] \\
-\Longrightarrow\quad \beta &amp;= \Big[\big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)\Big]^{-1} \big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \mathrm{E}\left[Z_i Y_i\right]
+&amp; \underbrace{\mathrm{E}\left[Z_i X_i^\top\right]}_{\ell \times k}\ \underset{k \times 1}{\beta} = \underbrace{\mathrm{E}\left[Z_i Y_i\right]}_{\ell \times 1} \\
+\Longrightarrow\quad &amp; \underbrace{\big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)}_{k \times k}\ \underset{k \times 1}{\beta} = \underbrace{\big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \mathrm{E}\left[Z_i Y_i\right]}_{k \times 1} \\
+\Longrightarrow\quad &amp; \beta = \Big[\big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)\Big]^{-1} \big(\mathrm{E}\left[X_i Z_i^\top\right]\big) \mathrm{E}\left[Z_i Y_i\right]
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Condition for identification: <span class="math inline">k \times k</span> inverse exists.</p></li>
@@ -1402,7 +1428,8 @@ Q = \mathrm{E}\left[Z_i X_i^\top\right], \qquad Q^\top = \mathrm{E}\left[X_i Z_i
 <li class="fragment"><p><strong>Rank condition.</strong> <span class="math display">
 \operatorname{rank}\left(Q\right) = \operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\operatorname{rank}\left(Q\right) = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">Q^\top Q</span> p.d.; for <span class="math inline">c \in \mathbb{R}^k</span> and <span class="math inline">v = Qc</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">\operatorname{rank}\left(Q\right) = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">Q^\top Q</span> p.d.</p></li>
+<li class="fragment"><p>For <span class="math inline">c \in \mathbb{R}^k</span> and <span class="math inline">v = Qc</span>: <span class="math display">
 \begin{aligned}
 c^\top Q^\top Q c &amp;= v^\top v \\
 &amp;= \|v\|^2 \\
@@ -1415,11 +1442,14 @@ c^\top Q^\top Q c &amp;= v^\top v \\
 <section id="order-condition" class="slide level2">
 <h2>Order condition</h2>
 <ul>
+<li class="fragment"><p>Definition of <span class="math inline">Q</span>: <span class="math display">
+\underset{\ell \times k}{Q} = \mathrm{E}\left[\underset{\ell \times 1}{Z_i}\ \underset{1 \times k}{X_i^\top}\right]
+</span></p></li>
 <li class="fragment"><p>Necessary for the rank condition: <span class="math display">
 \begin{aligned}
 \operatorname{rank}\left(\underset{\ell \times k}{Q}\right) = k \quad &amp;\Longrightarrow \quad \ell \ge k \\
 &amp;\Longleftrightarrow \quad \ell_1 + k_2 \ge k_1 + k_2 \\
-&amp;\Longleftrightarrow \quad \underbrace{\ell_1}_{\text{number of excluded IVs}} \ge \underbrace{k_1}_{\text{number of endogenous regressors}}
+&amp;\Longleftrightarrow \quad \underbrace{\ell_1}_{\text{number of IVs}} \ge \underbrace{k_1}_{\text{number of endogenous regressors}}
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Three cases: <span class="math display">
@@ -1431,8 +1461,8 @@ c^\top Q^\top Q c &amp;= v^\top v \\
 </span></p></li>
 </ul>
 </section>
-<section id="included-regressor-as-instrument" class="slide level2">
-<h2>Included regressor as instrument</h2>
+<section id="exclusion-restriction" class="slide level2">
+<h2>Exclusion restriction</h2>
 <ul>
 <li class="fragment"><p>Two scalar regressors: <span class="math display">
 Y_i = \beta_1 X_{i,1} + \beta_2 X_{i,2} + U_i, \qquad \mathrm{E}\left[X_{i,2} U_i\right] = 0
@@ -1445,11 +1475,12 @@ Y_i = \beta_1 X_{i,1} + \beta_2 X_{i,2} + U_i, \qquad \mathrm{E}\left[X_{i,2} U_
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p>Two equal rows <span class="math inline">\Longrightarrow</span> rank <span class="math inline">1 &lt; k = 2</span>.</p></li>
-<li class="fragment"><p><strong>Exclusion restriction:</strong> <span class="math inline">Z_{i,1}</span> excluded from the equation for <span class="math inline">Y_i</span>; no direct effect on <span class="math inline">Y_i</span>.</p></li>
+<li class="fragment"><p><strong>Exclusion restriction:</strong> <span class="math inline">Z_{i,1}</span> excluded from the equation for <span class="math inline">Y_i</span>.</p></li>
+<li class="fragment"><p>No direct effect of <span class="math inline">Z_{i,1}</span> on <span class="math inline">Y_i</span>.</p></li>
 </ul>
 </section>
-<section id="noise-as-instrument" class="slide level2">
-<h2>Noise as instrument</h2>
+<section id="relevance-restriction" class="slide level2">
+<h2>Relevance restriction</h2>
 <ul>
 <li class="fragment"><p>Suppose <span class="math inline">Z_{i,1}</span> is “noise”, with <span class="math inline">\mathrm{E}\left[Z_{i,1} U_i\right] = 0</span>: <span class="math display">
 \mathrm{E}\left[Z_i X_i^\top\right] = \begin{pmatrix} \overbrace{\mathrm{E}\left[Z_{i,1} X_{i,1}\right]}^{=\,0} &amp; \overbrace{\mathrm{E}\left[Z_{i,1} X_{i,2}\right]}^{=\,0} \\ \mathrm{E}\left[X_{i,2} X_{i,1}\right] &amp; \mathrm{E}\left[X_{i,2} X_{i,2}\right] \end{pmatrix}
@@ -1466,66 +1497,63 @@ Y_i = \beta_1 X_{i,1} + \beta_2 X_{i,2} + U_i, \qquad \mathrm{E}\left[X_{i,2} U_
 <h2>First stage</h2>
 <ul>
 <li class="fragment"><p>First stage, for the endogenous regressors: <span class="math display">
-\underset{k_1 \times 1}{X_{i,1}} = \underset{k_1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \underset{k_1 \times k_2}{\Pi_2^\top}\ \underset{k_2 \times 1}{X_{i,2}} + \underset{k_1 \times 1}{V_i}
+\underset{k_1 \times 1}{X_{i,1}} = \underset{k_1 \times \ell_1}{{\color{red} \Pi_1^\top}}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \underset{k_1 \times k_2}{\Pi_2^\top}\ \underset{k_2 \times 1}{X_{i,2}} + \underset{k_1 \times 1}{V_i}
 </span></p></li>
 <li class="fragment"><p><span class="math inline">V_i</span> uncorrelated with <span class="math inline">Z_{i,1}</span> and <span class="math inline">X_{i,2}</span>: <span class="math display">
 \mathrm{E}\left[Z_{i,1} V_i^\top\right] = 0, \qquad \mathrm{E}\left[X_{i,2} V_i^\top\right] = 0
 </span></p></li>
+<li class="fragment"><p><span class="math inline">V_i</span> correlated with <span class="math inline">U_i</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">X_{i,1}</span> endogenous.</p></li>
 <li class="fragment"><p>First stage in terms of <span class="math inline">Z_i</span>, with <span class="math inline">\Pi</span>: <span class="math inline">\ell \times k_1</span>: <span class="math display">
-X_{i,1} = \Pi^\top Z_i + V_i, \qquad \Pi = \begin{pmatrix} \Pi_1 \\ \Pi_2 \end{pmatrix}, \qquad \mathrm{E}\left[Z_i V_i^\top\right] = 0
+X_{i,1} = \Pi^\top Z_i + V_i, \qquad \Pi = \begin{pmatrix} {\color{red} \Pi_1} \\ \Pi_2 \end{pmatrix}, \qquad \mathrm{E}\left[Z_i V_i^\top\right] = 0
+</span></p></li>
+<li class="fragment"><p><strong>Claim.</strong> With <span class="math inline">\mathrm{E}\left[Z_i Z_i^\top\right]</span> p.d.: <span class="math display">
+\operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k \quad \Longleftrightarrow \quad \operatorname{rank}\left({\color{red} \Pi_1}\right) = k_1
+</span></p></li>
+<li class="fragment"><p>Interpretation of the rank condition: excluded variables <span class="math inline">Z_{i,1}</span> informative about the endogenous regressors.</p></li>
+</ul>
+</section>
+<section id="one-endogenous-regressor" class="slide level2">
+<h2>One endogenous regressor</h2>
+<ul>
+<li class="fragment"><p>Suppose <span class="math inline">k_1 = 1</span>.</p></li>
+<li class="fragment"><p>For example, <span class="math inline">Y_i = \log \text{Wage}_i</span> and <span class="math inline">X_{i,1} = \text{Education}_i</span>: <span class="math display">
+\underset{1 \times 1}{\text{Education}_i} = \underset{1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \Pi_2^\top X_{i,2} + V_i, \qquad \Pi_1 = \begin{pmatrix} \Pi_{1,1} \\ \vdots \\ \Pi_{1,\ell_1} \end{pmatrix}
+</span></p></li>
+<li class="fragment"><p>First stage written instrument by instrument: <span class="math display">
+X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
+</span></p></li>
+<li class="fragment"><p>Rank condition: <span class="math display">
+\begin{aligned}
+\operatorname{rank}\left(\Pi_1\right) = 1 \quad &amp;\Longleftrightarrow \quad \Pi_1 \ne 0 \\
+&amp;\Longleftrightarrow \quad \Pi_{1,j} \ne 0 \ \text{ for at least one } j = 1, \ldots, \ell_1
+\end{aligned}
 </span></p></li>
 </ul>
 </section>
-<section id="definition-of-pi" class="slide level2">
-<h2>Definition of <span class="math inline">\Pi</span></h2>
+<section id="demand-and-supply-instruments" class="slide level2">
+<h2>Demand and supply: instruments</h2>
 <ul>
-<li class="fragment"><p><strong>Claim.</strong> With <span class="math inline">\mathrm{E}\left[Z_i Z_i^\top\right]</span> p.d., <span class="math inline">\Pi</span> can always be defined so that <span class="math inline">\mathrm{E}\left[Z_i V_i^\top\right] = 0</span>.</p></li>
-<li class="fragment"><p>Transpose the first stage, premultiply by <span class="math inline">Z_i</span>, take expectations: <span class="math display">
-\begin{aligned}
-X_{i,1}^\top &amp;= Z_i^\top \Pi + V_i^\top \\
-Z_i X_{i,1}^\top &amp;= Z_i Z_i^\top \Pi + Z_i V_i^\top \\
-\mathrm{E}\left[Z_i X_{i,1}^\top\right] &amp;= \mathrm{E}\left[Z_i Z_i^\top\right] \Pi + \underbrace{\mathrm{E}\left[Z_i V_i^\top\right]}_{=\,0} \\
-\Longrightarrow\quad \Pi &amp;= \big(\mathrm{E}\left[Z_i Z_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i X_{i,1}^\top\right]
-\end{aligned}
+<li class="fragment"><p>Demand regression: <span class="math display">
+Y_i = \beta_1 \underbrace{P_i}_{X_{i,1}} + \beta_2 \underbrace{I_i}_{X_{i,2}} + U_i^d
 </span></p></li>
-<li class="fragment"><p>Given <span class="math inline">X_{i,1}</span> and <span class="math inline">Z_i</span>, define: <span class="math display">
-\begin{aligned}
-\Pi &amp;\equiv \big(\mathrm{E}\left[Z_i Z_i^\top\right]\big)^{-1} \mathrm{E}\left[Z_i X_{i,1}^\top\right] \\
-V_i &amp;\equiv X_{i,1} - \Pi^\top Z_i
-\end{aligned}
+<li class="fragment"><p>IV for <span class="math inline">P_i</span>: supply shifter, <span class="math inline">Z_{i,1} = G_i</span>.</p></li>
+<li class="fragment"><p>Excluded: <span class="math inline">G_i</span> not in the demand equation.</p></li>
+<li class="fragment"><p>Exogenous: <span class="math inline">\mathrm{E}\left[G_i U_i^d\right] = 0</span>.</p></li>
+<li class="fragment"><p>First stage, the equilibrium price: <span class="math display">
+P_i = \underbrace{\pi_1}_{\Pi_1} G_i + \underbrace{\pi_2}_{\Pi_2} I_i + \underbrace{\frac{U_i^d - U_i^s}{\gamma_1 - \beta_1}}_{V_i}
 </span></p></li>
-</ul>
-</section>
-<section id="proof-that-z_i-and-v_i-are-uncorrelated" class="slide level2">
-<h2>Proof that <span class="math inline">Z_i</span> and <span class="math inline">V_i</span> are uncorrelated</h2>
-<ul>
-<li class="fragment"><p>With <span class="math inline">\Pi</span> and <span class="math inline">V_i</span> as defined: <span class="math display">
-\begin{aligned}
-\mathrm{E}\left[Z_i V_i^\top\right] &amp;= \mathrm{E}\left[Z_i (X_{i,1}^\top - Z_i^\top \Pi)\right] \\
-&amp;= \mathrm{E}\left[Z_i X_{i,1}^\top\right] - \mathrm{E}\left[Z_i Z_i^\top\right] \Pi \\
-&amp;= \mathrm{E}\left[Z_i X_{i,1}^\top\right] - {\color{red} \mathrm{E}\left[Z_i Z_i^\top\right] \big(\mathrm{E}\left[Z_i Z_i^\top\right]\big)^{-1}} \mathrm{E}\left[Z_i X_{i,1}^\top\right] \\
-&amp;= 0
-\end{aligned}
+<li class="fragment"><p>Informative: <span class="math display">
+\pi_1 = \frac{-\gamma_2}{\gamma_1 - \beta_1} \ne 0 \quad \Longleftrightarrow \quad \gamma_2 \ne 0
 </span></p></li>
-<li class="fragment"><p>Hence the first stage can always be defined: <span class="math display">
-X_{i,1} = \Pi^\top Z_i + V_i, \qquad \mathrm{E}\left[Z_i V_i^\top\right] = 0
-</span></p></li>
-</ul>
-</section>
-<section id="rank-condition-in-terms-of-pi_1" class="slide level2">
-<h2>Rank condition in terms of <span class="math inline">\Pi_1</span></h2>
-<ul>
-<li class="fragment"><strong>Claim.</strong> <span class="math inline">\mathrm{E}\left[Z_i Z_i^\top\right]</span> p.d.; <span class="math inline">\Pi_1</span>: <span class="math inline">\ell_1 \times k_1</span> first-stage coefficients on <span class="math inline">Z_{i,1}</span>: <span class="math display">
-\operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k \quad \Longleftrightarrow \quad \operatorname{rank}\left(\Pi_1\right) = k_1
-</span></li>
 </ul>
 </section>
 <section id="proof-step-1-mathrmeleftz_i-x_itopright-in-blocks" class="slide level2">
 <h2>Proof, step 1: <span class="math inline">\mathrm{E}\left[Z_i X_i^\top\right]</span> in blocks</h2>
 <ul>
-<li class="fragment"><p>We will use the transposed first stage, with <span class="math inline">\mathrm{E}\left[Z_{i,1} V_i^\top\right] = 0</span>, <span class="math inline">\mathrm{E}\left[X_{i,2} V_i^\top\right] = 0</span>: <span class="math display">
+<li class="fragment"><p>We will use the transposed first stage: <span class="math display">
 X_{i,1}^\top = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i^\top
 </span></p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[Z_{i,1} V_i^\top\right] = 0</span>, <span class="math inline">\mathrm{E}\left[X_{i,2} V_i^\top\right] = 0</span>.</p></li>
 <li class="fragment"><p>Write in blocks; substitute the first stage: <span class="math display">
 \begin{aligned}
 \mathrm{E}\left[Z_i X_i^\top\right] &amp;= \mathrm{E}\left[\begin{pmatrix} Z_{i,1} \\ X_{i,2} \end{pmatrix} \begin{pmatrix} X_{i,1}^\top &amp; X_{i,2}^\top \end{pmatrix}\right] \\
@@ -1550,7 +1578,8 @@ X_{i,1}^\top = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i^\top
 <section id="proof-step-3-sufficiency-of-operatornamerankleftpi_1right-k_1" class="slide level2">
 <h2>Proof, step 3: sufficiency of <span class="math inline">\operatorname{rank}\left(\Pi_1\right) = k_1</span></h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[Z_i Z_i^\top\right]</span> p.d.; suppose <span class="math inline">\operatorname{rank}\left(\Pi_1\right) = k_1</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[Z_i Z_i^\top\right]</span> p.d.</p></li>
+<li class="fragment"><p>Suppose <span class="math inline">\operatorname{rank}\left(\Pi_1\right) = k_1</span>: <span class="math display">
 \begin{aligned}
 \mathrm{E}\left[Z_i X_i^\top\right] \theta = 0 \quad &amp;\Longleftrightarrow \quad \Pi_1 \theta_1 = 0 \ \text{ and } \ \Pi_2 \theta_1 + \theta_2 = 0 \\
 &amp;\Longleftrightarrow \quad \theta_1 = 0 \ \text{ and } \ \Pi_2 \theta_1 + \theta_2 = 0 \qquad (\operatorname{rank}\left(\Pi_1\right) = k_1) \\
@@ -1581,33 +1610,17 @@ X_{i,1}^\top = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i^\top
 </span></p></li>
 </ul>
 </section>
-<section id="one-endogenous-regressor" class="slide level2">
-<h2>One endogenous regressor</h2>
-<ul>
-<li class="fragment"><p>Suppose <span class="math inline">k_1 = 1</span>, for example <span class="math inline">Y_i = \log \text{Wage}_i</span> and <span class="math inline">X_{i,1} = \text{Education}_i</span>: <span class="math display">
-\underset{1 \times 1}{\text{Education}_i} = \underset{1 \times \ell_1}{\Pi_1^\top}\ \underset{\ell_1 \times 1}{Z_{i,1}} + \Pi_2^\top X_{i,2} + V_i, \qquad \Pi_1 = \begin{pmatrix} \Pi_{1,1} \\ \vdots \\ \Pi_{1,\ell_1} \end{pmatrix}
-</span></p></li>
-<li class="fragment"><p>First stage written instrument by instrument: <span class="math display">
-X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
-</span></p></li>
-<li class="fragment"><p>Rank condition: <span class="math display">
-\begin{aligned}
-\operatorname{rank}\left(\Pi_1\right) = 1 \quad &amp;\Longleftrightarrow \quad \Pi_1 \ne 0 \\
-&amp;\Longleftrightarrow \quad \Pi_{1,j} \ne 0 \ \text{ for at least one } j = 1, \ldots, \ell_1
-\end{aligned}
-</span></p></li>
-</ul>
-</section>
 <section id="requirements-for-instruments" class="slide level2 scrollable">
 <h2>Requirements for instruments</h2>
 <ul>
-<li class="fragment">We need <span class="math inline">Z_{i,1}</span>: <span class="math inline">\ell_1 \times 1</span>, with <span class="math inline">\ell_1 \ge k_1</span>, such that:
+<li class="fragment"><p>We need <span class="math inline">Z_{i,1}</span>: <span class="math inline">\ell_1 \times 1</span>, with <span class="math inline">\ell_1 \ge k_1</span>, such that:</p>
 <ol type="1">
 <li class="fragment"><span class="math inline">Z_{i,1}</span> excluded from the equation for <span class="math inline">Y_i</span>.</li>
 <li class="fragment"><span class="math inline">Z_{i,1}</span> exogenous: <span class="math inline">\mathrm{E}\left[Z_{i,1} U_i\right] = 0</span>.</li>
 <li class="fragment"><span class="math inline">Z_{i,1}</span> informative about <span class="math inline">X_{i,1}</span>: <span class="math inline">\operatorname{rank}\left(\Pi_1\right) = k_1</span> in the first stage.</li>
 </ol></li>
-<li class="fragment">Wage example, <span class="math inline">U_i</span>: ability; IV must be:
+<li class="fragment"><p>Wage example, <span class="math inline">U_i</span>: ability.</p></li>
+<li class="fragment"><p>IV must be:</p>
 <ol type="1">
 <li class="fragment">Independent of ability.</li>
 <li class="fragment">Not affecting the wage directly.</li>
@@ -1615,19 +1628,38 @@ X_{i,1} = \sum_{j=1}^{\ell_1} Z_{i,1,j}\, \Pi_{1,j} + \Pi_2^\top X_{i,2} + V_i
 </ol></li>
 </ul>
 </section>
-<section id="examples-of-instruments" class="slide level2">
-<h2>Examples of instruments</h2>
+<section id="example-angrist-and-krueger-1991" class="slide level2">
+<h2>Example: Angrist and Krueger (1991)</h2>
 <ul>
-<li class="fragment"><p>Angrist and Krueger (1991), IVs: quarter-of-birth dummies: <span class="math display">
+<li class="fragment"><p>Angrist, J. D. and A. B. Krueger (1991). “Does Compulsory School Attendance Affect Schooling and Earnings?” <em>Quarterly Journal of Economics</em> 106(4), 979–1014.</p></li>
+<li class="fragment"><p>Wage equation: <span class="math display">
 \log \text{Wage}_i = \beta_1\, \text{Education}_i + X_{i,2}^\top \beta_2 + U_i
 </span></p></li>
-<li class="fragment"><p>Angrist and Evans (1998), married women with at least 2 children: <span class="math display">
+<li class="fragment"><p>IVs: quarter-of-birth dummies, <span class="math inline">Z_{i,1}</span>.</p></li>
+<li class="fragment"><p>First stage: <span class="math display">
+\text{Education}_i = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i
+</span></p></li>
+<li class="fragment"><p>Born early in the year <span class="math inline">\Longrightarrow</span> older at school start <span class="math inline">\Longrightarrow</span> less schooling at the compulsory leaving age.</p></li>
+<li class="fragment"><p>Hence <span class="math inline">\Pi_1 \ne 0</span>.</p></li>
+</ul>
+</section>
+<section id="example-angrist-and-evans-1998" class="slide level2">
+<h2>Example: Angrist and Evans (1998)</h2>
+<ul>
+<li class="fragment"><p>Angrist, J. D. and W. N. Evans (1998). “Children and Their Parents’ Labor Supply: Evidence from Exogenous Variation in Family Size.” <em>American Economic Review</em> 88(3), 450–477.</p></li>
+<li class="fragment"><p>Married women with at least 2 children: <span class="math display">
 \begin{aligned}
-\text{Hours worked}_i &amp;= \beta_1\, (\text{number of children})_i + X_{i,2}^\top \beta_2 + U_i \\
-(\text{number of children})_i &amp;= \gamma_1\, \text{Hours worked}_i + \ldots
+\text{Hours worked}_i &amp;= \beta_1\, \text{Number of children}_i + X_{i,2}^\top \beta_2 + U_i \\
+\text{Number of children}_i &amp;= \gamma_1\, \text{Hours worked}_i + \gamma_2\, \text{Same sex}_i + X_{i,2}^\top \gamma_3 + U_i^c
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>IV: same-sex dummy.</p></li>
+<li class="fragment"><p><span class="math inline">\text{Same sex}_i = 1</span> if the first two children are both boys or both girls.</p></li>
+<li class="fragment"><p>IV for <span class="math inline">\text{Number of children}_i</span>: <span class="math inline">\text{Same sex}_i</span>.</p></li>
+<li class="fragment"><p>First stage: <span class="math display">
+\text{Number of children}_i = \Pi_1\, \text{Same sex}_i + X_{i,2}^\top \Pi_2 + V_i
+</span></p></li>
+<li class="fragment"><p>First two children of the same sex <span class="math inline">\Longrightarrow</span> third child more likely.</p></li>
+<li class="fragment"><p>Hence <span class="math inline">\Pi_1 &gt; 0</span>.</p></li>
 </ul>
 </section></section>
 <section>
@@ -1652,7 +1684,8 @@ Q\, \beta &amp;= \mathrm{E}\left[Z_i Y_i\right] \\
 <section id="exactly-identified-case-w-cancels" class="slide level2">
 <h2>Exactly identified case: <span class="math inline">W</span> cancels</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\ell = k</span>; <span class="math inline">Q</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible: <span class="math display">
+<li class="fragment"><p><span class="math inline">\ell = k</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Q</span>, <span class="math inline">W</span>: <span class="math inline">k \times k</span>, invertible: <span class="math display">
 \begin{aligned}
 \beta &amp;= (\underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\ \underset{k \times k}{Q})^{-1}\, \underset{k \times k}{Q^\top}\ \underset{k \times k}{W}\, \mathrm{E}\left[Z_i Y_i\right] \\
 &amp;= Q^{-1}\, {\color{red} W^{-1} (Q^\top)^{-1} Q^\top W}\, \mathrm{E}\left[Z_i Y_i\right] \\
@@ -1673,10 +1706,18 @@ Q\, \beta &amp;= \mathrm{E}\left[Z_i Y_i\right] \\
 <li class="fragment"><p><strong>Definition.</strong> GMM estimator with weight matrix <span class="math inline">W_n</span>: <span class="math display">
 \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
 </span></p></li>
-<li class="fragment"><p><strong>Assumption I.</strong> <span class="math inline">\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}</span> iid; <span class="math inline">Y_i = X_i^\top \beta + U_i</span>, <span class="math inline">\beta \in \mathbb{R}^k</span>.</p></li>
+<li class="fragment"><p><strong>Assumption I.</strong></p>
+<ul>
+<li class="fragment"><span class="math inline">\{(Y_i, X_i, Z_i) : i = 1, \ldots, n\}</span> iid.</li>
+<li class="fragment"><span class="math inline">Y_i = X_i^\top \beta + U_i</span>, <span class="math inline">\beta \in \mathbb{R}^k</span>.</li>
+</ul></li>
 <li class="fragment"><p><strong>Assumption II.</strong> <span class="math inline">\mathrm{E}\left[Z_i U_i\right] = 0</span>.</p></li>
 <li class="fragment"><p><strong>Assumption III.</strong> <span class="math inline">\operatorname{rank}\left(Q\right) = k</span>, <span class="math inline">Q = \mathrm{E}\left[Z_i X_i^\top\right]</span>.</p></li>
-<li class="fragment"><p><strong>Assumption IV.</strong> <span class="math inline">W_n \to_p W</span>; <span class="math inline">W</span>: <span class="math inline">\ell \times \ell</span>, symmetric, p.d.</p></li>
+<li class="fragment"><p><strong>Assumption IV.</strong></p>
+<ul>
+<li class="fragment"><span class="math inline">W_n \to_p W</span>.</li>
+<li class="fragment"><span class="math inline">W</span>: <span class="math inline">\ell \times \ell</span>, symmetric, p.d.</li>
+</ul></li>
 </ul>
 </section>
 <section id="consistency-of-hatbetaw_n" class="slide level2">
@@ -1711,7 +1752,8 @@ Q\, \beta &amp;= \mathrm{E}\left[Z_i Y_i\right] \\
 &amp;= \mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">Z_1 U_1, \ldots, Z_n U_n</span>: iid; multivariate CLT: <span class="math display">
+<li class="fragment"><p><span class="math inline">Z_1 U_1, \ldots, Z_n U_n</span>: iid.</p></li>
+<li class="fragment"><p>Multivariate CLT: <span class="math display">
 \frac{Z^\top U}{\sqrt{n}} = \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i U_i \to_d N(0, \Omega)
 </span></p></li>
 </ul>
@@ -1745,7 +1787,8 @@ V(\Omega^{-1}) &amp;= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1
 &amp;= (Q^\top \Omega^{-1} Q)^{-1}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">W^* = \Omega^{-1}</span> matters only if <span class="math inline">\ell &gt; k</span>; <span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W</span> cancels.</p></li>
+<li class="fragment"><p><span class="math inline">W^* = \Omega^{-1}</span> matters only if <span class="math inline">\ell &gt; k</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W</span> cancels.</p></li>
 </ul>
 </section>
 <section id="comparing-asymptotic-variances" class="slide level2">
@@ -1765,7 +1808,8 @@ a - b \ge 0 \quad \Longleftrightarrow \quad \frac{1}{b} - \frac{1}{a} \ge 0
 <section id="proof-that-w-omega-1-is-efficient" class="slide level2">
 <h2>Proof that <span class="math inline">W^* = \Omega^{-1}</span> is efficient</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\Omega</span> p.d. <span class="math inline">\Longrightarrow</span> <span class="math inline">\Omega^{1/2}</span>: symmetric, <span class="math inline">\Omega^{1/2}\, \Omega^{1/2} = \Omega</span>; <span class="math inline">\Omega^{-1/2} = (\Omega^{1/2})^{-1}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\Omega</span> p.d. <span class="math inline">\Longrightarrow</span> <span class="math inline">\Omega^{1/2}</span>: symmetric, <span class="math inline">\Omega^{1/2}\, \Omega^{1/2} = \Omega</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\Omega^{-1/2} = (\Omega^{1/2})^{-1}</span>.</p></li>
 <li class="fragment"><p>Recall: <span class="math inline">M_H = I - H (H^\top H)^{-1} H^\top</span>: symmetric, idempotent, p.s.d.</p></li>
 <li class="fragment"><p>Difference of the inverses: <span class="math display">
 \begin{aligned}
@@ -1783,7 +1827,9 @@ a - b \ge 0 \quad \Longleftrightarrow \quad \frac{1}{b} - \frac{1}{a} \ge 0
 <li class="fragment"><p>Efficient weight matrix, unknown: <span class="math display">
 W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 </span></p></li>
-<li class="fragment"><p>Step 1: <span class="math inline">W_n = I_\ell</span>; <span class="math inline">\hat\beta(I_\ell)</span> consistent; estimator of <span class="math inline">\Omega</span> from its residuals: <span class="math display">
+<li class="fragment"><p>Step 1: <span class="math inline">W_n = I_\ell</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat\beta(I_\ell)</span> consistent.</p></li>
+<li class="fragment"><p>Estimator of <span class="math inline">\Omega</span> from the residuals of <span class="math inline">\hat\beta(I_\ell)</span>: <span class="math display">
 \hat\Omega_n = \frac{1}{n} \sum_{i=1}^n \big(Y_i - X_i^\top \hat\beta(I_\ell)\big)^2 Z_i Z_i^\top
 </span></p></li>
 <li class="fragment"><p>Step 2: <span class="math inline">W_n = \hat\Omega_n^{-1}</span>, efficient GMM: <span class="math display">
@@ -1795,7 +1841,9 @@ W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 <section id="asymptotic-variance-of-hatbetaiv" class="slide level2">
 <h2>Asymptotic variance of <span class="math inline">\hat\beta^{IV}</span></h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\ell = k</span>: <span class="math inline">Q</span>: <span class="math inline">k \times k</span>, invertible; IV estimator: <span class="math display">
+<li class="fragment"><p><span class="math inline">\ell = k</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Q</span>: <span class="math inline">k \times k</span>, invertible.</p></li>
+<li class="fragment"><p>IV estimator: <span class="math display">
 \begin{aligned}
 \hat\beta^{IV} &amp;= (\underbrace{Z^\top X}_{k \times k})^{-1} Z^\top Y \\
 &amp;= \beta + (Z^\top X)^{-1} Z^\top U \qquad (Y = X\beta + U)
@@ -1807,7 +1855,8 @@ W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 &amp;\to_d Q^{-1}\, N(0, \Omega)
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Variance of <span class="math inline">Q^{-1} N(0, \Omega)</span>; <span class="math inline">(Q^{-1})^\top = (Q^\top)^{-1}</span>: <span class="math display">
+<li class="fragment"><p>We will use: <span class="math inline">(Q^{-1})^\top = (Q^\top)^{-1}</span>.</p></li>
+<li class="fragment"><p>Variance of <span class="math inline">Q^{-1} N(0, \Omega)</span>: <span class="math display">
 \begin{aligned}
 \mathrm{AsyVar}\big(\hat\beta^{IV}\big) &amp;= Q^{-1}\, \Omega\, (Q^{-1})^\top \\
 &amp;= \boxed{\ \big(\mathrm{E}\left[Z_i X_i^\top\right]\big)^{-1}\, \mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\, \big(\mathrm{E}\left[X_i Z_i^\top\right]\big)^{-1}\ }
@@ -1835,13 +1884,14 @@ W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 <li class="fragment"><p>Estimator of <span class="math inline">\Omega</span>: <span class="math display">
 \hat\Omega_n = \hat\sigma_n^2\, \frac{Z^\top Z}{n}
 </span></p></li>
-<li class="fragment"><p>Efficient GMM; the scalar <span class="math inline">n / \hat\sigma_n^2</span> cancels: <span class="math display">
+<li class="fragment"><p>Efficient GMM: <span class="math display">
 \begin{aligned}
 \hat\beta(\hat\Omega_n^{-1}) &amp;= \Big(X^\top Z \Big(\hat\sigma_n^2\, \frac{Z^\top Z}{n}\Big)^{-1} Z^\top X\Big)^{-1} X^\top Z \Big(\hat\sigma_n^2\, \frac{Z^\top Z}{n}\Big)^{-1} Z^\top Y \\
 &amp;= \big(X^\top \underbrace{Z (Z^\top Z)^{-1} Z^\top}_{P_Z} X\big)^{-1} X^\top \underbrace{Z (Z^\top Z)^{-1} Z^\top}_{P_Z} Y \\
 &amp;= \boxed{\ (X^\top P_Z X)^{-1} X^\top P_Z Y \equiv \hat\beta^{2SLS}\ }
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p>The scalar <span class="math inline">n / \hat\sigma_n^2</span> cancels.</p></li>
 </ul>
 </section>
 <section id="sls-first-and-second-stage" class="slide level2">
@@ -1854,13 +1904,15 @@ W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 &amp;= \hat\Pi_1^\top Z_{i,1} + \hat\Pi_2^\top X_{i,2}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Fitted values; <span class="math inline">X_2</span>: columns of <span class="math inline">Z</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">P_Z X_2 = X_2</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">X_2</span>: columns of <span class="math inline">Z</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">P_Z X_2 = X_2</span>.</p></li>
+<li class="fragment"><p>Fitted values: <span class="math display">
 \begin{aligned}
 \hat X &amp;= P_Z X \\
 \hat X_i &amp;= \begin{pmatrix} \hat X_{i,1} \\ X_{i,2} \end{pmatrix}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Second stage, OLS of <span class="math inline">Y</span> on <span class="math inline">\hat X</span>; <span class="math inline">P_Z = P_Z^\top P_Z</span>: <span class="math display">
+<li class="fragment"><p>We will use: <span class="math inline">P_Z = P_Z^\top P_Z</span>.</p></li>
+<li class="fragment"><p>Second stage, OLS of <span class="math inline">Y</span> on <span class="math inline">\hat X</span>: <span class="math display">
 \begin{aligned}
 \hat\beta^{2SLS} &amp;= (X^\top P_Z X)^{-1} X^\top P_Z Y \\
 &amp;= (\hat X^\top \hat X)^{-1} \hat X^\top Y
@@ -1883,8 +1935,11 @@ Y_i &amp;= X_i^\top \beta + U_i \\
 \underset{k \times 1}{X_i} &amp;= \underset{k \times \ell}{\Pi^\top}\, \underset{\ell \times 1}{Z_i} + \underset{k \times 1}{V_i}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>Exogenous instruments; <span class="math inline">\Pi</span> defined so that <span class="math inline">Z_i</span>, <span class="math inline">V_i</span> uncorrelated: <span class="math display">
-\mathrm{E}\left[Z_i U_i\right] = 0, \qquad \mathrm{E}\left[Z_i V_i^\top\right] = 0
+<li class="fragment"><p>Exogenous instruments: <span class="math display">
+\mathrm{E}\left[Z_i U_i\right] = 0
+</span></p></li>
+<li class="fragment"><p><span class="math inline">\Pi</span> defined so that <span class="math inline">Z_i</span>, <span class="math inline">V_i</span> uncorrelated: <span class="math display">
+\mathrm{E}\left[Z_i V_i^\top\right] = 0
 </span></p></li>
 <li class="fragment"><p><span class="math inline">V_i</span>: the source of endogeneity: <span class="math display">
 \mathrm{E}\left[X_i U_i\right] \ne 0, \quad \mathrm{E}\left[Z_i U_i\right] = 0 \quad \Longrightarrow \quad \mathrm{E}\left[V_i U_i\right] \ne 0
@@ -1934,7 +1989,8 @@ Y_i &amp;= X_i^\top \beta + V_i^\top \lambda + \varepsilon_i \\
 \mathrm{E}\left[V_i \varepsilon_i\right] &amp;= 0
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>No endogeneity; <span class="math inline">V_i</span>: <strong>control function</strong>.</p></li>
+<li class="fragment"><p>No endogeneity.</p></li>
+<li class="fragment"><p><span class="math inline">V_i</span>: <strong>control function</strong>.</p></li>
 </ul>
 </section>
 <section id="control-function-cf-estimator" class="slide level2">
@@ -1952,10 +2008,12 @@ Y_i = X_i^\top \hat\beta^{CF} + \hat V_i^\top \hat\lambda + \hat\varepsilon_i
 <section id="proof-that-hatbetacf-hatbeta2sls" class="slide level2">
 <h2>Proof that <span class="math inline">\hat\beta^{CF} = \hat\beta^{2SLS}</span></h2>
 <ul>
-<li class="fragment"><p>Matrix form; <span class="math inline">Z \hat\Pi = P_Z X</span>: <span class="math display">
+<li class="fragment"><p>We will use: <span class="math inline">Z \hat\Pi = P_Z X</span>.</p></li>
+<li class="fragment"><p>Matrix form: <span class="math display">
 \underset{n \times 1}{Y} = \underset{n \times k}{X} \hat\beta^{CF} + \hat V \hat\lambda + \hat\varepsilon, \qquad \hat V = X - Z \hat\Pi = M_Z X
 </span></p></li>
-<li class="fragment"><p>Recall, partitioned regression, <span class="math inline">M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top</span>.</p></li>
+<li class="fragment"><p>Recall, partitioned regression: <span class="math display">
 \hat\beta^{CF} = (X^\top M_{\hat V} X)^{-1} X^\top M_{\hat V} Y
 </span></p></li>
 <li class="fragment"><p><span class="math inline">M_Z</span> symmetric, idempotent <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat V^\top \hat V = X^\top M_Z X</span>: <span class="math display">
@@ -2004,7 +2062,8 @@ H_n = n\, \hat\lambda^\top \big[\widehat{\mathrm{AsyVar}}(\hat\lambda)\big]^{-1}
 <li class="fragment"><p>Linear IV model, <span class="math inline">\beta \in \mathbb{R}^k</span>, <span class="math inline">Z_i \in \mathbb{R}^\ell</span>: <span class="math display">
 Y_i = X_i^\top \beta + U_i, \qquad \mathrm{E}\left[Z_i U_i\right] = 0, \qquad \operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\ell = k</span>, <span class="math inline">\hat U = Y - X \hat\beta^{IV}</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">\ell = k</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat U = Y - X \hat\beta^{IV}</span>: <span class="math display">
 \begin{aligned}
 Z^\top \hat U &amp;= Z^\top Y - Z^\top X \hat\beta^{IV} \\
 &amp;= Z^\top Y - {\color{red} Z^\top X (Z^\top X)^{-1}} Z^\top Y \\
@@ -2022,7 +2081,8 @@ H_0 &amp;: \ \mathrm{E}\left[Z_i (Y_i - X_i^\top \beta)\right] = 0 \quad \text{f
 H_1 &amp;: \ \mathrm{E}\left[Z_i (Y_i - X_i^\top b)\right] \ne 0 \quad \text{for all } b \in \mathbb{R}^k
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\hat\beta = \hat\beta(\hat\Omega_n^{-1})</span>: efficient GMM, with <span class="math inline">\hat\Omega_n \to_p \Omega</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">\hat\beta = \hat\beta(\hat\Omega_n^{-1})</span>: efficient GMM.</p></li>
+<li class="fragment"><p><span class="math inline">\hat\Omega_n \to_p \Omega</span>: <span class="math display">
 \Omega = \mathrm{E}\left[U_i^2 Z_i Z_i^\top\right] = \mathrm{E}\left[(Y_i - X_i^\top \beta)^2 Z_i Z_i^\top\right]
 </span></p></li>
 </ul>
@@ -2030,7 +2090,8 @@ H_1 &amp;: \ \mathrm{E}\left[Z_i (Y_i - X_i^\top b)\right] \ne 0 \quad \text{for
 <section id="statistic-j" class="slide level2">
 <h2>Statistic <span class="math inline">J</span></h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\hat\Omega_n^{-1}</span>-weighted distance of <span class="math inline">\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i</span> from zero, <span class="math inline">\hat U_i = Y_i - X_i^\top \hat\beta</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">\hat U_i = Y_i - X_i^\top \hat\beta</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat\Omega_n^{-1}</span>-weighted distance of <span class="math inline">\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i</span> from zero: <span class="math display">
 \begin{aligned}
 J &amp;= \frac{1}{n} (Y - X\hat\beta)^\top Z\ \hat\Omega_n^{-1}\ \frac{1}{n} Z^\top (Y - X\hat\beta) \\
 &amp;= \Big(\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i\Big)^\top \hat\Omega_n^{-1} \Big(\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i\Big)
@@ -2078,7 +2139,8 @@ nJ = \frac{(Y - X\hat\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top
 </span></p></li>
 <li class="fragment"><p><span class="math inline">k</span> IVs used to estimate <span class="math inline">\beta</span>, <span class="math inline">\ell - k</span> IVs used to test.</p></li>
 <li class="fragment"><p>Test: reject <span class="math inline">H_0</span> when <span class="math inline">nJ &gt; \chi^2_{\ell - k,\, 1-\alpha}</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid Z_i\right] = \sigma^2</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\Omega_n = \hat\sigma_n^2\, \frac{Z^\top Z}{n}</span>, <span class="math inline">\hat\beta = \hat\beta^{2SLS}</span>; <span class="math inline">J</span> test: Sargan’s test.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid Z_i\right] = \sigma^2</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\Omega_n = \hat\sigma_n^2\, \frac{Z^\top Z}{n}</span>, <span class="math inline">\hat\beta = \hat\beta^{2SLS}</span>.</p></li>
+<li class="fragment"><p>Then <span class="math inline">J</span> test: Sargan’s test.</p></li>
 </ul>
 </section></section>
 <section>
@@ -2120,29 +2182,50 @@ Z_{i,1} = \begin{pmatrix} \mathbf{1}(\text{quarter of birth}_i = 1) \\ \mathbf{1
 <section id="endogeneity-and-identification" class="slide level2">
 <h2>Endogeneity and identification</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[X_{i,1} U_i\right] \ne 0</span> <span class="math inline">\Longrightarrow</span> OLS inconsistent; <span class="math inline">k_1 = 1</span>: <span class="math inline">\mathrm{AsyBias}(\hat\beta_1) = \mathrm{E}\left[X_{i,1} U_i\right] / Q_{1 \cdot 2}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[X_{i,1} U_i\right] \ne 0</span> <span class="math inline">\Longrightarrow</span> OLS inconsistent.</p></li>
+<li class="fragment"><p><span class="math inline">k_1 = 1</span>: <span class="math inline">\mathrm{AsyBias}(\hat\beta_1) = \mathrm{E}\left[X_{i,1} U_i\right] / Q_{1 \cdot 2}</span>.</p></li>
 <li class="fragment"><p><span class="math inline">k_1 = 1</span>: <span class="math inline">\hat\beta_2</span> also asymptotically biased unless <span class="math inline">\mathrm{E}\left[X_{i,2} X_{i,1}\right] = 0</span>.</p></li>
-<li class="fragment"><p><span class="math inline">Z_i = (Z_{i,1}^\top, X_{i,2}^\top)^\top</span>, <span class="math inline">\mathrm{E}\left[Z_i (Y_i - X_i^\top \beta)\right] = 0</span>: <span class="math inline">\ell</span> equations, <span class="math inline">k</span> unknowns.</p></li>
-<li class="fragment"><p>Rank condition <span class="math inline">\operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k</span> <span class="math inline">\Longleftrightarrow</span> <span class="math inline">\operatorname{rank}\left(\Pi_1\right) = k_1</span>; order condition <span class="math inline">\ell_1 \ge k_1</span>.</p></li>
-<li class="fragment"><p><span class="math inline">Z_{i,1}</span>: excluded, exogenous, informative; <span class="math inline">\ell = k</span>: <span class="math inline">\hat\beta^{IV} = (Z^\top X)^{-1} Z^\top Y</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Z_i = (Z_{i,1}^\top, X_{i,2}^\top)^\top</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[Z_i (Y_i - X_i^\top \beta)\right] = 0</span>: <span class="math inline">\ell</span> equations, <span class="math inline">k</span> unknowns.</p></li>
+<li class="fragment"><p>Rank condition <span class="math inline">\operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k</span> <span class="math inline">\Longleftrightarrow</span> <span class="math inline">\operatorname{rank}\left(\Pi_1\right) = k_1</span>.</p></li>
+<li class="fragment"><p>Order condition <span class="math inline">\ell_1 \ge k_1</span>.</p></li>
+<li class="fragment"><p><span class="math inline">Z_{i,1}</span>: excluded, exogenous, informative.</p></li>
+<li class="fragment"><p><span class="math inline">\ell = k</span>: <span class="math inline">\hat\beta^{IV} = (Z^\top X)^{-1} Z^\top Y</span>.</p></li>
 </ul>
 </section>
 <section id="gmm-and-2sls" class="slide level2">
 <h2>GMM and 2SLS</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">\hat\beta(W_n) = (X^\top Z W_n Z^\top X)^{-1} X^\top Z W_n Z^\top Y</span>; Assumptions I to IV <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\beta(W_n) \to_p \beta</span>.</p></li>
-<li class="fragment"><p>Assumptions I to V <span class="math inline">\Longrightarrow</span> <span class="math inline">\sqrt{n}(\hat\beta(W_n) - \beta) \to_d N(0, V(W))</span>, <span class="math inline">V(W) = (Q^\top W Q)^{-1} Q^\top W \Omega W Q (Q^\top W Q)^{-1}</span>.</p></li>
-<li class="fragment"><p>Efficient weight matrix: <span class="math inline">W^* = \Omega^{-1}</span>, <span class="math inline">V(\Omega^{-1}) = (Q^\top \Omega^{-1} Q)^{-1}</span>; two steps, <span class="math inline">\hat\Omega_n</span> from <span class="math inline">\hat\beta(I_\ell)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\beta(W_n) = \hat\beta^{IV}</span>; <span class="math inline">\mathrm{AsyVar}(\hat\beta^{IV}) = Q^{-1} \Omega (Q^{-1})^\top</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid Z_i\right] = \sigma^2</span> <span class="math inline">\Longrightarrow</span> efficient GMM <span class="math inline">= \hat\beta^{2SLS} = (X^\top P_Z X)^{-1} X^\top P_Z Y = (\hat X^\top \hat X)^{-1} \hat X^\top Y</span>, <span class="math inline">\hat X = P_Z X</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat\beta(W_n) = (X^\top Z W_n Z^\top X)^{-1} X^\top Z W_n Z^\top Y</span>.</p></li>
+<li class="fragment"><p>Assumptions I to IV <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\beta(W_n) \to_p \beta</span>.</p></li>
+<li class="fragment"><p>Assumptions I to V <span class="math inline">\Longrightarrow</span> <span class="math inline">\sqrt{n}(\hat\beta(W_n) - \beta) \to_d N(0, V(W))</span>.</p></li>
+<li class="fragment"><p><span class="math inline">V(W) = (Q^\top W Q)^{-1} Q^\top W \Omega W Q (Q^\top W Q)^{-1}</span>.</p></li>
+<li class="fragment"><p>Efficient weight matrix: <span class="math inline">W^* = \Omega^{-1}</span>, <span class="math inline">V(\Omega^{-1}) = (Q^\top \Omega^{-1} Q)^{-1}</span>.</p></li>
+<li class="fragment"><p>Two-step efficient GMM: <span class="math inline">\hat\Omega_n</span> from <span class="math inline">\hat\beta(I_\ell)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat\beta(W_n) = \hat\beta^{IV}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{AsyVar}(\hat\beta^{IV}) = Q^{-1} \Omega (Q^{-1})^\top</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i^2 \mid Z_i\right] = \sigma^2</span> <span class="math inline">\Longrightarrow</span> efficient GMM <span class="math inline">= \hat\beta^{2SLS} = (X^\top P_Z X)^{-1} X^\top P_Z Y = (\hat X^\top \hat X)^{-1} \hat X^\top Y</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat X = P_Z X</span>.</p></li>
 </ul>
 </section>
 <section id="control-function-and-specification-tests" class="slide level2">
 <h2>Control function and specification tests</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">U_i = V_i^\top \lambda + \varepsilon_i</span>: <span class="math inline">Y_i = X_i^\top \beta + V_i^\top \lambda + \varepsilon_i</span>, <span class="math inline">\mathrm{E}\left[X_i \varepsilon_i\right] = 0</span>, <span class="math inline">\mathrm{E}\left[V_i \varepsilon_i\right] = 0</span>; <span class="math inline">\hat\beta^{CF} = \hat\beta^{2SLS}</span>.</p></li>
-<li class="fragment"><p>Hausman: <span class="math inline">H_0: \lambda = 0</span>; <span class="math inline">H_n \to_d \chi^2_{k_1}</span> under <span class="math inline">H_0</span>; reject when <span class="math inline">H_n &gt; \chi^2_{k_1,\, 1-\alpha}</span>.</p></li>
-<li class="fragment"><p>Over-identifying restrictions, <span class="math inline">\ell &gt; k</span>: <span class="math inline">nJ \to_d \chi^2_{\ell - k}</span> under <span class="math inline">H_0</span>; reject when <span class="math inline">nJ &gt; \chi^2_{\ell - k,\, 1-\alpha}</span>; homoskedasticity <span class="math inline">\Longrightarrow</span> Sargan’s test.</p></li>
+<li class="fragment"><p><span class="math inline">U_i = V_i^\top \lambda + \varepsilon_i</span>: <span class="math inline">Y_i = X_i^\top \beta + V_i^\top \lambda + \varepsilon_i</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\mathrm{E}\left[X_i \varepsilon_i\right] = 0</span>, <span class="math inline">\mathrm{E}\left[V_i \varepsilon_i\right] = 0</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\hat\beta^{CF} = \hat\beta^{2SLS}</span>.</p></li>
+<li class="fragment"><p>Hausman:</p>
+<ul>
+<li class="fragment"><span class="math inline">H_0: \lambda = 0</span>.</li>
+<li class="fragment"><span class="math inline">H_n \to_d \chi^2_{k_1}</span> under <span class="math inline">H_0</span>.</li>
+<li class="fragment">Reject when <span class="math inline">H_n &gt; \chi^2_{k_1,\, 1-\alpha}</span>.</li>
+</ul></li>
+<li class="fragment"><p>Over-identifying restrictions, <span class="math inline">\ell &gt; k</span>:</p>
+<ul>
+<li class="fragment"><span class="math inline">nJ \to_d \chi^2_{\ell - k}</span> under <span class="math inline">H_0</span>.</li>
+<li class="fragment">Reject when <span class="math inline">nJ &gt; \chi^2_{\ell - k,\, 1-\alpha}</span>.</li>
+<li class="fragment">Homoskedasticity <span class="math inline">\Longrightarrow</span> Sargan’s test.</li>
+</ul></li>
 <li class="fragment"><p><span class="math inline">\mathrm{E}\left[U_i \mid X_{i,2}, Z_{i,1}\right] = 0</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">\mathrm{E}\left[h(X_{i,2}, Z_{i,1})\, U_i\right] = 0</span>: functions of <span class="math inline">X_{i,2}</span>, <span class="math inline">Z_{i,1}</span> as IVs.</p></li>
 </ul>
 
