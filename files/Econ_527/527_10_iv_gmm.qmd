@@ -869,6 +869,8 @@ ds_picture <- function(step) {
 
 - $W$: does not matter for identification, but matters for estimation.
 
+- Different $W$ correspond to different variances of the estimator.
+
 ## GMM estimator $\hat\beta(W_n)$
 
 - **Definition.** GMM estimator with weight matrix $W_n$:
