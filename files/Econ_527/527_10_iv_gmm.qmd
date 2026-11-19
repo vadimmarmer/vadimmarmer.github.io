@@ -781,7 +781,7 @@ ds_picture <- function(step) {
   \text{Education}_i = Z_{i,1}^\top \Pi_1 + X_{i,2}^\top \Pi_2 + V_i
   $$
 
-- Hence $\Pi_1 \ne 0$.
+- $\Pi_1 \ne 0$.
 
 ## Demand and supply: instruments
 
@@ -800,7 +800,7 @@ ds_picture <- function(step) {
 
 - Exogenous: $\E{G_i U_i^d} = 0$.
 
-- Hence $G_i$: IV for $P_i$ in the demand equation.
+- $G_i$: IV for $P_i$ in the demand equation.
 
 - Changing $G_i$ shifts the supply curve:
 
@@ -846,7 +846,7 @@ ds_picture <- function(step) {
   \text{Number of children}_i = \Pi_1\, \text{Same sex}_i + X_{i,2}^\top \Pi_2 + V_i
   $$
 
-- Hence $\Pi_1 > 0$.
+- $\Pi_1 > 0$.
 
 # Generalized method of moments (GMM)
 
