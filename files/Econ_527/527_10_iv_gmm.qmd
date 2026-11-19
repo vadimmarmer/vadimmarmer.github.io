@@ -767,6 +767,8 @@ ds_picture <- function(step) {
 
 - $X_{i,2}$: year-of-birth and region dummies, race, marital status, urban residence, age, age$^2$.
 
+- Compulsory schooling law: have to attend school until age 16 (most states).
+
 - Born early in the year $\Longrightarrow$ older at school start $\Longrightarrow$ less schooling at the compulsory leaving age.
 
 - IVs: quarter-of-birth dummies:
