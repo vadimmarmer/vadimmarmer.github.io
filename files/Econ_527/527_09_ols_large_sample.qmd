@@ -165,16 +165,17 @@ format:
 
 ## Limit of $\sqrt{n}(\hat\beta_n - \beta)$
 
-- Cramér convergence theorem, without proof: $A_n \to_p A$, $A$ non-random, $Z_n \to_d Z$:
+- Cramér convergence theorem, without proof: $A_n \to_p A$, $A$ non-random, $\xi_n \to_d \xi$:
   $$
-  A_n Z_n \to_d A Z
+  A_n \xi_n \to_d A \xi
   $$
 
-- Apply to the normalized representation; $Z \sim N(0, \Omega)$:
+- Apply to the normalized representation:
   $$
   \begin{aligned}
-  \sqrt{n}(\hat\beta_n - \beta) &= \underbrace{\Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}}\ \underbrace{\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i}_{\to_d\, Z} \\
-  &\to_d Q^{-1} Z \sim N(0, Q^{-1} \Omega Q^{-1}) \qquad (Q = Q^\top)
+  \sqrt{n}(\hat\beta_n - \beta) &= \underbrace{\Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}}\ \underbrace{\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0, \Omega)} \\
+  &\to_d Q^{-1} N(0, \Omega) \\
+  &\overset{d}{=} N(0, Q^{-1} \Omega Q^{-1}) \qquad (Q = Q^\top)
   \end{aligned}
   $$
 

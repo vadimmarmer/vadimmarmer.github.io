@@ -2409,13 +2409,14 @@ Q = \mathrm{E}\left[X_i X_i^\top\right] \quad \text{p.d. and finite}
 <section id="limit-of-sqrtnhatbeta_n---beta" class="level2">
 <h2 class="anchored" data-anchor-id="limit-of-sqrtnhatbeta_n---beta">Limit of <span class="math inline">\sqrt{n}(\hat\beta_n - \beta)</span></h2>
 <ul>
-<li><p>Cramér convergence theorem, without proof: <span class="math inline">A_n \to_p A</span>, <span class="math inline">A</span> non-random, <span class="math inline">Z_n \to_d Z</span>: <span class="math display">
-A_n Z_n \to_d A Z
+<li><p>Cramér convergence theorem, without proof: <span class="math inline">A_n \to_p A</span>, <span class="math inline">A</span> non-random, <span class="math inline">\xi_n \to_d \xi</span>: <span class="math display">
+A_n \xi_n \to_d A \xi
 </span></p></li>
-<li><p>Apply to the normalized representation; <span class="math inline">Z \sim N(0, \Omega)</span>: <span class="math display">
+<li><p>Apply to the normalized representation: <span class="math display">
 \begin{aligned}
-\sqrt{n}(\hat\beta_n - \beta) &amp;= \underbrace{\Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}}\ \underbrace{\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i}_{\to_d\, Z} \\
-&amp;\to_d Q^{-1} Z \sim N(0, Q^{-1} \Omega Q^{-1}) \qquad (Q = Q^\top)
+\sqrt{n}(\hat\beta_n - \beta) &amp;= \underbrace{\Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1}}_{\to_p\, Q^{-1}}\ \underbrace{\frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i}_{\to_d\, N(0, \Omega)} \\
+&amp;\to_d Q^{-1} N(0, \Omega) \\
+&amp;\overset{d}{=} N(0, Q^{-1} \Omega Q^{-1}) \qquad (Q = Q^\top)
 \end{aligned}
 </span></p></li>
 </ul>
