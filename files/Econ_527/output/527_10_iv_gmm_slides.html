@@ -1763,6 +1763,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="consistency-of-hatbetaw_n" class="slide level2">
 <h2>Consistency of <span class="math inline">\hat\beta(W_n)</span></h2>
 <ul>
+<li class="fragment"><p>Linear GMM estimator: <span class="math display">
+\hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+</span></p></li>
 <li class="fragment"><p>Weak LLN, Assumptions I and II: <span class="math display">
 \begin{aligned}
 \frac{Z^\top X}{n} &amp;= \frac{1}{n} \sum_{i=1}^n Z_i X_i^\top \to_p \mathrm{E}\left[Z_i X_i^\top\right] = Q \\
@@ -1801,7 +1804,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="asymptotic-variance-of-hatbetaw_n" class="slide level2">
 <h2>Asymptotic variance of <span class="math inline">\hat\beta(W_n)</span></h2>
 <ul>
-<li class="fragment"><p>Recall, Cramér convergence theorem: <span class="math inline">A_n \to_p A</span>, <span class="math inline">A</span> non-random, <span class="math inline">B_n \to_d B</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">A_n B_n \to_d A B</span>.</p></li>
 <li class="fragment"><p>Multiply the representation of <span class="math inline">\hat\beta(W_n) - \beta</span> by <span class="math inline">\sqrt{n}</span>: <span class="math display">
 \begin{aligned}
 \sqrt{n}\big(\hat\beta(W_n) - \beta\big) &amp;= \underbrace{\Big(\frac{X^\top Z}{n}\, W_n\, \frac{Z^\top X}{n}\Big)^{-1}}_{\to_p\, (Q^\top W Q)^{-1}}\ \underbrace{\frac{X^\top Z}{n}\, W_n}_{\to_p\, Q^\top W}\ \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} \\
@@ -1821,14 +1823,12 @@ document.addEventListener("DOMContentLoaded", function () {
 V(W) - V(W^*) \ge 0 \quad \text{(p.s.d.) for every } W
 </span></p></li>
 <li class="fragment"><p><strong>Claim.</strong> <span class="math inline">W^* = \Omega^{-1}</span>.</p></li>
-<li class="fragment"><p><span class="math inline">V(W)</span> at <span class="math inline">W = \Omega^{-1}</span>: <span class="math display">
+<li class="fragment"><p><span class="math inline">V({\color{blue} W})</span> at <span class="math inline">{\color{blue} W} = {\color{blue} \Omega^{-1}}</span>: <span class="math display">
 \begin{aligned}
-V(\Omega^{-1}) &amp;= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1} \Omega\, \Omega^{-1} Q}_{=\, Q^\top \Omega^{-1} Q}\ (Q^\top \Omega^{-1} Q)^{-1} \\
-&amp;= (Q^\top \Omega^{-1} Q)^{-1}
+V({\color{blue} \Omega^{-1}}) &amp;= (Q^\top {\color{blue} \Omega^{-1}} Q)^{-1}\ \underbrace{Q^\top {\color{blue} \Omega^{-1}}\, \Omega\, {\color{blue} \Omega^{-1}} Q}_{=\, Q^\top {\color{blue} \Omega^{-1}} Q}\ (Q^\top {\color{blue} \Omega^{-1}} Q)^{-1} \\
+&amp;= (Q^\top {\color{blue} \Omega^{-1}} Q)^{-1}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">W^* = \Omega^{-1}</span> matters only if <span class="math inline">\ell &gt; k</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\ell = k</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">W</span> cancels.</p></li>
 </ul>
 </section>
 <section id="interpretation-of-w-omega-1" class="slide level2">
@@ -1850,17 +1850,16 @@ V(\Omega^{-1}) &amp;= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1
 \Longleftrightarrow\quad &amp; \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} \ge 0
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\Omega</span> p.d. <span class="math inline">\Longrightarrow</span> <span class="math inline">\Omega^{1/2}</span>: symmetric, <span class="math inline">\Omega^{1/2}\, \Omega^{1/2} = \Omega</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\Omega^{-1/2} = (\Omega^{1/2})^{-1}</span>.</p></li>
-<li class="fragment"><p>Recall: <span class="math inline">M_H = I - H (H^\top H)^{-1} H^\top</span>: symmetric, idempotent, p.s.d.</p></li>
 <li class="fragment"><p>Difference of the inverses: <span class="math display">
 \begin{aligned}
 \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} &amp;= Q^\top \Omega^{-1} Q - (Q^\top W Q)(Q^\top W \Omega W Q)^{-1}(Q^\top W Q) \\
 &amp;= Q^\top \Omega^{-1/2} \Big(I - \underbrace{\Omega^{1/2} W Q}_{H}\, \big(\underbrace{Q^\top W \Omega W Q}_{H^\top H}\big)^{-1} \underbrace{Q^\top W \Omega^{1/2}}_{H^\top}\Big) \Omega^{-1/2} Q \\
+&amp;= Q^\top \Omega^{-1/2}\, \underbrace{\big(I - H (H^\top H)^{-1} H^\top\big)}_{M_H}\, \Omega^{-1/2} Q \\
 &amp;= Q^\top \Omega^{-1/2}\, \underbrace{M_H}_{\text{p.s.d.}}\, \Omega^{-1/2} Q \\
 &amp;\ge 0
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p>Recall: <span class="math inline">M_H</span>: symmetric, idempotent, p.s.d.</p></li>
 </ul>
 </section>
 <section id="two-step-efficient-gmm" class="slide level2">
@@ -1939,25 +1938,24 @@ W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 <section id="sls-first-and-second-stage" class="slide level2">
 <h2>2SLS: first and second stage</h2>
 <ul>
-<li class="fragment"><p>First stage, OLS of <span class="math inline">X_{i,1}</span> on <span class="math inline">Z_i</span>: <span class="math display">
-\begin{aligned}
-\hat\Pi &amp;= (Z^\top Z)^{-1} Z^\top X_1 \\
-\hat X_{i,1} &amp;= \hat\Pi^\top Z_i \\
-&amp;= \hat\Pi_1^\top Z_{i,1} + \hat\Pi_2^\top X_{i,2}
-\end{aligned}
-</span></p></li>
-<li class="fragment"><p><span class="math inline">X_2</span>: columns of <span class="math inline">Z</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">P_Z X_2 = X_2</span>.</p></li>
-<li class="fragment"><p>Fitted values: <span class="math display">
+<li class="fragment"><p>First stage, fitted values: <span class="math display">
 \begin{aligned}
 \hat X &amp;= P_Z X \\
 \hat X_i &amp;= \begin{pmatrix} \hat X_{i,1} \\ X_{i,2} \end{pmatrix}
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>We will use: <span class="math inline">P_Z = P_Z^\top P_Z</span>.</p></li>
 <li class="fragment"><p>Second stage, OLS of <span class="math inline">Y</span> on <span class="math inline">\hat X</span>: <span class="math display">
 \begin{aligned}
 \hat\beta^{2SLS} &amp;= (X^\top P_Z X)^{-1} X^\top P_Z Y \\
 &amp;= (\hat X^\top \hat X)^{-1} \hat X^\top Y
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p><span class="math inline">X_2</span>: columns of <span class="math inline">Z</span> <span class="math inline">\Longrightarrow</span> <span class="math inline">P_Z X_2 = X_2</span>.</p></li>
+<li class="fragment"><p>First stage, OLS of <span class="math inline">X_{i,1}</span> on <span class="math inline">Z_i</span>: <span class="math display">
+\begin{aligned}
+\hat\Pi &amp;= (Z^\top Z)^{-1} Z^\top X_1 \\
+\hat X_{i,1} &amp;= \hat\Pi^\top Z_i \\
+&amp;= \hat\Pi_1^\top Z_{i,1} + \hat\Pi_2^\top X_{i,2}
 \end{aligned}
 </span></p></li>
 </ul>
@@ -1970,7 +1968,6 @@ W^* = \Omega^{-1} = \big(\mathrm{E}\left[U_i^2 Z_i Z_i^\top\right]\big)^{-1}
 <section id="every-regressor-endogenous" class="slide level2">
 <h2>Every regressor endogenous</h2>
 <ul>
-<li class="fragment"><p><span class="math inline">k_2 = 0</span>: <span class="math inline">X_i = X_{i,1}</span>, <span class="math inline">Z_i = Z_{i,1}</span>.</p></li>
 <li class="fragment"><p>Model and first stage, <span class="math inline">\Pi</span>: <span class="math inline">\ell \times k</span>: <span class="math display">
 \begin{aligned}
 Y_i &amp;= X_i^\top \beta + U_i \\
@@ -1995,7 +1992,7 @@ Y_i &amp;= X_i^\top \beta + U_i \\
 \begin{aligned}
 \lambda &amp;= \big(\mathrm{E}\left[V_i V_i^\top\right]\big)^{-1} \mathrm{E}\left[V_i U_i\right] \\
 \varepsilon_i &amp;= U_i - V_i^\top \lambda \\
-\Longrightarrow\quad U_i &amp;= V_i^\top \lambda + \varepsilon_i
+\Longrightarrow\quad &amp; \boxed{U_i = V_i^\top \lambda + \varepsilon_i}
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p><span class="math inline">V_i</span> and <span class="math inline">\varepsilon_i</span> uncorrelated: <span class="math display">
@@ -2005,6 +2002,10 @@ Y_i &amp;= X_i^\top \beta + U_i \\
 &amp;= 0
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p>Model: <span class="math display">
+Y_i = X_i^\top \beta + \underbrace{V_i^\top \lambda + \varepsilon_i}_{U_i}
+</span></p></li>
+<li class="fragment"><p>We decompose <span class="math inline">U_i</span> into a part correlated with <span class="math inline">X_i</span> and a part uncorrelated with <span class="math inline">X_i</span>.</p></li>
 </ul>
 </section>
 <section id="augmented-regression-and-control-function" class="slide level2">
@@ -2101,9 +2102,6 @@ H_n = n\, \hat\lambda^\top \big[\widehat{\mathrm{AsyVar}}(\hat\lambda)\big]^{-1}
 <section id="exactly-identified-case-ztop-hat-u-0" class="slide level2">
 <h2>Exactly identified case: <span class="math inline">Z^\top \hat U = 0</span></h2>
 <ul>
-<li class="fragment"><p>Linear IV model, <span class="math inline">\beta \in \mathbb{R}^k</span>, <span class="math inline">Z_i \in \mathbb{R}^\ell</span>: <span class="math display">
-Y_i = X_i^\top \beta + U_i, \qquad \mathrm{E}\left[Z_i U_i\right] = 0, \qquad \operatorname{rank}\left(\mathrm{E}\left[Z_i X_i^\top\right]\right) = k
-</span></p></li>
 <li class="fragment"><p><span class="math inline">\ell = k</span>.</p></li>
 <li class="fragment"><p><span class="math inline">\hat U = Y - X \hat\beta^{IV}</span>: <span class="math display">
 \begin{aligned}
@@ -2112,6 +2110,7 @@ Z^\top \hat U &amp;= Z^\top Y - Z^\top X \hat\beta^{IV} \\
 &amp;= 0
 \end{aligned}
 </span></p></li>
+<li class="fragment"><p>Over-identified case, <span class="math inline">\ell &gt; k</span>: <span class="math inline">Z^\top \hat U \ne 0</span>, but close to zero if <span class="math inline">\mathrm{E}\left[Z_i U_i\right] = 0</span>.</p></li>
 </ul>
 </section>
 <section id="hypotheses-and-efficient-gmm" class="slide level2">
@@ -2124,14 +2123,6 @@ H_1 &amp;: \ \mathrm{E}\left[Z_i (Y_i - X_i^\top b)\right] \ne 0 \quad \text{for
 \end{aligned}
 </span></p></li>
 <li class="fragment"><p><span class="math inline">\hat\beta = \hat\beta(\hat\Omega_n^{-1})</span>: efficient GMM.</p></li>
-<li class="fragment"><p><span class="math inline">\hat\Omega_n \to_p \Omega</span>: <span class="math display">
-\Omega = \mathrm{E}\left[U_i^2 Z_i Z_i^\top\right] = \mathrm{E}\left[(Y_i - X_i^\top \beta)^2 Z_i Z_i^\top\right]
-</span></p></li>
-</ul>
-</section>
-<section id="statistic-j" class="slide level2">
-<h2>Statistic <span class="math inline">J</span></h2>
-<ul>
 <li class="fragment"><p><span class="math inline">\hat U_i = Y_i - X_i^\top \hat\beta</span>.</p></li>
 <li class="fragment"><p><span class="math inline">\hat\Omega_n^{-1}</span>-weighted distance of <span class="math inline">\frac{1}{n} \sum_{i=1}^n Z_i \hat U_i</span> from zero: <span class="math display">
 \begin{aligned}

@@ -920,6 +920,11 @@ ds_picture <- function(step) {
 
 ## Consistency of $\hat\beta(W_n)$
 
+- Linear GMM estimator:
+  $$
+  \hat\beta(W_n) = (X^\top Z\, W_n\, Z^\top X)^{-1} X^\top Z\, W_n\, Z^\top Y
+  $$
+
 - Weak LLN, Assumptions I and II:
   $$
   \begin{aligned}
@@ -964,8 +969,6 @@ ds_picture <- function(step) {
 
 ## Asymptotic variance of $\hat\beta(W_n)$
 
-- Recall, Cramér convergence theorem: $A_n \to_p A$, $A$ non-random, $B_n \to_d B$ $\Longrightarrow$ $A_n B_n \to_d A B$.
-
 - Multiply the representation of $\hat\beta(W_n) - \beta$ by $\sqrt{n}$:
   $$
   \begin{aligned}
@@ -989,17 +992,13 @@ ds_picture <- function(step) {
 
 - **Claim.** $W^* = \Omega^{-1}$.
 
-- $V(W)$ at $W = \Omega^{-1}$:
+- $V({\color{blue} W})$ at ${\color{blue} W} = {\color{blue} \Omega^{-1}}$:
   $$
   \begin{aligned}
-  V(\Omega^{-1}) &= (Q^\top \Omega^{-1} Q)^{-1}\ \underbrace{Q^\top \Omega^{-1} \Omega\, \Omega^{-1} Q}_{=\, Q^\top \Omega^{-1} Q}\ (Q^\top \Omega^{-1} Q)^{-1} \\
-  &= (Q^\top \Omega^{-1} Q)^{-1}
+  V({\color{blue} \Omega^{-1}}) &= (Q^\top {\color{blue} \Omega^{-1}} Q)^{-1}\ \underbrace{Q^\top {\color{blue} \Omega^{-1}}\, \Omega\, {\color{blue} \Omega^{-1}} Q}_{=\, Q^\top {\color{blue} \Omega^{-1}} Q}\ (Q^\top {\color{blue} \Omega^{-1}} Q)^{-1} \\
+  &= (Q^\top {\color{blue} \Omega^{-1}} Q)^{-1}
   \end{aligned}
   $$
-
-- $W^* = \Omega^{-1}$ matters only if $\ell > k$.
-
-- $\ell = k$ $\Longrightarrow$ $W$ cancels.
 
 ## Interpretation of $W^* = \Omega^{-1}$
 
@@ -1022,21 +1021,18 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
-- $\Omega$ p.d. $\Longrightarrow$ $\Omega^{1/2}$: symmetric, $\Omega^{1/2}\, \Omega^{1/2} = \Omega$.
-
-- $\Omega^{-1/2} = (\Omega^{1/2})^{-1}$.
-
-- Recall: $M_H = I - H (H^\top H)^{-1} H^\top$: symmetric, idempotent, p.s.d.
-
 - Difference of the inverses:
   $$
   \begin{aligned}
   \big(V(\Omega^{-1})\big)^{-1} - \big(V(W)\big)^{-1} &= Q^\top \Omega^{-1} Q - (Q^\top W Q)(Q^\top W \Omega W Q)^{-1}(Q^\top W Q) \\
   &= Q^\top \Omega^{-1/2} \Big(I - \underbrace{\Omega^{1/2} W Q}_{H}\, \big(\underbrace{Q^\top W \Omega W Q}_{H^\top H}\big)^{-1} \underbrace{Q^\top W \Omega^{1/2}}_{H^\top}\Big) \Omega^{-1/2} Q \\
+  &= Q^\top \Omega^{-1/2}\, \underbrace{\big(I - H (H^\top H)^{-1} H^\top\big)}_{M_H}\, \Omega^{-1/2} Q \\
   &= Q^\top \Omega^{-1/2}\, \underbrace{M_H}_{\text{p.s.d.}}\, \Omega^{-1/2} Q \\
   &\ge 0
   \end{aligned}
   $$
+
+- Recall: $M_H$: symmetric, idempotent, p.s.d.
 
 ## Two-step efficient GMM
 
@@ -1128,26 +1124,13 @@ ds_picture <- function(step) {
 
 ## 2SLS: first and second stage
 
-- First stage, OLS of $X_{i,1}$ on $Z_i$:
-  $$
-  \begin{aligned}
-  \hat\Pi &= (Z^\top Z)^{-1} Z^\top X_1 \\
-  \hat X_{i,1} &= \hat\Pi^\top Z_i \\
-  &= \hat\Pi_1^\top Z_{i,1} + \hat\Pi_2^\top X_{i,2}
-  \end{aligned}
-  $$
-
-- $X_2$: columns of $Z$ $\Longrightarrow$ $P_Z X_2 = X_2$.
-
-- Fitted values:
+- First stage, fitted values:
   $$
   \begin{aligned}
   \hat X &= P_Z X \\
   \hat X_i &= \begin{pmatrix} \hat X_{i,1} \\ X_{i,2} \end{pmatrix}
   \end{aligned}
   $$
-
-- We will use: $P_Z = P_Z^\top P_Z$.
 
 - Second stage, OLS of $Y$ on $\hat X$:
   $$
@@ -1157,11 +1140,20 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
+- $X_2$: columns of $Z$ $\Longrightarrow$ $P_Z X_2 = X_2$.
+
+- First stage, OLS of $X_{i,1}$ on $Z_i$:
+  $$
+  \begin{aligned}
+  \hat\Pi &= (Z^\top Z)^{-1} Z^\top X_1 \\
+  \hat X_{i,1} &= \hat\Pi^\top Z_i \\
+  &= \hat\Pi_1^\top Z_{i,1} + \hat\Pi_2^\top X_{i,2}
+  \end{aligned}
+  $$
+
 # Control function and the Hausman test
 
 ## Every regressor endogenous
-
-- $k_2 = 0$: $X_i = X_{i,1}$, $Z_i = Z_{i,1}$.
 
 - Model and first stage, $\Pi$: $\ell \times k$:
   $$
@@ -1193,7 +1185,7 @@ ds_picture <- function(step) {
   \begin{aligned}
   \lambda &= \big(\E{V_i V_i^\top}\big)^{-1} \E{V_i U_i} \\
   \varepsilon_i &= U_i - V_i^\top \lambda \\
-  \Longrightarrow\quad U_i &= V_i^\top \lambda + \varepsilon_i
+  \Longrightarrow\quad & \boxed{U_i = V_i^\top \lambda + \varepsilon_i}
   \end{aligned}
   $$
 
@@ -1205,6 +1197,13 @@ ds_picture <- function(step) {
   &= 0
   \end{aligned}
   $$
+
+- Model:
+  $$
+  Y_i = X_i^\top \beta + \underbrace{V_i^\top \lambda + \varepsilon_i}_{U_i}
+  $$
+
+- We decompose $U_i$ into a part correlated with $X_i$ and a part uncorrelated with $X_i$.
 
 ## Augmented regression and control function
 
@@ -1317,11 +1316,6 @@ ds_picture <- function(step) {
 
 ## Exactly identified case: $Z^\top \hat U = 0$
 
-- Linear IV model, $\beta \in \mathbb{R}^k$, $Z_i \in \mathbb{R}^\ell$:
-  $$
-  Y_i = X_i^\top \beta + U_i, \qquad \E{Z_i U_i} = 0, \qquad \rank{\E{Z_i X_i^\top}} = k
-  $$
-
 - $\ell = k$.
 
 - $\hat U = Y - X \hat\beta^{IV}$:
@@ -1332,6 +1326,8 @@ ds_picture <- function(step) {
   &= 0
   \end{aligned}
   $$
+
+- Over-identified case, $\ell > k$: $Z^\top \hat U \ne 0$, but close to zero if $\E{Z_i U_i} = 0$.
 
 ## Hypotheses and efficient GMM
 
@@ -1344,13 +1340,6 @@ ds_picture <- function(step) {
   $$
 
 - $\hat\beta = \hat\beta(\hat\Omega_n^{-1})$: efficient GMM.
-
-- $\hat\Omega_n \to_p \Omega$:
-  $$
-  \Omega = \E{U_i^2 Z_i Z_i^\top} = \E{(Y_i - X_i^\top \beta)^2 Z_i Z_i^\top}
-  $$
-
-## Statistic $J$
 
 - $\hat U_i = Y_i - X_i^\top \hat\beta$.
 
