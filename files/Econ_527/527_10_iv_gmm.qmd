@@ -1198,14 +1198,23 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
-- Model:
+- Write:
   $$
   Y_i = X_i^\top \beta + \underbrace{V_i^\top \lambda + \varepsilon_i}_{U_i}
   $$
 
 - We decompose $U_i$ into a part correlated with $X_i$ and a part uncorrelated with $X_i$.
 
-## Augmented regression and control function
+## OLS with control functions
+
+- Substitute $U_i = V_i^\top \lambda + \varepsilon_i$:
+  $$
+  \begin{aligned}
+  Y_i &= X_i^\top \beta + V_i^\top \lambda + \varepsilon_i \\
+  \E{X_i \varepsilon_i} &= 0 \\
+  \E{V_i \varepsilon_i} &= 0
+  \end{aligned}
+  $$
 
 - $Z_i$ and $\varepsilon_i$ uncorrelated:
   $$
@@ -1225,24 +1234,20 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
-- Substitute $U_i = V_i^\top \lambda + \varepsilon_i$:
-  $$
-  \begin{aligned}
-  Y_i &= X_i^\top \beta + V_i^\top \lambda + \varepsilon_i \\
-  \E{X_i \varepsilon_i} &= 0 \\
-  \E{V_i \varepsilon_i} &= 0
-  \end{aligned}
-  $$
-
 - No endogeneity.
 
-- $V_i$: **control function**.
+- $V_i$: **control function**: extra regressor we need to control for so that $X_i$ becomes exogenous.
+
+- Function, not regressor: $V_i$ unobserved, needs to be estimated and constructed.
 
 ## Control function (CF) estimator
 
 - First-stage residuals:
   $$
-  \hat V_i = X_i - \hat\Pi^\top Z_i, \qquad \hat\Pi = (Z^\top Z)^{-1} Z^\top X
+  \begin{aligned}
+  \hat V_i &= X_i - \hat\Pi^\top Z_i, \qquad \hat\Pi = (Z^\top Z)^{-1} Z^\top X \\
+  \hat V &= X - Z \hat\Pi = X - P_Z X = M_Z X
+  \end{aligned}
   $$
 
 - CF estimator, OLS of $Y_i$ on $X_i$ and $\hat V_i$:
@@ -1254,24 +1259,27 @@ ds_picture <- function(step) {
 
 ## Proof that $\hat\beta^{CF} = \hat\beta^{2SLS}$
 
-- We will use: $Z \hat\Pi = P_Z X$.
-
 - Matrix form:
   $$
-  \underset{n \times 1}{Y} = \underset{n \times k}{X} \hat\beta^{CF} + \hat V \hat\lambda + \hat\varepsilon, \qquad \hat V = X - Z \hat\Pi = M_Z X
+  \underset{n \times 1}{Y} = \underset{n \times k}{X} \hat\beta^{CF} + \hat V \hat\lambda + \hat\varepsilon, \qquad \boxed{\hat V = M_Z X}
   $$
-
-- $M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top$.
 
 - Recall, partitioned regression:
   $$
-  \hat\beta^{CF} = (X^\top M_{\hat V} X)^{-1} X^\top M_{\hat V} Y
+  \hat\beta^{CF} = (X^\top M_{\hat V} X)^{-1} X^\top M_{\hat V} Y, \qquad \text{where } M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top
   $$
 
-- $M_Z$ symmetric, idempotent $\Longrightarrow$ $\hat V^\top \hat V = X^\top M_Z X$:
+- Definition of 2SLS:
+  $$
+  \hat\beta^{2SLS} = (X^\top P_Z X)^{-1} X^\top P_Z Y
+  $$
+
+- $M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top$:
   $$
   \begin{aligned}
-  X^\top M_{\hat V} X &= X^\top X - X^\top \hat V (\hat V^\top \hat V)^{-1} \hat V^\top X \\
+  X^\top M_{\hat V} X &= X^\top \big(I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top\big) X \\
+  &= X^\top X - X^\top \hat V (\hat V^\top \hat V)^{-1} \hat V^\top X \\
+  &= X^\top X - X^\top \underbrace{M_Z X}_{\hat V} \big(\underbrace{X^\top M_Z}_{\hat V^\top} \underbrace{M_Z X}_{\hat V}\big)^{-1} \underbrace{X^\top M_Z}_{\hat V^\top} X \\
   &= X^\top X - X^\top M_Z X\, {\color{red} (X^\top M_Z X)^{-1} X^\top M_Z X} \\
   &= X^\top (I_n - M_Z) X \\
   &= X^\top P_Z X
@@ -1318,7 +1326,7 @@ ds_picture <- function(step) {
 
 - $\ell = k$.
 
-- $\hat U = Y - X \hat\beta^{IV}$:
+- $\hat U = Y - X \hat\beta^{IV}$, $\hat\beta^{IV} = (Z^\top X)^{-1} Z^\top Y$:
   $$
   \begin{aligned}
   Z^\top \hat U &= Z^\top Y - Z^\top X \hat\beta^{IV} \\
@@ -1331,7 +1339,7 @@ ds_picture <- function(step) {
 
 ## Hypotheses and efficient GMM
 
-- $\ell > k$:
+- When $\ell > k$:
   $$
   \begin{aligned}
   H_0 &: \ \E{Z_i (Y_i - X_i^\top \beta)} = 0 \quad \text{for some } \beta \in \mathbb{R}^k \\
@@ -1365,7 +1373,12 @@ ds_picture <- function(step) {
   \frac{1}{\sqrt{n}} Z^\top (Y - X\beta) = \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i U_i \to_d N(0, \Omega)
   $$
 
-- We will use, for $x \in \mathbb{R}^\ell$:
+- $\hat\Omega_n^{-1} = \Omega^{-1} + o_p(1)$:
+  $$
+  \frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} = \frac{U^\top Z}{\sqrt{n}}\, \Omega^{-1}\, \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} + o_p(1)
+  $$
+
+- For $x \in \mathbb{R}^\ell$:
   $$
   \begin{aligned}
   x^\top \Omega^{-1} x &= x^\top \Omega^{-1/2}\, \Omega^{-1/2} x \\
@@ -1374,20 +1387,19 @@ ds_picture <- function(step) {
   \end{aligned}
   $$
 
+- Continue, with $x = Z^\top U / \sqrt{n}$:
+  $$
+  \begin{aligned}
+  \frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} &= \Big\|\underbrace{\Omega^{-1/2}\, \frac{Z^\top U}{\sqrt{n}}}_{\to_d\, \Omega^{-1/2} N(0, \Omega)\, =\, \mathcal{Z}}\Big\|^2 + o_p(1) \\
+  &\to_d \|\mathcal{Z}\|^2
+  \end{aligned}
+  $$
+
 - $\mathcal{Z} = \Omega^{-1/2} N(0, \Omega) \sim N(0, I_\ell)$:
   $$
   \begin{aligned}
   \|\mathcal{Z}\|^2 &= \mathcal{Z}^\top \mathcal{Z} \\
   &= \sum_{j=1}^\ell \mathcal{Z}_j^2 \sim \chi^2_\ell
-  \end{aligned}
-  $$
-
-- $\hat\Omega_n^{-1} = \Omega^{-1} + o_p(1)$:
-  $$
-  \begin{aligned}
-  \frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} &= \frac{U^\top Z}{\sqrt{n}}\, \Omega^{-1}\, \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} + o_p(1) \\
-  &= \Big\|\underbrace{\Omega^{-1/2}\, \frac{Z^\top U}{\sqrt{n}}}_{\to_d\, \mathcal{Z}}\Big\|^2 + o_p(1) \\
-  &\to_d \|\mathcal{Z}\|^2 \sim \chi^2_\ell
   \end{aligned}
   $$
 

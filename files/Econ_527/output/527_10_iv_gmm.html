@@ -2293,7 +2293,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#every-regressor-endogenous" id="toc-every-regressor-endogenous" class="nav-link" data-scroll-target="#every-regressor-endogenous">Every regressor endogenous</a></li>
   <li><a href="#decomposition-of-u_i" id="toc-decomposition-of-u_i" class="nav-link" data-scroll-target="#decomposition-of-u_i">Decomposition of <span class="math inline">U_i</span></a></li>
-  <li><a href="#augmented-regression-and-control-function" id="toc-augmented-regression-and-control-function" class="nav-link" data-scroll-target="#augmented-regression-and-control-function">Augmented regression and control function</a></li>
+  <li><a href="#ols-with-control-functions" id="toc-ols-with-control-functions" class="nav-link" data-scroll-target="#ols-with-control-functions">OLS with control functions</a></li>
   <li><a href="#control-function-cf-estimator" id="toc-control-function-cf-estimator" class="nav-link" data-scroll-target="#control-function-cf-estimator">Control function (CF) estimator</a></li>
   <li><a href="#proof-that-hatbetacf-hatbeta2sls" id="toc-proof-that-hatbetacf-hatbeta2sls" class="nav-link" data-scroll-target="#proof-that-hatbetacf-hatbeta2sls">Proof that <span class="math inline">\hat\beta^{CF} = \hat\beta^{2SLS}</span></a></li>
   <li><a href="#hausman-test-of-exogeneity" id="toc-hausman-test-of-exogeneity" class="nav-link" data-scroll-target="#hausman-test-of-exogeneity">Hausman test of exogeneity</a></li>
@@ -3254,15 +3254,22 @@ Y_i &amp;= X_i^\top \beta + U_i \\
 &amp;= 0
 \end{aligned}
 </span></p></li>
-<li><p>Model: <span class="math display">
+<li><p>Write: <span class="math display">
 Y_i = X_i^\top \beta + \underbrace{V_i^\top \lambda + \varepsilon_i}_{U_i}
 </span></p></li>
 <li><p>We decompose <span class="math inline">U_i</span> into a part correlated with <span class="math inline">X_i</span> and a part uncorrelated with <span class="math inline">X_i</span>.</p></li>
 </ul>
 </section>
-<section id="augmented-regression-and-control-function" class="level2">
-<h2 class="anchored" data-anchor-id="augmented-regression-and-control-function">Augmented regression and control function</h2>
+<section id="ols-with-control-functions" class="level2">
+<h2 class="anchored" data-anchor-id="ols-with-control-functions">OLS with control functions</h2>
 <ul>
+<li><p>Substitute <span class="math inline">U_i = V_i^\top \lambda + \varepsilon_i</span>: <span class="math display">
+\begin{aligned}
+Y_i &amp;= X_i^\top \beta + V_i^\top \lambda + \varepsilon_i \\
+\mathrm{E}\left[X_i \varepsilon_i\right] &amp;= 0 \\
+\mathrm{E}\left[V_i \varepsilon_i\right] &amp;= 0
+\end{aligned}
+</span></p></li>
 <li><p><span class="math inline">Z_i</span> and <span class="math inline">\varepsilon_i</span> uncorrelated: <span class="math display">
 \begin{aligned}
 \mathrm{E}\left[Z_i \varepsilon_i\right] &amp;= \mathrm{E}\left[Z_i (U_i - V_i^\top \lambda)\right] \\
@@ -3277,22 +3284,19 @@ Y_i = X_i^\top \beta + \underbrace{V_i^\top \lambda + \varepsilon_i}_{U_i}
 &amp;= 0
 \end{aligned}
 </span></p></li>
-<li><p>Substitute <span class="math inline">U_i = V_i^\top \lambda + \varepsilon_i</span>: <span class="math display">
-\begin{aligned}
-Y_i &amp;= X_i^\top \beta + V_i^\top \lambda + \varepsilon_i \\
-\mathrm{E}\left[X_i \varepsilon_i\right] &amp;= 0 \\
-\mathrm{E}\left[V_i \varepsilon_i\right] &amp;= 0
-\end{aligned}
-</span></p></li>
 <li><p>No endogeneity.</p></li>
-<li><p><span class="math inline">V_i</span>: <strong>control function</strong>.</p></li>
+<li><p><span class="math inline">V_i</span>: <strong>control function</strong>: extra regressor we need to control for so that <span class="math inline">X_i</span> becomes exogenous.</p></li>
+<li><p>Function, not regressor: <span class="math inline">V_i</span> unobserved, needs to be estimated and constructed.</p></li>
 </ul>
 </section>
 <section id="control-function-cf-estimator" class="level2">
 <h2 class="anchored" data-anchor-id="control-function-cf-estimator">Control function (CF) estimator</h2>
 <ul>
 <li><p>First-stage residuals: <span class="math display">
-\hat V_i = X_i - \hat\Pi^\top Z_i, \qquad \hat\Pi = (Z^\top Z)^{-1} Z^\top X
+\begin{aligned}
+\hat V_i &amp;= X_i - \hat\Pi^\top Z_i, \qquad \hat\Pi = (Z^\top Z)^{-1} Z^\top X \\
+\hat V &amp;= X - Z \hat\Pi = X - P_Z X = M_Z X
+\end{aligned}
 </span></p></li>
 <li><p>CF estimator, OLS of <span class="math inline">Y_i</span> on <span class="math inline">X_i</span> and <span class="math inline">\hat V_i</span>: <span class="math display">
 Y_i = X_i^\top \hat\beta^{CF} + \hat V_i^\top \hat\lambda + \hat\varepsilon_i
@@ -3303,17 +3307,20 @@ Y_i = X_i^\top \hat\beta^{CF} + \hat V_i^\top \hat\lambda + \hat\varepsilon_i
 <section id="proof-that-hatbetacf-hatbeta2sls" class="level2">
 <h2 class="anchored" data-anchor-id="proof-that-hatbetacf-hatbeta2sls">Proof that <span class="math inline">\hat\beta^{CF} = \hat\beta^{2SLS}</span></h2>
 <ul>
-<li><p>We will use: <span class="math inline">Z \hat\Pi = P_Z X</span>.</p></li>
 <li><p>Matrix form: <span class="math display">
-\underset{n \times 1}{Y} = \underset{n \times k}{X} \hat\beta^{CF} + \hat V \hat\lambda + \hat\varepsilon, \qquad \hat V = X - Z \hat\Pi = M_Z X
+\underset{n \times 1}{Y} = \underset{n \times k}{X} \hat\beta^{CF} + \hat V \hat\lambda + \hat\varepsilon, \qquad \boxed{\hat V = M_Z X}
 </span></p></li>
-<li><p><span class="math inline">M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top</span>.</p></li>
 <li><p>Recall, partitioned regression: <span class="math display">
-\hat\beta^{CF} = (X^\top M_{\hat V} X)^{-1} X^\top M_{\hat V} Y
+\hat\beta^{CF} = (X^\top M_{\hat V} X)^{-1} X^\top M_{\hat V} Y, \qquad \text{where } M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top
 </span></p></li>
-<li><p><span class="math inline">M_Z</span> symmetric, idempotent <span class="math inline">\Longrightarrow</span> <span class="math inline">\hat V^\top \hat V = X^\top M_Z X</span>: <span class="math display">
+<li><p>Definition of 2SLS: <span class="math display">
+\hat\beta^{2SLS} = (X^\top P_Z X)^{-1} X^\top P_Z Y
+</span></p></li>
+<li><p><span class="math inline">M_{\hat V} = I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top</span>: <span class="math display">
 \begin{aligned}
-X^\top M_{\hat V} X &amp;= X^\top X - X^\top \hat V (\hat V^\top \hat V)^{-1} \hat V^\top X \\
+X^\top M_{\hat V} X &amp;= X^\top \big(I_n - \hat V (\hat V^\top \hat V)^{-1} \hat V^\top\big) X \\
+&amp;= X^\top X - X^\top \hat V (\hat V^\top \hat V)^{-1} \hat V^\top X \\
+&amp;= X^\top X - X^\top \underbrace{M_Z X}_{\hat V} \big(\underbrace{X^\top M_Z}_{\hat V^\top} \underbrace{M_Z X}_{\hat V}\big)^{-1} \underbrace{X^\top M_Z}_{\hat V^\top} X \\
 &amp;= X^\top X - X^\top M_Z X\, {\color{red} (X^\top M_Z X)^{-1} X^\top M_Z X} \\
 &amp;= X^\top (I_n - M_Z) X \\
 &amp;= X^\top P_Z X
@@ -3353,7 +3360,7 @@ H_n = n\, \hat\lambda^\top \big[\widehat{\mathrm{AsyVar}}(\hat\lambda)\big]^{-1}
 <h2 class="anchored" data-anchor-id="exactly-identified-case-ztop-hat-u-0">Exactly identified case: <span class="math inline">Z^\top \hat U = 0</span></h2>
 <ul>
 <li><p><span class="math inline">\ell = k</span>.</p></li>
-<li><p><span class="math inline">\hat U = Y - X \hat\beta^{IV}</span>: <span class="math display">
+<li><p><span class="math inline">\hat U = Y - X \hat\beta^{IV}</span>, <span class="math inline">\hat\beta^{IV} = (Z^\top X)^{-1} Z^\top Y</span>: <span class="math display">
 \begin{aligned}
 Z^\top \hat U &amp;= Z^\top Y - Z^\top X \hat\beta^{IV} \\
 &amp;= Z^\top Y - {\color{red} Z^\top X (Z^\top X)^{-1}} Z^\top Y \\
@@ -3366,7 +3373,7 @@ Z^\top \hat U &amp;= Z^\top Y - Z^\top X \hat\beta^{IV} \\
 <section id="hypotheses-and-efficient-gmm" class="level2">
 <h2 class="anchored" data-anchor-id="hypotheses-and-efficient-gmm">Hypotheses and efficient GMM</h2>
 <ul>
-<li><p><span class="math inline">\ell &gt; k</span>: <span class="math display">
+<li><p>When <span class="math inline">\ell &gt; k</span>: <span class="math display">
 \begin{aligned}
 H_0 &amp;: \ \mathrm{E}\left[Z_i (Y_i - X_i^\top \beta)\right] = 0 \quad \text{for some } \beta \in \mathbb{R}^k \\
 H_1 &amp;: \ \mathrm{E}\left[Z_i (Y_i - X_i^\top b)\right] \ne 0 \quad \text{for all } b \in \mathbb{R}^k
@@ -3392,24 +3399,26 @@ J &amp;= \frac{1}{n} (Y - X\hat\beta)^\top Z\ \hat\Omega_n^{-1}\ \frac{1}{n} Z^\
 <li><p>Under <span class="math inline">H_0</span>, CLT: <span class="math display">
 \frac{1}{\sqrt{n}} Z^\top (Y - X\beta) = \frac{1}{\sqrt{n}} \sum_{i=1}^n Z_i U_i \to_d N(0, \Omega)
 </span></p></li>
-<li><p>We will use, for <span class="math inline">x \in \mathbb{R}^\ell</span>: <span class="math display">
+<li><p><span class="math inline">\hat\Omega_n^{-1} = \Omega^{-1} + o_p(1)</span>: <span class="math display">
+\frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} = \frac{U^\top Z}{\sqrt{n}}\, \Omega^{-1}\, \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} + o_p(1)
+</span></p></li>
+<li><p>For <span class="math inline">x \in \mathbb{R}^\ell</span>: <span class="math display">
 \begin{aligned}
 x^\top \Omega^{-1} x &amp;= x^\top \Omega^{-1/2}\, \Omega^{-1/2} x \\
 &amp;= (\Omega^{-1/2} x)^\top\, \Omega^{-1/2} x \\
 &amp;= \|\Omega^{-1/2} x\|^2
 \end{aligned}
 </span></p></li>
+<li><p>Continue, with <span class="math inline">x = Z^\top U / \sqrt{n}</span>: <span class="math display">
+\begin{aligned}
+\frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} &amp;= \Big\|\underbrace{\Omega^{-1/2}\, \frac{Z^\top U}{\sqrt{n}}}_{\to_d\, \Omega^{-1/2} N(0, \Omega)\, =\, \mathcal{Z}}\Big\|^2 + o_p(1) \\
+&amp;\to_d \|\mathcal{Z}\|^2
+\end{aligned}
+</span></p></li>
 <li><p><span class="math inline">\mathcal{Z} = \Omega^{-1/2} N(0, \Omega) \sim N(0, I_\ell)</span>: <span class="math display">
 \begin{aligned}
 \|\mathcal{Z}\|^2 &amp;= \mathcal{Z}^\top \mathcal{Z} \\
 &amp;= \sum_{j=1}^\ell \mathcal{Z}_j^2 \sim \chi^2_\ell
-\end{aligned}
-</span></p></li>
-<li><p><span class="math inline">\hat\Omega_n^{-1} = \Omega^{-1} + o_p(1)</span>: <span class="math display">
-\begin{aligned}
-\frac{(Y - X\beta)^\top Z}{\sqrt{n}}\, \hat\Omega_n^{-1}\, \frac{Z^\top (Y - X\beta)}{\sqrt{n}} &amp;= \frac{U^\top Z}{\sqrt{n}}\, \Omega^{-1}\, \underbrace{\frac{Z^\top U}{\sqrt{n}}}_{\to_d\, N(0, \Omega)} + o_p(1) \\
-&amp;= \Big\|\underbrace{\Omega^{-1/2}\, \frac{Z^\top U}{\sqrt{n}}}_{\to_d\, \mathcal{Z}}\Big\|^2 + o_p(1) \\
-&amp;\to_d \|\mathcal{Z}\|^2 \sim \chi^2_\ell
 \end{aligned}
 </span></p></li>
 </ul>
