@@ -1,0 +1,1223 @@
+---
+# _quarto.yml in this folder sets two things for every deck: `output-dir: output`,
+# which sends the rendered files to output/, and `embed-resources: true` on the
+# page and on the slide show, which keeps both of them self-contained. Quarto
+# finds that file by walking up from this one, so both settings hold wherever the
+# render is started from. Do not repeat either setting here.
+title: "Lecture 11: Binary choice and maximum likelihood"
+subtitle: "Economics 527: Econometric Methods"
+author:
+  - name: "Vadim Marmer, UBC"
+format:
+  html:
+    output-file: 527_11_mle_binary_choice.html
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    toc-title: "Table of Contents"
+    theme: cosmo
+    smooth-scroll: true
+    html-math-method: katex
+  pdf:
+    output-file: 527_11_mle_binary_choice.pdf
+    pdf-engine: xelatex
+    geometry: margin=0.75in
+    fontsize: 10pt
+    number-sections: false
+    toc: false
+    classoption: fleqn
+  revealjs:
+    output-file: 527_11_mle_binary_choice_slides.html
+    theme: solarized
+    css: slides_no_caps.css
+    smaller: true
+    slide-number: c/t
+    incremental: true
+    html-math-method: katex
+    navigation-mode: linear
+    scrollable: true
+    chalkboard: false
+    transition: none
+---
+
+# Binary choice
+
+## Binary choice model
+
+::: {.hidden}
+\gdef\E#1{\mathrm{E}\left[#1\right]}
+\gdef\Var#1{\mathrm{Var}\left(#1\right)}
+\gdef\Cov#1{\mathrm{Cov}\left(#1\right)}
+\gdef\rank#1{\operatorname{rank}\left(#1\right)}
+:::
+
+```{r}
+#| include: false
+# Figures are drawn through tikzDevice, so every label is typeset by LaTeX
+# itself and matches the mathematics in the slides. Needs tikzDevice, png and
+# a working pdflatex and pdftoppm.
+suppressPackageStartupMessages(library(tikzDevice))
+# Keep the string-metrics cache out of the source folder.
+options(tikzMetricsDictionary = file.path(tempdir(), "tikzMetrics"))
+
+tikz_fig <- function(stem, width, height, expr, draw = TRUE) {
+  d <- file.path(tempdir(), "tikzfig")
+  dir.create(d, showWarnings = FALSE, recursive = TRUE)
+  tex <- file.path(d, paste0(stem, ".tex"))
+  tikz(tex, width = width, height = height, pointsize = 11, standAlone = TRUE)
+  expr
+  dev.off()
+  system2("pdflatex", c("-interaction=batchmode", "-halt-on-error",
+                        paste0("-output-directory=", shQuote(d)), shQuote(tex)),
+          stdout = FALSE, stderr = FALSE)
+  system2("pdftoppm", c("-r", "300", "-png", "-singlefile",
+                        shQuote(file.path(d, paste0(stem, ".pdf"))),
+                        shQuote(file.path(d, stem))),
+          stdout = FALSE, stderr = FALSE)
+  img_path <- file.path(d, paste0(stem, ".png"))
+  if (!draw) return(img_path)
+  img <- png::readPNG(img_path)
+  op <- par(mar = rep(0, 4))
+  plot.new(); plot.window(c(0, 1), c(0, 1), xaxs = "i", yaxs = "i")
+  rasterImage(img, 0, 0, 1, 1, interpolate = TRUE)
+  par(op)
+  invisible(NULL)
+}
+
+# A picture the class builds up on the board. In the slide show the frames
+# share one grid cell and appear one by one as fragments, so advancing or going
+# back uses Reveal's normal fragment controls without shifting the figure; in
+# ordinary HTML and PDF the complete picture is drawn once. `drawer(step)`
+# draws the frame for `step`; `cls` names the grid cell, so two such pictures
+# in one deck do not collide.
+build_frames <- function(cls, stem, steps, descriptions, width, height, drawer) {
+  if (!identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "revealjs")) {
+    tikz_fig(stem, width, height, drawer(max(steps)))
+    return(invisible(NULL))
+  }
+  cat('```{=html}\n<style>\n',
+      '.reveal .', cls, ' { display: grid; width: ', round(96 * width),
+      'px; max-width: 100%; margin: 1em auto; }\n',
+      '.reveal .', cls, ' > img { grid-area: 1 / 1; width: 100%; max-width: 100%; ',
+      'max-height: none; margin: 0; background: white; transition: none; }\n',
+      '</style>\n<div class="', cls, '">\n', sep = "")
+  for (j in seq_along(steps)) {
+    frame <- tikz_fig(paste0(stem, "-step-", steps[j]), width, height,
+                      drawer(steps[j]), draw = FALSE)
+    cat(sprintf('<img class="%s" src="%s" alt="%s">\n',
+                if (j == 1L) "" else "fragment",
+                knitr::image_uri(frame), descriptions[j]))
+  }
+  cat('</div>\n<script>\n',
+      'document.addEventListener("DOMContentLoaded", function () {\n',
+      '  const diagram = document.querySelector(".', cls, '");\n',
+      '  const parentFragment = diagram.closest(".fragment");\n',
+      '  function keepDiagramVisible(event) {\n',
+      '    if (diagram.contains(event.fragment) ||\n',
+      '        (event.type === "fragmentshown" && event.fragment === parentFragment)) {\n',
+      '      diagram.scrollIntoView({ block: "center", behavior: "instant" });\n',
+      '    }\n',
+      '  }\n',
+      '  Reveal.on("fragmentshown", keepDiagramVisible);\n',
+      '  Reveal.on("fragmenthidden", keepDiagramVisible);\n',
+      '});\n</script>\n```\n', sep = "")
+  invisible(NULL)
+}
+
+red <- "#d7301f"; blue <- "#1f78b4"
+
+# P(Y_i = 1 | X_i = x) against a scalar x, in three frames. Step 1: the linear
+# probability model 0.5 + 0.35 x for x from -2 to 2 alone, one straight line
+# that runs below 0 on the left and above the dashed level 1 on the right.
+# Step 2: an S-shaped CDF alone, the standard normal CDF at 0.6 x, which stays
+# between 0 and 1. Step 3: both together. The line is steeper than the CDF at
+# x = 0 (0.35 against 0.6 times the standard normal density at 0, about 0.24),
+# so they cross once, at x = 0, as the class drew it.
+lpm_picture <- function(step = 3L) {
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-5.0, 5.8), ylim = c(-0.32, 1.5))
+  arrows(-4.6, 0, 4.8, 0, length = 0.08)
+  arrows(-4.6, -0.25, -4.6, 1.42, length = 0.08)
+  text(-4.45, 1.42, "$\\mathrm{P}(Y_i = 1 \\mid X_i = x)$", adj = 0, cex = 1.2)
+  text(4.85, -0.1, "$x$", adj = 0, cex = 1.2)
+  segments(-4.6, 1, 4.3, 1, lty = 2)
+  text(-4.75, 1, "$1$", adj = 1, cex = 1.2)
+  text(-4.75, 0, "$0$", adj = 1, cex = 1.2)
+  if (step != 2L) {
+    xx <- c(-2, 2)
+    yy <- 0.5 + 0.35 * xx
+    lines(xx, yy, lwd = 2.2)
+    text(xx[2] + 0.1, yy[2], "LPM", adj = 0, cex = 1.2)
+  }
+  if (step >= 2L) {
+    x2 <- seq(-4.3, 4.3, length.out = 300)
+    lines(x2, pnorm(0.6 * x2), lwd = 2.2, col = red)
+    text(4.4, 0.84, "CDF $F$", adj = 0, col = red, cex = 1.2)
+  }
+  par(op)
+}
+
+# Grid search for a scalar beta: the shape of a concave log likelihood with its
+# maximum at a grid point, the curve evaluated at nine grid points (dotted
+# verticals from the ticks), the highest value in red, with a red dashed
+# vertical down to the axis at the maximizer. No vertical axis is drawn, and
+# the beta axis is a baseline, not the level zero: as in the class sketches,
+# the curve sits above it, although the binary-choice log likelihood is
+# negative. ll() gives the height above that baseline, not the value of the
+# log likelihood.
+grid_picture <- function() {
+  ll <- function(b) 2.9 - 0.07 * (b - 6)^2
+  op <- par(mar = rep(0.1, 4))
+  plot.new(); plot.window(xlim = c(-0.2, 13.4), ylim = c(-0.6, 3.3))
+  arrows(0, 0, 11, 0, length = 0.08)
+  text(11.1, -0.15, "$\\beta$", adj = 0, cex = 1.2)
+  bb <- seq(0.6, 10.2, length.out = 200)
+  lines(bb, ll(bb), lwd = 2.2)
+  text(10.35, ll(10.2), "$\\frac{1}{n}\\log L_n(\\beta)$", adj = 0, cex = 1.2)
+  g <- 1:9
+  segments(g, 0, g, ll(g), lty = 3, col = "grey40")
+  segments(g, -0.07, g, 0.07)
+  points(g[g != 6], ll(g[g != 6]), pch = 19, cex = 1.1)
+  segments(6, 0, 6, ll(6), lty = 2, col = red, lwd = 1.5)
+  points(6, ll(6), pch = 19, cex = 1.3, col = red)
+  text(6, -0.36, "$\\hat\\beta^{MLE}$", col = red, cex = 1.2)
+  par(op)
+}
+```
+
+- Data: observations $(Y_i, X_i)$, $i = 1, \ldots, n$.
+
+- Binary $Y_i$ indicates the choice:
+  $$
+  Y_i \in \{0, 1\}
+  $$
+
+- Examples:
+  - in the labour force or not
+  - went for a postgraduate degree or not
+  - firm entered market $i$ or not
+
+- Random (latent) utility from choice 1:
+  $$
+  V_i = X_i^\top \beta + \varepsilon_i
+  $$
+
+- Observed and unobserved:
+  $$
+  \begin{aligned}
+  V_i &: \ \text{unobserved} \\
+  X_i &: \ \text{observed characteristics} \\
+  \varepsilon_i &: \ \text{unobserved}
+  \end{aligned}
+  $$
+
+- Choice 1 when the utility is positive:
+  $$
+  \begin{aligned}
+  Y_i &= \mathbf{1}(V_i > 0) \\
+  &= \mathbf{1}(X_i^\top \beta + \varepsilon_i > 0)
+  \end{aligned}
+  $$
+
+- $Y_i$ generated from a nonlinear model.
+
+## Response probability
+
+- **Assume:** $F$, the CDF of $\varepsilon_i$ given $X_i$, known:
+  $$
+  F(t) = \mathrm{P}(\varepsilon_i \le t \mid X_i = x) \quad \text{for all } x, t
+  $$
+
+- Substitute the model:
+  $$
+  \begin{aligned}
+  \mathrm{P}(Y_i = 1 \mid X_i = x) &= \mathrm{P}(x^\top \beta + \varepsilon_i > 0 \mid X_i = x) \\
+  &= \mathrm{P}(\varepsilon_i > -x^\top \beta \mid X_i = x) \\
+  &= 1 - F(-x^\top \beta) \\
+  \Longrightarrow\quad \mathrm{P}(Y_i = 1 \mid X_i) &= 1 - F(-X_i^\top \beta)
+  \end{aligned}
+  $$
+
+- **Assume:** $F$ symmetric around zero:
+  $$
+  1 - F(-t) = F(t)
+  $$
+
+- Response probability with a symmetric $F$:
+  $$
+  \boxed{\ \mathrm{P}(Y_i = 1 \mid X_i) = F(X_i^\top \beta)\ }
+  $$
+
+# Linear probability model
+
+## Uniform errors
+
+- Suppose:
+  $$
+  \begin{aligned}
+  & \varepsilon_i \mid X_i \sim \text{Uniform}(0, 1) \\
+  \Longrightarrow\quad & F(t) = t, \quad t \in (0, 1)
+  \end{aligned}
+  $$
+
+- Uniform CDF at $-X_i^\top \beta$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(Y_i = 1 \mid X_i) &= 1 - F(-X_i^\top \beta) \\
+  &= 1 + X_i^\top \beta \\
+  &= \underbrace{(\beta_1 + 1)}_{\text{intercept}} + X_{i,2}^\top \beta_2
+  \end{aligned}
+  $$
+
+- **Assume:**
+  $$
+  0 < -X_i^\top \beta < 1
+  $$
+
+- $X_i$ includes an intercept:
+  $$
+  X_i = \begin{pmatrix} 1 \\ X_{i,2} \end{pmatrix}, \qquad \beta = \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix}
+  $$
+
+- Constant $1$: absorbed by the intercept.
+
+- **Definition.** Linear probability model (LPM):
+  $$
+  \boxed{\ \mathrm{P}(Y_i = 1 \mid X_i) = X_i^\top \beta\ }
+  $$
+
+## Connection of LPM to regression
+
+- Conditional mean of binary $Y_i$:
+  $$
+  \begin{aligned}
+  \E{Y_i \mid X_i} &= 1 \cdot \mathrm{P}(Y_i = 1 \mid X_i) + 0 \cdot \mathrm{P}(Y_i = 0 \mid X_i) \\
+  &= \mathrm{P}(Y_i = 1 \mid X_i)
+  \end{aligned}
+  $$
+
+- LPM $\Longrightarrow$ linear regression of $Y_i$ on $X_i$:
+  $$
+  \E{Y_i \mid X_i} = \mathrm{P}(Y_i = 1 \mid X_i) = X_i^\top \beta
+  $$
+
+## LPM against an S-shaped CDF
+
+- Scalar $x$: LPM, then CDF $F$:
+
+  ```{r}
+  #| echo: false
+  #| results: asis
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.6
+  #| fig-dpi: 300
+  build_frames("lpm-cdf-build", "lpm-against-cdf", 1:3,
+               c("The linear probability model, a straight line below 0 on the left and above 1 on the right",
+                 "An S-shaped CDF, between 0 and 1",
+                 "The linear probability model and the S-shaped CDF together"),
+               6, 3.6, function(step) lpm_picture(step))
+  ```
+
+# Probit and logit
+
+## Probit
+
+- $\varepsilon_i \mid X_i \sim N(0, 1)$, CDF $\Phi$:
+  $$
+  \mathrm{P}(Y_i = 1 \mid X_i) = \boxed{\ \Phi(X_i^\top \beta)\ } \qquad (\Phi \ \text{symmetric around zero})
+  $$
+
+## Logit
+
+- $\varepsilon_i \mid X_i$ logistic, CDF $\Lambda$:
+  $$
+  \begin{aligned}
+  \Lambda(t) &= \frac{e^t}{1 + e^t} \\
+  &= \frac{1}{e^{-t} + 1} \\
+  &= \frac{1}{1 + \frac{1}{e^t}}
+  \end{aligned}
+  $$
+
+- Probability of each choice:
+  $$
+  \begin{aligned}
+  \mathrm{P}(Y_i = 1 \mid X_i) &= \frac{e^{X_i^\top \beta}}{1 + e^{X_i^\top \beta}} \\
+  \mathrm{P}(Y_i = 0 \mid X_i) &= 1 - \frac{e^{X_i^\top \beta}}{1 + e^{X_i^\top \beta}} \\
+  &= \frac{1}{1 + e^{X_i^\top \beta}}
+  \end{aligned}
+  $$
+
+- Odds ratio:
+  $$
+  \frac{\mathrm{P}(Y_i = 1 \mid X_i)}{\mathrm{P}(Y_i = 0 \mid X_i)} = e^{X_i^\top \beta}
+  $$
+
+- Log odds ratio:
+  $$
+  \boxed{\ \log \frac{\mathrm{P}(Y_i = 1 \mid X_i)}{\mathrm{P}(Y_i = 0 \mid X_i)} = X_i^\top \beta\ }
+  $$
+
+# Identification
+
+## Scale of $\beta$ and $\varepsilon_i$
+
+- Suppose $\varepsilon_i \mid X_i \sim N(0, \sigma^2)$.
+
+- Rescaled coefficients and errors:
+  $$
+  \beta^* = \frac{\beta}{\sigma}, \qquad \varepsilon_i^* = \frac{\varepsilon_i}{\sigma}, \qquad \varepsilon_i^* \mid X_i \sim N(0, 1)
+  $$
+
+- Divide by $\sigma > 0$ inside the indicator:
+  $$
+  \begin{aligned}
+  Y_i &= \mathbf{1}(X_i^\top \beta + \varepsilon_i > 0) \\
+  &= \mathbf{1}\Big(X_i^\top \frac{\beta}{\sigma} + \frac{\varepsilon_i}{\sigma} > 0\Big) \\
+  &= \mathbf{1}(X_i^\top \beta^* + \varepsilon_i^* > 0)
+  \end{aligned}
+  $$
+
+- Example with scalar $X_{i,2}$, same distribution of $Y_i$ given $X_i$:
+  $$
+  \begin{aligned}
+  \text{1)} \quad & Y_i = \mathbf{1}(1 + X_{i,2} + \varepsilon_i > 0), \qquad \varepsilon_i \mid X_i \sim N(0, 4) \\
+  \text{2)} \quad & Y_i = \mathbf{1}\big(\tfrac{1}{2} + \tfrac{1}{2} X_{i,2} + \varepsilon_i > 0\big), \qquad \varepsilon_i \mid X_i \sim N(0, 1)
+  \end{aligned}
+  $$
+
+- Only $\beta / \sigma$ can be identified.
+
+## Location of $\varepsilon_i$ and the intercept
+
+- Suppose $\varepsilon_i \mid X_i \sim N(\mu, \sigma^2)$:
+  $$
+  \begin{aligned}
+  \mathrm{P}(Y_i = 1 \mid X_i) &= \mathrm{P}(X_i^\top \beta + \varepsilon_i > 0 \mid X_i) \\
+  &= \mathrm{P}(\varepsilon_i > -X_i^\top \beta \mid X_i) \\
+  &= \mathrm{P}\Big(\frac{\varepsilon_i - \mu}{\sigma} > \frac{-X_i^\top \beta - \mu}{\sigma} \ \Big|\ X_i\Big) \\
+  &= \Phi\Big(\frac{X_i^\top \beta + \mu}{\sigma}\Big) \qquad \Big(\frac{\varepsilon_i - \mu}{\sigma} \ \Big|\ X_i \sim N(0, 1)\Big)
+  \end{aligned}
+  $$
+
+- Intercept, $X_i = (1, X_{i,2}^\top)^\top$, $\beta = (\beta_1, \beta_2^\top)^\top$:
+  $$
+  \frac{X_i^\top \beta + \mu}{\sigma} = \underbrace{\frac{\beta_1 + \mu}{\sigma}}_{\text{intercept}} + X_{i,2}^\top \frac{\beta_2}{\sigma}
+  $$
+
+- $\mu$: absorbed by the intercept.
+
+## Identification of probit
+
+- $\mathrm{P}(Y_i = 1 \mid X_i = x)$: can be estimated from the data.
+
+- Invert $\Phi$:
+  $$
+  \begin{aligned}
+  & \mathrm{P}(Y_i = 1 \mid X_i = x) = \Phi(x^\top \beta) \\
+  \Longleftrightarrow\quad & \Phi^{-1}\big(\mathrm{P}(Y_i = 1 \mid X_i = x)\big) = x^\top \beta, \qquad \beta \in \mathbb{R}^k
+  \end{aligned}
+  $$
+
+- Quantile of $N(0, 1)$, with $\Phi^{-1}(\tau) = z_\tau$:
+  $$
+  z(x) = \Phi^{-1}\big(\mathrm{P}(Y_i = 1 \mid X_i = x)\big) = z_{\mathrm{P}(Y_i = 1 \mid X_i = x)}
+  $$
+
+- Pick values $x_1, \ldots, x_k$ of $X_i$: $k \times 1$, linearly independent:
+  $$
+  \begin{aligned}
+  \underbrace{\begin{pmatrix} z(x_1) \\ \vdots \\ z(x_k) \end{pmatrix}}_{k \times 1} &= \underbrace{\begin{pmatrix} \overset{1 \times k}{x_1^\top} \\ \vdots \\ x_k^\top \end{pmatrix}}_{k \times k} \beta \\
+  \Longrightarrow\quad \beta &= \begin{pmatrix} x_1^\top \\ \vdots \\ x_k^\top \end{pmatrix}^{-1} \begin{pmatrix} z(x_1) \\ \vdots \\ z(x_k) \end{pmatrix}
+  \end{aligned}
+  $$
+
+- $\beta$: identified.
+
+## Identification of logit
+
+- Log odds ratio at $X_i = x$, identified from the data:
+  $$
+  r(x) = \log \frac{\mathrm{P}(Y_i = 1 \mid X_i = x)}{\mathrm{P}(Y_i = 0 \mid X_i = x)} = x^\top \beta
+  $$
+
+- Same steps, $r(x)$ in place of $z(x)$:
+  $$
+  \beta = \begin{pmatrix} x_1^\top \\ \vdots \\ x_k^\top \end{pmatrix}^{-1} \begin{pmatrix} r(x_1) \\ \vdots \\ r(x_k) \end{pmatrix}
+  $$
+
+## Example: Walmart and town population
+
+- $\text{Walmart}_i = 1$: a Walmart in town $i$.
+
+- Logit given the population of town $i$:
+  $$
+  \mathrm{P}(\text{Walmart}_i = 1 \mid \text{Population}_i = x) = \frac{e^{\beta_1 + \beta_2 x}}{1 + e^{\beta_1 + \beta_2 x}}
+  $$
+
+- Log odds ratio, identified from the data:
+  $$
+  r(x) = \log \frac{\mathrm{P}(\text{Walmart}_i = 1 \mid \text{Population}_i = x)}{\mathrm{P}(\text{Walmart}_i = 0 \mid \text{Population}_i = x)} = \beta_1 + \beta_2 x
+  $$
+
+- Two town populations, $x = 10{,}000$ and $x = 25{,}000$:
+  $$
+  \begin{aligned}
+  & r(10{,}000) = \beta_1 + \beta_2 \cdot 10{,}000 \\
+  & r(25{,}000) = \beta_1 + \beta_2 \cdot 25{,}000 \\
+  \Longleftrightarrow\quad & \begin{bmatrix} r(10{,}000) \\ r(25{,}000) \end{bmatrix} = \begin{bmatrix} 1 & 10{,}000 \\ 1 & 25{,}000 \end{bmatrix} \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix} \\
+  \Longrightarrow\quad & \begin{bmatrix} \beta_1 \\ \beta_2 \end{bmatrix} = \begin{bmatrix} 1 & 10{,}000 \\ 1 & 25{,}000 \end{bmatrix}^{-1} \begin{bmatrix} r(10{,}000) \\ r(25{,}000) \end{bmatrix}
+  \end{aligned}
+  $$
+
+# Marginal effects
+
+## Marginal effects in the linear model, probit and logit
+
+- LPM:
+  $$
+  \begin{aligned}
+  & \E{Y_i \mid X_i = x} = \mathrm{P}(Y_i = 1 \mid X_i = x) = x^\top \beta \\
+  \Longrightarrow\quad & \beta_j = \frac{\partial\, \mathrm{P}(Y_i = 1 \mid X_i = x)}{\partial x_j}
+  \end{aligned}
+  $$
+
+- $\beta_j$: the same at every $x$.
+
+- Probit and logit, $f$: PDF of $F$:
+  $$
+  \begin{aligned}
+  & \mathrm{P}(Y_i = 1 \mid X_i = x) = F(x^\top \beta) \\
+  \Longrightarrow\quad & \frac{\partial\, \mathrm{P}(Y_i = 1 \mid X_i = x)}{\partial x_j} = f(x^\top \beta)\, \beta_j
+  \end{aligned}
+  $$
+
+- $f(x^\top \beta)\, \beta_j$: changes with $x$.
+
+## Average marginal effect (AME)
+
+- **Definition.** Marginal effect averaged over $X_i$:
+  $$
+  \begin{aligned}
+  \mathrm{AME}_j &= \E{f(X_i^\top \beta)\, \beta_j} \\
+  &= \E{f(X_i^\top \beta)}\, \beta_j
+  \end{aligned}
+  $$
+
+# Maximum likelihood estimator (MLE)
+
+## Bernoulli trials
+
+- Consider a version with only $Y_i$: no varying regressors $X_i$.
+
+- Data $Y_1, \ldots, Y_n \in \{0, 1\}$, iid:
+  $$
+  \begin{aligned}
+  \mathrm{P}(Y_i = 1) &= \theta_0 \in (0, 1) \\
+  \mathrm{P}(Y_i = 0) &= 1 - \theta_0
+  \end{aligned}
+  $$
+
+- $\theta_0$: true value of $\theta$.
+
+- PMF, $y \in \{0, 1\}$:
+  $$
+  \mathrm{P}(Y_i = y) = \theta_0^{\,y} (1 - \theta_0)^{1 - y}
+  $$
+
+- A possible sample, one of $2^n$:
+  $$
+  y_1, \ldots, y_n, \qquad y_i \in \{0, 1\}
+  $$
+
+- Probability of the observed sample:
+  $$
+  \begin{aligned}
+  \mathrm{P}(Y_1 = y_1, \ldots, Y_n = y_n) &= \prod_{i=1}^n \mathrm{P}(Y_i = y_i) \qquad \text{(independence)} \\
+  &= \prod_{i=1}^n \theta_0^{\,y_i} (1 - \theta_0)^{1 - y_i} \\
+  &= \theta_0^{\sum_i y_i} (1 - \theta_0)^{n - \sum_i y_i}
+  \end{aligned}
+  $$
+
+## Likelihood function and the MLE
+
+- Observed sample probability as a likelihood function of $\theta$:
+  $$
+  L_n(\theta) = \theta^{\sum_i Y_i} (1 - \theta)^{n - \sum_i Y_i}
+  $$
+
+- **Definition.** MLE:
+  $$
+  \begin{aligned}
+  \hat\theta &= \underset{\theta}{\arg\max}\ L_n(\theta) \\
+  &= \underset{\theta}{\arg\max}\ \frac{1}{n} \log L_n(\theta)
+  \end{aligned}
+  $$
+
+- Average log likelihood, with $\bar Y = \frac{1}{n} \sum_{i=1}^n Y_i$:
+  $$
+  \begin{aligned}
+  \frac{1}{n} \log L_n(\theta) &= \frac{1}{n} \sum_{i=1}^n Y_i \log \theta + \frac{1}{n} \Big(n - \sum_{i=1}^n Y_i\Big) \log(1 - \theta) \\
+  &= \bar Y \log \theta + (1 - \bar Y) \log(1 - \theta)
+  \end{aligned}
+  $$
+
+## MLE in Bernoulli trials
+
+- First-order condition:
+  $$
+  \frac{\partial}{\partial \theta} \Big(\frac{1}{n} \log L_n(\theta)\Big) = \frac{\bar Y}{\theta} - \frac{1 - \bar Y}{1 - \theta}
+  $$
+
+- $\hat\theta$ solves:
+  $$
+  \begin{aligned}
+  & \frac{\bar Y}{\hat\theta} - \frac{1 - \bar Y}{1 - \hat\theta} = 0 \\
+  \Longrightarrow\quad & \boxed{\ \hat\theta = \bar Y\ }
+  \end{aligned}
+  $$
+
+- Weak LLN for $\bar Y$:
+  $$
+  \begin{aligned}
+  \hat\theta = \bar Y &\to_p \E{Y_i} \\
+  &= 1 \cdot \theta_0 + 0 \cdot (1 - \theta_0) \\
+  &= \theta_0
+  \end{aligned}
+  $$
+
+## Normal regression model
+
+- Normal regression with iid observations $(Y_i, X_i)$:
+  $$
+  \begin{aligned}
+  Y_i &= X_i^\top \beta_0 + U_i \\
+  U_i \mid X_i &\sim N(0, \sigma_0^2)
+  \end{aligned}
+  $$
+
+- PDF of $U_i$ given $X_i$, at $u$:
+  $$
+  \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\Big(-\frac{u^2}{2\sigma_0^2}\Big)
+  $$
+
+- Distribution of $Y_i$ given $X_i = x$:
+  $$
+  Y_i \mid X_i = x \sim N(x^\top \beta_0,\ \sigma_0^2)
+  $$
+
+- PDF of $Y_i$ at $y$ given $X_i = x$, with $u = y - x^\top \beta_0$:
+  $$
+  \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\Big(-\frac{(y - x^\top \beta_0)^2}{2\sigma_0^2}\Big)
+  $$
+
+## MLE in the normal regression
+
+- Conditional likelihood:
+  $$
+  \begin{aligned}
+  L_n(\beta, \sigma^2) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\Big(-\frac{(Y_i - X_i^\top \beta)^2}{2\sigma^2}\Big) \\
+  &= \Big(\frac{1}{\sqrt{2\pi\sigma^2}}\Big)^n \exp\Big(-\frac{\sum_{i=1}^n (Y_i - X_i^\top \beta)^2}{2\sigma^2}\Big)
+  \end{aligned}
+  $$
+
+- Average conditional log likelihood:
+  $$
+  \begin{aligned}
+  \frac{1}{n} \log L_n(\beta, \sigma^2) &= \log \frac{1}{\sqrt{2\pi\sigma^2}} - \frac{1}{2\sigma^2}\, \frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top \beta)^2 \\
+  &= \log\big((2\pi\sigma^2)^{-1/2}\big) - \frac{1}{2\sigma^2}\, \frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top \beta)^2 \\
+  &= -\frac{1}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\, \frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top \beta)^2
+  \end{aligned}
+  $$
+
+- MLE of $\beta$:
+  $$
+  \begin{aligned}
+  \hat\beta^{MLE} &= \underset{\beta}{\arg\max}\ \frac{1}{n} \log L_n(\beta, \sigma^2) \\
+  &= \underset{\beta}{\arg\max}\ \Big(-\frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top \beta)^2\Big) \\
+  &= \underset{\beta}{\arg\min}\ \frac{1}{n} \sum_{i=1}^n (Y_i - X_i^\top \beta)^2 \\
+  &= \hat\beta^{OLS}
+  \end{aligned}
+  $$
+
+## Conditional likelihood for probit and logit
+
+- iid observations $(Y_i, X_i)$:
+  $$
+  \{(Y_i, X_i) : i = 1, \ldots, n\}
+  $$
+
+- Probit and logit response probability:
+  $$
+  \mathrm{P}(Y_i = 1 \mid X_i = x) = \underbrace{F(x^\top \beta_0)}_{=\, \theta_0(x)}
+  $$
+
+- Conditional PMF, $y \in \{0, 1\}$:
+  $$
+  \mathrm{P}(Y_i = y \mid X_i) = F(X_i^\top \beta_0)^y \big(1 - F(X_i^\top \beta_0)\big)^{1 - y}
+  $$
+
+- Probability of the observed outcomes given the regressors:
+  $$
+  \begin{aligned}
+  & \mathrm{P}(Y_1 = y_1, \ldots, Y_n = y_n \mid X_1, \ldots, X_n) \\
+  &= \prod_{i=1}^n \mathrm{P}(Y_i = y_i \mid X_i) \\
+  &= \prod_{i=1}^n F(X_i^\top \beta_0)^{y_i} \big(1 - F(X_i^\top \beta_0)\big)^{1 - y_i}
+  \end{aligned}
+  $$
+
+## Conditional log likelihood and grid search
+
+- Average conditional log likelihood:
+  $$
+  \frac{1}{n} \log L_n(\beta) = \frac{1}{n} \sum_{i=1}^n \Big\{Y_i \log F(X_i^\top \beta) + (1 - Y_i) \log\big(1 - F(X_i^\top \beta)\big)\Big\}
+  $$
+
+- MLE of $\beta$:
+  $$
+  \hat\beta^{MLE} = \underset{\beta \in \mathbb{R}^k}{\arg\max}\ \frac{1}{n} \log L_n(\beta)
+  $$
+
+- Grid search, scalar $\beta$:
+
+  ```{r}
+  #| echo: false
+  #| fig-align: center
+  #| fig-width: 6
+  #| fig-height: 3.2
+  #| fig-dpi: 300
+  tikz_fig("mle-grid-search", 6, 3.2, {
+    grid_picture()
+  })
+  ```
+
+# Consistency of the MLE
+
+## General setup
+
+- Data $\{W_i : i = 1, \ldots, n\}$, PDF or PMF $f(w, \theta_0)$:
+  $$
+  W_i \overset{\text{iid}}{\sim} f(w, \theta_0), \qquad \theta_0 \in \mathbb{R}^k: \ \text{true value}
+  $$
+
+- **Assume:** common support $\{w : f(w, \theta) > 0\}$ for all $\theta$.
+
+- **Assume:** $\E{|\log f(W_i, \theta_0)|} < \infty$.
+
+- Logit: $W_i = (Y_i, X_i^\top)^\top$ and $\theta = \beta$.
+
+- $f$: conditional PMF of $Y_i$ given $X_i$:
+  $$
+  f(w, \theta_0) = \Lambda(x^\top \theta_0)^y \big(1 - \Lambda(x^\top \theta_0)\big)^{1 - y}, \qquad w = (y, x^\top)^\top, \quad y \in \{0, 1\}
+  $$
+
+- MLE, maximizer of the average log likelihood:
+  $$
+  \hat\theta = \underset{\theta}{\arg\max}\ \frac{1}{n} \sum_{i=1}^n \log f(W_i, \theta)
+  $$
+
+- To show (consistency):
+  $$
+  \hat\theta \to_p \theta_0
+  $$
+
+## Consistency argument
+
+- $\theta^*$: unique maximizer of $\E{\log f(W_i, \theta)}$.
+
+- Weak LLN for each $\theta$, then maximize both sides, under regularity conditions:
+  $$
+  \begin{array}{ccc}
+  \dfrac{1}{n} \displaystyle\sum_{i=1}^n \log f(W_i, \theta) & \to_p & \E{\log f(W_i, \theta)} \\[1ex]
+  \Big\downarrow \ \arg\max & & \Big\downarrow \ \arg\max \\[1ex]
+  \hat\theta & \to_p & \theta^*
+  \end{array}
+  $$
+
+- Consistency if the population maximizer is $\theta_0$:
+  $$
+  \boxed{\ \theta^* = \theta_0 \quad \Longrightarrow \quad \hat\theta \to_p \theta_0\ }
+  $$
+
+## Jensen's inequality and the population log likelihood
+
+- We will use Jensen's inequality, $h$ concave:
+  $$
+  \E{h(Z)} \le h\big(\E{Z}\big)
+  $$
+
+- **Claim.** For all $\theta$:
+  $$
+  \E{\log f(W_i, \theta)} \le \E{\log f(W_i, \theta_0)}
+  $$
+
+- Proof, $f(w, \theta_0)$: the true PDF of $W_i$:
+  $$
+  \begin{aligned}
+  & \E{\log f(W_i, \theta)} - \E{\log f(W_i, \theta_0)} \\
+  &= \E{\log f(W_i, \theta) - \log f(W_i, \theta_0)} \\
+  &= \E{\log \frac{f(W_i, \theta)}{f(W_i, \theta_0)}} \\
+  &\le \log \E{\frac{f(W_i, \theta)}{f(W_i, \theta_0)}} \qquad \text{(Jensen's inequality, $\log$ concave)} \\
+  &= \log \int \frac{f(w, \theta)}{{\color{red} f(w, \theta_0)}}\, {\color{red} f(w, \theta_0)}\, dw \\
+  &= \log \underbrace{\int f(w, \theta)\, dw}_{=\, 1} \\
+  &= 0
+  \end{aligned}
+  $$
+
+## Strict inequality and identification
+
+- Suppose $\theta \ne \theta_0$, $\log$ strictly concave:
+  $$
+  \E{\log \frac{f(W_i, \theta)}{f(W_i, \theta_0)}} < \log \E{\frac{f(W_i, \theta)}{f(W_i, \theta_0)}}
+  $$
+
+- Unless the ratio is constant with probability one:
+  $$
+  \begin{aligned}
+  & \frac{f(W_i, \theta)}{f(W_i, \theta_0)} = \text{const} \\
+  \Longleftrightarrow\quad & f(W_i, \theta) = \underbrace{\text{const}}_{=\, 1} \cdot f(W_i, \theta_0)
+  \end{aligned}
+  $$
+
+- **Assume** (identification), for all $\theta \ne \theta_0$:
+  $$
+  \mathrm{P}\big(f(W_i, \theta) \ne f(W_i, \theta_0)\big) > 0
+  $$
+
+- Hence:
+  $$
+  \begin{aligned}
+  & \E{\log f(W_i, \theta)} < \E{\log f(W_i, \theta_0)} \quad \text{for all } \theta \ne \theta_0 \\
+  \Longrightarrow\quad & \theta^* = \theta_0 \\
+  \Longrightarrow\quad & \hat\theta \to_p \theta_0
+  \end{aligned}
+  $$
+
+## Identification in the logit
+
+- Logit:
+  $$
+  f(W_i, \theta) = \Lambda(X_i^\top \theta)^{Y_i} \big(1 - \Lambda(X_i^\top \theta)\big)^{1 - Y_i}
+  $$
+
+- $\Lambda$ strictly increasing:
+  $$
+  \Lambda(u_1) = \Lambda(u_2) \quad \Longleftrightarrow \quad u_1 = u_2
+  $$
+
+- Suppose $\theta_1 \ne \theta_0$:
+  $$
+  \begin{aligned}
+  f(W_i, \theta_1) = f(W_i, \theta_0) \quad &\Longleftrightarrow \quad X_i^\top \theta_1 = X_i^\top \theta_0 \\
+  &\Longleftrightarrow \quad X_i^\top \underbrace{(\theta_1 - \theta_0)}_{=\, a} = 0
+  \end{aligned}
+  $$
+
+- To rule out $X_i^\top a = 0$ with probability one, **assume:** $\E{X_i X_i^\top}$ p.d.:
+  $$
+  \begin{aligned}
+  a \ne 0 \quad &\Longrightarrow \quad \mathrm{P}(X_i^\top a \ne 0) > 0 \\
+  &\Longrightarrow \quad \mathrm{P}\big(f(W_i, \theta_1) \ne f(W_i, \theta_0)\big) > 0
+  \end{aligned}
+  $$
+
+# Asymptotic normality and standard errors
+
+## Gradient and Hessian
+
+- $h : \mathbb{R}^k \to \mathbb{R}$, gradient:
+  $$
+  \underset{k \times 1}{\frac{\partial h}{\partial \theta}} = \begin{bmatrix} \dfrac{\partial h}{\partial \theta_1} \\ \vdots \\ \dfrac{\partial h}{\partial \theta_k} \end{bmatrix}
+  $$
+
+- Hessian:
+  $$
+  \underset{k \times k}{\frac{\partial^2 h}{\underset{k \times 1}{\partial \theta}\, \underset{1 \times k}{\partial \theta^\top}}} = \begin{bmatrix} \dfrac{\partial^2 h}{\partial \theta_1 \partial \theta_1} & \cdots & \dfrac{\partial^2 h}{\partial \theta_1 \partial \theta_k} \\ \vdots & & \vdots \\ \dfrac{\partial^2 h}{\partial \theta_k \partial \theta_1} & \cdots & \dfrac{\partial^2 h}{\partial \theta_k \partial \theta_k} \end{bmatrix}
+  $$
+
+- Score of observation $i$, gradient of its log likelihood:
+  $$
+  \frac{\partial}{\partial \theta} \log f(W_i, \theta)
+  $$
+
+## First-order condition and expansion
+
+- We will use the expansion of $h$ around $\theta_0$:
+  $$
+  h(\hat\theta) \approx h(\theta_0) + \frac{\partial h(\theta_0)}{\partial \theta^\top} (\hat\theta - \theta_0)
+  $$
+
+- First-order condition for $\hat\theta$, each element expanded around $\theta_0$:
+  $$
+  \begin{aligned}
+  \underset{k \times 1}{0} &= \frac{\partial}{\partial \theta} \Big[\frac{1}{n} \sum_{i=1}^n \log f(W_i, \hat\theta)\Big] \\
+  &= \frac{1}{n} \sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(W_i, \hat\theta) \\
+  &\approx \frac{1}{n} \sum_{i=1}^n \underbrace{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)}_{k \times 1} + \underbrace{\Big[\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}\Big]}_{k \times k} \underbrace{(\hat\theta - \theta_0)}_{k \times 1}
+  \end{aligned}
+  $$
+
+- OLS normal equations:
+  $$
+  \begin{aligned}
+  0 &= \frac{1}{n} \sum_{i=1}^n X_i \hat U_i \\
+  &= \frac{1}{n} \sum_{i=1}^n X_i (Y_i - X_i^\top \hat\beta^{OLS}) \\
+  &= \frac{1}{n} \sum_{i=1}^n X_i \big(U_i - X_i^\top (\hat\beta^{OLS} - \beta_0)\big)
+  \end{aligned}
+  $$
+
+## Solving for $\sqrt{n}(\hat\theta - \theta_0)$
+
+- Solve for $\hat\theta - \theta_0$, then multiply by $\sqrt{n}$:
+  $$
+  \begin{aligned}
+  & \Big[\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}\Big] (\hat\theta - \theta_0) \approx -\frac{1}{n} \sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(W_i, \theta_0) \\
+  \Longrightarrow\quad & \hat\theta - \theta_0 \approx -\Big[\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}\Big]^{-1} \frac{1}{n} \sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(W_i, \theta_0) \\
+  \Longrightarrow\quad & \sqrt{n}(\hat\theta - \theta_0) \\
+  &\qquad \approx -\Big[\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}\Big]^{-1} \frac{1}{\sqrt{n}} \sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(W_i, \theta_0)
+  \end{aligned}
+  $$
+
+- Same form for the scaled OLS estimation error:
+  $$
+  \sqrt{n}(\hat\beta^{OLS} - \beta_0) = \Big(\frac{1}{n} \sum_{i=1}^n X_i X_i^\top\Big)^{-1} \frac{1}{\sqrt{n}} \sum_{i=1}^n X_i U_i
+  $$
+
+## Average Hessian and scaled score
+
+- Weak LLN for the average Hessian, limit assumed negative definite:
+  $$
+  \frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top} \to_p \E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}
+  $$
+
+- Variance of the score:
+  $$
+  \begin{aligned}
+  \Omega_0 &= \Var{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)} \\
+  &= \E{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)\, \frac{\partial}{\partial \theta^\top} \log f(W_i, \theta_0)}
+  \end{aligned}
+  $$
+
+- Second-moment form of $\Omega_0$ and the CLT need:
+  $$
+  \E{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)} = 0
+  $$
+
+- CLT for the scaled score:
+  $$
+  \frac{1}{\sqrt{n}} \sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(W_i, \theta_0) \to_d N(0, \Omega_0)
+  $$
+
+## Mean of the score
+
+- **Assume:** $\frac{\partial}{\partial \theta}$ and $\int$ interchange.
+
+- Population first-order condition, $\theta_0 = \arg\max_\theta \E{\log f(W_i, \theta)}$:
+  $$
+  \begin{aligned}
+  \E{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)} &= \frac{\partial}{\partial \theta} \E{\log f(W_i, \theta)} \Big|_{\theta = \theta_0} \\
+  &= 0
+  \end{aligned}
+  $$
+
+- A more direct argument:
+  $$
+  \begin{aligned}
+  \E{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)} &= \E{\frac{\partial f(W_i, \theta_0) / \partial \theta}{f(W_i, \theta_0)}} \\
+  &= \int \frac{\partial f(w, \theta_0) / \partial \theta}{{\color{red} f(w, \theta_0)}} \cdot {\color{red} f(w, \theta_0)}\, dw \\
+  &= \int \frac{\partial f(w, \theta_0)}{\partial \theta}\, dw \\
+  &= \frac{\partial}{\partial \theta} \underbrace{\int f(w, \theta_0)\, dw}_{=\, 1} \\
+  &= 0
+  \end{aligned}
+  $$
+
+## Sandwich form
+
+- Weak LLN for the average Hessian, CLT for the scaled score:
+  $$
+  \begin{aligned}
+  \sqrt{n}(\hat\theta - \theta_0) &\approx -\Big[\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}\Big]^{-1} \frac{1}{\sqrt{n}} \sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(W_i, \theta_0) \\
+  &\to_d -\Big(\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1} N(0, \Omega_0)
+  \end{aligned}
+  $$
+
+- Asymptotic variance, the Hessian symmetric:
+  $$
+  \mathrm{AsyVar}(\hat\theta) = \Big(\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1} \Omega_0 \Big(\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1}
+  $$
+
+## Information matrix equality
+
+- **Claim.**
+  $$
+  \E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}} = -\Omega_0
+  $$
+
+- We will use:
+  $$
+  \begin{aligned}
+  \E{\frac{\partial^2 f(W_i, \theta_0) / \partial \theta\, \partial \theta^\top}{f(W_i, \theta_0)}} &= \int \frac{\partial^2 f(w, \theta_0)}{\partial \theta\, \partial \theta^\top}\, \frac{1}{{\color{red} f(w, \theta_0)}} \cdot {\color{red} f(w, \theta_0)}\, dw \\
+  &= \frac{\partial^2}{\partial \theta\, \partial \theta^\top} \underbrace{\int f(w, \theta_0)\, dw}_{=\, 1} \\
+  &= 0
+  \end{aligned}
+  $$
+
+- Differentiate the score:
+  $$
+  \begin{aligned}
+  & \E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}} \\
+  &= \E{\frac{\partial}{\partial \theta^\top}\, \frac{\partial}{\partial \theta} \log f(W_i, \theta_0)} \\
+  &= \E{\frac{\partial}{\partial \theta^\top}\, \frac{\partial f(W_i, \theta_0) / \partial \theta}{f(W_i, \theta_0)}} \\
+  &= \E{\frac{\partial^2 f(W_i, \theta_0) / \partial \theta\, \partial \theta^\top}{f(W_i, \theta_0)} - \underbrace{\frac{\partial f(W_i, \theta_0) / \partial \theta}{f(W_i, \theta_0)}}_{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)}\, \underbrace{\frac{\partial f(W_i, \theta_0) / \partial \theta^\top}{f(W_i, \theta_0)}}_{\frac{\partial}{\partial \theta^\top} \log f(W_i, \theta_0)}} \\
+  &= \underbrace{\E{\frac{\partial^2 f(W_i, \theta_0) / \partial \theta\, \partial \theta^\top}{f(W_i, \theta_0)}}}_{=\, 0} - \Omega_0 \\
+  &= \boxed{\ -\Omega_0\ }
+  \end{aligned}
+  $$
+
+## Information matrix and asymptotic variance
+
+- **Definition.** Information matrix:
+  $$
+  I(\theta_0) = -\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}
+  $$
+
+- $I(\theta_0)$: symmetric, p.d.
+
+- Substitute $\Omega_0$ from the information matrix equality:
+  $$
+  \begin{aligned}
+  & \mathrm{AsyVar}(\hat\theta) \\
+  &= \Big(\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1} \underbrace{\Omega_0}_{=\, -\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}} \Big(\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1} \\
+  &= -\Big(\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1} \\
+  &= \Big(-\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}\Big)^{-1} \\
+  &= I(\theta_0)^{-1}
+  \end{aligned}
+  $$
+
+- Asymptotic distribution of the MLE:
+  $$
+  \boxed{\ \sqrt{n}(\hat\theta - \theta_0) \to_d N\big(0,\ I(\theta_0)^{-1}\big)\ }
+  $$
+
+## Standard errors
+
+- $\hat\theta_j$, $\theta_{0,j}$: element $j$ of $\hat\theta$, $\theta_0$.
+
+- Estimator of $\Omega_0$:
+  $$
+  \hat\Omega = \frac{1}{n} \sum_{i=1}^n \frac{\partial \log f(W_i, \hat\theta)}{\partial \theta}\, \frac{\partial \log f(W_i, \hat\theta)}{\partial \theta^\top}
+  $$
+
+- Standard error of $\hat\theta_j$, from the average Hessian at $\hat\theta$:
+  $$
+  \text{std. err}(\hat\theta_j) = \sqrt{\frac{\Big(\Big[-\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(W_i, \hat\theta)}{\partial \theta\, \partial \theta^\top}\Big]^{-1}\Big)_{jj}}{n}}
+  $$
+
+- Or from $\hat\Omega$:
+  $$
+  \text{std. err}(\hat\theta_j) = \sqrt{\frac{\big(\hat\Omega^{-1}\big)_{jj}}{n}}
+  $$
+
+- $t$ test of $H_0: \theta_{0,j} = c$ vs $H_1: \theta_{0,j} \ne c$: $|\hat\theta_j - c| / \text{std. err}(\hat\theta_j) > z_{1-\alpha/2}$ $\Longrightarrow$ reject.
+
+# Estimated average marginal effect
+
+## AME estimator
+
+- AME estimator from $\hat\beta$ and known $f$:
+  $$
+  \widehat{\mathrm{AME}}_j = \frac{1}{n} \sum_{i=1}^n f(X_i^\top \hat\beta)\, \hat\beta_j
+  $$
+
+# Stein's lemma and LPM slopes
+
+## Normal regressors and Stein's lemma
+
+- $\E{Y_i \mid X_i} = g(X_{i,2})$: nonlinear, unknown.
+
+- AME, with $g'(x) = \partial g(x) / \partial x$:
+  $$
+  \mathrm{AME} = \E{g'(X_{i,2})}
+  $$
+
+- Probit and logit:
+  $$
+  \begin{aligned}
+  g(x) &= F(\beta_1 + x^\top \beta_2) \\
+  g'(x) &= f(\beta_1 + x^\top \beta_2)\, \beta_2
+  \end{aligned}
+  $$
+
+- **Stein's lemma.** $\underset{1 \times 1}{X_{i,2}} \sim N(\mu_X, \sigma_X^2)$, $g$ differentiable:
+  $$
+  \underbrace{\E{g(X_{i,2})(X_{i,2} - \mu_X)}}_{=\, \Cov{g(X_{i,2}),\, X_{i,2}}} = \sigma_X^2\, \E{g'(X_{i,2})}
+  $$
+
+- Proof: appendix.
+
+- Vector $\underset{(k-1) \times 1}{X_{i,2}} \sim N(\mu_X, \underset{(k-1) \times (k-1)}{\Sigma})$, $\Sigma$ p.d.,\
+  $g$ differentiable:
+  $$
+  \E{g(X_{i,2})(X_{i,2} - \mu_X)} = \Sigma\, \E{g'(X_{i,2})}
+  $$
+
+## LPM slope with a scalar normal regressor
+
+- Scalar $X_{i,2} \sim N(\mu_X, \sigma_X^2)$, $g$ differentiable.
+
+- LPM: population OLS of $Y_i$ on $1$ and $X_{i,2}$, slope $\delta$:
+  $$
+  \begin{aligned}
+  \delta &= \frac{\overbrace{\E{(X_{i,2} - \mu_X) Y_i}}^{=\, \Cov{X_{i,2},\, Y_i}}}{\E{(X_{i,2} - \mu_X)^2}} \\
+  &= \frac{\E{(X_{i,2} - \mu_X) Y_i}}{\sigma_X^2} \\
+  &\overset{\text{LIE}}{=} \frac{\E{(X_{i,2} - \mu_X)\, g(X_{i,2})}}{\sigma_X^2} \\
+  &= \frac{\sigma_X^2\, \E{g'(X_{i,2})}}{\sigma_X^2} \qquad \text{(Stein's lemma)} \\
+  &= \E{g'(X_{i,2})} \\
+  &= \boxed{\ \mathrm{AME}\ }
+  \end{aligned}
+  $$
+
+## LPM slopes with vector normal regressors
+
+- Vector $X_{i,2} \sim N(\mu_X, \Sigma)$, $\Sigma$ p.d.
+
+- Population OLS slopes $\delta$ ($Y_i$ on $1$, $X_{i,2}$):
+  $$
+  \begin{aligned}
+  \delta &= \Sigma^{-1} \Cov{X_{i,2}, Y_i} \\
+  &= \Sigma^{-1} \E{(X_{i,2} - \mu_X) Y_i} \\
+  &\overset{\text{LIE}}{=} \Sigma^{-1} \E{g(X_{i,2})(X_{i,2} - \mu_X)} \\
+  &= \Sigma^{-1} \Sigma\, \E{g'(X_{i,2})} \qquad \text{(Stein's lemma)} \\
+  &= \E{g'(X_{i,2})} \\
+  &= \boxed{\ \mathrm{AME}\ }
+  \end{aligned}
+  $$
+
+- Normal $X_{i,2}$: the LPM slopes equal the AME, for any differentiable $g$.
+
+# Summary
+
+## Binary choice and identification
+
+- $Y_i = \mathbf{1}(X_i^\top \beta + \varepsilon_i > 0)$, $\varepsilon_i \mid X_i \sim F$ $\Longrightarrow$ $\mathrm{P}(Y_i = 1 \mid X_i) = 1 - F(-X_i^\top \beta)$.
+
+- $F$ symmetric around zero $\Longrightarrow$ $\mathrm{P}(Y_i = 1 \mid X_i) = F(X_i^\top \beta)$.
+
+- LPM: $\E{Y_i \mid X_i} = \mathrm{P}(Y_i = 1 \mid X_i) = X_i^\top \beta$.
+
+- Probit: $F = \Phi$.
+
+- Logit: $F(t) = \Lambda(t) = e^t / (1 + e^t)$.
+
+- Logit, log odds ratio: $\log\big(\mathrm{P}(Y_i = 1 \mid X_i) / \mathrm{P}(Y_i = 0 \mid X_i)\big) = X_i^\top \beta$.
+
+- $\varepsilon_i \mid X_i \sim N(0, \sigma^2)$: only $\beta / \sigma$ can be identified.
+
+- $\varepsilon_i \mid X_i \sim N(\mu, \sigma^2)$: $\mu$ absorbed by the intercept.
+
+- Probit: $\Phi^{-1}\big(\mathrm{P}(Y_i = 1 \mid X_i = x)\big) = x^\top \beta$.
+
+- Probit and logit: $k$ linearly independent values of $X_i$ $\Longrightarrow$ $\beta$ identified.
+
+## Marginal effects
+
+- LPM: $\partial\, \mathrm{P}(Y_i = 1 \mid X_i = x) / \partial x_j = \beta_j$ at every $x$.
+
+- Probit and logit: $\partial\, \mathrm{P}(Y_i = 1 \mid X_i = x) / \partial x_j = f(x^\top \beta)\, \beta_j$.
+
+- $\mathrm{AME}_j = \E{f(X_i^\top \beta)}\, \beta_j$.
+
+## Maximum likelihood and consistency
+
+- $W_i \overset{\text{iid}}{\sim} f(w, \theta_0)$: $\hat\theta = \arg\max_\theta \frac{1}{n} \sum_{i=1}^n \log f(W_i, \theta)$.
+
+- **Assume:** common support $\{w : f(w, \theta) > 0\}$ for all $\theta$.
+
+- **Assume:** $\E{|\log f(W_i, \theta_0)|} < \infty$.
+
+- Bernoulli trials: $\hat\theta = \bar Y$.
+
+- Normal regression: $\hat\beta^{MLE} = \hat\beta^{OLS}$.
+
+- Probit and logit:
+  $$
+  \frac{1}{n} \log L_n(\beta) = \frac{1}{n} \sum_{i=1}^n \big\{Y_i \log F(X_i^\top \beta) + (1 - Y_i) \log\big(1 - F(X_i^\top \beta)\big)\big\}
+  $$
+
+  - $\hat\beta^{MLE}$ by numerical maximization, for example grid search.
+
+- Jensen's inequality: $\E{\log f(W_i, \theta)} \le \E{\log f(W_i, \theta_0)}$ for all $\theta$.
+
+- Under regularity conditions: $\mathrm{P}\big(f(W_i, \theta) \ne f(W_i, \theta_0)\big) > 0$ for all $\theta \ne \theta_0$ $\Longrightarrow$ $\hat\theta \to_p \theta_0$.
+
+- Logit: $\E{X_i X_i^\top}$ p.d. $\Longrightarrow$ identification condition.
+
+## Asymptotic normality
+
+- **Assume:** $\frac{\partial}{\partial \theta}$ and $\int$ interchange.
+
+- $\E{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)} = 0$.
+
+- $\Omega_0 = \E{\frac{\partial}{\partial \theta} \log f(W_i, \theta_0)\, \frac{\partial}{\partial \theta^\top} \log f(W_i, \theta_0)}$.
+
+- Information matrix equality: $\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}} = -\Omega_0$.
+
+- $I(\theta_0) = -\E{\frac{\partial^2 \log f(W_i, \theta_0)}{\partial \theta\, \partial \theta^\top}}$: information matrix, p.d.
+
+- $\sqrt{n}(\hat\theta - \theta_0) \to_d N\big(0,\ I(\theta_0)^{-1}\big)$.
+
+- $\text{std. err}(\hat\theta_j) = \sqrt{(\hat\Omega^{-1})_{jj} / n}$.
+
+- Or minus the average Hessian at $\hat\theta$ in place of $\hat\Omega$.
+
+## AME estimator and Stein's lemma
+
+- $\widehat{\mathrm{AME}}_j = \frac{1}{n} \sum_{i=1}^n f(X_i^\top \hat\beta)\, \hat\beta_j$.
+
+- Stein's lemma, $X_{i,2} \sim N(\mu_X, \sigma_X^2)$, $g$ differentiable: $\E{g(X_{i,2})(X_{i,2} - \mu_X)} = \sigma_X^2\, \E{g'(X_{i,2})}$.
+
+- $\E{Y_i \mid X_i} = g(X_{i,2})$, $X_{i,2} \sim N(\mu_X, \Sigma)$, $\Sigma$ p.d. $\Longrightarrow$ LPM slopes ${\delta = \E{g'(X_{i,2})} = \mathrm{AME}}$, for any differentiable $g$.
+
+# Appendix
+
+## Proof of Stein's lemma
+
+- Suppose $\underset{1 \times 1}{X_{i,2}} \sim N(\mu_X, \sigma_X^2)$, $g$ differentiable.
+
+- PDF of $X_{i,2}$:
+  $$
+  f_X(x) = \frac{1}{\sqrt{2\pi\sigma_X^2}}\, e^{-\frac{(x - \mu_X)^2}{2\sigma_X^2}}
+  $$
+
+- Write the expectation with the normal PDF:
+  $$
+  \begin{aligned}
+  \E{g(X_{i,2})(X_{i,2} - \mu_X)} &= \int g(x)\, (x - \mu_X)\, f_X(x)\, dx \\
+  &= \sigma_X^2 \int g(x)\, \frac{x - \mu_X}{\sigma_X^2}\, f_X(x)\, dx \\
+  &= \sigma_X^2 \int g(x)\, \frac{x - \mu_X}{\sigma_X^2}\, \frac{1}{\sqrt{2\pi\sigma_X^2}}\, e^{-\frac{(x - \mu_X)^2}{2\sigma_X^2}}\, dx \\
+  &= -\sigma_X^2 \int g(x)\, \Big(-\frac{x - \mu_X}{\sigma_X^2}\Big) \frac{1}{\sqrt{2\pi\sigma_X^2}}\, e^{-\frac{(x - \mu_X)^2}{2\sigma_X^2}}\, dx
+  \end{aligned}
+  $$
+
+- Differential of $f_X$:
+  $$
+  \begin{aligned}
+  d f_X(x) &= \frac{1}{\sqrt{2\pi\sigma_X^2}}\, e^{-\frac{(x - \mu_X)^2}{2\sigma_X^2}} \times \frac{-2(x - \mu_X)}{2\sigma_X^2}\, dx \\
+  &= -\frac{x - \mu_X}{\sigma_X^2}\, f_X(x)\, dx
+  \end{aligned}
+  $$
+
+- Integration by parts:
+  $$
+  \int_{-\infty}^{\infty} g\, dh = g\, h \Big|_{-\infty}^{\infty} - \int_{-\infty}^{\infty} h\, dg
+  $$
+
+- Continue, integrate by parts with $h = f_X$:
+  $$
+  \begin{aligned}
+  \E{g(X_{i,2})(X_{i,2} - \mu_X)} &= -\sigma_X^2 \int g(x)\, d f_X(x) \\
+  &= \underbrace{\sigma_X^2 \lim_{a \to \infty} \Big[-g(x)\, f_X(x)\Big]_{-a}^{a}}_{=\, 0} \\
+  &\qquad + \sigma_X^2 \int f_X(x)\, dg(x) \\
+  &= \sigma_X^2 \int f_X(x)\, g'(x)\, dx \\
+  &= \boxed{\ \sigma_X^2\, \E{g'(X_{i,2})}\ }
+  \end{aligned}
+  $$

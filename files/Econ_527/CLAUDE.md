@@ -45,6 +45,7 @@ The author's rules for the slides are `/Users/vmarmer/.claude/rules/lecture-slid
 | 8 | `527_08_asymptotic_theory.qmd` | Asymptotic theory: convergence in probability, LLN, Slutsky's theorem, convergence in distribution, CLT |
 | 9 | `527_09_ols_large_sample.qmd` | Large-sample OLS: consistency, asymptotic normality, estimation of the asymptotic variance, robust against usual standard errors |
 | 10 | `527_10_iv_gmm.qmd` | Endogeneity, OLS under endogeneity, identification and instruments, the first stage and the rank condition, GMM, 2SLS, the control function and the Hausman test, the over-identifying restrictions test, constructing more instruments |
+| 11 | `527_11_mle_binary_choice.qmd` | Binary choice: LPM, probit and logit, marginal effects, maximum likelihood, consistency and asymptotic normality, the information matrix equality, the estimated AME, Stein's lemma and LPM slopes |
 
 Each deck renders to three files in `output/`: an HTML page with a table of contents, a PDF, and a RevealJS slide show. All three are committed, because the HTML page and the slide show are what the course page links to.
 
