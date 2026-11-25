@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-Updated: July 23, 2026
+Updated: November 25, 2026
 
 [Download PDF](/files/vadim_marmer_CV.pdf)
 
@@ -68,7 +68,7 @@ Personal website: [vadimmarmer.com](https://vadimmarmer.com)
 
 ## Refereed Publications
 
-1. Ma, J., V. Marmer, and P. Xu: "Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?" *RAND Journal of Economics*, accepted.
+1. Ma, J., V. Marmer, and P. Xu (2026): "Managing Procurement Auction Failure: Bid Requirements or Reserve Prices?" *RAND Journal of Economics*, 57(4), 898--921.
 
 2. Kang, D.N. and V. Marmer (2024): "Modelling Long Cycles," *Journal of Econometrics*, 242(1), 105751.
 
